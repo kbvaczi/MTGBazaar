@@ -1,0 +1,45 @@
+<% title 'Sign up' %>
+
+<h1>Sign up</h1>
+
+<%= simple_form_for(resource.with_account, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+
+  <% flash[:error] = devise_error_messages! if !devise_error_messages!.empty? %>
+  
+  <br class = "spacer"/>
+  <h2>Account Setup</h2>   
+  <br class = "spacer"/>
+  
+  <%= f.input :username, :required => 'true' %>
+  <%= f.input :email , :required => 'true' , :hint => "user@email.com" %>
+  <%= f.input :password, :required => 'true'  %>
+  <%= f.input :password_confirmation, :required => 'true' %>
+  
+  <br class = "spacer"/>
+  <h2>Personal Information</h2>
+  <br class = "spacer"/>
+  
+  <%= f.simple_fields_for :account do |a| %>
+    <%= a.input :first_name %>
+    
+    <%# , :input_html => { :value => resource.account.first_name } if resource.account %>
+    <%= a.input :last_name , :required => 'true' %>
+    <%= a.input :address1, :label => "Address 1" , :required => 'true' %>
+    <%= a.input :address2, :label => 'Address 2', :hint => "additional line for address if needed" %>
+    <%= a.input :city , :required => 'true' %>
+    <%= a.input :state , :required => 'true' %>
+    <%= a.input :zipcode , :label => "Zip" , :required => 'true' %>    
+    <%= a.input :country , :required => 'true' , :priority => [ "United States", "Canada" ] %>
+    <%= a.input :birthdate , :required => 'true' , :start_year => Date.today.year - 60 , :end_year => Date.today.year - 18 , :hint => "Must be at least 18 years old" %>
+
+  <% end %>
+
+  <br class = "spacer"/>
+  <%= f.submit 'Submit' %>
+  <br class = "spacer"/>
+  <br class = "spacer"/>
+  
+<% end %>
+
+<%# let's leave off devise links on sign up page for now for simplicity.  plan to have links on separate FAQ page %>
+<%#= render :partial => "devise/shared/links" %>

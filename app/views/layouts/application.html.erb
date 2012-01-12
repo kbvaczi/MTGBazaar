@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <title><%= yield(:title) || 'Home' %></title>
+    <meta name="description" content="MTG Bazaar: A marketplace for buying and selling Magic the Gathering cards">
+    <meta name="keywords" content="MTG Bazaar: A marketplace for buying and selling Magic the Gathering cards">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <%= stylesheet_link_tag 'main.css' %>
+    <%= javascript_include_tag 'rails.js' %>
+    <%= javascript_include_tag "application.js" %>
+
+    <% #--------- YIELD STUFF TO PUT IN HEADING SUCH AS JAVASCRIPT INCLUDES, ETC...----# %>
+    <%= yield(:head) %>
+  
+    <%= csrf_meta_tags %>  
+  </head>
+
+  <body>
+      
+    <% if flash[:notice] %>
+      <div id="flash" class="flash_notice">
+        <%= flash[:notice] %>
+      </div>
+    <% elsif flash[:alert] %>
+      <div id="flash" class="flash_alert">
+        <%= flash[:alert] %>
+      </div>
+    <% elsif flash[:error] %>
+      <div id="flash" class="flash_error">
+        <%= flash[:error] %>
+      </div>
+    <% elsif flash[:warning] %>
+      <div id="flash" class="flash_warning">
+        <%= flash[:warning] %>
+      </div>
+    <% end %>
+      
+    <div id="site">
+
+      <%= render :partial => 'shared/header' %>
+      <%= render 'shared/navbar' %>
+
+      <div id="main" class="group">
+        
+        <%= render :partial => 'shared/user_login' %>
+        <br class="spacer"/>
+                
+        <%= render :partial => 'shared/left_bar' %>      
+        
+        <div id="center_bar">
+          <%= yield %>
+        </div>
+        
+        <%= render :partial => 'shared/right_bar' %>      
+        
+      </div>
+
+      <%= render 'shared/bottomnav' %>
+      <%= render :partial => 'shared/footer' %>
+      
+    </div>
+  </body>
+
+</html>

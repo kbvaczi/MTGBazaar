@@ -1,0 +1,33 @@
+<%= form_for @contact, :url => { :action => "create" }, :html => { :method => :post } do |f| %>
+  <% if @contact.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@contact.errors.count, "error") %> prohibited this form from being sent:</h2>
+      <ul>
+      <% @contact.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <br/>
+  <div class="ma">
+    <div class="left"><%= f.label "Name" %></div>
+    <div class="right"><%= f.text_field :sender_name, :style=> "width:300px"%></div>
+    <br class="spacer"/>
+    <div class="left"><%= f.label "Email" %></div>
+    <div class="right"><%= f.text_field :email, :style=> "width:300px" %></div>
+    <br class="spacer"/>
+    <br class="spacer"/>
+    <div class="left"><%= f.label "Reason" %></div>
+    <div class="right"><%= f.select :support_type, options_for_select([["Give us kudos","kudos"], ["General feedback","general"], ["Report a bug","bug"], ["Ask a question","question"], ["Give a suggestion", "suggestion"], ["File a complaint", "complaint"], ["Inquire about advertising", "ad"]], @reason), {}, :style=> "width:305px;" %></div>
+    <br class="spacer"/>
+    <div class="left"><%= f.label "Message" %></div>
+    <div class="right"><%= f.text_area :content, :rows => 10, :style => "resize: none; width:300px;", :maxlength => "500" %></div>
+    <br class="spacer"/>
+    <br class="spacer"/>
+    <div class="center"><%= f.submit "Submit" %></div>
+    <br class="spacer"/>
+  </div>
+<% end %>
+
