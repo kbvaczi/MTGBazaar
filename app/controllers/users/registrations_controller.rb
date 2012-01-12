@@ -12,7 +12,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def edit
 
     super
-      @user = resource
+      resource.build_account(params[:account])
   end
   
   def create

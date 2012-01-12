@@ -20,16 +20,15 @@
   <br class = "spacer"/>
   
   <%= f.simple_fields_for :account do |a| %>
+
     <%= a.input :first_name %>
-    
-    <%# , :input_html => { :value => resource.account.first_name } if resource.account %>
-    <%= a.input :last_name , :required => 'true' %>
-    <%= a.input :address1, :label => "Address 1" , :required => 'true' %>
+    <%= a.input :last_name , :required => 'true' , :input_html => { :value => resource.account.last_name } %>
+    <%= a.input :address1, :label => "Address 1" , :required => 'true' , :input_html => { :value => resource.account.address1 } %>
     <%= a.input :address2, :label => 'Address 2', :hint => "additional line for address if needed" %>
     <%= a.input :city , :required => 'true' %>
     <%= a.input :state , :required => 'true' %>
     <%= a.input :zipcode , :label => "Zip" , :required => 'true' %>    
-    <%= a.input :country , :required => 'true' , :priority => [ "United States", "Canada" ] %>
+    <%= a.input :country , :required => 'true' , :priority => [ "United States", "Canada" ] , :input_html => { :style => "width: 220px;"}%>
     <%= a.input :birthdate , :required => 'true' , :start_year => Date.today.year - 60 , :end_year => Date.today.year - 18 , :hint => "Must be at least 18 years old" %>
 
   <% end %>
