@@ -5,7 +5,6 @@ class CreateAccounts < ActiveRecord::Migration
       #foreign keys
       t.integer :user_id
       
-      
       # unprotected values
       t.string  :first_name
       t.string  :last_name
@@ -22,7 +21,8 @@ class CreateAccounts < ActiveRecord::Migration
       t.integer :balance            , :default => 0
       t.integer :number_sales       , :default => 0
       t.float   :average_rating     , :default => 0
-      t.boolean :vacation           , :default => false
+      t.float   :average_ship_time  , :default => 0           #number of days
+      t.boolean :vacation           , :default => false       #unlist sales when vacation is turned on
 
       t.timestamps
       

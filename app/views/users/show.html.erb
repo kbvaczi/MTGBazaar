@@ -1,0 +1,23 @@
+<h1>Seller Profile</h1>
+
+<h2>Seller Statistics</h2>
+<div class="ma">
+  <%= 'Seller: ' + @user.username %>
+  <div><%= @user.created_at.strftime("Member Since: %B %d, %Y") %></div>
+  <div><%= "number of sales: " + @user.account.number_sales.to_s %></div>
+  <div><%= "Average wait before shipping: " + @user.account.number_sales.to_s %></div>
+</div>
+
+<h2>Location Information</h2>
+<div class="ma">
+  <div><%= 'Country: ' + capitalize_first_word(@user.account.country) %></div>
+  <div><%= 'Shipping from: ' + capitalize_first_word(@user.account.city.capitalize) + ", " + capitalize_first_word(@user.account.state.capitalize) %></div>
+</div>
+
+<h2>Seller Feedback</h2>
+<div class="ma">
+  <div><%= 'Average rating: ' + @user.account.average_rating.round(1).to_s + ' out of 5.0'%></div>
+  <%# add recent feedback%>
+</div>
+
+<h2></h2>

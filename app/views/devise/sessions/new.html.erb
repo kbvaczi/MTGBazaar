@@ -1,17 +1,36 @@
-<h2>Sign in</h2>
 
-<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-  <div><%= f.label :email %><br />
-  <%= f.email_field :email %></div>
 
-  <div><%= f.label :password %><br />
-  <%= f.password_field :password %></div>
+<h1>Sign in</h1>
 
+<%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+
+  <%# flash[:error] = devise_error_messages! if !devise_error_messages!.empty? %>
+  
+  <br class = "spacer"/>
+
+  <br class = "spacer"/>
+  
+  <%= f.input :email , :required => 'true' %>
+  <%= f.input :password, :required => 'true'  %>
+  
+  
   <% if devise_mapping.rememberable? -%>
     <div><%= f.check_box :remember_me %> <%= f.label :remember_me %></div>
   <% end -%>
 
-  <div><%= f.submit "Sign in" %></div>
+  <br class = "spacer"/>
+  
+  <div class = "center">
+    <%= f.submit 'Sign In' %>
+  </div>
+
 <% end %>
 
-<%= render :partial => "devise/shared/links" %>
+<br class = "spacer"/>
+<br class = "spacer"/>
+<br class = "spacer"/>
+<br class = "spacer"/>
+
+<div class = "center" style = "width: 300px;text-align:center;">
+  <%= render :partial => "devise/shared/links" %>
+</div>

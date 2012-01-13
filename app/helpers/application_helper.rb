@@ -4,4 +4,8 @@ module ApplicationHelper
     content_for(:title) { page_title + " | MTG Bazaar" }
   end
   
+  def capitalize_first_word(word)
+    word.split(' ').map {|w| w.capitalize }.join(' ')
+  end
+  
 end

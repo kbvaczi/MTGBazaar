@@ -2,27 +2,26 @@
 
 <h1>Sign up</h1>
 
+
+<%# use @user instance variable to capture changes in @account for incorrect form entry%>
 <%= simple_form_for(@user.with_account, :as => @user, :url => registration_path(@user)) do |f| %>
 
-<%# resource.with_account, :as => resource_name, :url => registration_path(resource_name %>
-
   <% flash[:error] = devise_error_messages! if !devise_error_messages!.empty? %>
-  
+
   <br class = "spacer"/>
   <h2>Account Setup</h2>   
   <br class = "spacer"/>
-  
-  <%= f.input :username, :required => 'true' %>
-  <%= f.input :email , :required => 'true' , :hint => "user@email.com" %>
-  <%= f.input :password, :required => 'true'  %>
-  <%= f.input :password_confirmation, :required => 'true' %>
-  
+
+  <%= f.input :username, :required => 'true' , :hint => "no special characters or spaces"  %>
+  <%= f.input :email , :required => 'true' , :placeholder => "email@domain.com" %>
+  <%= f.input :password, :required => 'true', :hint => "password must be at least 6 characters"  %>
+  <%= f.input :password_confirmation, :label => "Confirm Password", :required => 'true' %>
+
   <br class = "spacer"/>
   <h2>Personal Information</h2>
   <br class = "spacer"/>
-  
-  <%= f.simple_fields_for :account do |a| %>
 
+  <%= f.simple_fields_for :account do |a| %>
     <%= a.input :first_name %>
     <%= a.input :last_name , :required => 'true' %>
     <%= a.input :address1, :label => "Address 1" , :required => 'true' %>
@@ -30,17 +29,28 @@
     <%= a.input :city , :required => 'true' %>
     <%= a.input :state , :required => 'true' %>
     <%= a.input :zipcode , :label => "Zip" , :required => 'true' %>    
-    <%= a.input :country , :required => 'true' , :priority => [ "United States", "Canada" ] , :input_html => { :style => "width: 220px;"}%>
+    <%= a.input :country , :required => 'true' , :priority => [ "United States", "Canada" ] , :input_html => { :style => "width: 220px;" }%>
     <%= a.input :birthdate , :required => 'true' , :start_year => Date.today.year - 60 , :end_year => Date.today.year - 18 , :hint => "Must be at least 18 years old" %>
-
   <% end %>
 
   <br class = "spacer"/>
-  <%= f.submit 'Submit' %>
-  <br class = "spacer"/>
-  <br class = "spacer"/>
-  
+  <div class = "center">
+    <%= f.submit 'Submit' %>
+  </div>
+
 <% end %>
+
+<br class = "spacer"/>
+<br class = "spacer"/>
+<br class = "spacer"/>
+<br class = "spacer"/>
+
+<div class = "center" style = "width: 300px;text-align:center;">
+  <%= render :partial => "devise/shared/links" %>
+</div>
+
+<br class = "spacer"/>
+<br class = "spacer"/>  
 
 <%# let's leave off devise links on sign up page for now for simplicity.  plan to have links on separate FAQ page %>
 <%#= render :partial => "devise/shared/links" %>

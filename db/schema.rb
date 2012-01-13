@@ -24,7 +24,11 @@ ActiveRecord::Schema.define(:version => 20120108211359) do
     t.string   "address2"
     t.string   "zipcode"
     t.date     "birthdate"
-    t.string   "phone"
+    t.string   "paypal_username"
+    t.integer  "balance",         :default => 0
+    t.integer  "number_sales",    :default => 0
+    t.float    "average_rating",  :default => 0.0
+    t.boolean  "vacation",        :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

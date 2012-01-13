@@ -4,7 +4,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
 
     super
-      @user = resource.with_account
+      @user = resource
 
   end
   
@@ -12,7 +12,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
     super
       @user = resource
-      @account = @user.account
+
   end
   
   def create
