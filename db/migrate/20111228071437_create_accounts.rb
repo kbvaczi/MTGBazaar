@@ -5,7 +5,7 @@ class CreateAccounts < ActiveRecord::Migration
       #foreign keys
       t.integer :user_id
       
-      # unprotected values
+      # unprotected values which can be written from user sign-up / edit forms
       t.string  :first_name
       t.string  :last_name
       t.string  :country
@@ -15,18 +15,22 @@ class CreateAccounts < ActiveRecord::Migration
       t.string  :address2
       t.string  :zipcode
       t.date    :birthdate
-      t.string  :paypal_username    
+      t.string  :paypal_username  
             
-      # protected values
+      # protected values cannot be written from forms using mass assignment
       t.integer :balance            , :default => 0
       t.integer :number_sales       , :default => 0
+      t.integer :number_purchases   , :default => 0
       t.float   :average_rating     , :default => 0
-      t.float   :average_ship_time  , :default => 0           #number of days
+      t.float   :average_ship_time  , :default => 0           #number of days average from purchase to shipping
       t.boolean :vacation           , :default => false       #unlist sales when vacation is turned on
 
       t.timestamps
       
     end
+    
+    # Table Indexes
+    
   end
 
   def self.down
