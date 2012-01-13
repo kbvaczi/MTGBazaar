@@ -4,15 +4,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
 
     super
-      @user = resource
-      @account = Account.new
-      @user.account = @account
+      @user = resource.with_account
+
   end
   
   def edit
 
     super
-      resource.build_account(params[:account])
+      @user = resource
+      @account = @user.account
   end
   
   def create

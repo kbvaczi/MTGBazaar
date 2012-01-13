@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :account
   
   def with_account
-    self.build_account
+    self.build_account if !self.account
     self
   end
   
