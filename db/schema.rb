@@ -11,26 +11,29 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120108211359) do
+ActiveRecord::Schema.define(:version => 20120114160733) do
 
   create_table "accounts", :force => true do |t|
     t.integer  "user_id"
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "country"
-    t.string   "state"
-    t.string   "city"
-    t.string   "address1"
-    t.string   "address2"
-    t.string   "zipcode"
-    t.date     "birthdate"
-    t.string   "paypal_username"
-    t.integer  "balance",         :default => 0
-    t.integer  "number_sales",    :default => 0
-    t.float    "average_rating",  :default => 0.0
-    t.boolean  "vacation",        :default => false
+    t.string   "first_name",        :default => ""
+    t.string   "last_name",         :default => ""
+    t.string   "country",           :default => ""
+    t.string   "state",             :default => ""
+    t.string   "city",              :default => ""
+    t.string   "address1",          :default => ""
+    t.string   "address2",          :default => ""
+    t.string   "zipcode",           :default => ""
+    t.date     "birthdate",         :default => '2012-01-14'
+    t.string   "paypal_username",   :default => ""
+    t.integer  "balance",           :default => 0
+    t.integer  "number_sales",      :default => 0
+    t.integer  "number_purchases",  :default => 0
+    t.float    "average_rating",    :default => 0.0
+    t.float    "average_ship_time", :default => 0.0
+    t.boolean  "vacation",          :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "middle_name"
   end
 
   create_table "test1s", :force => true do |t|
@@ -73,7 +76,7 @@ ActiveRecord::Schema.define(:version => 20120108211359) do
     t.string   "authentication_token"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_level"
+    t.integer  "user_level",                            :default => 0
     t.string   "username"
   end
 

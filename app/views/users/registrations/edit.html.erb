@@ -1,28 +1,47 @@
-<h1>Edit <%= resource_name.to_s.humanize %></h1>
+<% title 'Edit Account' %>
 
-<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
-  <%= devise_error_messages! %>
+<h1>Edit Account Information</h1>
 
-  <p><%= f.label :username %><br />
-  <%= f.text_field :username %></p>
+
+<%# use @user instance variable to capture changes in @account for incorrect form entry%>
+<%= simple_form_for(@user.with_account, :as => @user, :url => registration_path(@user)) do |f| %>
+
+  <% flash[:error] = devise_error_messages! if !devise_error_messages!.empty? %>
+
+  <br class = "spacer"/>
+  <h2>Account Setup</h2>   
+  <br class = "spacer"/>
+
+  <%= f.input :email , :required => 'true' , :placeholder => "email@domain.com" %>
+  <%= f.input :password, :label => "Change password", :hint => "leave empty to keep existing password" %>
+  <%= f.input :password_confirmation, :label => "Confirm password" %>
+
+  <br class = "spacer"/>
+  <h2>Profile Information</h2>
+  <br class = "spacer"/>
+
+  <%= f.simple_fields_for :account do |a| %>
+    <%= a.input :first_name %>
+    <%= a.input :last_name , :required => 'true' %>
+    <%= a.input :address1, :label => "Address 1" , :required => 'true' %>
+    <%= a.input :address2, :label => 'Address 2', :hint => "additional line for address if needed" %>
+    <%= a.input :city , :required => 'true' %>
+    <%= a.input :state , :required => 'true' %>
+    <%= a.input :zipcode , :label => "Zip" , :required => 'true' %>    
+    <%= a.input :country , :required => 'true' , :priority => [ "United States", "Canada" ] %>
+  <% end %>
   
-  <div><%= f.label :email %><br />
-  <%= f.email_field :email %></div>
+  <br class = "spacer"/>
+  <h2>Confirm Changes</h2>
+  <br class = "spacer"/>
+  
+  <%= f.input :current_password, :required => "true", :hint => "enter current password to confirm changes"%>
+  <br class = "spacer"/>
+  <div class = "center">
+    <%= f.submit 'Confirm Changes' %>
+  </div>
 
-  <div><%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-  <%= f.password_field :password %></div>
-
-  <div><%= f.label :password_confirmation %><br />
-  <%= f.password_field :password_confirmation %></div>
-
-  <div><%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-  <%= f.password_field :current_password %></div>
-
-  <div><%= f.submit "Update" %></div>
 <% end %>
 
-<h3>Cancel my account</h3>
-
-<p>Unhappy? <%= link_to "Cancel my account", registration_path(resource_name), :confirm => "Are you sure?", :method => :delete %>.</p>
-
-<%= link_to "Back", :back %>
+<br class = "spacer"/>
+<br class = "spacer"/>  

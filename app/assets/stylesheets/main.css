@@ -324,6 +324,10 @@ input {
   cursor: pointer;
 }
 
+/* **************************************** */
+/* ************* FLASH MESSAGES *********** */
+/* **************************************** */
+
 #flash { 
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
@@ -509,9 +513,10 @@ input {
   position: absolute; 
   left: -999em;
 }
-.field_with_errors {
-  display: inline;
-}
+
+
+
+
 .section {
   margin: 24px 10px 0 10px;
 }
@@ -765,16 +770,34 @@ input {
   width:400px; 
   align:center; 
 }
-
+.simple_form .error {
+  clear:   left;
+  color:   red;
+  display: block;
+  margin-left: 140px;
+  font-size:    12px;
+  font-style: italic;
+}
+.simple_form .hint {
+  clear: left;
+  margin-left: 140px;
+  font-size:    12px;
+  color: #bbb;
+  display: block;
+  font-style: italic;
+}
 .simple_form div.input {
   margin-bottom: 10px;
 }
-
 .simple_form label {
   float: left;
   width: 130px;
   text-align: right;
   margin: 2px 10px;
+}
+.simple_form select {
+  width: 230px;
+  margin: 0 0px 10px 3px;
 }
 
 div.boolean, .simple_form input[type='submit'] {
@@ -794,27 +817,17 @@ label.collection_radio {
   margin-left:   2px;
 }
 
+
 .field_with_errors {
-  
+  display: inline;
+  color: red;
 }
-
-.simple_form .error {
-  clear:   left;
-  color:   red;
-  display: block;
-  margin-left: 140px;
-  font-size:    12px;
+.field_with_errors input {
+  border: 1px solid red;
 }
-
-.simple_form .hint {
-  clear: left;
-  margin-left: 140px;
-  font-size:    12px;
-  color: #bbb;
-  display: block;
-  font-style: italic;
+.field_with_errors .hint {
+  display: none;
 }
-
 input.radio {
   margin-right: 5px;
   vertical-align: -3px;
@@ -825,9 +838,9 @@ input.check_boxes {
   vertical-align: -3px;
 }
 
-textarea.text {
+.simple_form textarea.text {
   resize: none; 
-  width:220px;
+  width:218px;
   height:200px;
   margin-left: 3px;
   vertical-align: -3px;
