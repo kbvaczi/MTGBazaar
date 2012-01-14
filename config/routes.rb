@@ -11,6 +11,7 @@ MTGBazaar::Application.routes.draw do
   
   match 'about'           => 'home#about',        :as => :about
   match 'terms'           => 'home#terms_of_service'
+  match 'privacy'         => 'home#privacy'
   
   match 'contact'         => 'contact#index'
   match 'contact_create'  => 'contact#create'
