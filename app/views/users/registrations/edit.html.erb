@@ -12,8 +12,8 @@
   <h2>Account Setup</h2>   
   <br class = "spacer"/>
 
-  <%= f.input :email , :required => 'true' , :placeholder => "email@domain.com" %>
-  <%= f.input :password, :label => "Change password", :hint => "leave empty to keep existing password" %>
+  <%= f.input :email , :required => 'true' %>
+  <%= f.input :password , :label => "Change password", :hint => "leave empty to keep existing password" %>
   <%= f.input :password_confirmation, :label => "Confirm password" %>
 
   <br class = "spacer"/>
@@ -28,7 +28,7 @@
     <%= a.input :city , :required => 'true' %>
     <%= a.input :state , :required => 'true' %>
     <%= a.input :zipcode , :label => "Zip" , :required => 'true' %>    
-    <%= a.input :country , :required => 'true' , :priority => [ "United States", "Canada" ] %>
+    <%= a.input :country , :required => 'true' , :collection => [ "United States", "Canada" ] , :include_blank => false %>
   <% end %>
   
   <br class = "spacer"/>

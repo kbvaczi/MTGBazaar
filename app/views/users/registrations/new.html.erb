@@ -12,10 +12,16 @@
   <h2>Account Setup</h2>   
   <br class = "spacer"/>
 
-  <%= f.input :username, :required => 'true' , :hint => "no special characters or spaces"  %>
-  <%= f.input :email , :required => 'true' , :placeholder => "email@domain.com" %>
-  <%= f.input :password, :required => 'true', :hint => "password must be at least 6 characters"  %>
+  <%= f.input :username,              :required => 'true' , :hint => "no special characters or spaces"  %>
+  <%= f.input :email ,                :required => 'true' %>
+  <%= f.input :password,              :required => 'true', :hint => "must be at least 6 characters"  %>
   <%= f.input :password_confirmation, :label => "Confirm Password", :required => 'true' %>
+  <%= f.simple_fields_for :account do |a| %>
+    <%= a.input :security_question,   :label => "Security Question", :collection => [ "What was the make of your first car?",
+                                                                                      "What is your mother's maiden name?",
+                                                                                      "What city were you born in?" ] , :include_blank => false %>
+    <%= a.input :security_answer,     :label => "Answer", :required => 'true' %>
+  <% end %>
 
   <br class = "spacer"/>
   <h2>Personal Information</h2>
@@ -23,14 +29,18 @@
 
   <%= f.simple_fields_for :account do |a| %>
     <%= a.input :first_name %>
-    <%= a.input :last_name , :required => 'true' %>
-    <%= a.input :address1, :label => "Address 1" , :required => 'true' %>
-    <%= a.input :address2, :label => 'Address 2', :hint => "additional line for address if needed" %>
-    <%= a.input :city , :required => 'true' %>
-    <%= a.input :state , :required => 'true' %>
-    <%= a.input :zipcode , :label => "Zip" , :required => 'true' %>    
-    <%= a.input :country , :required => 'true' , :priority => [ "United States", "Canada" ] , :input_html => { :style => "width: 220px;" }%>
-    <%= a.input :birthdate , :required => 'true' , :start_year => Date.today.year - 60 , :end_year => Date.today.year - 18 , :hint => "Must be at least 18 years old" %>
+    <%= a.input :last_name ,    :required => 'true' %>
+    <%= a.input :address1,      :label => "Address 1" , :required => 'true' %>
+    <%= a.input :address2,      :label => 'Address 2', :hint => "additional line for address if needed" %>
+    <%= a.input :city ,         :required => 'true' %>
+    <%= a.input :state ,        :required => 'true' %>
+    <%= a.input :zipcode ,      :label => "Zip" , :required => 'true' %>    
+    <%= a.input :country ,      :required => 'true' , :collection => [ "United States", "Canada" ] , :include_blank => false %>
+    <%= a.input :birthdate ,    :required => 'true' , 
+                                :start_year => Date.today.year - 60 , 
+                                :end_year => Date.today.year - 18 , 
+                                :hint => "Must be at least 18 years old",
+                                :order => [:month, :day, :year] %>
   <% end %>
 
   <br class = "spacer"/>

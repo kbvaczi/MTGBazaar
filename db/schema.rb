@@ -23,8 +23,10 @@ ActiveRecord::Schema.define(:version => 20120114160733) do
     t.string   "address1",          :default => ""
     t.string   "address2",          :default => ""
     t.string   "zipcode",           :default => ""
-    t.date     "birthdate",         :default => '2012-01-14'
+    t.date     "birthdate",         :default => '2012-01-15'
     t.string   "paypal_username",   :default => ""
+    t.string   "security_question", :default => ""
+    t.string   "security_answer",   :default => ""
     t.integer  "balance",           :default => 0
     t.integer  "number_sales",      :default => 0
     t.integer  "number_purchases",  :default => 0
@@ -33,8 +35,9 @@ ActiveRecord::Schema.define(:version => 20120114160733) do
     t.boolean  "vacation",          :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "middle_name"
   end
+
+  add_index "accounts", ["user_id"], :name => "index_accounts_on_user_id"
 
   create_table "test1s", :force => true do |t|
     t.integer  "user_id"

@@ -13,3 +13,13 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+*.cache
+*.pid
+tmp/**/*
+.DS_Store
+doc/api
+doc/app
+doc/plugins
+doc/*.dot
+*.tmproj
+*.sw?
