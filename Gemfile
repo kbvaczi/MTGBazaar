@@ -1,8 +1,10 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.3'
-gem 'devise', '~> 1.5.3'
-gem "simple_form", "~> 1.5.2"
+gem 'rails', '3.1.3'  
+gem 'devise', '~> 1.5.3'            # user authentication
+gem "simple_form", "~> 1.5.2"       # simplified form creation
+gem "chosen_rails", "~> 0.1.0"      # customized select boxes using chosen (http://harvesthq.github.com/chosen/). requires jquery
+gem 'jquery-rails'                  # latest jquery library.  need to include "//= require jquery_ujs" and "//= require jquery" in application.js to be loaded in asset pipeline
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -19,7 +21,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-gem 'jquery-rails'
+
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

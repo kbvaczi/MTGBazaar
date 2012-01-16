@@ -1,0 +1,101 @@
+
+/*------------------------------------*/
+/*------------simple form-------------*/
+/*------------------------------------*/
+/* ----- SimpleForm Styles ----- */
+.simple_form {
+  margin:auto; 
+  width:400px; 
+  align:center; 
+}
+.simple_form .error {
+  clear:   left;
+  color:   red;
+  display: block;
+  margin-left: 150px;
+  margin-bottom: 10px;
+  font-size:    12px;
+  font-style: italic;
+}
+.simple_form .hint {
+  clear: left;
+  margin-left: 150px;
+  font-size:    12px;
+  color: #bbb;
+  display: block;
+  font-style: italic;
+}
+.simple_form div.input {
+  margin-bottom: 5px;
+}
+.simple_form label {
+  float: left;
+  width: 130px;
+  text-align: right;
+  margin: 4px 10px;
+}
+.simple_form .select select , .simple_form .select .chzn-container {
+  width: 230px;
+  margin: 2px 0 5px 2px;
+}
+.simple_form .date select , .simple_form .date .chzn-container{
+  width: 73px;
+  margin: 2px 0 5px 2px;
+}
+.simple_form .input input {
+  width:220px;
+  -moz-box-shadow:    inset 0px 1px 0px 0px #ccc;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #ccc;
+  box-shadow:         inset 0px 1px 0px 0px #ccc;
+}
+
+div.boolean, .simple_form input[type='submit'] {
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+div.boolean label, label.collection_radio {
+  float: none;
+  margin: 0;
+}
+
+label.collection_radio {
+  margin-right: 10px;
+  vertical-align: -2px;
+  margin-left:   2px;
+}
+.field_with_errors {
+  display: inline;
+  color: red;
+}
+.field_with_errors input {
+  border: 1px solid red;
+}
+.field_with_errors .hint {
+  display: none;
+}
+input.radio {
+  margin-right: 5px;
+  vertical-align: -3px;
+}
+
+input.check_boxes {
+  margin-left: 3px;
+  vertical-align: -3px;
+}
+
+.simple_form textarea.text {
+  resize: none; 
+  width:218px;
+  height:200px;
+  margin-left: 3px;
+  vertical-align: -3px;
+}
+
+label.collection_check_boxes {
+  float: none;
+  margin: 0;
+  vertical-align: -2px;
+  margin-left:   2px;
+}

@@ -17,9 +17,12 @@
   <%= f.input :password,              :required => 'true', :hint => "must be at least 6 characters"  %>
   <%= f.input :password_confirmation, :label => "Confirm Password", :required => 'true' %>
   <%= f.simple_fields_for :account do |a| %>
-    <%= a.input :security_question,   :label => "Security Question", :collection => [ "What was the make of your first car?",
-                                                                                      "What is your mother's maiden name?",
-                                                                                      "What city were you born in?" ] , :include_blank => false %>
+    <%= a.input :security_question,   :label => "Security Question", 
+                                      :collection => [  "What was the make of your first car?",
+                                                        "What is your mother's maiden name?",
+                                                        "What city were you born in?" ] , 
+                                      :include_blank => false ,
+                                      :input_html => { :class => 'chzn-select'} %>
     <%= a.input :security_answer,     :label => "Answer", :required => 'true' %>
   <% end %>
 
@@ -35,12 +38,13 @@
     <%= a.input :city ,         :required => 'true' %>
     <%= a.input :state ,        :required => 'true' %>
     <%= a.input :zipcode ,      :label => "Zip" , :required => 'true' %>    
-    <%= a.input :country ,      :required => 'true' , :collection => [ "United States", "Canada" ] , :include_blank => false %>
+    <%= a.input :country ,      :required => 'true' , :collection => [ "United States", "Canada" ] , :include_blank => false , :input_html => { :class => 'chzn-select' }  %>
     <%= a.input :birthdate ,    :required => 'true' , 
                                 :start_year => Date.today.year - 60 , 
                                 :end_year => Date.today.year - 18 , 
                                 :hint => "Must be at least 18 years old",
-                                :order => [:month, :day, :year] %>
+                                :order => [:month, :day, :year],
+                                :input_html => { :class => 'chzn-select' }  %>
   <% end %>
 
   <br class = "spacer"/>

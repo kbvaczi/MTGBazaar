@@ -15,24 +15,24 @@ ActiveRecord::Schema.define(:version => 20120114160733) do
 
   create_table "accounts", :force => true do |t|
     t.integer  "user_id"
-    t.string   "first_name",        :default => ""
-    t.string   "last_name",         :default => ""
-    t.string   "country",           :default => ""
-    t.string   "state",             :default => ""
-    t.string   "city",              :default => ""
-    t.string   "address1",          :default => ""
-    t.string   "address2",          :default => ""
-    t.string   "zipcode",           :default => ""
-    t.date     "birthdate",         :default => '2012-01-15'
-    t.string   "paypal_username",   :default => ""
-    t.string   "security_question", :default => ""
-    t.string   "security_answer",   :default => ""
-    t.integer  "balance",           :default => 0
-    t.integer  "number_sales",      :default => 0
-    t.integer  "number_purchases",  :default => 0
-    t.float    "average_rating",    :default => 0.0
-    t.float    "average_ship_time", :default => 0.0
-    t.boolean  "vacation",          :default => false
+    t.string   "first_name",        :default => "",           :null => false
+    t.string   "last_name",         :default => "",           :null => false
+    t.string   "country",           :default => "",           :null => false
+    t.string   "state",             :default => "",           :null => false
+    t.string   "city",              :default => "",           :null => false
+    t.string   "address1",          :default => "",           :null => false
+    t.string   "address2",          :default => "",           :null => false
+    t.string   "zipcode",           :default => "",           :null => false
+    t.date     "birthdate",         :default => '2012-01-15', :null => false
+    t.string   "paypal_username",   :default => "",           :null => false
+    t.string   "security_question", :default => "",           :null => false
+    t.string   "security_answer",   :default => "",           :null => false
+    t.integer  "balance",           :default => 0,            :null => false
+    t.integer  "number_sales",      :default => 0,            :null => false
+    t.integer  "number_purchases",  :default => 0,            :null => false
+    t.float    "average_rating",    :default => 0.0,          :null => false
+    t.float    "average_ship_time", :default => 0.0,          :null => false
+    t.boolean  "vacation",          :default => false,        :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
