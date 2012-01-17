@@ -511,7 +511,7 @@ input {
 .spacer { clear: both; }
 .left { float: left; }
 .right { float: right; }
-.center { margin:auto; width:10%; align:center; }
+.center { margin:auto; width:40%; align:center; }
 .hidden { visibility:hidden; }
 .mr {margin-right:10px; }
 .ml {margin-left:10px; }

@@ -4,6 +4,7 @@
 
 <%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
 
+  <% flash[:error] = "There were one or more errors while trying to process your request" if !devise_error_messages!.empty? %>
   <%# flash[:error] = devise_error_messages! if !devise_error_messages!.empty? %>
   
   <br class = "spacer"/>
@@ -15,22 +16,12 @@
   
   
   <% if devise_mapping.rememberable? -%>
-    <div><%= f.check_box :remember_me %> <%= f.label :remember_me %></div>
+    <div><%= f.label :remember_me %> <%= f.check_box :remember_me %> </div>
   <% end -%>
 
   <br class = "spacer"/>
-  
-  <div class = "center">
-    <%= f.submit 'Sign In' %>
-  </div>
+  <%= f.submit 'Sign In' %>
 
 <% end %>
 
-<br class = "spacer"/>
-<br class = "spacer"/>
-<br class = "spacer"/>
-<br class = "spacer"/>
-
-<div class = "center" style = "width: 300px;text-align:center;">
-  <%= render :partial => "devise/shared/links" %>
-</div>
+<%= render :partial => "devise/shared/links" %>

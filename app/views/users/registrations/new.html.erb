@@ -6,7 +6,7 @@
 <%# use @user instance variable to capture changes in @account for incorrect form entry%>
 <%= simple_form_for(@user.with_account, :as => @user, :url => registration_path(@user)) do |f| %>
 
-  <% flash[:error] = "There were some errors while trying to process your request" if !devise_error_messages!.empty? %>
+  <% flash[:error] = "There were one or more errors while trying to process your request" if !devise_error_messages!.empty? %>
 
   <h2>Account Setup</h2>
   <br class = "spacer"/>
@@ -61,23 +61,9 @@
                               :collection => [["I agree to Terms of Service",1]]%>
 
   <br class = "spacer"/>
-  <div class = "center">
-    <%= f.submit 'Sign up' %>
-  </div>
+  <%= f.submit 'Sign up' %>
 
 <% end %>
 
-<br class = "spacer"/>
-<br class = "spacer"/>
-<br class = "spacer"/>
-<br class = "spacer"/>
 
-<div class = "center" style = "width: 300px;text-align:center;">
-  <%= render :partial => "devise/shared/links" %>
-</div>
-
-<br class = "spacer"/>
-<br class = "spacer"/>  
-
-<%# let's leave off devise links on sign up page for now for simplicity.  plan to have links on separate FAQ page %>
-<%#= render :partial => "devise/shared/links" %>
+<%= render :partial => "devise/shared/links" %>

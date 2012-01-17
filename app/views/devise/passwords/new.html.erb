@@ -1,12 +1,19 @@
-<h2>Forgot your password?</h2>
+<h1>Forgot your password?</h1>
 
-<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f| %>
-  <%= devise_error_messages! %>
+<br class="spacer"/>  
+<h2>No worries, reset your password</h2>
+<%= simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f| %>
 
-  <div><%= f.label :email %><br />
-  <%= f.email_field :email %></div>
+  <p> If you cannot remember your password, trust us, we understand.  Fill in the email address which corresponds to your account and we will email you instructions on how to reset your password.</p>
+  <br class="spacer"/>
+  
+  <% flash[:error] = "There were one or more errors while trying to process your request" if !devise_error_messages!.empty? %>
 
-  <div><%= f.submit "Send me reset password instructions" %></div>
+  <%= f.input :email ,                :required => 'true' %>
+  <br class="spacer"/>
+  <%= f.submit "Send reset instructions" %>
+
 <% end %>
+
 
 <%= render :partial => "devise/shared/links" %>
