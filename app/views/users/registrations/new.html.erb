@@ -22,7 +22,9 @@
                                                         "What city were you born in?" ] , 
                                       :include_blank => false ,
                                       :input_html => { :class => 'chzn-select'} %>
-    <%= a.input :security_answer,     :label => "Answer", :required => 'true' %>
+    <%= a.input :security_answer,     :label => "Answer", 
+                                      :required => 'true',
+                                      :hint => "please remember to prove your identity" %>
   <% end %>
 
   <br class = "spacer"/>
