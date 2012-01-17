@@ -28,11 +28,11 @@
     <%= a.input :city , :required => 'true' %>
     <%= a.input :state , :required => 'true' %>
     <%= a.input :zipcode , :label => "Zip" , :required => 'true' %>    
-    <%= a.input :country , :required => 'true' , :collection => [ "United States", "Canada" ] , :include_blank => false %>
+    <%= a.input :country , :required => 'true' , :collection => [ "United States", "Canada" ] , :include_blank => false, :input_html => {:class => "chzn-select"} %>
   <% end %>
   
   <br class = "spacer"/>
-  <h2>Confirm Changes</h2>
+  <h2>Confirmation</h2>
   <br class = "spacer"/>
   
   <%= f.input :current_password, :required => "true", :hint => "enter current password to confirm changes"%>

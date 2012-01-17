@@ -6,7 +6,7 @@
 <%# use @user instance variable to capture changes in @account for incorrect form entry%>
 <%= simple_form_for(@user.with_account, :as => @user, :url => registration_path(@user)) do |f| %>
 
-  <% flash[:error] = devise_error_messages! if !devise_error_messages!.empty? %>
+  <% flash[:error] = "There were some errors while trying to process your request" if !devise_error_messages!.empty? %>
 
   <h2>Account Setup</h2>
   <br class = "spacer"/>
@@ -24,10 +24,10 @@
                                       :input_html => { :class => 'chzn-select'} %>
     <%= a.input :security_answer,     :label => "Answer", 
                                       :required => 'true',
-                                      :hint => "please remember to prove your identity" %>
+                                      :hint => "please remember for identity confirmation" %>
   <% end %>
 
-  <br class = "spacer"/>
+  
   <h2>Personal Information</h2>
   <br class = "spacer"/>
 
@@ -40,17 +40,29 @@
     <%= a.input :state ,        :required => 'true' %>
     <%= a.input :zipcode ,      :label => "Zip" , :required => 'true' %>    
     <%= a.input :country ,      :required => 'true' , :collection => [ "United States", "Canada" ] , :include_blank => false , :input_html => { :class => 'chzn-select' }  %>
-    <%= a.input :birthdate ,    :required => 'true' , 
+    <%#= a.input :birthdate ,    :required => 'true' , 
                                 :start_year => Date.today.year - 60 , 
                                 :end_year => Date.today.year - 18 , 
                                 :hint => "Must be at least 18 years old",
                                 :order => [:month, :day, :year],
                                 :input_html => { :class => 'chzn-select' }  %>
   <% end %>
+  <h2>Confirmation</h2>
+
+  <%# Check boxes for age and agree-to-terms %>
+  <br class = "spacer"/>
+  <%= f.input :age,           :label => 'Age',
+                              :as => :check_boxes ,
+                              :required => 'true' ,
+                              :collection => [["I am over the age of 18 years",1]] %>
+  <%= f.input :terms,         :label => 'Terms',
+                              :as => :check_boxes ,
+                              :required => 'true' ,
+                              :collection => [["I agree to Terms of Service",1]]%>
 
   <br class = "spacer"/>
   <div class = "center">
-    <%= f.submit 'Submit' %>
+    <%= f.submit 'Sign up' %>
   </div>
 
 <% end %>
