@@ -2,7 +2,10 @@
   
   <%= f.input :sender_name , :label => "Your name", :required => 'true'%>
   <%= f.input :email , :required => 'true' %>
-  <%= f.input :support_type, :label => "Reason for contact", :include_blank => false , :collection => [["Give us kudos","kudos"], ["General feedback","general"], ["Report a bug","bug"], ["Ask a question","question"], ["Give a suggestion", "suggestion"], ["File a complaint", "complaint"], ["Inquire about advertising", "ad"]], :input_html => { :style => "width: 230px;" }%>
+  <%= f.input :support_type,  :label => "Reason for contact", 
+                              :include_blank => false , 
+                              :collection => [["Give us kudos","kudos"], ["General feedback","general"], ["Report a bug","bug"], ["Ask a question","question"], ["Give a suggestion", "suggestion"], ["File a complaint", "complaint"], ["Inquire about advertising", "ad"]], 
+                              :input_html => { :class => "chzn-select" } %>
   <%= f.input :content, :label => "Your message", :as => :text, :required => 'true', :input_html => {:maxlength => "500"} %>
   
   <br class = "spacer"/>

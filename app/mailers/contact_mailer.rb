@@ -1,7 +1,7 @@
 class ContactMailer < ActionMailer::Base
  
-  default :from => "admin@mtgbazaar.com"
- 
+  default :from => "\"Feedback\" <admin@mtgbazaar.com>"
+
   def send_mail(sender)
     @sender = sender
 
