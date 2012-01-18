@@ -9,7 +9,6 @@
   <% flash[:error] = "There were one or more errors while trying to process your request" if !devise_error_messages!.empty? %>
 
   <h2>Account Setup</h2>
-  <br class = "spacer"/>
 
   <%= f.input :username,              :required => 'true' , :hint => "no special characters or spaces"  %>
   <%= f.input :email ,                :required => 'true' %>
@@ -19,7 +18,10 @@
     <%= a.input :security_question,   :label => "Security Question", 
                                       :collection => [  "What was the make of your first car?",
                                                         "What is your mother's maiden name?",
-                                                        "What city were you born in?" ] , 
+                                                        "What was your childhood nickname?",
+                                                        "What is your oldest sibling's name?",
+                                                        "Who was your childhood hero?",
+                                                        "What is your grandmother's name?" ] , 
                                       :include_blank => false ,
                                       :input_html => { :class => 'chzn-select'} %>
     <%= a.input :security_answer,     :label => "Answer", 
@@ -29,7 +31,6 @@
 
   
   <h2>Personal Information</h2>
-  <br class = "spacer"/>
 
   <%= f.simple_fields_for :account do |a| %>
     <%= a.input :first_name %>
@@ -40,28 +41,32 @@
     <%= a.input :state ,        :required => 'true' %>
     <%= a.input :zipcode ,      :label => "Zip" , :required => 'true' %>    
     <%= a.input :country ,      :required => 'true' , :collection => [ "United States", "Canada" ] , :include_blank => false , :input_html => { :class => 'chzn-select' }  %>
-    <%#= a.input :birthdate ,    :required => 'true' , 
-                                :start_year => Date.today.year - 60 , 
-                                :end_year => Date.today.year - 18 , 
-                                :hint => "Must be at least 18 years old",
-                                :order => [:month, :day, :year],
-                                :input_html => { :class => 'chzn-select' }  %>
+
   <% end %>
   <h2>Confirmation</h2>
 
-  <%# Check boxes for age and agree-to-terms %>
+
+  <%# Recaptcha box %>
+  <%= javascript_tag "var RecaptchaOptions = { theme : 'white' };" %>
+  <div class = "center" style = "width: 300px;">
+    <%= recaptcha_tags %>
+  </div>
+
   <br class = "spacer"/>
-  <%= f.input :age,           :label => 'Age',
+  <%# Check boxes for age and agree-to-terms %>
+  <%= f.input :age,           :label => '',
                               :as => :check_boxes ,
                               :required => 'true' ,
                               :collection => [["I am over the age of 18 years",1]] %>
-  <%= f.input :terms,         :label => 'Terms',
+  <%= f.input :terms,         :label => '',
                               :as => :check_boxes ,
                               :required => 'true' ,
                               :collection => [["I agree to Terms of Service",1]]%>
 
+
+    
   <br class = "spacer"/>
-  <%= f.submit 'Sign up' %>
+  <%= f.submit 'Sign up' , :class => 'center' %>
 
 <% end %>
 

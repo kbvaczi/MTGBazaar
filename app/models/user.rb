@@ -24,6 +24,9 @@ class User < ActiveRecord::Base
   # validations
   validates_presence_of :username, :email
   
+  # multiple users cannot have the same username
+  validates_uniqueness_of :username
+  
   # username must be between 3 and 15 characters and can only have letters, numbers, dash, period, or underscore (no other special characters)
   validates             :username,  :length => { :minimum => 3, :maximum   => 15 },
                                     :format => { :with => /\A[\w\d]+\z/, :message => "no special characters"}

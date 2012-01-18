@@ -1,0 +1,13 @@
+.recaptchatable .recaptcha_image_cell, #recaptcha_table {
+  background-color:#FFF !important; // reCAPTCHA widget background color
+}
+
+#recaptcha_table recaptcha_area {
+  border-color: #FFF !important; // reCAPTCHA widget border color
+  background-color: #FFF;
+}
+
+#recaptcha_response_field {
+  border-color: #BBB !important; // Text input field border color
+  background-color: #FFF !important; //Text input field background color
+}

@@ -10,7 +10,6 @@
 
   <br class = "spacer"/>
   <h2>Account Setup</h2>   
-  <br class = "spacer"/>
 
   <%= f.input :email , :required => 'true' %>
   <%= f.input :password , :label => "Change password", :hint => "leave empty to keep existing password" %>
@@ -18,7 +17,6 @@
 
   <br class = "spacer"/>
   <h2>Profile Information</h2>
-  <br class = "spacer"/>
 
   <%= f.simple_fields_for :account do |a| %>
     <%= a.input :first_name %>
@@ -33,11 +31,10 @@
   
   <br class = "spacer"/>
   <h2>Confirmation</h2>
-  <br class = "spacer"/>
   
   <%= f.input :current_password, :required => "true", :hint => "enter current password to confirm changes"%>
   <br class = "spacer"/>
-  <%= f.submit 'Confirm Changes' %>
+  <%= f.submit 'Confirm Changes', :class => "center" %>
 
 <% end %>
 

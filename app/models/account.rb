@@ -16,8 +16,7 @@ class Account < ActiveRecord::Base
                         :state, 
                         :city, 
                         :address1, 
-                        :zipcode, 
-                        :birthdate
+                        :zipcode
 
   # only numbers allowed in the following
   validates             :zipcode,     :numericality => { :only_integer => true }
@@ -41,6 +40,6 @@ class Account < ActiveRecord::Base
                          }
 
   # Attributes accessible to multiple assign.  Others must be individually assigned.
-  attr_accessible :first_name, :last_name, :country, :state, :city, :address1, :address2, :zipcode, :birthdate, :security_question, :security_answer
+  attr_accessible :first_name, :last_name, :country, :state, :city, :address1, :address2, :zipcode, :security_question, :security_answer
   
 end
