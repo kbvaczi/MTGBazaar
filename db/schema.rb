@@ -11,46 +11,85 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120114160733) do
+ActiveRecord::Schema.define(:version => 20120122125236) do
 
   create_table "accounts", :force => true do |t|
     t.integer  "user_id"
-    t.string   "first_name",        :default => "",           :null => false
-    t.string   "last_name",         :default => "",           :null => false
-    t.string   "country",           :default => "",           :null => false
-    t.string   "state",             :default => "",           :null => false
-    t.string   "city",              :default => "",           :null => false
-    t.string   "address1",          :default => "",           :null => false
-    t.string   "address2",          :default => "",           :null => false
-    t.string   "zipcode",           :default => "",           :null => false
-    t.date     "birthdate",         :default => '2012-01-15', :null => false
-    t.string   "paypal_username",   :default => "",           :null => false
-    t.string   "security_question", :default => "",           :null => false
-    t.string   "security_answer",   :default => "",           :null => false
-    t.integer  "balance",           :default => 0,            :null => false
-    t.integer  "number_sales",      :default => 0,            :null => false
-    t.integer  "number_purchases",  :default => 0,            :null => false
-    t.float    "average_rating",    :default => 0.0,          :null => false
-    t.float    "average_ship_time", :default => 0.0,          :null => false
-    t.boolean  "vacation",          :default => false,        :null => false
+    t.string   "first_name",        :default => "",    :null => false
+    t.string   "last_name",         :default => "",    :null => false
+    t.string   "country",           :default => "",    :null => false
+    t.string   "state",             :default => "",    :null => false
+    t.string   "city",              :default => "",    :null => false
+    t.string   "address1",          :default => "",    :null => false
+    t.string   "address2",          :default => "",    :null => false
+    t.string   "zipcode",           :default => "",    :null => false
+    t.string   "paypal_username",   :default => "",    :null => false
+    t.string   "security_question", :default => "",    :null => false
+    t.string   "security_answer",   :default => "",    :null => false
+    t.integer  "balance",           :default => 0,     :null => false
+    t.integer  "number_sales",      :default => 0,     :null => false
+    t.integer  "number_purchases",  :default => 0,     :null => false
+    t.float    "average_rating",    :default => 0.0,   :null => false
+    t.float    "average_ship_time", :default => 0.0,   :null => false
+    t.boolean  "vacation",          :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "accounts", ["user_id"], :name => "index_accounts_on_user_id"
 
-  create_table "test1s", :force => true do |t|
-    t.integer  "user_id"
-    t.string   "value"
+  create_table "mtg_cards", :force => true do |t|
+    t.integer  "set_id"
+    t.string   "name",                      :default => "", :null => false
+    t.string   "type",                      :default => "", :null => false
+    t.string   "subtype",                   :default => "", :null => false
+    t.string   "rarity",                    :default => "", :null => false
+    t.string   "artist",                    :default => "", :null => false
+    t.string   "description",               :default => "", :null => false
+    t.string   "legality",                  :default => "", :null => false
+    t.string   "mana_string",               :default => "", :null => false
+    t.string   "mana_color",                :default => "", :null => false
+    t.string   "mana_cost",                 :default => "", :null => false
+    t.string   "power",                     :default => "", :null => false
+    t.string   "toughness",                 :default => "", :null => false
+    t.string   "legality_block",            :default => "", :null => false
+    t.string   "legality_standard",         :default => "", :null => false
+    t.string   "legality_extended",         :default => "", :null => false
+    t.string   "legality_modern",           :default => "", :null => false
+    t.string   "legality_legacy",           :default => "", :null => false
+    t.string   "legality_vintage",          :default => "", :null => false
+    t.string   "legality_highlander",       :default => "", :null => false
+    t.string   "legality_french_commander", :default => "", :null => false
+    t.string   "legality_commander",        :default => "", :null => false
+    t.string   "legality_peasant",          :default => "", :null => false
+    t.string   "legality_pauper",           :default => "", :null => false
+    t.string   "multiverse_id",             :default => "", :null => false
+    t.string   "image_path",                :default => "", :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "test2s", :force => true do |t|
-    t.string   "value"
+  add_index "mtg_cards", ["artist"], :name => "index_mtg_cards_on_artist"
+  add_index "mtg_cards", ["mana_color"], :name => "index_mtg_cards_on_mana_color"
+  add_index "mtg_cards", ["mana_cost"], :name => "index_mtg_cards_on_mana_cost"
+  add_index "mtg_cards", ["name"], :name => "index_mtg_cards_on_name"
+  add_index "mtg_cards", ["power"], :name => "index_mtg_cards_on_power"
+  add_index "mtg_cards", ["rarity"], :name => "index_mtg_cards_on_rarity"
+  add_index "mtg_cards", ["set_id"], :name => "index_mtg_cards_on_set_id"
+  add_index "mtg_cards", ["toughness"], :name => "index_mtg_cards_on_toughness"
+  add_index "mtg_cards", ["type"], :name => "index_mtg_cards_on_type"
+
+  create_table "mtg_sets", :force => true do |t|
+    t.string   "name",         :default => "",                    :null => false
+    t.string   "symbol",       :default => "",                    :null => false
+    t.datetime "release_date", :default => '2012-01-22 13:59:06', :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "mtg_sets", ["name"], :name => "index_mtg_sets_on_name", :unique => true
+  add_index "mtg_sets", ["release_date"], :name => "index_mtg_sets_on_release_date"
+  add_index "mtg_sets", ["symbol"], :name => "index_mtg_sets_on_symbol", :unique => true
 
   create_table "transactions", :force => true do |t|
     t.integer  "test1_id"
