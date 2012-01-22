@@ -511,7 +511,7 @@ input {
 .spacer { clear: both; }
 .left { float: left; }
 .right { float: right; }
-.center { margin:auto; width:40%; align:center; }
+.center { min-width: 30%; } /* objects automatically centered using jquery */
 .hidden { visibility:hidden; }
 .mr {margin-right:10px; }
 .ml {margin-left:10px; }
