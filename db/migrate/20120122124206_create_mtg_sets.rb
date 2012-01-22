@@ -2,6 +2,10 @@ class CreateMtgSets < ActiveRecord::Migration
   
   def up
     create_table :mtg_sets do |t|
+      
+      #foreign keys
+      t.integer  :block_id
+      
       t.string   :name           , :default => ""          , :null => false 
       t.string   :symbol         , :default => ""          , :null => false 
       t.datetime :release_date   , :default => Time.now()  , :null => false

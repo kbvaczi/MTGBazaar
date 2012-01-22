@@ -12,7 +12,7 @@
 
 # ignore mtg card images and data because it is too large to store in repository #
 ##################################################################################
-/assets/images/mtg/cards
+/app/assets/images/mtg/cards
 /db/mtg_card_data
 
 # Ignore all logfiles and tempfiles. #
