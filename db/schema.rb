@@ -40,13 +40,11 @@ ActiveRecord::Schema.define(:version => 20120122150248) do
 
   create_table "mtg_blocks", :force => true do |t|
     t.string   "name",       :default => "", :null => false
-    t.string   "code",       :default => "", :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "mtg_blocks", ["code"], :name => "index_mtg_blocks_on_code", :unique => true
-  add_index "mtg_blocks", ["name"], :name => "index_mtg_blocks_on_name", :unique => true
+  add_index "mtg_blocks", ["name"], :name => "index_mtg_blocks_on_name"
 
   create_table "mtg_cards", :force => true do |t|
     t.integer  "set_id"
@@ -92,13 +90,13 @@ ActiveRecord::Schema.define(:version => 20120122150248) do
     t.integer  "block_id"
     t.string   "name",         :default => "",                    :null => false
     t.string   "code",         :default => "",                    :null => false
-    t.datetime "release_date", :default => '2012-01-23 04:53:07', :null => false
+    t.datetime "release_date", :default => '2012-01-23 05:30:01'
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "mtg_sets", ["code"], :name => "index_mtg_sets_on_code", :unique => true
-  add_index "mtg_sets", ["name"], :name => "index_mtg_sets_on_name", :unique => true
+  add_index "mtg_sets", ["code"], :name => "index_mtg_sets_on_code"
+  add_index "mtg_sets", ["name"], :name => "index_mtg_sets_on_name"
   add_index "mtg_sets", ["release_date"], :name => "index_mtg_sets_on_release_date"
 
   create_table "transactions", :force => true do |t|

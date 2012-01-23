@@ -8,7 +8,7 @@ class CreateMtgBlocks < ActiveRecord::Migration
       end
 
       # any indexes go here
-      add_index :mtg_blocks, :name,               :unique => true
+      add_index :mtg_blocks, :name
 
     end
 

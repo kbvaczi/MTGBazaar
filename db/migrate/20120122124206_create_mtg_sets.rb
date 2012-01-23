@@ -1,6 +1,7 @@
 class CreateMtgSets < ActiveRecord::Migration
   
   def up
+    
     create_table :mtg_sets do |t|
       
       #foreign keys
@@ -8,20 +9,23 @@ class CreateMtgSets < ActiveRecord::Migration
       
       t.string   :name           , :default => ""          , :null => false 
       t.string   :code           , :default => ""          , :null => false 
-      t.datetime :release_date   , :default => Time.now()  , :null => false
+      t.datetime :release_date   , :default => Time.now()
       
       t.timestamps
+      
     end
     
     # any indexes go here
-    add_index :mtg_sets, :name,               :unique => true
-    add_index :mtg_sets, :code,               :unique => true
+    add_index :mtg_sets, :name
+    add_index :mtg_sets, :code
     add_index :mtg_sets, :release_date
   
   end
   
   def down
+    
     drop_table :mtg_sets
+    
   end
   
 end
