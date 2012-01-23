@@ -90,7 +90,7 @@ ActiveRecord::Schema.define(:version => 20120122150248) do
     t.integer  "block_id"
     t.string   "name",         :default => "",                    :null => false
     t.string   "code",         :default => "",                    :null => false
-    t.datetime "release_date", :default => '2012-01-23 05:30:01'
+    t.datetime "release_date", :default => '2012-01-23 20:06:21'
     t.datetime "created_at"
     t.datetime "updated_at"
   end

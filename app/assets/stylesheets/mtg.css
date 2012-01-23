@@ -1,0 +1,29 @@
+.card_image_wrapper {
+  height: 220px;
+  width: 150px;
+  //background: #333;
+  display:inline;
+  float:left;
+}
+.card_show_info {
+  display:table;
+  margin: 0 15px 0 15px;
+  width: 270px;
+  float:left;
+}
+.card_show_info_row {
+  display:table-row;
+  background:#eee;
+}
+.card_show_info_label {
+  display: table-cell;
+  font-weight: bold;
+  text-transform: capitalize;
+  width:50px;
+  padding-bottom: 5px;
+  vertical-align:top;
+}
+.card_show_info_value {
+  display: table-cell;
+  width:200px; 
+}

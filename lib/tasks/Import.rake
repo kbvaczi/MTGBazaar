@@ -27,7 +27,7 @@ namespace :import do
           else
             @block.sets << MtgSet.create(:name => s.css("name").text, :code => s.css("code").text, :release_date => s.css("date").text) #create a new set and assign to current block
             puts "Set: #{s.css("name").text} created"
-            @set_created = @set_created + 1
+            @sets_created = @sets_created + 1
           end # if
         end # for each set
           
@@ -42,7 +42,7 @@ namespace :import do
     task :cards => :sets do
       @cards_created = 0
       puts "Importing MTG Cards..."
-      @file = Nokogiri::XML(open('db/mtg_data/cards/mtg_card.xml')) #open file containing card information
+      @file = Nokogiri::XML(open('db/mtg_data/cards/mtg_cards.xml')) #open file containing card information
       
       @file.css("cards card").each do |c| # for each card
 
