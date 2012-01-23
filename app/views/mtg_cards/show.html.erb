@@ -1,5 +1,28 @@
-<p id="notice"><%= notice %></p>
+<% title "#{display_name(@mtg_card.name)}" #title is first 30 characters in card name %>
 
-
-<%= link_to 'Edit', edit_mtg_card_path(@mtg_card) %> |
-<%= link_to 'Back', mtg_cards_path %>
+<h1><%= display_name(@mtg_card.name) %></h1>
+<div class="content">
+  <div class="card_image_wrapper">
+    <%= image_tag(@mtg_card.image_path, :width => "150px") %>
+  </div>
+  
+  <div class="card_show_info">
+    <div class="card_show_info_row">
+      <div class="card_show_info_label">
+        Set:
+      </div>
+      <div class="card_show_info_value">
+        <%= display_name(@mtg_card.set.name) %>
+      </div>   
+    </div>
+    <div class="card_show_info_row">
+      <div class="card_show_info_label">
+        Cost:
+      </div>
+      <div class="card_show_info_value">
+        <%= display_mana(@mtg_card.mana_string) %>
+      </div>      
+    </div>    
+  </div>
+  
+</div>

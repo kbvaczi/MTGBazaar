@@ -1,21 +1,13 @@
-<h1>Listing mtg_cards</h1>
+<% title "MTG Cards" %>
 
-<table>
-  <tr>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<h1>Listing MTG Cards</h1>
 
 <% @mtg_cards.each do |mtg_card| %>
   <tr>
+    <%= image_tag(mtg_card.image_path)%>
     <td><%= link_to 'Show', mtg_card %></td>
-    <td><%= link_to 'Edit', edit_mtg_card_path(mtg_card) %></td>
-    <td><%= link_to 'Destroy', mtg_card, confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
-
-<%= link_to 'New Mtg card', new_mtg_card_path %>

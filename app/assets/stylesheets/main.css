@@ -429,7 +429,9 @@ input {
 /*------------------------------------*/
 /*--generic content classes ----------*/
 /*------------------------------------*/
-
+.content {
+  margin:15px;
+}
 .breadcrumb {
   margin-top: 10px;
 }

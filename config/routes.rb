@@ -1,6 +1,6 @@
 MTGBazaar::Application.routes.draw do
   
-  resources :mtg_cards, :only => [:index, :show], :controllers => { :users => "/mtg/mtg_cards"} # don't allow users to create/destroy mtg cards by only allowing index and show routes
+  resources :mtg_cards, :only => [:index, :show] # don't allow users to create/destroy mtg cards by only allowing index and show routes
 
   resources :accounts
   

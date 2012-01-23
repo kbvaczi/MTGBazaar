@@ -74,7 +74,7 @@ namespace :import do
                                         :legality_peasant => c.css("legality_Peasant").text,
                                         :legality_pauper => c.css("legality_Pauper").text,
                                         :multiverse_id => c.css("id").text,
-                                        :image_path => "mtg/cards/#{c.css("set").text}/#{c.css("id").text}"
+                                        :image_path => "mtg/cards/#{c.css("set").text}/#{c.css("id").text}.original.jpg"
                                       ) # create the card under its corresponding set
                          
           puts "Set: #{@set.name}, Card: #{c.css("id").text}, #{c.css("name").text} created" # notification that card was created
