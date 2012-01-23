@@ -7,7 +7,7 @@ class CreateMtgSets < ActiveRecord::Migration
       t.integer  :block_id
       
       t.string   :name           , :default => ""          , :null => false 
-      t.string   :symbol         , :default => ""          , :null => false 
+      t.string   :code           , :default => ""          , :null => false 
       t.datetime :release_date   , :default => Time.now()  , :null => false
       
       t.timestamps
@@ -15,7 +15,7 @@ class CreateMtgSets < ActiveRecord::Migration
     
     # any indexes go here
     add_index :mtg_sets, :name,               :unique => true
-    add_index :mtg_sets, :symbol,             :unique => true
+    add_index :mtg_sets, :code,               :unique => true
     add_index :mtg_sets, :release_date
   
   end

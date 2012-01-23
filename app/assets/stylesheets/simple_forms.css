@@ -42,11 +42,11 @@
   width: 73px;
   margin: 2px 0 5px 2px;
 }
-.simple_form .input input[type='text'] {
+.simple_form .input input[type='text'], .simple_form .input input[type='email'], .simple_form .input input[type='password'] {
   width:220px;
-  -moz-box-shadow:    inset 0px 1px 0px 0px #ccc;
-  -webkit-box-shadow: inset 0px 1px 0px 0px #ccc;
-  box-shadow:         inset 0px 1px 0px 0px #ccc;
+  -moz-box-shadow:    inset 0px 1px 1px 0px #ddd;
+  -webkit-box-shadow: inset 0px 1px 1px 0px #ddd;
+  box-shadow:         inset 0px 1px 1px 0px #ddd;
 }
 
 div.boolean, .simple_form input[type='submit'] {

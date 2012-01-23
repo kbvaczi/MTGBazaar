@@ -56,7 +56,6 @@ ActiveRecord::Schema.define(:version => 20120122150248) do
     t.string   "rarity",                    :default => "", :null => false
     t.string   "artist",                    :default => "", :null => false
     t.string   "description",               :default => "", :null => false
-    t.string   "legality",                  :default => "", :null => false
     t.string   "mana_string",               :default => "", :null => false
     t.string   "mana_color",                :default => "", :null => false
     t.string   "mana_cost",                 :default => "", :null => false
@@ -92,15 +91,15 @@ ActiveRecord::Schema.define(:version => 20120122150248) do
   create_table "mtg_sets", :force => true do |t|
     t.integer  "block_id"
     t.string   "name",         :default => "",                    :null => false
-    t.string   "symbol",       :default => "",                    :null => false
-    t.datetime "release_date", :default => '2012-01-22 15:13:11', :null => false
+    t.string   "code",         :default => "",                    :null => false
+    t.datetime "release_date", :default => '2012-01-23 04:53:07', :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  add_index "mtg_sets", ["code"], :name => "index_mtg_sets_on_code", :unique => true
   add_index "mtg_sets", ["name"], :name => "index_mtg_sets_on_name", :unique => true
   add_index "mtg_sets", ["release_date"], :name => "index_mtg_sets_on_release_date"
-  add_index "mtg_sets", ["symbol"], :name => "index_mtg_sets_on_symbol", :unique => true
 
   create_table "transactions", :force => true do |t|
     t.integer  "test1_id"

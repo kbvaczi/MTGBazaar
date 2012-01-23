@@ -9,7 +9,6 @@ class CreateMtgCards < ActiveRecord::Migration
       t.string   :rarity,                    :default => "", :null => false
       t.string   :artist,                    :default => "", :null => false
       t.string   :description,               :default => "", :null => false
-      t.string   :legality,                  :default => "", :null => false
       t.string   :mana_string,               :default => "", :null => false
       t.string   :mana_color,                :default => "", :null => false
       t.string   :mana_cost,                 :default => "", :null => false
