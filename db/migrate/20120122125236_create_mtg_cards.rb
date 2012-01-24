@@ -4,8 +4,8 @@ class CreateMtgCards < ActiveRecord::Migration
       t.integer  :set_id    #foreign key for sets
 
       t.string   :name,                      :default => "", :null => false
-      t.string   :type,                      :default => "", :null => false
-      t.string   :subtype,                   :default => "", :null => false
+      t.string   :card_type,                 :default => "", :null => false
+      t.string   :card_subtype,              :default => "", :null => false
       t.string   :rarity,                    :default => "", :null => false
       t.string   :artist,                    :default => "", :null => false
       t.string   :description,               :default => "", :null => false
@@ -38,11 +38,11 @@ class CreateMtgCards < ActiveRecord::Migration
     add_index :mtg_cards , :mana_color
     add_index :mtg_cards , :mana_cost
     add_index :mtg_cards , :name
-    add_index :mtg_cards , :power
-    add_index :mtg_cards , :toughness
+    #add_index :mtg_cards , :power
+    #add_index :mtg_cards , :toughness
     add_index :mtg_cards , :rarity
     add_index :mtg_cards , :set_id
-    add_index :mtg_cards , :type
+    add_index :mtg_cards , :card_type
 
   end
   

@@ -49,8 +49,8 @@ ActiveRecord::Schema.define(:version => 20120122150248) do
   create_table "mtg_cards", :force => true do |t|
     t.integer  "set_id"
     t.string   "name",                      :default => "", :null => false
-    t.string   "type",                      :default => "", :null => false
-    t.string   "subtype",                   :default => "", :null => false
+    t.string   "card_type",                 :default => "", :null => false
+    t.string   "card_subtype",              :default => "", :null => false
     t.string   "rarity",                    :default => "", :null => false
     t.string   "artist",                    :default => "", :null => false
     t.string   "description",               :default => "", :null => false
@@ -77,20 +77,18 @@ ActiveRecord::Schema.define(:version => 20120122150248) do
   end
 
   add_index "mtg_cards", ["artist"], :name => "index_mtg_cards_on_artist"
+  add_index "mtg_cards", ["card_type"], :name => "index_mtg_cards_on_card_type"
   add_index "mtg_cards", ["mana_color"], :name => "index_mtg_cards_on_mana_color"
   add_index "mtg_cards", ["mana_cost"], :name => "index_mtg_cards_on_mana_cost"
   add_index "mtg_cards", ["name"], :name => "index_mtg_cards_on_name"
-  add_index "mtg_cards", ["power"], :name => "index_mtg_cards_on_power"
   add_index "mtg_cards", ["rarity"], :name => "index_mtg_cards_on_rarity"
   add_index "mtg_cards", ["set_id"], :name => "index_mtg_cards_on_set_id"
-  add_index "mtg_cards", ["toughness"], :name => "index_mtg_cards_on_toughness"
-  add_index "mtg_cards", ["type"], :name => "index_mtg_cards_on_type"
 
   create_table "mtg_sets", :force => true do |t|
     t.integer  "block_id"
     t.string   "name",         :default => "",                    :null => false
     t.string   "code",         :default => "",                    :null => false
-    t.datetime "release_date", :default => '2012-01-23 20:06:21'
+    t.datetime "release_date", :default => '2012-01-23 23:49:19'
     t.datetime "created_at"
     t.datetime "updated_at"
   end

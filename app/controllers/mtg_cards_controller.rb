@@ -2,12 +2,20 @@ class MtgCardsController < ApplicationController
   # GET /mtg_cards
   # GET /mtg_cards.json
   def index
-    @mtg_cards = MtgCard.all
 
+    if params[:set]
+      @mtg_cards = MtgSet.order("name").where(:code => params[:set]).first.cards
+      @sets = []
+    else
+      @sets = MtgSet.order("name").all
+      @mtg_cards = []
+    end
+    
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @mtg_cards }
     end
+    
   end
 
   # GET /mtg_cards/1

@@ -1,16 +1,8 @@
 <% title "Home" %>
 
-<div>
+<h1>Welcome</h1>  
+<div class= "content">
 
-  <h1>Welcome</h1>  
-  
-  <div>
-    <div>
-      <p>TEST</p>
-      <%if flash[:notice]%>
-        <%=flash[:notice]%>
-      <%end %>
-    </div>
-  </div>
+  <%= link_to("MTG Cards!",mtg_cards_path)%>
   
 </div>

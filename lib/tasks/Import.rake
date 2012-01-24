@@ -1,3 +1,13 @@
+# encoding: UTF-8
+
+task :colors => :environment do
+ @array = Array.new
+  MtgCard.all.each do |c|
+    @array << c.mana_color
+  end
+  puts @array.uniq
+end
+
 namespace :import do
 
   namespace :mtg do
@@ -52,8 +62,8 @@ namespace :import do
           @set = MtgSet.where(:code => c.css("set").text)[0] # otherwise, look up the set which the card belongs to
           @set.cards << MtgCard.create( 
                                         :name => c.css("name").text, 
-                                        :type => c.css("type").text,
-                                        :subtype => "",
+                                        :card_type => compute_type(c.css("type").text),
+                                        :card_subtype => compute_subtype(c.css("type").text),
                                         :rarity => c.css("rarity").text,
                                         :artist => c.css("artist").text,
                                         :description => c.css("ability").text,
@@ -74,7 +84,7 @@ namespace :import do
                                         :legality_peasant => c.css("legality_Peasant").text,
                                         :legality_pauper => c.css("legality_Pauper").text,
                                         :multiverse_id => c.css("id").text,
-                                        :image_path => "mtg/cards/#{c.css("set").text}/#{c.css("id").text}.original.jpg"
+                                        :image_path => "mtg/cards/#{c.css("set").text}/#{c.css("id").text}.jpg"
                                       ) # create the card under its corresponding set
                          
           puts "Set: #{@set.name}, Card: #{c.css("id").text}, #{c.css("name").text} created" # notification that card was created
@@ -90,3 +100,19 @@ namespace :import do
   end # namespace mtg
 
 end # namespace import
+
+def compute_type(string) #used to format type to import into cards.
+  if string.split(" — ")[0]
+    return string.split(" — ")[0].strip
+  else
+    return ""
+  end  
+end
+
+def compute_subtype(string) #used to format subtype to import into cards
+  if string.split(" — ")[1]
+    return string.split(" — ")[1].strip
+  else
+    return ""
+  end  
+end

@@ -44,9 +44,6 @@
 }
 .simple_form .input input[type='text'], .simple_form .input input[type='email'], .simple_form .input input[type='password'] {
   width:220px;
-  -moz-box-shadow:    inset 0px 1px 1px 0px #ddd;
-  -webkit-box-shadow: inset 0px 1px 1px 0px #ddd;
-  box-shadow:         inset 0px 1px 1px 0px #ddd;
 }
 
 div.boolean, .simple_form input[type='submit'] {

@@ -1,13 +1,21 @@
 <% title "MTG Cards" %>
 
 <h1>Listing MTG Cards</h1>
+<div class ="content">
+  <% @sets.each do |set| %>
+    <%= link_to "#{set.name}", mtg_cards_path(:set => set.code) %>
+    <br/>
+  <% end %>
+  <% if params[:set] %>
+    <%= params[:set] %>
+    <%= link_to("<<back", mtg_cards_path)%>
+    <br/>
+  <% end %>
+  <br/>
 
-<% @mtg_cards.each do |mtg_card| %>
-  <tr>
-    <%= image_tag(mtg_card.image_path)%>
-    <td><%= link_to 'Show', mtg_card %></td>
-  </tr>
-<% end %>
-</table>
+  <% @mtg_cards.each do |card| %>
+    <%= link_to "#{card.name}", mtg_card_path(card) %>
+    <br/>
+  <% end %>
+</div>
 
-<br />

@@ -1,29 +1,47 @@
 .card_image_wrapper {
   height: 220px;
   width: 150px;
-  //background: #333;
   display:inline;
   float:left;
 }
 .card_show_info {
   display:table;
   margin: 0 15px 0 15px;
-  width: 270px;
+  width: 290px;
   float:left;
 }
 .card_show_info_row {
   display:table-row;
-  background:#eee;
+  font-size:12px;
+  line-height:1.3;
 }
 .card_show_info_label {
   display: table-cell;
   font-weight: bold;
   text-transform: capitalize;
-  width:50px;
-  padding-bottom: 5px;
-  vertical-align:top;
+  width:15%;
+  padding-bottom: 5px;  
+
+  vertical-align:middle;
 }
 .card_show_info_value {
   display: table-cell;
-  width:200px; 
+  width:85%;
+  padding-bottom: 5px;
+}
+.mtg_symbol {
+  margin:0 0 -2px 1px;
+  height:12px;
+  width:12px;
+}
+.mtg_card_image {
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+
+  -moz-box-shadow:     0px 1px 2px 1px #777;
+  -webkit-box-shadow:  0px 1px 2px 1px #777;
+  box-shadow:          0px 1px 2px 1px #777;
+  
+  width:150px;
 }
