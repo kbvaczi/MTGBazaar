@@ -13,9 +13,10 @@
   <% end %>
   <br/>
 
-  <% @mtg_cards.each do |card| %>
-    <%= link_to "#{card.name}", mtg_card_path(card) %>
+  <%= render :partial => "teaser", :collection => @mtg_cards, :as => "mtg_card" %>
+  <%# @mtg_cards.each do |card| %>
+    <%#= link_to "#{card.name}", mtg_card_path(card) %>
     <br/>
-  <% end %>
+  <%# end %>
 </div>
 

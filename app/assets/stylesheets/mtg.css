@@ -45,3 +45,24 @@
   
   width:150px;
 }
+.mtg_teaser{
+  width: 100%;
+  height: 180px;
+  margin: 15px 0 15px 0;
+}
+.mtg_teaser_image{
+  display:inline;
+  float:left;
+  height:170px;
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+  border-radius: 7px;
+  -moz-box-shadow:     0px 1px 2px 1px #777;
+  -webkit-box-shadow:  0px 1px 2px 1px #777;
+  box-shadow:          0px 1px 2px 1px #777;  
+}
+.mtg_teaser_info{
+  display:inline;
+  float:left;
+  width:345px;
+}

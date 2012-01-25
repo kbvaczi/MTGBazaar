@@ -6,7 +6,7 @@ module MtgCardsHelper
   
   # display only first 30 characters of a name"
   def display_name(name)
-    name.truncate(30, :omission => "...")
+    name.truncate(35, :omission => "...")
   end
   
   # Converts mana string to a series of corresponding image links to be displayed

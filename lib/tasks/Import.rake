@@ -1,16 +1,10 @@
 # encoding: UTF-8
 
-task :colors => :environment do
- @array = Array.new
-  MtgCard.all.each do |c|
-    @array << c.mana_color
-  end
-  puts @array.uniq
-end
 
-namespace :import do
 
-  namespace :mtg do
+namespace :mtg do
+
+  namespace :import do
     
     ######## IMPORT MTG SETS ########
     desc "Update MTG sets from /db/mtg_data/sets.xml"
@@ -97,9 +91,48 @@ namespace :import do
       
     end # task
 
-  end # namespace mtg
+  
 
-end # namespace import
+  end # namespace import
+
+  #lists all available color codes
+  task :list_colors => :environment do
+   @array = Array.new
+    MtgCard.all.each do |c|
+      @array << c.mana_color
+    end
+    puts @array.uniq
+  end
+  
+  #lists all available rarities
+  task :list_rarities => :environment do
+   @array = Array.new
+    MtgCard.all.each do |c|
+      @array << c.rarity
+    end
+    puts @array.uniq
+  end
+  
+  #lists all available legality codes
+  task :list_legalities => :environment do
+   @array = Array.new
+    MtgCard.all.each do |c|
+      @array << c.legality_standard
+      @array << c.legality_commander  
+      @array << c.legality_highlander
+      @array << c.legality_peasant                            
+      @array << c.legality_pauper      
+      @array << c.legality_french_commander      
+      @array << c.legality_block
+      @array << c.legality_vintage
+      @array << c.legality_modern
+      @array << c.legality_extended                  
+      @array << c.legality_legacy      
+    end
+    puts @array.uniq
+  end
+
+end # namespace mtg
 
 def compute_type(string) #used to format type to import into cards.
   if string.split(" — ")[0]

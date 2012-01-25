@@ -14,7 +14,7 @@ html {
   background-color: #fff;
   font-family: "Helvetica", "Lucida Grande", "Bitstream Vera Sans", "Verdana", sans-serif;
   font-size: 13px;
-  color: #888;
+  color: #555;
   height: 100%;
   line-height: 140%;
 }
@@ -519,7 +519,7 @@ input {
 .ml {margin-left:10px; }
 .mt {margin-top:10px; }
 .mb {margin-bottom:10px; }
-.ma {margin:20px; }
+.ma {margin: 15px; }
 
 
 

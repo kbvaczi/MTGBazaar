@@ -1,0 +1,11 @@
+<!-- local variables: card = current card -->
+
+<div class="mtg_teaser">
+  <div class="mtg_teaser_image_wrapper">
+    <%= link_to image_tag(mtg_card.image_path, :class => "mtg_teaser_image"), mtg_card_path(mtg_card)%>
+  </div>
+  <div class="mtg_teaser_info">
+    <h2><%= display_name(mtg_card.name)%>
+
+  </div>
+</div>
