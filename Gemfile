@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.2.0'  
-gem 'devise', '~> 1.5.3'                                            # user authentication
+gem "devise", "~> 2.0.0"                                            # user authentication
 gem "simple_form", "~> 1.5.2"                                       # simplified form creation
 gem "chosen_rails", "~> 0.1.0"                                      # customized select boxes using chosen (http://harvesthq.github.com/chosen/). requires jquery
 gem 'jquery-rails'                                                  # latest jquery library.  need to include "//= require jquery_ujs" and "//= require jquery" in application.js to be loaded in asset pipeline
@@ -21,6 +21,7 @@ group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
+  gem 'rails-dev-tweaks', '~> 0.6.1' #improves performance in development environment
 end
 
 

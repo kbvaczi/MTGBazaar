@@ -83,7 +83,7 @@ select[disabled] {
 }
 textarea, textarea:hover, textarea:focus {
  color: #999;
- border: 1px solid #ddd;
+ border: 1px solid #bbb;
  width: 950px;
  width: 98%;
  -moz-border-radius: 10px;
@@ -91,6 +91,10 @@ textarea, textarea:hover, textarea:focus {
  border-radius: 10px;
  outline:none;
  padding: 3px 5px;
+ 
+ -moz-box-shadow:    inset 0px 1px 1px 0px #ddd;
+ -webkit-box-shadow: inset 0px 1px 1px 0px #ddd;
+ box-shadow:         inset 0px 1px 1px 0px #ddd;
 }
 
 /* clearfix */

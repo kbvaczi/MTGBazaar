@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120122150248) do
+ActiveRecord::Schema.define(:version => 20120206003215) do
 
   create_table "accounts", :force => true do |t|
     t.integer  "user_id"
@@ -32,16 +32,16 @@ ActiveRecord::Schema.define(:version => 20120122150248) do
     t.float    "average_rating",    :default => 0.0,   :null => false
     t.float    "average_ship_time", :default => 0.0,   :null => false
     t.boolean  "vacation",          :default => false, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
   end
 
   add_index "accounts", ["user_id"], :name => "index_accounts_on_user_id"
 
   create_table "mtg_blocks", :force => true do |t|
     t.string   "name",       :default => "", :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
   end
 
   add_index "mtg_blocks", ["name"], :name => "index_mtg_blocks_on_name"
@@ -72,8 +72,8 @@ ActiveRecord::Schema.define(:version => 20120122150248) do
     t.string   "legality_pauper",           :default => "", :null => false
     t.string   "multiverse_id",             :default => "", :null => false
     t.string   "image_path",                :default => "", :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
   end
 
   add_index "mtg_cards", ["artist"], :name => "index_mtg_cards_on_artist"
@@ -88,9 +88,9 @@ ActiveRecord::Schema.define(:version => 20120122150248) do
     t.integer  "block_id"
     t.string   "name",         :default => "",                    :null => false
     t.string   "code",         :default => "",                    :null => false
-    t.datetime "release_date", :default => '2012-01-23 23:49:19'
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "release_date", :default => '2012-02-06 01:32:20'
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
   end
 
   add_index "mtg_sets", ["code"], :name => "index_mtg_sets_on_code"
@@ -100,31 +100,33 @@ ActiveRecord::Schema.define(:version => 20120122150248) do
   create_table "transactions", :force => true do |t|
     t.integer  "test1_id"
     t.integer  "test2_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                                 :default => "", :null => false
-    t.string   "encrypted_password",     :limit => 128, :default => "", :null => false
+    t.string   "email",                  :default => "", :null => false
+    t.string   "encrypted_password",     :default => "", :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                         :default => 0
+    t.integer  "sign_in_count",          :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.string   "password_salt"
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
-    t.integer  "failed_attempts",                       :default => 0
+    t.string   "unconfirmed_email"
+    t.integer  "failed_attempts",        :default => 0
     t.string   "unlock_token"
     t.datetime "locked_at"
     t.string   "authentication_token"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "user_level",                            :default => 0
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+    t.integer  "user_level",             :default => 0
     t.string   "username"
   end
 
