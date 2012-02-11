@@ -1,5 +1,9 @@
 MTGBazaar::Application.routes.draw do
   
+  ActiveAdmin.routes(self)
+
+  devise_for :admin_users, ActiveAdmin::Devise.config
+
   resources :mtg_cards, :only => [:index, :show] # don't allow users to create/destroy mtg cards by only allowing index and show routes
 
   resources :accounts
