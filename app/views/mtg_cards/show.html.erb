@@ -33,6 +33,16 @@
         <%= display_color(@mtg_card.mana_color) %>
       </div>      
     </div>
+  <!-- COLOR -->    
+    <div class="card_show_info_row">
+      <div class="card_show_info_label">
+        Type:
+      </div>
+      <div class="card_show_info_value">
+        <%= "#{@mtg_card.card_type}" %>
+        <%= "- #{@mtg_card.card_subtype}" if not @mtg_card.card_subtype.empty? %>
+      </div>      
+    </div>    
   <!-- TEXT -->        
     <div class="card_show_info_row">
       <div class="card_show_info_label">
