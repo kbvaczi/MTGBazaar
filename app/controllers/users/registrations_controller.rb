@@ -22,7 +22,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     else
       build_resource
       clean_up_passwords(resource)
-      flash[:error] = "We were unable to verify your humanity. Please re-enter captcha code."
+      flash[:error] = "Please re-enter captcha code. Thanks for helping us prevent spam!"
       render_with_scope :new
     end
     

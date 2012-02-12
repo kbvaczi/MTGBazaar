@@ -15,8 +15,18 @@ ActiveAdmin.register User do
     column :user_level
     column "Failed Sign-ins" , :failed_attempts
     column :sign_in_count
+    column :banned
 
     default_actions
   end
+  
+  #turns off mass assignment when editing so that you can edit protected fields
+  controller do
+    def update 
+      #super
+      self.update_attribute(:field, params[:user][:field])
+    end
+  end
+
   
 end

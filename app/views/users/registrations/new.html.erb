@@ -40,7 +40,7 @@
     <%= a.input :city ,         :required => 'true' %>
     <%= a.input :state ,        :required => 'true' %>
     <%= a.input :zipcode ,      :label => "Zip" , :required => 'true' %>    
-    <%= a.input :country ,      :required => 'true' , :collection => [ "United States", "Canada" ] , :include_blank => false , :input_html => { :class => 'chzn-select' }  %>
+    <%= a.input :country ,      :required => 'true' , :collection => [ ["United States", "USA"], ["Canada", "CA"] ] , :include_blank => false , :input_html => { :class => 'chzn-select' }  %>
   <% end %>
   
   <h2>Confirmation</h2>
