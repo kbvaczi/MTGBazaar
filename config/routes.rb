@@ -22,7 +22,7 @@ MTGBazaar::Application.routes.draw do
   match 'contact'         => 'contact#index'
   match 'contact_create'  => 'contact#create'
   
-  match "*a" => redirect('/') # send all random routes to home
+  #match "*a" => redirect('/') # send all random routes to home
    
   # The priority is based upon order of creation:
   # first created -> highest priority.

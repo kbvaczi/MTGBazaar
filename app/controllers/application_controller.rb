@@ -3,7 +3,6 @@ class ApplicationController < ActionController::Base
   
   before_filter :banned?
   
-  
   protected
   
   #checks to see if the current logged in user is banned.  logs out and flashes warning if so.
