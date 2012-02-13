@@ -3,10 +3,10 @@ class User < ActiveRecord::Base
   has_one :account, :dependent => :destroy
 
   # Include default devise modules. Others available are:
-  #:token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
+  #:token_authenticatable, :encryptable, :confirmable, :lockable, and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :token_authenticatable, :confirmable, :lockable
+         :token_authenticatable, :confirmable, :lockable, :timeoutable
 
   # Setup accessible (or protected) attributes for your model
   # :account_attributes allows nested model support for account while editing form for user
