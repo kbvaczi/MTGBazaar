@@ -5,7 +5,10 @@
     <%= link_to image_tag(mtg_card.image_path, :class => "mtg_teaser_image"), mtg_card_path(mtg_card)%>
   </div>
   <div class="mtg_teaser_info">
-    <h2><%= display_name(mtg_card.name)%>
+    <h2><%= display_name(mtg_card.name)%></h2>
+    <div class= "ma">
+      <%=mtg_card.set.name%>
+    </div>
 
   </div>
 </div>

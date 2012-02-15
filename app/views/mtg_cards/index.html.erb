@@ -1,22 +1,26 @@
 <% title "MTG Cards" %>
 
-<h1>Listing MTG Cards</h1>
+<h1><%=@title%></h1>
 <div class ="content">
-  <% @sets.each do |set| %>
-    <%= link_to "#{set.name}", mtg_cards_path(:set => set.code) %>
+  
+  <% if not params[:name]%>
+    <% @sets.each do |set| %>
+      <%= link_to "#{set.name}", mtg_cards_path(:set => set.code) %>
+      <br/>
+    <% end %>
+    <% if params[:set] %>
+      <%= params[:set] %>
+      <%= link_to("<<back", mtg_cards_path)%>
+      <br/>
+    <% end %>
     <br/>
   <% end %>
-  <% if params[:set] %>
-    <%= params[:set] %>
-    <%= link_to("<<back", mtg_cards_path)%>
-    <br/>
-  <% end %>
-  <br/>
 
   <%= render :partial => "teaser", :collection => @mtg_cards, :as => "mtg_card" %>
   <%# @mtg_cards.each do |card| %>
     <%#= link_to "#{card.name}", mtg_card_path(card) %>
     <br/>
   <%# end %>
+
 </div>
 

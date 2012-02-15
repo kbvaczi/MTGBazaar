@@ -1,0 +1,128 @@
+/* CUSTOM CSS FOR CHOSEN SELECT BOXES */
+
+/* @group Base */
+.chzn-container {
+  font-size: 12px;
+  color: #555;
+}
+.chzn-container .chzn-drop {
+}
+/* @end */
+
+/* @group Single Chosen */
+.chzn-container-single .chzn-single {
+  -webkit-border-radius: 10px;
+  -moz-border-radius   : 10px;
+  border-radius        : 10px;
+  height: 20px;
+  line-height: 20px;
+  font-size: 100%;
+  padding: 0 0 0 5px;
+}
+.chzn-container-single .chzn-single span {
+}
+.chzn-container-single .chzn-single div {
+  -webkit-border-radius: 0 10px 10px 0;
+  -moz-border-radius   : 0 10px 10px 0;
+  border-radius        : 0 10px 10px 0;
+}
+.chzn-container-single .chzn-single div b {
+  background: image-url('chosen-sprite.png') no-repeat 0 -2px;
+}
+.chzn-container-single .chzn-search {
+  
+}
+.chzn-container-single .chzn-search input {
+  height: 12px;
+  line-height: 12px;
+}
+.chzn-container-single .chzn-drop {
+  -webkit-border-radius: 0 0 10px 10px;
+  -moz-border-radius   : 0 0 10px 10px;
+  border-radius        : 0 0 10px 10px;
+}
+/* @end */
+
+
+/* @group Results */
+.chzn-container .chzn-results {
+  margin: 0 0 8px 0;
+  max-height: 190px;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.chzn-container-multi .chzn-results {
+  margin: -1px 0 0;
+  padding: 0;
+}
+.chzn-container .chzn-results li {
+  line-height: 100%;
+  padding: 5px 2px;
+}
+.chzn-container .chzn-results .highlighted {
+  background: #3875d7;
+  color: #fff;
+}
+.chzn-container .chzn-results li em {
+  background: #feffde;
+  font-style: normal;
+}
+.chzn-container .chzn-results .no-results {
+  background: #f4f4f4;
+}
+/* @end */
+
+/* @group Active  */
+.chzn-container-active .chzn-single {
+  -webkit-box-shadow: 0 0 5px rgba(0,0,0,.3);
+  -moz-box-shadow   : 0 0 5px rgba(0,0,0,.3);
+  -o-box-shadow     : 0 0 5px rgba(0,0,0,.3);
+  box-shadow        : 0 0 5px rgba(0,0,0,.3);
+  border: 1px solid #5897fb;
+}
+.chzn-container-active .chzn-single-with-drop {
+  border: 1px solid #aaa;
+  -webkit-box-shadow: 0 1px 0 #fff inset;
+  -moz-box-shadow   : 0 1px 0 #fff inset;
+  -o-box-shadow     : 0 1px 0 #fff inset;
+  box-shadow        : 0 1px 0 #fff inset;
+  background-color: #eee;
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, white), color-stop(0.5, #eeeeee));
+  background-image: -webkit-linear-gradient(center bottom, white 0%, #eeeeee 50%);
+  background-image: -moz-linear-gradient(center bottom, white 0%, #eeeeee 50%);
+  background-image: -o-linear-gradient(bottom, white 0%, #eeeeee 50%);
+  background-image: -ms-linear-gradient(top, #ffffff 0%,#eeeeee 50%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eeeeee',GradientType=0 );
+  background-image: linear-gradient(top, #ffffff 0%,#eeeeee 50%);
+  -webkit-border-bottom-left-radius : 0;
+  -webkit-border-bottom-right-radius: 0;
+  -moz-border-radius-bottomleft : 0;
+  -moz-border-radius-bottomright: 0;
+  border-bottom-left-radius : 0;
+  border-bottom-right-radius: 0;
+}
+.chzn-container-active .chzn-single-with-drop div {
+  background: transparent;
+  border-left: none;
+}
+.chzn-container-active .chzn-single-with-drop div b {
+  background-position: -18px -1px;
+}
+.chzn-container-active .chzn-choices {
+  -webkit-box-shadow: 0 0 5px rgba(0,0,0,.3);
+  -moz-box-shadow   : 0 0 5px rgba(0,0,0,.3);
+  -o-box-shadow     : 0 0 5px rgba(0,0,0,.3);
+  box-shadow        : 0 0 5px rgba(0,0,0,.3);
+  border: 1px solid #5897fb;
+}
+.chzn-container-active .chzn-choices .search-field input {
+  color: #111 !important;
+}
+/* @end */
+
+.chzn-rtl .chzn-single div { 
+  -webkit-border-radius: 10px 0 0 10px;
+  -moz-border-radius   : 10px 0 0 10px;
+  border-radius        : 10px 0 0 10px; 
+}

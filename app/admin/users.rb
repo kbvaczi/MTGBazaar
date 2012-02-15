@@ -11,8 +11,22 @@ ActiveAdmin.register User do
   filter :username
   filter :created_at
 
+  config.clear_action_items!
+  action_item :only => :show do
+    link_to "Edit User", edit_admin_user_path(user)
+  end
+  action_item :only => :show do 
+    if user.banned?
+      link_to "Un-ban User", ban_admin_user_path(user), :method => :post, :confirm => "Are you sure you want to UN-ban #{user.username}?" 
+    else 
+      link_to "Ban User", ban_admin_user_path(user), :method => :post, :confirm => "Are you sure you want to ban #{user.username}?" 
+    end
+  end
+
   # Customize columns displayed on the index screen in the table
   index do
+    
+    
     column :username, :sortable => :username do |user|
       link_to user.username, admin_user_path(user)
     end
@@ -36,9 +50,9 @@ ActiveAdmin.register User do
     column "Last Sign-in", :last_sign_in_at
     column "Banned?", :sortable => :banned do |user|
       if user.banned?
-        "no"
-      else
         "yes"
+      else
+        "no"
       end
     end
     column "Locked?", :sortable => :locked_at do |user|
@@ -88,6 +102,19 @@ ActiveAdmin.register User do
     end    
   end
   
+  #customize user edit form
+  form do |f|
+    f.inputs "User Details" do
+      f.input :username
+    end
+    f.inputs "Account Info" do
+      f.semantic_fields_for :account do |ff|
+        ff.inputs :first_name, :last_name, :address1, :address2, :city, :state, :zipcode
+      end
+    end
+    f.buttons
+  end
+  
   #turns off mass assignment when editing so that you can edit protected fields
   #NOT WORKING CURRENTLY
   controller do
@@ -101,10 +128,15 @@ ActiveAdmin.register User do
   
   #custom action to ban users
   #NOT CURRENTLY USED
-  member_action :ban, :method => :put do
+  member_action :ban, :method => :post do
     user = User.find(params[:id])
-    user.update_attribute(:banned, user.banned)
-    redirect_to admin_user_path(user), :notice => "Locked!"
+    if user.banned?
+      user.update_attribute(:banned, false)
+      redirect_to admin_user_path(user), :notice => "Un-Banned! We have mercy... sometimes."
+    else
+      user.update_attribute(:banned, true)
+      redirect_to admin_user_path(user), :notice => "Banned! Take that!"
+    end
   end
 
   

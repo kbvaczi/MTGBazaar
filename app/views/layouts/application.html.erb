@@ -18,7 +18,8 @@
   </head>
 
   <body>
-      
+    
+    <% # DISPLAY FLASH NOTICES --------------------------------------- %>  
     <% if flash[:notice] %>
       <div id="flash" class="flash_notice">
         <%= flash[:notice] %>
@@ -42,19 +43,14 @@
       <%= render :partial => 'shared/header' %>
       <%= render 'shared/navbar' %>
 
-      <div id="main" class="group">
-        
+      <div id="main" class="group">        
         <%= render :partial => 'shared/user_login' %>
-        <br class="spacer"/>
-                
-        <%= render :partial => 'shared/left_bar' %>      
-        
+        <br class="spacer"/>                
+        <%= render :partial => 'shared/left_bar' %>              
         <div id="center_bar">
             <%= yield %>
-        </div>
-        
-        <%= render :partial => 'shared/right_bar' %>      
-        
+        </div>        
+        <%= render :partial => 'shared/right_bar' %>              
       </div>
 
       <%= render 'shared/bottomnav' %>

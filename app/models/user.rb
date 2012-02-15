@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :account_attributes, :age, :terms
   
   # not-in-model fields for age and agree-to-terms fields in sign-up
-  attr_accessor :age, :terms, :legal_stuff
+  attr_accessor :age, :terms
   
   # validates that age and terms have been checked on user sign-up only
   validates :age, :terms, :inclusion => {:in => [["","1"]]}, :on => :create
@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
   validates_presence_of :username, :email
   
   # multiple users cannot have the same username
-  validates_uniqueness_of :username
+  validates_uniqueness_of :username, :email
   
   # username must be between 3 and 15 characters and can only have letters, numbers, dash, period, or underscore (no other special characters)
   validates             :username,  :length => { :minimum => 3, :maximum   => 15 },

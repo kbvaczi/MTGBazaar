@@ -23,7 +23,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       build_resource
       clean_up_passwords(resource)
       flash[:error] = "Please re-enter captcha code. Thanks for helping us prevent spam!"
-      render_with_scope :new
+      render :new
     end
     
   end

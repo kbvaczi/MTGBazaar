@@ -9,7 +9,7 @@
 
       <div class="right">
         <%= f.label :email, "Email" %>
-        <%= f.text_field :email, :style=>"width:120px;" %>
+        <%= f.text_field :email, :style=>"width:120px;", :class => "test" %>
         &nbsp;
         <%= f.label :password, "Password" %>
         <%= f.password_field :password, :style=>"width:120px;" %>
@@ -19,7 +19,7 @@
     <% end %>
   <% else %>
     <div class="right">
-      Welcome <%= current_user.username %> [<%= link_to "Sign out", destroy_user_session_path, :method => :delete %>]
+      <%= "#{current_user.account.first_name} #{current_user.account.last_name}" %> [<%= link_to "Sign out", destroy_user_session_path, :method => :delete %>]
     </div>
   <% end %>
 </div>

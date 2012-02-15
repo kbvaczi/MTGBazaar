@@ -1,6 +1,68 @@
 <div id="left_bar">
-  <h1>left bar</h1>
-  <div class="ma">
-    <p> Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... </p>
-  </div>
+
+    <%= form_tag mtg_cards_path , :method => "get" do %>   
+      <h1><%= text_field_tag :name, params[:name], :class => "search-text" %></h1>
+      <div class="ma">
+
+        <div class= "search-set">
+          <%#= label_tag "Set:" %>
+          <%= select_tag "set" , options_for_select(MtgSet.all.collect {|s| [ s.name, s.code ] }, :selected => params[:set]), {:prompt => 'All sets...', :class => "search-select chzn-select"} %>
+        </div>
+
+        <div class="search-color">
+          <%#= label_tag "Color:" %>
+          <br class="spacer"/>            
+          <%= image_tag "mtg/mana_symbols/mana_w.jpg" , :class => "search-color-icon" %>
+          <%= image_tag "mtg/mana_symbols/mana_u.jpg" , :class => "search-color-icon" %>
+          <%= image_tag "mtg/mana_symbols/mana_b.jpg" , :class => "search-color-icon" %>
+          <%= image_tag "mtg/mana_symbols/mana_r.jpg" , :class => "search-color-icon" %>
+          <%= image_tag "mtg/mana_symbols/mana_g.jpg" , :class => "search-color-icon-last" %>
+          <br/>
+          <%= check_box_tag "white", "W", params[:white], :class => "search-color-check" %>
+          <%= check_box_tag "blue", "U", params[:blue], :class => "search-color-check" %>
+          <%= check_box_tag "black", "B", params[:black], :class => "search-color-check" %>
+          <%= check_box_tag "red", "R", params[:red], :class => "search-color-check" %>
+          <%= check_box_tag "green", "G", params[:green], :class => "search-color-check-last" %>
+        </div>
+
+        <br class="spacer"/>                      
+        <div class="search-type">
+          <%#= label_tag "Type:" %>
+          <%= select_tag "type", options_for_select(card_type_list, :selected => params[:type]) , {:prompt => 'All types...', :class => "search-select chzn-select"} %>            
+        </div>
+
+        <br class="spacer"/>            
+        <div class="search-subtype">
+          <%#= label_tag "Subtype:" %>
+          <%= select_tag "subtype", options_for_select(card_subtype_list, :selected => params[:subtype]) , {:prompt => 'All subtypes...', :class => "search-select chzn-select"} %>            
+        </div>          
+
+        <br class="spacer"/>             
+        <div class="search-rarity">
+          <%= label_tag "Rarity:" %>
+          <br/>
+          <%= select_tag "rarity" , options_for_select(rarity_list, :selected => params[:rarity]) , {:prompt => 'All...', :class => "search-select-rarity chzn-select"} %>                        
+        </div>        
+
+        <div class="search-condition">
+          <%= label_tag "Condition:" %>
+          <br/>
+          <%= select_tag "condition" , options_for_select(condition_list) , {:prompt => 'All...', :class => "search-select-condition chzn-select"} %>                        
+        </div>
+
+        <br class="spacer"/>                                                                
+        <div class="search-artist">
+          <%#= label_tag "Artist:" %>
+          <br/>
+          <%= select_tag "artist" , options_for_select(artist_list) , {:prompt => 'All artists...', :class => "search-select chzn-select"} %>                        
+        </div>
+              
+        <br/>
+        <%= link_to "Clear Filters", {:url => mtg_search_clear_path, :remote => true}, :class => "left" %>
+        <%= submit_tag "Search", :class => "search-submit" %>
+        <br/>
+        
+      </div>
+    <% end %>
+    
 </div>

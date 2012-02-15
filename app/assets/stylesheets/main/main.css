@@ -332,7 +332,7 @@ input {
 #left_bar {
   float:left;
   margin: 10px 0 10px 10px;
-  width: 210px;
+  width: 190px;
   background: #FFF;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
@@ -344,7 +344,7 @@ input {
 #right_bar {
   float:left;
   margin: 10px 10px 10px 0;
-  width: 210px;
+  width: 230px;
   background: #FFF;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;

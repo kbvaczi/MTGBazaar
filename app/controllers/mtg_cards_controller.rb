@@ -1,19 +1,28 @@
 class MtgCardsController < ApplicationController
+  
   # GET /mtg_cards
   # GET /mtg_cards.json
   def index
 
-    if params[:set]
-      @mtg_cards = MtgSet.order("name").where(:code => params[:set]).first.cards
-      @sets = []
+    if params[:name]
+      # SEARCH CARDS
+      @mtg_cards = search_cards
+      @title = "Search Results"
+      
     else
-      @sets = MtgSet.order("name").all
-      @mtg_cards = []
+      @title = "MTG Cards"
+      # LIST ALL CARDS BY SET    
+      if params[:set]
+        @mtg_cards = MtgSet.order("name").where(:code => params[:set]).first.cards
+       @sets = []
+      else
+        @sets = MtgSet.order("name").all
+        @mtg_cards = []
+      end
     end
     
     respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @mtg_cards }
+      format.html #index.html.erb
     end
     
   end
@@ -28,5 +37,32 @@ class MtgCardsController < ApplicationController
       format.json { render json: @mtg_card }
     end
   end
+
+  def search_cards
+    return MtgCard.find(:all, :joins => :set, :conditions => [ "mtg_cards.name LIKE ? 
+                                                                AND code LIKE ? 
+                                                                AND mana_color LIKE ? 
+                                                                AND mana_color LIKE ? 
+                                                                AND mana_color LIKE ? 
+                                                                AND mana_color LIKE ? 
+                                                                AND mana_color LIKE ?
+                                                                AND rarity LIKE ?
+                                                                AND card_type LIKE ?
+                                                                AND artist LIKE ?
+                                                                AND card_subtype LIKE?",
+                                                                "%#{params[:name]}%", 
+                                                                "%#{params[:set]}%", 
+                                                                "%#{params[:white]}%", 
+                                                                "%#{params[:blue]}%", 
+                                                                "%#{params[:black]}%", 
+                                                                "%#{params[:red]}%", 
+                                                                "%#{params[:green]}%",
+                                                                "%#{params[:rarity]}%",
+                                                                "%#{params[:type]}%",
+                                                                "%#{params[:artist]}%",
+                                                                "%#{params[:subtype]}%"], 
+                                                                :limit => 50, :order => "name")
+  end
+  
 
 end

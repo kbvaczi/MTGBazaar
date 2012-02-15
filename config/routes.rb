@@ -1,26 +1,34 @@
 MTGBazaar::Application.routes.draw do
   
+  # ACTIVE ADMIN SETUP ------- #
   ActiveAdmin.routes(self)
-
-  devise_for :admin_users, ActiveAdmin::Devise.config
-
-  resources :mtg_cards, :only => [:index, :show] # don't allow users to create/destroy mtg cards by only allowing index and show routes
-
-  resources :accounts
   
+  # ADMIN USERS -------------- #
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  
+  # MTG CARDS ---------------- #
+  resources :mtg_cards, :only => [:index, :show] # don't allow users to create/destroy mtg cards by only allowing index and show routes
+  match 'mtg_search_clear'  => 'mtg_cards#search_clear' 
+  match 'mtg_search_update' => 'mtg_cards#search_update'
+
+  # USERS -------------------- #
   # resources :users must be declared after devise_for because earlier declarations take precedence 
   # see http://stackoverflow.com/questions/5051487/combining-devise-with-resources-users-in-rails
   devise_for :users, :controllers => { :registrations => 'users/registrations' , :sessions => 'users/sessions' }
   resources :users, :only => [:index, :show], :controllers => { :users => "users/users"}
-
-  root :to => "home#index"
+  resources :accounts
   
-  match 'about'           => 'home#about',        :as => :about
+  # MISC ROUTES -------------- #
+  root :to => "home#index"
+  match 'about'           => 'home#about'
   match 'terms'           => 'home#terms_of_service'
   match 'privacy'         => 'home#privacy'
-  
   match 'contact'         => 'contact#index'
   match 'contact_create'  => 'contact#create'
+  
+  
+  
+  # RAILS COMMENTS ----------- #
   
   #match "*a" => redirect('/') # send all random routes to home
    
