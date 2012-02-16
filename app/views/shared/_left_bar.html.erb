@@ -1,6 +1,7 @@
 <div id="left_bar">
 
     <%= form_tag mtg_cards_path , :method => "get" do %>   
+      <%= hidden_field_tag "search" , "1"%>    
       <h1><%= text_field_tag :name, params[:name], :class => "search-text" %></h1>
       <div class="ma">
 
@@ -47,18 +48,22 @@
         <div class="search-condition">
           <%= label_tag "Condition:" %>
           <br/>
-          <%= select_tag "condition" , options_for_select(condition_list) , {:prompt => 'All...', :class => "search-select-condition chzn-select"} %>                        
+          <%= select_tag "condition" , options_for_select(condition_list, :selected => params[:condition]) , {:prompt => 'All...', :class => "search-select-condition chzn-select"} %>                        
         </div>
 
         <br class="spacer"/>                                                                
         <div class="search-artist">
           <%#= label_tag "Artist:" %>
           <br/>
-          <%= select_tag "artist" , options_for_select(artist_list) , {:prompt => 'All artists...', :class => "search-select chzn-select"} %>                        
+          <%= select_tag "artist" , options_for_select(artist_list, :selected => params[:artist]) , {:prompt => 'All artists...', :class => "search-select chzn-select"} %>                        
         </div>
               
+
         <br/>
-        <%= link_to "Clear Filters", {:url => mtg_search_clear_path, :remote => true}, :class => "left" %>
+        <div class="left" id="clear_filters">
+          Clear Filters
+        </div>
+
         <%= submit_tag "Search", :class => "search-submit" %>
         <br/>
         

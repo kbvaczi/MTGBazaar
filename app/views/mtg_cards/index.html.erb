@@ -3,7 +3,7 @@
 <h1><%=@title%></h1>
 <div class ="content">
   
-  <% if not params[:name]%>
+  <% if not params.has_key?(:search)%>
     <% @sets.each do |set| %>
       <%= link_to "#{set.name}", mtg_cards_path(:set => set.code) %>
       <br/>

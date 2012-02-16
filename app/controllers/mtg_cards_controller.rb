@@ -4,11 +4,10 @@ class MtgCardsController < ApplicationController
   # GET /mtg_cards.json
   def index
 
-    if params[:name]
+    if params.has_key?(:search)
       # SEARCH CARDS
       @mtg_cards = search_cards
       @title = "Search Results"
-      
     else
       @title = "MTG Cards"
       # LIST ALL CARDS BY SET    
@@ -62,6 +61,11 @@ class MtgCardsController < ApplicationController
                                                                 "%#{params[:artist]}%",
                                                                 "%#{params[:subtype]}%"], 
                                                                 :limit => 50, :order => "name")
+  end
+  
+  def search_clear
+
+    
   end
   
 
