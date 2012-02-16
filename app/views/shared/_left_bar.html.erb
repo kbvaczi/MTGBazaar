@@ -1,6 +1,6 @@
 <div id="left_bar">
 
-    <%= form_tag mtg_cards_path , :method => "get" do %>   
+    <%= form_tag mtg_cards_search_path , :method => "get", :id => "search-form" do %>   
       <%= hidden_field_tag "search" , "1"%>    
       <h1><%= text_field_tag :name, params[:name], :class => "search-text" %></h1>
       <div class="ma">
@@ -58,9 +58,8 @@
           <%= select_tag "artist" , options_for_select(artist_list, :selected => params[:artist]) , {:prompt => 'All artists...', :class => "search-select chzn-select"} %>                        
         </div>
               
-
         <br/>
-        <div class="left" id="clear_filters">
+        <div class="left" id="clear-filters">
           Clear Filters
         </div>
 

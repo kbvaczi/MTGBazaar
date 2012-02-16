@@ -7,7 +7,9 @@ MTGBazaar::Application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   
   # MTG CARDS ---------------- #
+  match 'mtg_cards/search/' => 'mtg_cards#search', :as => 'mtg_cards_search'
   resources :mtg_cards, :only => [:index, :show] # don't allow users to create/destroy mtg cards by only allowing index and show routes
+
   match 'mtg_cards/mtg_search_clear'  => 'mtg_cards#search_clear', :as => "mtg_search_clear"
   match 'mtg_cards/mtg_search_update' => 'mtg_cards#search_update', :as => "mtg_search_update"
 

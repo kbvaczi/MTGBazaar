@@ -2,19 +2,17 @@
 
 <h1><%=@title%></h1>
 <div class ="content">
-  
-  <% if not params.has_key?(:search)%>
-    <% @sets.each do |set| %>
-      <%= link_to "#{set.name}", mtg_cards_path(:set => set.code) %>
-      <br/>
-    <% end %>
-    <% if params[:set] %>
-      <%= params[:set] %>
-      <%= link_to("<<back", mtg_cards_path)%>
-      <br/>
-    <% end %>
+
+  <% @sets.each do |set| %>
+    <%= link_to "#{set.name}", mtg_cards_path(:set => set.code) %>
     <br/>
   <% end %>
+  <% if params[:set] %>
+    <%= params[:set] %>
+    <%= link_to("<<back", mtg_cards_path)%>
+    <br/>
+  <% end %>
+  <br/>
 
   <%= render :partial => "teaser", :collection => @mtg_cards, :as => "mtg_card" %>
   <%# @mtg_cards.each do |card| %>

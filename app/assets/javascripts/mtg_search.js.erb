@@ -1,0 +1,100 @@
+$(document).ready(function() {
+
+  // CLEAR FILTERS WHEN CLICKED
+  $("#clear-filters").click(function() {  
+
+    $("#search-form").find("select").val('');    
+    $('#search-form').find(".chzn-container a span").each( function() { 
+        $(this).text($(this).parent().parent().parent().find("select option:first").text());
+    });
+    $("#search-form").find("input").removeAttr('checked');
+    
+    //clear cookies
+    $.cookie('search_name', '', { path: '/' });
+    $.cookie('search_set', '', { path: '/' });    
+    $.cookie('search_type', '', { path: '/' });    
+    $.cookie('search_subtype', '', { path: '/' });    
+    $.cookie('search_artist', '', { path: '/' });    
+    $.cookie('search_condition', '', { path: '/' });    
+    $.cookie('search_rarity', '', { path: '/' });    
+    $.cookie('search_white', '', { path: '/' });
+    $.cookie('search_blue', '', { path: '/' });
+    $.cookie('search_black', '', { path: '/' });
+    $.cookie('search_red', '', { path: '/' });  
+    $.cookie('search_green', '', { path: '/' });                
+  });
+  
+  
+  //UPDATE COOKEIS TO STORE SEARCH INFO
+  $("#name").change(function() {  
+    $.cookie('search_name', $("#name").val(), { path: '/' });
+  });
+  $("#set").change(function() {  
+    $.cookie('search_set', $("#set").val() , { path: '/' });
+  });
+  $("#type").change(function() {  
+    $.cookie('search_type', $("#type").val(), { path: '/' });
+  });
+  $("#subtype").change(function() {  
+    $.cookie('search_subtype', $("#subtype").val(), { path: '/' });
+  });
+  $("#artist").change(function() {  
+    $.cookie('search_artist', $("#artist").val(), { path: '/' });
+  });
+  $("#condition").change(function() {  
+    $.cookie('search_condition', $("#condition").val(), { path: '/' });
+  });
+  $("#rarity").change(function() {  
+    $.cookie('search_rarity', $("#rarity").val(), { path: '/' });
+  });        
+  $("#white").change(function() {  
+    $('#white').is(':checked') ? $.cookie('search_white', true, { path: '/' }) : $.cookie('search_white',"", { path: '/' });
+  });  
+  $("#blue").change(function() {  
+    $('#blue').is(':checked') ? $.cookie('search_blue', true, { path: '/' }) : $.cookie('search_blue',"", { path: '/' });
+  });
+  $("#black").change(function() {  
+    $('#black').is(':checked') ? $.cookie('search_black', true, { path: '/' }) : $.cookie('search_black',"", { path: '/' });
+  });
+  $("#red").change(function() {  
+    $('#red').is(':checked') ? $.cookie('search_red', true, { path: '/' }) : $.cookie('search_red',"", { path: '/' });
+  });
+  $("#green").change(function() {  
+    $('#green').is(':checked') ? $.cookie('search_green', true, { path: '/' }) : $.cookie('search_green',"", { path: '/' });
+  });        
+  
+  
+  //UPDATE SEARCH INFO WHEN PAGE CHANGES
+  $("#name").val($.cookie('search_name'));
+
+  $("#set").val($.cookie('search_set'));
+  $("#set_chzn a span").text( $("#set option:selected").text() );
+  $("#set_chzn .chzn-drop .chzn-results li:contains($.cookie('search_set'))").addClass("result-selected");  
+
+  $("#type").val($.cookie('search_type'));
+  $("#type_chzn a span").text( $("#type option:selected").text() );
+  $("#type_chzn .chzn-drop .chzn-results li:contains($.cookie('search_type'))").addClass("result-selected");
+  
+  $("#subtype").val($.cookie('search_subtype'));
+  $("#subtype_chzn a span").text( $("#subtype option:selected").text() );
+  $("#subtype_chzn .chzn-drop .chzn-results li:contains($.cookie('search_subtype'))").addClass("result-selected");  
+
+  $("#artist").val($.cookie('search_artist'));
+  $("#artist_chzn a span").text( $("#artist option:selected").text() );
+  $("#artist_chzn .chzn-drop .chzn-results li:contains($.cookie('search_artist'))").addClass("result-selected");
+
+  $("#condition").val($.cookie('search_condition'));
+  $("#condition_chzn a span").text( $("#condition option:selected").text() );
+  $("#condition_chzn .chzn-drop .chzn-results li:contains($.cookie('search_condition'))").addClass("result-selected");
+
+  $("#rarity").val($.cookie('search_rarity'));
+  $("#rarity_chzn a span").text( $("#rarity option:selected").text() );
+  $("#rarity_chzn .chzn-drop .chzn-results li:contains($.cookie('search_rarity'))").addClass("result-selected");
+
+  $.cookie('search_white') ? $('#white').attr("checked", true) : $('#white').removeAttr("checked");  
+  $.cookie('search_blue')  ? $('#blue').attr("checked", true)  : $('#blue').removeAttr("checked");  
+  $.cookie('search_black') ? $('#black').attr("checked", true) : $('#black').removeAttr("checked");  
+  $.cookie('search_red')   ? $('#red').attr("checked", true)   : $('#red').removeAttr("checked");  
+  $.cookie('search_green') ? $('#green').attr("checked", true) : $('#green').removeAttr("checked");          
+
+});

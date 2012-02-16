@@ -44,3 +44,9 @@
   float:right;
   margin-right: -2px;
 }
+#clear-filters {
+  cursor: pointer;
+}
+#clear-filters:hover {
+  text-decoration: underline;
+}
