@@ -12,52 +12,52 @@
 	<sets>
     <set>
       	<name><![CDATA[Limited Edition Alpha]]></name>
-      	<code><![CDATA[LEA]]></code>
+      	<code><![CDATA[A]]></code>
       	<date><![CDATA[08/1993]]></date>
     </set>
     <set>
       	<name><![CDATA[Limited Edition Beta]]></name>
-      	<code><![CDATA[LEB]]></code>
+      	<code><![CDATA[B]]></code>
       	<date><![CDATA[10/1993]]></date>
     </set>
     <set>
       	<name><![CDATA[Unlimited Edition]]></name>
-      	<code><![CDATA[2ED]]></code>
+      	<code><![CDATA[U]]></code>
       	<date><![CDATA[12/1993]]></date>
     </set>
     <set>
     	<name><![CDATA[Revised Edition]]></name>
-      	<code><![CDATA[3ED]]></code>
+      	<code><![CDATA[R]]></code>
       	<date><![CDATA[04/1994]]></date>
     </set>
     <set>
       	<name><![CDATA[Fourth Edition]]></name>
-      	<code><![CDATA[4ED]]></code>
+      	<code><![CDATA[4E]]></code>
       	<date><![CDATA[04/1995]]></date>
     </set>
     <set>
       	<name><![CDATA[Fifth Edition]]></name>
-      	<code><![CDATA[5ED]]></code>
+      	<code><![CDATA[5E]]></code>
       	<date><![CDATA[03/1997]]></date>
     </set>
     <set>
       	<name><![CDATA[Classic (Sixth Edition)]]></name>
-      	<code><![CDATA[6ED]]></code>
+      	<code><![CDATA[6E]]></code>
       	<date><![CDATA[04/1999]]></date>
     </set>
     <set>
       	<name><![CDATA[Seventh Edition]]></name>
-      	<code><![CDATA[7ED]]></code>
+      	<code><![CDATA[7E]]></code>
       	<date><![CDATA[04/2001]]></date>
     </set>    
     <set>
       	<name><![CDATA[Eighth Edition]]></name>
-      	<code><![CDATA[8ED]]></code>
+      	<code><![CDATA[8E]]></code>
       	<date><![CDATA[07/2003]]></date>
     </set>
     <set>
       	<name><![CDATA[Ninth Edition]]></name>
-      	<code><![CDATA[9ED]]></code>
+      	<code><![CDATA[9E]]></code>
       	<date><![CDATA[07/2005]]></date>
     </set>
     <set>
@@ -96,32 +96,32 @@
 	<name><![CDATA[Early Sets]]></name>
 	<set>
 		<name><![CDATA[Arabian Nights]]></name>
-		<code><![CDATA[ARN]]></code>
+		<code><![CDATA[AN]]></code>
 		<date><![CDATA[12/1993]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Antiquities]]></name>
-		<code><![CDATA[ATQ]]></code>
+		<code><![CDATA[AQ]]></code>
 		<date><![CDATA[04/1994]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Legends]]></name>
-		<code><![CDATA[LEG]]></code>
+		<code><![CDATA[LG]]></code>
 		<date><![CDATA[06/1994]]></date>
 	</set>
 	<set>
 		<name><![CDATA[The Dark]]></name>
-		<code><![CDATA[DRK]]></code>
+		<code><![CDATA[DK]]></code>
 		<date><![CDATA[08/1994]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Fallen Empires]]></name>
-		<code><![CDATA[FEM]]></code>
+		<code><![CDATA[FE]]></code>
 		<date><![CDATA[11/1994]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Homelands]]></name>
-		<code><![CDATA[HML]]></code>
+		<code><![CDATA[HL]]></code>
 		<date><![CDATA[10/1995]]></date>
 	</set>
 
@@ -133,17 +133,17 @@
 		<name><![CDATA[Ice Age Block]]></name>
 	<set>
 		<name><![CDATA[Ice Age]]></name>
-		<code><![CDATA[ICE]]></code>
+		<code><![CDATA[IA]]></code>
 		<date><![CDATA[06/1995]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Alliances]]></name>
-		<code><![CDATA[ALL]]></code>
+		<code><![CDATA[AL]]></code>
 		<date><![CDATA[06/1996]]></date>
 	</set>
 	<set>
-		<name><![CDATA[Cold Snap]]></name>
-		<code><![CDATA[CSP]]></code>
+		<name><![CDATA[Coldsnap]]></name>
+		<code><![CDATA[CS]]></code>
 		<date><![CDATA[07/2006]]></date>
 	</set>
 
@@ -155,17 +155,17 @@
 		<name><![CDATA[Mirage Block]]></name>
 	<set>
 		<name><![CDATA[Mirage]]></name>
-		<code><![CDATA[MIR]]></code>
+		<code><![CDATA[MI]]></code>
 		<date><![CDATA[10/1996]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Visions]]></name>
-		<code><![CDATA[VIS]]></code>
+		<code><![CDATA[VI]]></code>
 		<date><![CDATA[02/1997]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Weatherlight]]></name>
-		<code><![CDATA[WTH]]></code>
+		<code><![CDATA[WL]]></code>
 		<date><![CDATA[06/1997]]></date>
 	</set>
 
@@ -177,17 +177,17 @@
 		<name><![CDATA[Tempest Block]]></name>
 	<set>
 		<name><![CDATA[Tempest]]></name>
-		<code><![CDATA[TMP]]></code>
+		<code><![CDATA[TE]]></code>
 		<date><![CDATA[10/1997]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Stronghold]]></name>
-		<code><![CDATA[STH]]></code>
+		<code><![CDATA[SH]]></code>
 		<date><![CDATA[03/1998]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Exodus]]></name>
-		<code><![CDATA[EXO]]></code>
+		<code><![CDATA[EX]]></code>
 		<date><![CDATA[06/1998]]></date>
 	</set>
 
@@ -199,17 +199,17 @@
 		<name><![CDATA[Urza Block]]></name>
 	<set>
 		<name><![CDATA[Urza's Saga]]></name>
-		<code><![CDATA[USG]]></code>
+		<code><![CDATA[US]]></code>
 		<date><![CDATA[10/1998]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Urza's Legacy]]></name>
-		<code><![CDATA[ULG]]></code>
+		<code><![CDATA[UL]]></code>
 		<date><![CDATA[02/1999]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Urza's Destiny]]></name>
-		<code><![CDATA[UDS]]></code>
+		<code><![CDATA[UD]]></code>
 		<date><![CDATA[06/1999]]></date>
 	</set>
 
@@ -221,17 +221,17 @@
 		<name><![CDATA[Masques Block]]></name>
 	<set>
 		<name><![CDATA[Mercadian Masques]]></name>
-		<code><![CDATA[MMQ]]></code>
+		<code><![CDATA[MM]]></code>
 		<date><![CDATA[10/1999]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Nemesis]]></name>
-		<code><![CDATA[NMS]]></code>
+		<code><![CDATA[NE]]></code>
 		<date><![CDATA[02/2000]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Prophecy]]></name>
-		<code><![CDATA[PCY]]></code>
+		<code><![CDATA[PY]]></code>
 		<date><![CDATA[06/2000]]></date>
 	</set>
 
@@ -243,17 +243,17 @@
 		<name><![CDATA[Invasion Block]]></name>
 	<set>
 		<name><![CDATA[Invasion]]></name>
-		<code><![CDATA[INV]]></code>
+		<code><![CDATA[IN]]></code>
 		<date><![CDATA[10/2000]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Planeshift]]></name>
-		<code><![CDATA[PLS]]></code>
+		<code><![CDATA[PS]]></code>
 		<date><![CDATA[02/2001]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Apocalypse]]></name>
-		<code><![CDATA[APC]]></code>
+		<code><![CDATA[AP]]></code>
 		<date><![CDATA[06/2001]]></date>
 	</set>
 
@@ -265,17 +265,17 @@
 		<name><![CDATA[Odyssey Block]]></name>
 	<set>
 		<name><![CDATA[Odyssey]]></name>
-		<code><![CDATA[ODY]]></code>
+		<code><![CDATA[OD]]></code>
 		<date><![CDATA[10/2001]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Torment]]></name>
-		<code><![CDATA[TOR]]></code>
+		<code><![CDATA[TO]]></code>
 		<date><![CDATA[02/2002]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Judgment]]></name>
-		<code><![CDATA[JUD]]></code>
+		<code><![CDATA[JU]]></code>
 		<date><![CDATA[05/2002]]></date>
 	</set>
 
@@ -287,17 +287,17 @@
 		<name><![CDATA[Onslaught Block]]></name>
 	<set>
 		<name><![CDATA[Onslaught]]></name>
-		<code><![CDATA[ONS]]></code>
+		<code><![CDATA[ON]]></code>
 		<date><![CDATA[10/2002]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Legions]]></name>
-		<code><![CDATA[LGN]]></code>
+		<code><![CDATA[LE]]></code>
 		<date><![CDATA[02/2003]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Scourge]]></name>
-		<code><![CDATA[SCG]]></code>
+		<code><![CDATA[SC]]></code>
 		<date><![CDATA[05/2003]]></date>
 	</set>
 
@@ -309,17 +309,17 @@
 		<name><![CDATA[Mirrodin Block]]></name>
 	<set>
 		<name><![CDATA[Mirrodin]]></name>
-		<code><![CDATA[MRD]]></code>
+		<code><![CDATA[MR]]></code>
 		<date><![CDATA[10/2003]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Darksteel]]></name>
-		<code><![CDATA[DST]]></code>
+		<code><![CDATA[DS]]></code>
 		<date><![CDATA[02/2004]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Fifth Dawn]]></name>
-		<code><![CDATA[5DN]]></code>
+		<code><![CDATA[FD]]></code>
 		<date><![CDATA[06/2004]]></date>
 	</set>
 
@@ -358,7 +358,7 @@
 	</set>
 	<set>
 		<name><![CDATA[Guildpact]]></name>
-		<code><![CDATA[GPT]]></code>
+		<code><![CDATA[GP]]></code>
 		<date><![CDATA[02/2006]]></date>
 	</set>
 	<set>
@@ -441,7 +441,7 @@
 	</set>
 	<set>
 		<name><![CDATA[Conflux]]></name>
-		<code><![CDATA[CON]]></code>
+		<code><![CDATA[CFX]]></code>
 		<date><![CDATA[02/2009]]></date>
 	</set>
 	<set>
@@ -524,27 +524,27 @@
 		<name><![CDATA[Portal and Starter]]></name>	
 	<set>
 		<name><![CDATA[Portal I]]></name>
-		<code><![CDATA[POR]]></code>
+		<code><![CDATA[PT]]></code>
 		<date><![CDATA[06/1997]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Portal Second Age]]></name>
-		<code><![CDATA[P02]]></code>
+		<code><![CDATA[P2]]></code>
 		<date><![CDATA[06/1998]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Portal Three Kingdoms]]></name>
-		<code><![CDATA[PTK]]></code>
+		<code><![CDATA[P3]]></code>
 		<date><![CDATA[05/1999]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Starter 1999]]></name>
-		<code><![CDATA[S99]]></code>
+		<code><![CDATA[ST]]></code>
 		<date><![CDATA[07/1999]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Starter 2000]]></name>
-		<code><![CDATA[S00]]></code>
+		<code><![CDATA[S2]]></code>
 		<date><![CDATA[07/2000]]></date>
 	</set>	
 
@@ -556,7 +556,7 @@
 		<name><![CDATA[Un-Sets]]></name>	
 	<set>
 		<name><![CDATA[Unglued]]></name>
-		<code><![CDATA[UGL]]></code>
+		<code><![CDATA[UG]]></code>
 		<date><![CDATA[08/1998]]></date>
 	</set>
 	<set>
@@ -573,7 +573,7 @@
 		<name><![CDATA[Box Sets]]></name>
 	<set>
 		<name><![CDATA[Anthologies]]></name>
-		<code><![CDATA[ATH]]></code>
+		<code><![CDATA[ANT]]></code>
 		<date><![CDATA[11/1998]]></date>
 	</set>
 	<set>
@@ -583,12 +583,12 @@
 	</set>
 	<set>
 		<name><![CDATA[Battle Royale]]></name>
-		<code><![CDATA[BRB]]></code>
+		<code><![CDATA[BR]]></code>
 		<date><![CDATA[11/1999]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Beatdown]]></name>
-		<code><![CDATA[BTD]]></code>
+		<code><![CDATA[BD]]></code>
 		<date><![CDATA[12/2000]]></date>
 	</set>
 	<set>
@@ -598,7 +598,7 @@
 	</set>
 	<set>
 		<name><![CDATA[Deckmasters: Garfield vs. Finkel]]></name>
-		<code><![CDATA[DKM]]></code>
+		<code><![CDATA[DM]]></code>
 		<date><![CDATA[12/2001]]></date>
 	</set>
 	<set>
@@ -630,37 +630,37 @@
 	</set>
 	<set>
 		<name><![CDATA[Duel Decks: Jace vs. Chandra]]></name>
-		<code><![CDATA[DD2]]></code>
+		<code><![CDATA[JVC]]></code>
 		<date><![CDATA[11/2008]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Duel Decks: Divine vs. Demonic]]></name>
-		<code><![CDATA[DDC]]></code>
+		<code><![CDATA[DVD]]></code>
 		<date><![CDATA[04/2009]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Duel Decks: Garruk vs. Liliana]]></name>
-		<code><![CDATA[DDD]]></code>
+		<code><![CDATA[GVL]]></code>
 		<date><![CDATA[10/2009]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Duel Decks: Phyrexia vs. The Coalition]]></name>
-		<code><![CDATA[DDE]]></code>
+		<code><![CDATA[PVC]]></code>
 		<date><![CDATA[03/2010]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Duel Decks: Elspeth vs. Tezzeret]]></name>
-		<code><![CDATA[DDF]]></code>
+		<code><![CDATA[EVT]]></code>
 		<date><![CDATA[09/2010]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Duel Decks: Knights vs. Dragons]]></name>
-		<code><![CDATA[DDG]]></code>
+		<code><![CDATA[KVD]]></code>
 		<date><![CDATA[04/2011]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Duel Decks: Ajani vs. Nicol Bolas]]></name>
-		<code><![CDATA[DDH]]></code>
+		<code><![CDATA[AVB]]></code>
 		<date><![CDATA[09/2011]]></date>
 	</set>
 
@@ -672,22 +672,22 @@
 		<name><![CDATA[From the Vault]]></name>
 	<set>
 		<name><![CDATA[From the Vault: Dragons]]></name>
-		<code><![CDATA[DRB]]></code>
+		<code><![CDATA[DRG]]></code>
 		<date><![CDATA[08/2008]]></date>
 	</set>
 	<set>
 		<name><![CDATA[From the Vault: Exiled]]></name>
-		<code><![CDATA[V09]]></code>
+		<code><![CDATA[EXL]]></code>
 		<date><![CDATA[08/2009]]></date>
 	</set>
 	<set>
 		<name><![CDATA[From the Vault: Relics]]></name>
-		<code><![CDATA[V10]]></code>
+		<code><![CDATA[RLC]]></code>
 		<date><![CDATA[08/2010]]></date>
 	</set>
 	<set>
 		<name><![CDATA[From the Vault: Legends]]></name>
-		<code><![CDATA[V11]]></code>
+		<code><![CDATA[LEG]]></code>
 		<date><![CDATA[08/2011]]></date>
 	</set>	
 
@@ -700,7 +700,7 @@
 		<name><![CDATA[Planechase]]></name>
 	<set>
 		<name><![CDATA[Planechase]]></name>
-		<code><![CDATA[HOP]]></code>
+		<code><![CDATA[PCH]]></code>
 		<date><![CDATA[08/2008]]></date>
 	</set>
 	<set>
@@ -717,17 +717,17 @@
 		<name><![CDATA[Premium Deck Series]]></name>
 	<set>
 		<name><![CDATA[Premium Deck Series: Slivers]]></name>
-		<code><![CDATA[PD1]]></code>
+		<code><![CDATA[SLI]]></code>
 		<date><![CDATA[11/2009]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Premium Deck Series: Fire & Lightning]]></name>
-		<code><![CDATA[PD2]]></code>
+		<code><![CDATA[FAL]]></code>
 		<date><![CDATA[11/2010]]></date>
 	</set>
 	<set>
 		<name><![CDATA[Premium Deck Series: Graveborn]]></name>
-		<code><![CDATA[PD3]]></code>
+		<code><![CDATA[GRV]]></code>
 		<date><![CDATA[11/2011]]></date>
 	</set>
 
@@ -759,7 +759,7 @@
 		</set>
 		<set>
 			<name><![CDATA[APAC Lands]]></name>
-			<code><![CDATA[APL]]></code>
+			<code><![CDATA[APAC]]></code>
 			<date><![CDATA[nil]]></date>
 		</set>
 		<set>
@@ -779,17 +779,17 @@
 		</set>
 		<set>
 			<name><![CDATA[Celebration Cards]]></name>
-			<code><![CDATA[CBC]]></code>
+			<code><![CDATA[CC]]></code>
 			<date><![CDATA[nil]]></date>
 		</set>
 		<set>
 			<name><![CDATA[Champs and States Promos]]></name>
-			<code><![CDATA[CHS]]></code>
+			<code><![CDATA[CHA]]></code>
 			<date><![CDATA[nil]]></date>
 		</set>
 		<set>
 			<name><![CDATA[Chronicles]]></name>
-			<code><![CDATA[CHR]]></code>
+			<code><![CDATA[CH]]></code>
 			<date><![CDATA[07/1995]]></date>
 		</set>
 		<set>
@@ -844,7 +844,7 @@
 		</set>
 		<set>
 			<name><![CDATA[Junior Super Series Promos]]></name>
-			<code><![CDATA[JSS]]></code>
+			<code><![CDATA[JS]]></code>
 			<date><![CDATA[nil]]></date>
 		</set>
 		<set>
@@ -919,7 +919,7 @@
 		</set>
 		<set>
 			<name><![CDATA[Super Series]]></name>
-			<code><![CDATA[TSS]]></code>
+			<code><![CDATA[SS]]></code>
 			<date><![CDATA[nil]]></date>
 		</set>
 		<set>
@@ -955,7 +955,7 @@
 		<name><![CDATA[Digital Sets]]></name>	
 	<set>
 		<name><![CDATA[Masters Edition]]></name>
-		<code><![CDATA[ME1]]></code>
+		<code><![CDATA[ME]]></code>
 		<date><![CDATA[09/2007]]></date>
 	</set>
 	<set>

@@ -54,10 +54,13 @@ namespace :mtg do
           puts "Card: #{c.css("name").text} already exists!!!!" # do nothing
         else
           @set = MtgSet.where(:code => c.css("set").text)[0] # otherwise, look up the set which the card belongs to
+          number = c.css("number").text
+          formatted_number = "%03d" % number.to_i.to_s + number.delete(number.to_i.to_s)
           @set.cards << MtgCard.create( 
                                         :name => c.css("name").text, 
                                         :card_type => compute_type(c.css("type").text),
                                         :card_subtype => compute_subtype(c.css("type").text),
+                                        :card_number => formatted_number,
                                         :rarity => c.css("rarity").text,
                                         :artist => c.css("artist").text,
                                         :description => c.css("ability").text,
@@ -78,7 +81,7 @@ namespace :mtg do
                                         :legality_peasant => c.css("legality_Peasant").text,
                                         :legality_pauper => c.css("legality_Pauper").text,
                                         :multiverse_id => c.css("id").text,
-                                        :image_path => "mtg/cards/#{c.css("set").text}/#{c.css("id").text}.jpg"
+                                        :image_path => "mtg/cards/#{c.css("set").text}/#{formatted_number}.jpg"
                                       ) # create the card under its corresponding set
                          
           puts "Set: #{@set.name}, Card: #{c.css("id").text}, #{c.css("name").text} created" # notification that card was created
@@ -132,8 +135,32 @@ namespace :mtg do
     puts @array.uniq
   end
 
+
+  task :convert_names => :environment do
+    MtgCard.all.each do |c|
+      before = c.card_number
+      if c.card_number.length > 0
+        numeral = c.card_number.match(/[0-9]+/)[0]
+        numeral = "0" + numeral if numeral.length < 3
+        numeral = "0" + numeral if numeral.length < 3      
+        letter = c.card_number.match(/[a-z]+/)
+        if letter
+          letter = letter[0]
+        else
+          letter = ""
+        end
+        new_value = numeral + letter
+        c.update_attribute(:card_number, new_value)
+        c.update_attribute(:image_path, "mtg/cards/#{c.set.code}/#{c.card_number}.jpg")
+        after = new_value
+        puts "ID: #{c.id} before: #{before} - After #{after}"
+      end
+    end
+  end
+
 end # namespace mtg
 
+  
 def compute_type(string) #used to format type to import into cards.
   if string.split(" — ")[0]
     return string.split(" — ")[0].strip

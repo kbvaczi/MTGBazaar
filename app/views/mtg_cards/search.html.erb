@@ -1,9 +1,16 @@
 <% title "MTG Cards" %>
 
-<h1>Search Results</h1>
+<h1>Search Results (<%= @mtg_cards.total_count %> cards)</h1>
 
 <div class ="content">
-
-  <%= render :partial => "teaser", :collection => @mtg_cards, :as => "mtg_card" %>
-
+  <div class="paginator">
+    <%= paginate @mtg_cards , :remote => true %>
+  </div>
+  <div id="search_results">
+    <%= render :partial => "teaser", :collection => @mtg_cards, :as => "mtg_card" %>
+  </div>
+  <div class="paginator">
+    <%= paginate @mtg_cards , :remote => true %>
+  </div>
+  
 </div>

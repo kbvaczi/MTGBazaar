@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120212124758) do
+ActiveRecord::Schema.define(:version => 20120216211855) do
 
   create_table "accounts", :force => true do |t|
     t.integer  "user_id"
@@ -107,6 +107,7 @@ ActiveRecord::Schema.define(:version => 20120212124758) do
     t.string   "image_path",                :default => "", :null => false
     t.datetime "created_at",                                :null => false
     t.datetime "updated_at",                                :null => false
+    t.string   "card_number"
   end
 
   add_index "mtg_cards", ["artist"], :name => "index_mtg_cards_on_artist"
@@ -121,7 +122,7 @@ ActiveRecord::Schema.define(:version => 20120212124758) do
     t.integer  "block_id"
     t.string   "name",         :default => "",                    :null => false
     t.string   "code",         :default => "",                    :null => false
-    t.datetime "release_date", :default => '2012-02-06 01:32:20'
+    t.datetime "release_date", :default => '2012-02-17 00:28:11'
     t.datetime "created_at",                                      :null => false
     t.datetime "updated_at",                                      :null => false
   end

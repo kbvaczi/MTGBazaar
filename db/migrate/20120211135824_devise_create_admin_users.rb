@@ -1,5 +1,5 @@
 class DeviseCreateAdminUsers < ActiveRecord::Migration
-  def change
+  def up
     create_table(:admin_users) do |t|
       ## Database authenticatable
       t.string :email,              :null => false, :default => ""
@@ -48,5 +48,9 @@ class DeviseCreateAdminUsers < ActiveRecord::Migration
     # add_index :admin_users, :confirmation_token,   :unique => true
     # add_index :admin_users, :unlock_token,         :unique => true
     # add_index :admin_users, :authentication_token, :unique => true
+  end
+  
+  def down
+    drop_table :admin_users
   end
 end

@@ -33,33 +33,30 @@ class MtgCardsController < ApplicationController
 
   def search
     
-    # SEARCH CARDS                    
-    @mtg_cards = MtgCard.find(:all, :joins => :set, :conditions => [ "mtg_cards.name LIKE ? 
-                                                                      AND code LIKE ? 
-                                                                      AND mana_color LIKE ? 
-                                                                      AND mana_color LIKE ? 
-                                                                      AND mana_color LIKE ? 
-                                                                      AND mana_color LIKE ? 
-                                                                      AND mana_color LIKE ?
-                                                                      AND rarity LIKE ?
-                                                                      AND card_type LIKE ?
-                                                                      AND artist LIKE ?
-                                                                      AND card_subtype LIKE?",
-                                                                      "%#{params[:name]}%", 
-                                                                      "%#{params[:set]}%", 
-                                                                      "%#{params[:white]}%", 
-                                                                      "%#{params[:blue]}%", 
-                                                                      "%#{params[:black]}%", 
-                                                                      "%#{params[:red]}%", 
-                                                                      "%#{params[:green]}%",
-                                                                      "%#{params[:rarity]}%",
-                                                                      "%#{params[:type]}%",
-                                                                      "%#{params[:artist]}%",
-                                                                      "%#{params[:subtype]}%"], 
-                                                                      :limit => 50, :order => "name")
-
-                                                                      
-                                                                
+    # SEARCH CARDS                
+    @mtg_cards = MtgCard.joins(:set).where("mtg_cards.name LIKE ? 
+                                            AND code LIKE ?
+                                            AND mana_color LIKE ? 
+                                            AND mana_color LIKE ? 
+                                            AND mana_color LIKE ? 
+                                            AND mana_color LIKE ? 
+                                            AND mana_color LIKE ?
+                                            AND rarity LIKE ?
+                                            AND card_type LIKE ?
+                                            AND artist LIKE ?
+                                            AND card_subtype LIKE?",
+                                            "%#{params[:name]}%", 
+                                            "%#{params[:set]}%", 
+                                            "%#{params[:white]}%", 
+                                            "%#{params[:blue]}%", 
+                                            "%#{params[:black]}%", 
+                                            "%#{params[:red]}%", 
+                                            "%#{params[:green]}%",
+                                            "%#{params[:rarity]}%",
+                                            "%#{params[:type]}%",
+                                            "%#{params[:artist]}%",
+                                            "%#{params[:subtype]}%").order("name").page(params[:page]).per(50)
+                                                       
   end
   
 end

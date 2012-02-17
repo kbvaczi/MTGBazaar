@@ -8,6 +8,7 @@ gem 'jquery-rails'                                                  # latest jqu
 gem "recaptcha", "~> 0.3.4", :require => "recaptcha/rails"          # Bot prevention
 gem "nokogiri", "~> 1.5.0"                                          # XML/HTML Parser
 gem "activeadmin", "~> 0.4.0"                                       # Administrator Panel
+gem "kaminari", "~> 0.13.0"                                         # Pagination
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'

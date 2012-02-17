@@ -1,0 +1,3 @@
+<div class="right">
+  <%= button_to raw('Next &raquo;'), url, :method => :post, :remote => remote unless current_page.last? do |name| -%><span class="disabled"><%= name %></span><% end -%>
+</div>
