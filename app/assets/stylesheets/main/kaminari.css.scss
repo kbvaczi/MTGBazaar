@@ -1,0 +1,41 @@
+.pagination{
+  width:100%;
+  background: rgba(240,240,240,0.3); /* Old browsers */
+  -moz-box-shadow:     0px 1px 1px 0px #eee;
+  -webkit-box-shadow:  0px 1px 1px 0px #eee;
+  box-shadow:          0px 1px 1px 0px #eee;
+  -moz-border-radius:     10px;
+  -webkit-border-radius:  10px;
+  border-radius:          10px;  
+}
+.pagination a{
+  padding:.1em .3em;
+  margin:.2em;
+  border:1px solid #aad;
+  text-decoration:none;
+  color:#369;
+}
+.pagination a:hover,.pagination a:active{
+  border:1px solid #369;
+  color:#000;
+}
+.pagination span.current{
+  padding:.1em .3em;
+  margin:.2em;
+  border:1px solid #369;
+  font-weight:bold;
+  background-color:#369;
+  color:#FFF;
+}
+.pagination span.disabled {
+  padding:.1em .3em;
+  margin:.2em;
+  border:1px solid #eee;
+  color:#ddd;
+}
+.pagination-info {
+  position: relative;
+  display:inline;
+  z-index: 5;
+  width:300px;
+}

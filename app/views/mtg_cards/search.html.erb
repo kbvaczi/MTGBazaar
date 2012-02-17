@@ -4,13 +4,13 @@
 
 <div class ="content">
   <div class="paginator">
-    <%= paginate @mtg_cards , :remote => true %>
+    <%= paginate @mtg_cards , :remote => true, :collection => @mtg_cards %>
   </div>
   <div id="search_results">
     <%= render :partial => "teaser", :collection => @mtg_cards, :as => "mtg_card" %>
   </div>
   <div class="paginator">
-    <%= paginate @mtg_cards , :remote => true %>
+    <%= paginate @mtg_cards , :remote => true ,:collection => @mtg_cards %>
   </div>
   
 </div>

@@ -41,9 +41,10 @@ h1 {
   
 }
 h2 {
+  width:auto;
   font-size: 130%;
   line-height: 1.5;
-  margin: 20px 20px 20px 20px;
+  margin: 15px 20px 15px 20px;
   text-shadow: 0 1px 0px #EEE;
   display:block;
   border-bottom: 1px solid #eee;
@@ -519,11 +520,12 @@ input {
 .right { float: right; }
 .center { min-width: 30%; } /* objects automatically centered using jquery */
 .hidden { visibility:hidden; }
-.mr {margin-right:10px; }
-.ml {margin-left:10px; }
-.mt {margin-top:10px; }
-.mb {margin-bottom:10px; }
+.mr {margin-right:15px; }
+.ml {margin-left:15px; }
+.mt {margin-top:15px; }
+.mb {margin-bottom:15px; }
 .ma {margin: 15px; }
+.ma-s {margin: 8px; } /* margin-all (small) */
 
 
 
