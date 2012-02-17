@@ -55,7 +55,7 @@ class MtgCardsController < ApplicationController
                                             "%#{params[:rarity]}%",
                                             "%#{params[:type]}%",
                                             "%#{params[:artist]}%",
-                                            "%#{params[:subtype]}%").order("name").page(params[:page]).per(50)
+                                            "%#{params[:subtype]}%").order("name").page(params[:page]).per(25)
                                                        
   end
   

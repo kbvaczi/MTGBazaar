@@ -1,5 +1,5 @@
-<div class="right">
-  <%= button_to raw('Next &raquo;'), url, :method => :post, :remote => remote unless current_page.last? do |name| -%>
+<div class="pagination-right">
+  <%= button_to raw('Next &raquo;'), url, :method => :post, :remote => remote, :class => "right" unless current_page.last? do |name| -%>
     <span class="disabled">
       <%= name %>
     </span>

@@ -57,6 +57,12 @@
           <br/>
           <%= select_tag "artist" , options_for_select(artist_list, :selected => params[:artist]) , {:prompt => 'All artists...', :class => "search-select chzn-select"} %>                        
         </div>
+                                                                      
+        <div class="search-seller">
+          <%#= label_tag "Artist:" %>
+          <br/>
+          <%= select_tag "seller" , options_for_select(["bob", "joe", "chris"], :selected => params[:seller]) , {:prompt => 'All sellers...', :class => "search-select chzn-select"} %>                        
+        </div>        
               
         <br/>
         <div class="left" id="clear-filters">

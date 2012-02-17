@@ -1,12 +1,12 @@
 .pagination{
   width:100%;
-  background: rgba(240,240,240,0.3); /* Old browsers */
+  background: rgba(240,240,240,0.4);
   -moz-box-shadow:     0px 1px 1px 0px #eee;
   -webkit-box-shadow:  0px 1px 1px 0px #eee;
   box-shadow:          0px 1px 1px 0px #eee;
-  -moz-border-radius:     10px;
-  -webkit-border-radius:  10px;
-  border-radius:          10px;  
+  -moz-border-radius:     5px;
+  -webkit-border-radius:  5px;
+  border-radius:          5px;  
 }
 .pagination a{
   padding:.1em .3em;
@@ -34,8 +34,19 @@
   color:#ddd;
 }
 .pagination-info {
-  position: relative;
-  display:inline;
-  z-index: 5;
-  width:300px;
+  display:inline-block;
+  width:40%;
+  line-height:300%;
+  text-align:center;
+  margin-right:-5px;
+}
+.pagination-right {
+  float:right;
+  margin-top: 10px;
+  width: 30%;
+}
+.pagination-left {
+  float:left;
+  margin-top: 10px;
+  width: 30%;
 }
