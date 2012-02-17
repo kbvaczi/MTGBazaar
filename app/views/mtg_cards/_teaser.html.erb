@@ -5,10 +5,25 @@
     <%= link_to image_tag(mtg_card.image_path, :class => "mtg_teaser_image"), mtg_card_path(mtg_card)%>
   </div>
   <div class="mtg_teaser_info">
-    <h2><%= display_name(mtg_card.name)%></h2>
-    <div class= "ma">
-      <%=mtg_card.set.name%>
+    <h2>
+      <%= display_name(mtg_card.name)%>
+      <div class="right">
+        <%= display_symbols(mtg_card.mana_string)%>
+      </div>
+    </h2>
+    <div class= "ml-s">      
+      <%= display_type(mtg_card.card_type, mtg_card.card_subtype) %>
+      <br/>
+      <%= mtg_card.set.name %>   
+      <div class="right mr">
+        <%= link_to "#{Random.rand(1000)} in stock", mtg_card_path(mtg_card)  %>
+        <%= %>
+      </div>        
+      <br class="spacer"/>
+        <%= button_to "Quick Buy: $#{Random.rand(50)}.#{"%02d" % Random.rand(99)}",  root_path , :class => "right"%>
+
     </div>
+
 
   </div>
 </div>

@@ -44,7 +44,7 @@ h2 {
   width:auto;
   font-size: 130%;
   line-height: 1.5;
-  margin: 15px 20px 15px 20px;
+  margin: 15px 0 15px 0;
   text-shadow: 0 1px 0px #EEE;
   display:block;
   border-bottom: 1px solid #eee;
@@ -522,10 +522,11 @@ input {
 .hidden { visibility:hidden; }
 .mr {margin-right:15px; }
 .ml {margin-left:15px; }
+.ml-s {margin-left:5px; }
 .mt {margin-top:15px; }
 .mb {margin-bottom:15px; }
 .ma {margin: 15px; }
-.ma-s {margin: 8px; } /* margin-all (small) */
+.ma-s {margin: 5px; } /* margin-all (small) */
 
 
 

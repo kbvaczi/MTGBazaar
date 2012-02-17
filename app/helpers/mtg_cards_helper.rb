@@ -8,8 +8,17 @@ module MtgCardsHelper
   
   # display only first 30 characters of a name"
   def display_name(name)
-    name.truncate(35, :omission => "...")
+    name.truncate(30, :omission => "...")
   end
+  
+  # display only first 30 characters of a name"
+  def display_type(type, subtype)
+    if subtype.length > 1
+      "#{type} - #{subtype}"
+    else
+      "#{type}"
+    end
+  end  
   
   # Converts mana string to a series of corresponding image links to be displayed
   def display_symbols(string)
