@@ -3,16 +3,13 @@
   width: 150px;
 }
 .search-select {
-  width: 164px;
-  margin-top: 100px;
+  width: 100%;
 }
 .search-select-rarity {
   width: 80px;
-  margin-top: 100px;
 }
 .search-select-condition {
   width: 75px;
-  margin-top: 100px;
 }
 .search-color-icon {
   width: 22px;
@@ -30,19 +27,33 @@
 .search-color-check-last {
   margin: 0px 0px 0 5px;  
 }
+.search-divider {
+  border-bottom: 1px solid #eee;
+  display:block;
+  width:100%;
+}
 .search-submit {
   float: right;
   margin: 15px 0 0 0;  
 }
 .search-rarity {
-  display:inline;
+  display:inline-block;
   float:left;
-  margin-right: 5px;
 }
 .search-condition {
-  display:inline;
-  float:right;
-  margin-right: -2px;
+  display: inline-block;
+  float: right;
+  margin-right:2px;
+}
+#search_name_suggestions {
+  display: none;
+  width:160px;
+  position: absolute;
+  background: #ddd;
+  z-index:5;
+}
+#search_form{
+  position:relative;
 }
 #clear-filters {
   cursor: pointer;

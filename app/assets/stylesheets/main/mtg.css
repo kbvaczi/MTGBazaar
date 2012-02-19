@@ -6,8 +6,8 @@
 }
 .card_show_info {
   display:table;
-  margin: 0 15px 0 15px;
-  width: 290px;
+  margin: 0 0px 0 15px;
+  width: 300px;
   float:left;
   text-align:justify;
 }
