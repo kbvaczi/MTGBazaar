@@ -1,23 +1,18 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 
   def new
-
-
+    @user = resource
+    @age_checked = true
     super
-      @user = resource
-
   end
   
   def edit
-
-    super
-      @user = resource
-
+    @user = resource
+    super      
   end
   
   def create
-
-    if verify_recaptcha
+    if check_humanity
       super
     else
       build_resource
@@ -25,19 +20,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
       flash[:error] = "Please re-enter captcha code. Thanks for helping us prevent spam!"
       render :new
     end
-    
   end
-  
-  def update
-
-    super
-  end    
-  
   
   protected
   
-    def verify_humanity
+  def check_humanity
+    if verify_recaptcha or session[:captcha] == true
+      session[:captcha] = true if not session[:captcha]
       return true
+    else
+      return false
     end
+    
+  end
   
 end

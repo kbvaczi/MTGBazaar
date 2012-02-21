@@ -8,10 +8,11 @@ MTGBazaar::Application.routes.draw do
   
   # MTG CARDS ---------------- #
   match 'mtg_cards/search/' => 'mtg_cards#search', :as => 'mtg_cards_search'
-  resources :mtg_cards, :only => [:index, :show] # don't allow users to create/destroy mtg cards by only allowing index and show routes
+  match 'mtg_cards/autocomplete_name' => 'mtg_cards#autocomplete_name', :as => 'mtg_autocomplete_name'  
+  resources :mtg_cards, :only => [:index, :show] do # don't allow users to create/destroy mtg cards by only allowing index and show routes
+  end
 
-  match 'mtg_cards/mtg_search_clear'  => 'mtg_cards#search_clear', :as => "mtg_search_clear"
-  match 'mtg_cards/mtg_search_update' => 'mtg_cards#search_update', :as => "mtg_search_update"
+
 
   # USERS -------------------- #
   # resources :users must be declared after devise_for because earlier declarations take precedence 

@@ -1,5 +1,10 @@
 module ApplicationHelper
   
+  def captcha_verified?
+    return true if session[:captcha]
+    return false
+  end
+  
   def title(page_title)
     content_for(:title) { page_title + " | MTG Bazaar" }
   end

@@ -1,6 +1,6 @@
 <% title "MTG Cards" %>
 
-<h1>Search Results (<%= @mtg_cards.total_count %> cards)</h1>
+<h1>Search Results (<%=pluralize(@mtg_cards.total_count,"card","cards")%>)</h1>
 
 <div class ="content">
   <div class="paginator">

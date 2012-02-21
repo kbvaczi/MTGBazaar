@@ -9,6 +9,7 @@ gem "recaptcha", "~> 0.3.4", :require => "recaptcha/rails"          # Bot preven
 gem "nokogiri", "~> 1.5.0"                                          # XML/HTML Parser
 gem "activeadmin", "~> 0.4.0"                                       # Administrator Panel
 gem "kaminari", "~> 0.13.0"                                         # Pagination
+gem "rails3-jquery-autocomplete", "~> 1.0.6"                        # Autocomplete text fields
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'

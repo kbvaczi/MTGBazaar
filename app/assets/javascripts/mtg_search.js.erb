@@ -10,57 +10,62 @@ $(document).ready(function() {
     $("#search-form").find("input").removeAttr('checked');
     
     //clear cookies
-    $.cookie('search_name', '', { path: '/' });
-    $.cookie('search_set', '', { path: '/' });    
-    $.cookie('search_type', '', { path: '/' });    
-    $.cookie('search_subtype', '', { path: '/' });    
-    $.cookie('search_artist', '', { path: '/' });    
-    $.cookie('search_condition', '', { path: '/' });    
-    $.cookie('search_rarity', '', { path: '/' });    
-    $.cookie('search_white', '', { path: '/' });
-    $.cookie('search_blue', '', { path: '/' });
-    $.cookie('search_black', '', { path: '/' });
-    $.cookie('search_red', '', { path: '/' });  
-    $.cookie('search_green', '', { path: '/' });                
+    $.cookie('search_name', '', { expires: 1, path: '/' });
+    $.cookie('search_set', '', { expires: 1, path: '/' });    
+    $.cookie('search_type', '', { expires: 1, path: '/' });    
+    $.cookie('search_subtype', '', { expires: 1, path: '/' });    
+    $.cookie('search_artist', '', { expires: 1, path: '/' });    
+    $.cookie('search_condition', '', { expires: 1, path: '/' });    
+    $.cookie('search_rarity', '', { expires: 1, path: '/' });    
+    $.cookie('search_white', '', { expires: 1, path: '/' });
+    $.cookie('search_blue', '', { expires: 1, path: '/' });
+    $.cookie('search_black', '', { expires: 1, path: '/' });
+    $.cookie('search_red', '', { expires: 1, path: '/' });  
+    $.cookie('search_green', '', { expires: 1, path: '/' });                
   });
   
+  //DO THIS WHEN AUTOCOMPLETE NAME IS CLICKED
+  $('#name').bind('railsAutocomplete.select', function(event, data){
+    $.cookie('search_name', $("#name").val(), { expires: 1, path: '/' });
+    window.location = location.protocol + '//' + location.host + "/mtg_cards/search?name=" + $("#name").val();
+  });
   
   //UPDATE COOKEIS TO STORE SEARCH INFO
   $("#name").change(function() {  
-    $.cookie('search_name', $("#name").val(), { path: '/' });
+    $.cookie('search_name', $("#name").val(), { expires: 1, path: '/' });
   });
   $("#set").change(function() {  
-    $.cookie('search_set', $("#set").val() , { path: '/' });
+    $.cookie('search_set', $("#set").val() , { expires: 1, path: '/' });
   });
   $("#type").change(function() {  
-    $.cookie('search_type', $("#type").val(), { path: '/' });
+    $.cookie('search_type', $("#type").val(), { expires: 1, path: '/' });
   });
   $("#subtype").change(function() {  
-    $.cookie('search_subtype', $("#subtype").val(), { path: '/' });
+    $.cookie('search_subtype', $("#subtype").val(), { expires: 1, path: '/' });
   });
   $("#artist").change(function() {  
-    $.cookie('search_artist', $("#artist").val(), { path: '/' });
+    $.cookie('search_artist', $("#artist").val(), { expires: 1, path: '/' });
   });
   $("#condition").change(function() {  
-    $.cookie('search_condition', $("#condition").val(), { path: '/' });
+    $.cookie('search_condition', $("#condition").val(), { expires: 1, path: '/' });
   });
   $("#rarity").change(function() {  
-    $.cookie('search_rarity', $("#rarity").val(), { path: '/' });
+    $.cookie('search_rarity', $("#rarity").val(), { expires: 1, path: '/' });
   });        
   $("#white").change(function() {  
-    $('#white').is(':checked') ? $.cookie('search_white', true, { path: '/' }) : $.cookie('search_white',"", { path: '/' });
+    $('#white').is(':checked') ? $.cookie('search_white', true, { expires: 1, path: '/' }) : $.cookie('search_white',"", { expires: 1, path: '/' });
   });  
   $("#blue").change(function() {  
-    $('#blue').is(':checked') ? $.cookie('search_blue', true, { path: '/' }) : $.cookie('search_blue',"", { path: '/' });
+    $('#blue').is(':checked') ? $.cookie('search_blue', true, { expires: 1, path: '/' }) : $.cookie('search_blue',"", { expires: 1, path: '/' });
   });
   $("#black").change(function() {  
-    $('#black').is(':checked') ? $.cookie('search_black', true, { path: '/' }) : $.cookie('search_black',"", { path: '/' });
+    $('#black').is(':checked') ? $.cookie('search_black', true, { expires: 1, path: '/' }) : $.cookie('search_black',"", { expires: 1, path: '/' });
   });
   $("#red").change(function() {  
-    $('#red').is(':checked') ? $.cookie('search_red', true, { path: '/' }) : $.cookie('search_red',"", { path: '/' });
+    $('#red').is(':checked') ? $.cookie('search_red', true, { expires: 1, path: '/' }) : $.cookie('search_red',"", { expires: 1, path: '/' });
   });
   $("#green").change(function() {  
-    $('#green').is(':checked') ? $.cookie('search_green', true, { path: '/' }) : $.cookie('search_green',"", { path: '/' });
+    $('#green').is(':checked') ? $.cookie('search_green', true, { expires: 1, path: '/' }) : $.cookie('search_green',"", { expires: 1, path: '/' });
   });        
   
   

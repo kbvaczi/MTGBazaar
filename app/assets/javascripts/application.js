@@ -6,7 +6,11 @@
 //
 //= require jquery
 //= require jquery_ujs    
+//= require jquery-ui
+//= require jquery.ui.autocomplete.html.js
 //= require jquery-cookie
+
+//= require autocomplete-rails
 //= require chosen
 //= require_tree .
 

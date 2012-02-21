@@ -12,8 +12,8 @@ html {
   margin-bottom: 25px;
   padding: 0;
   background-color: #fff;
-  font-family: "Helvetica", "Lucida Grande", "Bitstream Vera Sans", "Verdana", sans-serif;
-  font-size: 13px;
+  font-family: "Trebuchet MS", "Verdana", "Helvetica", sans-serif;
+  font-size: 12px;
   color: #555;
   height: 100%;
   line-height: 140%;
@@ -358,7 +358,7 @@ input {
 }
 #center_bar {
   float:left;
-  min-height:900px;
+  min-height:600px;
   margin: 10px;
   width: 500px;
   background: #FFF;
@@ -518,8 +518,8 @@ input {
 /*-------------Helpers----------------*/
 /*------------------------------------*/
 .spacer { clear: both; }
-.left { float: left; }
-.right { float: right; }
+.left { display:inline-block; float: left; }
+.right { display:inline-block; float: right; }
 .center { min-width: 30%; } /* objects automatically centered using jquery */
 .hidden { visibility:hidden; }
 .mr {margin-right:15px; }
