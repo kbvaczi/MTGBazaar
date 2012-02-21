@@ -1,0 +1,86 @@
+<%= form_tag mtg_cards_search_path , :method => "post", :id => "search-form" do %>   
+
+  <h1><%= autocomplete_field_tag "name", params[:name], mtg_autocomplete_name_path , :class => "search-text" , :placeholder => "Card name..." %></h1>
+  <%# autocomplete_mtg_card_name_mtg_cards_path%>
+  <div class="ma">
+    
+    <div id="search_name_suggestions">
+      testy test mctesterson<br/>      testy test mctesterson<br/>      testy test mctesterson<br/>      testy test mctesterson<br/>      testy test mctesterson<br/>      testy test mctesterson<br/>      testy test mctesterson<br/>      testy test mctesterson<br/>      testy test mctesterson<br/>      testy test mctesterson<br/>
+    </div>
+    
+    <div class="search-divider">Card Filters:</div>
+    <div class= "mt-m search-set">
+      <%#= label_tag "Set:" %>
+      <%= select_tag "set" , options_for_select(MtgSet.all.collect {|s| [ s.name, s.code ] }, :selected => params[:set]), {:prompt => 'All sets...', :class => "search-select chzn-select"} %>
+    </div>
+
+    <div class="mt-m search-color">
+      <%#= label_tag "Color:" %>
+      <%= image_tag "mtg/mana_symbols/mana_w.jpg" , :class => "search-color-icon" %>
+      <%= image_tag "mtg/mana_symbols/mana_u.jpg" , :class => "search-color-icon" %>
+      <%= image_tag "mtg/mana_symbols/mana_b.jpg" , :class => "search-color-icon" %>
+      <%= image_tag "mtg/mana_symbols/mana_r.jpg" , :class => "search-color-icon" %>
+      <%= image_tag "mtg/mana_symbols/mana_g.jpg" , :class => "search-color-icon-last" %>
+      <br/>
+      <%= check_box_tag "white", "W", params[:white], :class => "search-color-check" %>
+      <%= check_box_tag "blue", "U", params[:blue], :class => "search-color-check" %>
+      <%= check_box_tag "black", "B", params[:black], :class => "search-color-check" %>
+      <%= check_box_tag "red", "R", params[:red], :class => "search-color-check" %>
+      <%= check_box_tag "green", "G", params[:green], :class => "search-color-check-last" %>
+    </div>
+
+    <div class="mt-m search-type">
+      <%#= label_tag "Type:" %>
+      <%= select_tag "type", options_for_select(card_type_list, :selected => params[:type]) , {:prompt => 'All types...', :class => "search-select chzn-select"} %>            
+    </div>
+
+    <div class="mt-m search-subtype">
+      <%#= label_tag "Subtype:" %>
+      <%= select_tag "subtype", options_for_select(card_subtype_list, :selected => params[:subtype]) , {:prompt => 'All subtypes...', :class => "search-select chzn-select"} %>            
+    </div>          
+    
+    <div class="mt-m">
+      <div class="search-rarity">
+        <%= label_tag "Rarity:" %>
+        <br/>
+        <%= select_tag "rarity" , options_for_select(rarity_list, :selected => params[:rarity]) , {:prompt => 'All...', :class => "search-select-rarity chzn-select"} %>                        
+      </div>        
+
+      <div class="search-condition">
+        <%= label_tag "Condition:" %>
+        <br/>
+        <%= select_tag "condition" , options_for_select(condition_list, :selected => params[:condition]) , {:prompt => 'All...', :class => "search-select-condition chzn-select"} %>                        
+      </div>
+    </div>
+    <br/>
+    
+    <div class="mt search-artist">
+      <%#= label_tag "Artist:" %>
+      <br/>
+      <%= select_tag "artist" , options_for_select(artist_list, :selected => params[:artist]) , {:prompt => 'All artists...', :class => "search-select chzn-select"} %>                        
+    </div>
+
+    <div class="mt-m search-divider">Seller Filters:</div>
+    <div class="mt-m mr search-seller">
+      <%#= label_tag "Seller:" %>
+      <%#="<br/>"%>
+      <%= text_field_tag "seller", params[:seller], :placeholder => "Seller name...", :style => "width:100%;"%>
+      <%#= select_tag "seller" , options_for_select(["bob", "joe", "chris"], :selected => params[:seller]) , {:prompt => 'All sellers...', :class => "search-select chzn-select"} %>                        
+    </div>
+
+    <div class="mt-m search-seller-rating">
+      <%#= label_tag "Artist:" %>
+      <%#="<br/>"%>          
+      <%= select_tag "rating" , options_for_select(["3.0 or above","3.5 or above", "4.0 or above", "4.5 or above", "5.0"], :selected => params[:rating]) , {:prompt => 'Minimum rating...', :class => "search-select chzn-select"} %>                        
+    </div>                
+          
+    <br/>
+    <div class="left" id="clear-filters">
+      Clear
+    </div>
+
+    <%= submit_tag "Advanced Search", :class => "search-submit" %>
+    <br/>
+    
+  </div>
+<% end %>

@@ -1,0 +1,21 @@
+<% 
+  @return_array = Array.new
+  @mtg_cards.each do |c|
+    computed_label = 
+      "<div class=\"\">
+        <span>
+          #{display_name(c.name)}&nbsp;
+        </span>
+        <span class=\"right\">
+          #{display_symbols(c.mana_string)}
+        </span>
+        <br class=\"spacer\"/>
+      </div>
+      <div style=\"font-size:70%; border-bottom: 1px dotted #eee;\">
+        #{display_type(c.card_type, c.card_subtype)}
+      </div>"
+    computed_value = c.name
+    @return_array << Hash[ "label" => computed_label, "value" => computed_value ]
+  end
+%>
+<%= @return_array.uniq.first(10).to_json.html_safe %>
