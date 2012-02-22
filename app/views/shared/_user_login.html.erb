@@ -1,4 +1,4 @@
-<div class="right mt-m ml mr" style="min-height:25px;width:50%;">
+<div id="user_login" class="right mt-m ml mr" style="min-height:25px;width:50%;">
   
   <%unless user_signed_in? %>
     <%= form_for(:user, :url => user_session_path) do |f| %>
@@ -9,10 +9,10 @@
 
       <div class="right">
         <%= f.label :email, "Email" %>
-        <%= f.text_field :email, :style=>"width:120px;", :class => "test" %>
+        <%= f.text_field :email, :style =>"width:120px;", :id => "login_email" %>
         &nbsp;
         <%= f.label :password, "Password" %>
-        <%= f.password_field :password, :style=>"width:120px;" %>
+        <%= f.password_field :password, :style =>"width:120px;", :id => "login_password" %>
         &nbsp;
       </div>
       
