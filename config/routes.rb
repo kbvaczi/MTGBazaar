@@ -1,5 +1,5 @@
 MTGBazaar::Application.routes.draw do
-  
+
   # ACTIVE ADMIN SETUP ------- #
   ActiveAdmin.routes(self)
   

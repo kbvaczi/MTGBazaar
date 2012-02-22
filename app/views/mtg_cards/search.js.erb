@@ -1,2 +1,2 @@
 $('#search_results').html('<%= escape_javascript render :partial => "teaser", :collection => @mtg_cards, :as => "mtg_card" %>');
-$('.paginator').html('<%= escape_javascript paginate @mtg_cards, :collection => @mtg_cards, :remote => true %>');
+$('.paginator').html('<%= escape_javascript paginate @mtg_cards, :theme => :simple, :collection => @mtg_cards, :remote => true %>');
