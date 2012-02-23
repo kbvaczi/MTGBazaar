@@ -23,6 +23,7 @@ MTGBazaar::Application.routes.draw do
   
   # MISC ROUTES -------------- #
   root :to => "home#index"
+  match 'feedback'        => 'home#feedback'
   match 'about'           => 'home#about'
   match 'terms'           => 'home#terms_of_service'
   match 'privacy'         => 'home#privacy'

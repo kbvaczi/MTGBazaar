@@ -1,5 +1,7 @@
 ActiveAdmin.register User do
   
+  menu :label => "Standard Users", :parent => "Users"
+
   # Create sections on the index screen
   #scope :all, :default => true
   
@@ -25,8 +27,6 @@ ActiveAdmin.register User do
 
   # Customize columns displayed on the index screen in the table
   index do
-    
-    
     column :username, :sortable => :username do |user|
       link_to user.username, admin_user_path(user)
     end
