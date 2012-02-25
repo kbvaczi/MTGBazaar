@@ -9,7 +9,7 @@ class CreateMtgSets < ActiveRecord::Migration
       
       t.string   :name           , :default => ""          , :null => false 
       t.string   :code           , :default => ""          , :null => false 
-      t.datetime :release_date   , :default => Time.now()
+      t.date     :release_date   , :default => Time.now()
       
       t.timestamps
       

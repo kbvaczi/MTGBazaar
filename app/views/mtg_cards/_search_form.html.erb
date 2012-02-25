@@ -11,7 +11,7 @@
     <div class="search-divider">Card Filters:</div>
     <div class= "mt-m search-set">
       <%#= label_tag "Set:" %>
-      <%= select_tag "set" , options_for_select(MtgSet.all.collect {|s| [ s.name, s.code ] }, :selected => params[:set]), {:prompt => 'All sets...', :class => "search-select chzn-select"} %>
+      <%= select_tag "set" , options_for_select(MtgSet.where(:active => true).collect {|s| [ s.name, s.code ] }, :selected => params[:set]), {:prompt => 'All sets...', :class => "search-select chzn-select"} %>
     </div>
 
     <div class="mt-m search-color">
