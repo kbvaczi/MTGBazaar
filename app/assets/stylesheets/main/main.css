@@ -336,6 +336,7 @@ input {
   float:left;
   margin: 10px 0 10px 10px;
   width: 190px;
+  height: 605px;
   background: #FFF;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
@@ -344,10 +345,11 @@ input {
   -webkit-box-shadow: 0px 1px 1px 0px #bbb;
   box-shadow:         0px 1px 1px 0px #bbb;
 }
-#right_bar {
+#right_bar, #right_bar2, #right_bar3 {
   float:left;
-  margin: 10px 10px 10px 0;
+  margin: 10px 0px 0px 0;
   width: 230px;
+  height: 195px;
   background: #FFF;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
@@ -358,7 +360,7 @@ input {
 }
 #center_bar {
   float:left;
-  min-height:600px;
+  min-height:605px;
   margin: 10px;
   width: 500px;
   background: #FFF;
