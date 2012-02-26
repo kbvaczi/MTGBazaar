@@ -1,0 +1,20 @@
+<h2><%= "#{@block_data.length} Blocks to create: " %></h2>
+<ul>
+<% @block_data.each do |b| %>
+  <li><%= b[:name] %></li>
+<% end %>
+</ul>
+<br/>
+<h2><%= "#{@set_data.length} Sets to create: " %></h2>
+<% @set_data.each do |s| %>
+  <li><%= "#{s[:block]} - #{s[:name]} (#{s[:code]}) in " %></li>
+<% end %>
+<br/>
+<h2><%= "#{@card_data.length} Cards to create: " %></h2>
+<% @card_data.each do |c| %>
+  <li><%= "#{c[:set]} - #{c[:name]}" %></li>
+<% end %>
+<%= link_to "confirm import", import_xml_admin_mtg_cards_path, :method => :post %>
+<br/>
+<br/>
+<%= link_to "cancel", admin_mtg_cards_path %>
