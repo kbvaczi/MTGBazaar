@@ -165,6 +165,12 @@ ActiveAdmin.register MtgCard do
       end
       @card_data.each do |c|
         set = MtgSet.where(:code => c[:set])[0]
+        active = false #set card inactive if it's a new card in an old set (i.e. a set which is probably already active)
+        @set_data.each do |s|
+          if s[:code] == c[:set]
+            active = true # this is part of a new set, so we will activate this card assuming the set will be deactivated
+          end
+        end
         set.cards << MtgCard.create(  :name => c[:name], 
                                       :card_type => c[:card_type],
                                       :card_subtype => c[:card_subtype],
@@ -179,7 +185,7 @@ ActiveAdmin.register MtgCard do
                                       :toughness => c[:toughness],
                                       :multiverse_id => c[:multiverse_id],
                                       :image_path => c[:image_path],
-                                      :active => true) if MtgCard.where(:multiverse_id => c[:multiverse_id]).empty?
+                                      :active => active) if MtgCard.where(:multiverse_id => c[:multiverse_id]).empty?
         puts "Card: #{c[:name]} created"
       end      
       redirect_to admin_mtg_cards_path, :notice => "XML imported successfully!"              
