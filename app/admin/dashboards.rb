@@ -40,5 +40,6 @@ ActiveAdmin::Dashboards.build do
   #
   # section "Membership Summary", :if => :memberships_enabled?
   # section "Membership Summary", :if => Proc.new { current_admin_user.account.memberships.any? }
+  
 
 end

@@ -3,9 +3,9 @@ class ApplicationController < ActionController::Base
   
   before_filter :user_banned?
   before_filter :production_authenticate
-  
+
   protected
-  
+
   #checks to see if the current logged in user is banned.  logs out and flashes warning if so.
   def user_banned?
     if current_user.present? && current_user.banned?
@@ -22,5 +22,6 @@ class ApplicationController < ActionController::Base
       end 
     end
   end
+
   
 end

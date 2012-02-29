@@ -2,8 +2,10 @@
 ActiveAdmin.register MtgCard do
   menu :label => "Cards", :parent => "MTG"
 
+ 
   #access mtg_card helpers inside this class
   extend MtgCardsHelper
+
 
   # ------ SCOPES ------- #
   begin
@@ -58,7 +60,7 @@ ActiveAdmin.register MtgCard do
         end
       end
       column "Actions" do |card|
-        "#{link_to('View on site', mtg_card_path(card), :target => "_blank")} #{link_to('Show', admin_mtg_card_path(card))} #{link_to('Edit', edit_admin_mtg_card_path(card), :target => "_blank")}".html_safe
+        "#{link_to('View', mtg_card_path(card), :target => "_blank")} #{link_to('Edit', edit_admin_mtg_card_path(card), :target => "_blank")}".html_safe
       end
     end
   end
@@ -76,12 +78,23 @@ ActiveAdmin.register MtgCard do
 
   # ------ ACTION ITEMS (BUTTONS) ------- #  
   begin
+    config.clear_action_items! #clear standard buttons
     action_item :only => :show do
-      link_to('View on site', mtg_card_path(mtg_card), :target => "_blank")
+      link_to 'View on site', mtg_card_path(mtg_card), :target => "_blank"
+    end
+    action_item :only => :show do
+      link_to 'Edit Card', edit_admin_mtg_card_path(mtg_card)
+    end    
+    action_item :only => :show do
+      link_to 'Delete Card', delete_card_admin_mtg_card_path(mtg_card), :confirm => "Are you sure you want to delete this card?"
     end
     action_item :only => :index do
-      link_to 'Upload XML', upload_xml_admin_mtg_cards_path
+      link_to 'Create New Card', new_admin_mtg_card_path
     end
+    action_item :only => :index do
+      link_to 'Import XML File', upload_xml_admin_mtg_cards_path
+    end
+
   end
   
   # ------ CONTROLLER ACTIONS ------- #
@@ -160,7 +173,7 @@ ActiveAdmin.register MtgCard do
       end
       @set_data.each do |s|
         block = MtgBlock.where(:name => s[:block])[0]
-        block.sets << MtgSet.create(:name => s[:name], :code => s[:code], :release_date => s[:release_date], :active => false) if MtgSet.where(:code => s[:code]).empty?
+        block.sets << MtgSet.create(:name => s[:name], :code => s[:code], :release_date => Date.strptime(s[:release_date], '%m/%Y'), :active => false) if MtgSet.where(:code => s[:code]).empty?
         puts "Set: #{s[:name]} created"
       end
       @card_data.each do |c|
@@ -190,7 +203,21 @@ ActiveAdmin.register MtgCard do
       end      
       redirect_to admin_mtg_cards_path, :notice => "XML imported successfully!"              
     end #import_xml method
+    member_action :delete_card do
+      MtgCard.find(params[:id]).destroy
+      respond_to do |format|
+        format.html { redirect_to admin_mtg_cards_path, :notice => "Card Deleted..."}
+      end
+    end
     controller do
+      before_filter :super_admin_authenticate, :only => :delete_card 
+      
+      def super_admin_authenticate
+        authenticate_or_request_with_http_basic "This action requires special access" do |username, password|
+          username == "superadmin" && password == "superadmin" 
+        end 
+      end
+      
       def compute_type(string) #used to format type to import into cards.
         if string.split(" — ")[0]
           return string.split(" — ")[0].strip
