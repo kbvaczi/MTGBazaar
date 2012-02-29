@@ -44,7 +44,7 @@ ActiveAdmin.register MtgCard do
       end    
       column :created_at
       column :updated_at
-      column 'Active?', :active, :sortable => :active do |card|
+      column 'Card Active?', :active, :sortable => :active do |card|
         if card.set.active?
           if card.active?
             "yes"
@@ -172,8 +172,9 @@ ActiveAdmin.register MtgCard do
         puts "Block: #{b[:name]} created"
       end
       @set_data.each do |s|
+        release_date = Date.strptime(s[:release_date], '%m/%Y') rescue nil
         block = MtgBlock.where(:name => s[:block])[0]
-        block.sets << MtgSet.create(:name => s[:name], :code => s[:code], :release_date => Date.strptime(s[:release_date], '%m/%Y'), :active => false) if MtgSet.where(:code => s[:code]).empty?
+        block.sets << MtgSet.create(:name => s[:name], :code => s[:code], :release_date => release_date, :active => false) if MtgSet.where(:code => s[:code]).empty?
         puts "Set: #{s[:name]} created"
       end
       @card_data.each do |c|

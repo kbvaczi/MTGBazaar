@@ -116,7 +116,7 @@ ActiveRecord::Schema.define(:version => 20120224212851) do
     t.integer  "block_id"
     t.string   "name",         :default => "",           :null => false
     t.string   "code",         :default => "",           :null => false
-    t.date     "release_date", :default => '2012-02-26'
+    t.date     "release_date", :default => '2012-02-29'
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.boolean  "active",       :default => false,        :null => false

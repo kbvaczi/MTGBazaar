@@ -17,6 +17,9 @@ ActiveAdmin.register MtgBlock do
     action_item :only => :index do
       link_to 'Create New Block', new_admin_mtg_block_path
     end
+    action_item :only => :index do
+      link_to 'Import XML File', upload_xml_admin_mtg_cards_path
+    end
   end
 
   scope :all, :default => true
@@ -33,6 +36,12 @@ ActiveAdmin.register MtgBlock do
       link_to block.id, admin_mtg_block_path(block)
     end
     column :name
+    column "Sets", :sortable => false do |block|
+       link_to block.sets.count, admin_mtg_sets_path("q[block_id_eq]" => block.id)
+    end
+    column "Cards", :sortable => false do |block|
+       link_to block.cards.count, admin_mtg_cards_path("q[block_id_eq]" => block.id)
+    end
     column :created_at
     column :updated_at    
     column :active

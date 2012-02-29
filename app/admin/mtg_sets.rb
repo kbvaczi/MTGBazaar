@@ -21,6 +21,7 @@ ActiveAdmin.register MtgSet do
   
   # ------ SCOPES (auto sorts)------ #
   scope :all, :default => true
+
   scope :active do |sets|
     sets.where(:active => true)
   end
@@ -36,6 +37,9 @@ ActiveAdmin.register MtgSet do
     end
     column :name
     column :code
+    column "Cards", :sortable => false do |set|
+       link_to set.cards.count, admin_mtg_cards_path("q[set_id_eq]" => set.id)
+    end
     column :release_date
     column :created_at
     column :updated_at    
