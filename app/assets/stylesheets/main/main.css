@@ -122,10 +122,17 @@ textarea, textarea:hover, textarea:focus {
   width: 100%;
   min-height: 40px;
 }
+
+#followus{
+	float:right;
+	padding: 2px;
+
+}
+
 #logobox {
   position:absolute;
   left:25px;
-  top:45px;
+  top:50px;
   
 }
 #logo {
