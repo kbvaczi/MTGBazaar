@@ -18,7 +18,9 @@ MTGBazaar::Application.routes.draw do
   # resources :users must be declared after devise_for because earlier declarations take precedence 
   # see http://stackoverflow.com/questions/5051487/combining-devise-with-resources-users-in-rails
   devise_for :users, :controllers => { :registrations => 'users/registrations' , :sessions => 'users/sessions' }
-  resources :users, :only => [:index, :show], :controllers => { :users => "users/users"}
+  resources :users, :only => [:index, :show], :controllers => { :users => "users/users"} do
+    get :autocomplete_user_username, :on => :collection
+  end
   resources :accounts
   
   # MISC ROUTES -------------- #

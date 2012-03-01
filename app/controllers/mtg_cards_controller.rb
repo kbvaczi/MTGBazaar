@@ -37,7 +37,7 @@ class MtgCardsController < ApplicationController
     # SEARCH CARDS                
     if params[:set].empty? then set_search_value = "%%" else set_search_value = params[:set] end rescue set_search_value = "%%"
     @mtg_cards = MtgCard.joins(:set).where("mtg_cards.name LIKE ?  AND mtg_sets.code LIKE ? AND mana_color LIKE ?  AND mana_color LIKE ? AND mana_color LIKE ?  AND mana_color LIKE ? AND mana_color LIKE ?  AND rarity LIKE ?       AND card_type LIKE ?  AND artist LIKE ?       AND card_subtype LIKE?   AND mtg_cards.active LIKE ? AND mtg_sets.active LIKE ?",
-                                           "%#{params[:name]}%", "#{set_search_value}",    "%#{params[:white]}%", "%#{params[:blue]}%", "%#{params[:black]}%", "%#{params[:red]}%",  "%#{params[:green]}%", "%#{params[:rarity]}%", "%#{params[:type]}%", "%#{params[:artist]}%", "%#{params[:subtype]}%", true,                      true).order("name").page(params[:page]).per(25)
+                                           "%#{params[:name]}%", "#{set_search_value}",    "%#{params[:white]}%", "%#{params[:blue]}%", "%#{params[:black]}%", "%#{params[:red]}%",  "%#{params[:green]}%", "%#{params[:rarity]}%", "%#{params[:type]}%", "%#{params[:artist]}%", "%#{params[:subtype]}%",  true,                       true).order("name").page(params[:page]).per(25)
     if @mtg_cards.length == 1
       redirect_to mtg_card_path(@mtg_cards[0])
     end

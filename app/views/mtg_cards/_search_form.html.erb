@@ -3,10 +3,7 @@
   <h1><%= autocomplete_field_tag "name", params[:name], mtg_autocomplete_name_path , :class => "search-text" , :placeholder => "Card name..." %></h1>
   <%# autocomplete_mtg_card_name_mtg_cards_path%>
   <div class="ma">
-    
-    <div id="search_name_suggestions">
-      testy test mctesterson<br/>      testy test mctesterson<br/>      testy test mctesterson<br/>      testy test mctesterson<br/>      testy test mctesterson<br/>      testy test mctesterson<br/>      testy test mctesterson<br/>      testy test mctesterson<br/>      testy test mctesterson<br/>      testy test mctesterson<br/>
-    </div>
+
     
     <div class="search-divider">Card Filters:</div>
     <div class= "mt-m search-set">
@@ -52,19 +49,24 @@
         <%= select_tag "condition" , options_for_select(condition_list, :selected => params[:condition]) , {:prompt => 'All...', :class => "search-select-condition chzn-select"} %>                        
       </div>
     </div>
-    <br/>
+    <br class="spacer"/>
     
-    <div class="mt search-artist">
+    <div class="mt-m search-artist">
       <%#= label_tag "Artist:" %>
-      <br/>
+
       <%= select_tag "artist" , options_for_select(artist_list, :selected => params[:artist]) , {:prompt => 'All artists...', :class => "search-select chzn-select"} %>                        
     </div>
+    
+    <div class="mt-m search-attribute">
+      <%#= label_tag "Text Attribues:" %>
+      <%= select_tag "attribute" , options_for_select(["Trample", "First strike", "Haste"], :selected => params[:attribute]), { :prompt => 'All attributes...', :class => "search-select chzn-select"} %>                        
+    </div>    
 
     <div class="mt-m search-divider">Seller Filters:</div>
     <div class="mt-m mr search-seller">
       <%#= label_tag "Seller:" %>
       <%#="<br/>"%>
-      <%= text_field_tag "seller", params[:seller], :placeholder => "Seller name...", :style => "width:100%;"%>
+      <%= autocomplete_field_tag "seller", params[:seller], autocomplete_user_username_users_path, :placeholder => "Seller name...", :style => "width:100%;"%>
       <%#= select_tag "seller" , options_for_select(["bob", "joe", "chris"], :selected => params[:seller]) , {:prompt => 'All sellers...', :class => "search-select chzn-select"} %>                        
     </div>
 
