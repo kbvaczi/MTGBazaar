@@ -1,6 +1,6 @@
 <%= form_tag mtg_cards_search_path , :method => "post", :id => "search-form" do %>   
 
-  <h1><%= autocomplete_field_tag "name", params[:name], mtg_autocomplete_name_path , :class => "search-text" , :placeholder => "Card name..." %></h1>
+  <h1><%= autocomplete_field_tag "name", params[:name], mtg_autocomplete_name_path , :class => "search-text" , :placeholder => "Search cards by name..." %></h1>
   <%# autocomplete_mtg_card_name_mtg_cards_path%>
   <div class="ma">
 
@@ -59,7 +59,7 @@
     
     <div class="mt-m search-attribute">
       <%#= label_tag "Text Attribues:" %>
-      <%= select_tag "attribute" , options_for_select(["Trample", "First strike", "Haste"], :selected => params[:attribute]), { :prompt => 'All attributes...', :class => "search-select chzn-select"} %>                        
+      <%= select_tag "attribute" , options_for_select(["Trample", "First strike", "Haste", "Lifelink"], :selected => params[:attribute]), { :multiple => true, :value => 'All attributes...', :class => "search-select chzn-select"} %>                        
     </div>    
 
     <div class="mt-m search-divider">Seller Filters:</div>

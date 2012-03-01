@@ -10,6 +10,7 @@ gem "nokogiri", "~> 1.5.0"                                          # XML/HTML P
 gem "activeadmin", "~> 0.4.0"                                       # Administrator Panel
 gem "kaminari", "~> 0.13.0"                                         # Pagination
 gem "rails3-jquery-autocomplete", "~> 1.0.6"                        # Autocomplete text fields
+gem "smart_tuple", "~> 0.1.2"                                       # Aid for building complex and conditional queries
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
