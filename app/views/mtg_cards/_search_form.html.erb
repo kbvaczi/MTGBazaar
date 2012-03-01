@@ -57,9 +57,9 @@
       <%= select_tag "artist" , options_for_select(artist_list, :selected => params[:artist]) , {:prompt => 'All artists...', :class => "search-select chzn-select"} %>                        
     </div>
     
-    <div class="mt-m search-attribute">
+    <div class="mt-m search-abilities">
       <%#= label_tag "Text Attribues:" %>
-      <%= select_tag "attribute" , options_for_select(["Trample", "First strike", "Haste", "Lifelink"], :selected => params[:attribute]), { :multiple => true, :value => 'All attributes...', :class => "search-select chzn-select"} %>                        
+      <%= select_tag "abilities" , options_for_select(["Trample", "First strike", "Haste", "Lifelink"], :selected => params[:abilities]), { :multiple => true, :placeholder => 'All abilities...', :class => "search-select chzn-select"} %>                        
     </div>    
 
     <div class="mt-m search-divider">Seller Filters:</div>
@@ -81,7 +81,7 @@
       Clear
     </div>
 
-    <%= submit_tag "Search", :class => "search-submit" %>
+    <%= submit_tag "Search", :class => "submit search-submit" %>
     <br/>
     
   </div>
