@@ -35,6 +35,7 @@ MTGBazaar::Application.routes.draw do
   match 'privacy'         => 'home#privacy'
   match 'contact'         => 'contact#index'
   match 'contact_create'  => 'contact#create'
+  match 'help'            => 'home#help'
   
   
   
