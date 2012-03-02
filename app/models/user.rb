@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
   
   # not-in-model fields for age and agree-to-terms fields in sign-up
   attr_accessor :age, :terms
+  cattr_accessor :current_user
   
   # validates that age and terms have been checked on user sign-up only
   validates :age, :terms, :inclusion => {:in => [["","1"]]}, :on => :create

@@ -5,6 +5,7 @@ class Account < ActiveRecord::Base
   # --------------------------------------- #
 
   belongs_to :user
+  has_many :deposits, :class_name => 'Users::Deposit', :dependent => :destroy
 
   # --------------------------------------- #
   # ------------ Validations -------------- #
