@@ -1,7 +1,20 @@
 <div id="right_bar">
-  <h1>right bar</h1>
-  <div class="ma">
-    <%= image_tag "http://www.wizards.com/Magic/Assets/magic_logo.gif" %>
-    <p>test stuff ... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... </p>
-  </div>
+  <% unless user_signed_in? %><%# user is not logged in %>
+    <h1>right bar</h1>
+    <div class="ma">
+      <%= image_tag "http://www.wizards.com/Magic/Assets/magic_logo.gif" %>
+      <p>test stuff ... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... Test stuff... </p>
+    </div>
+  <% else %>
+    <h1><div class="left"><%= "#{current_user.username}" %></div> <div class="right t-s"><%= number_to_currency(current_user.account.balance / 100) %></div></h1>
+    <div class="ma">
+      <div class="mt-s"> <div class="left">Items in Cart:</div>  <div class="right">0</div>  </div>
+      <br/>
+      <div class="mt-s"> <div class="left">Active Transactions:</div>  <div class="right">0</div>  </div>
+      <br/>
+      <div class="mt-s"> <div class="left">Pending Transactions:</div> <div class="right">0</div>  </div>
+      <br/>
+      <div class="mt"><div class="left">Status:</div><div class="right">active</div></div>
+    </div>
+  <% end %>  
 </div>

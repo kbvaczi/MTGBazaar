@@ -20,8 +20,8 @@
       
     <% end %>
   <% else %>
-    <div class="right">
-      <%= "#{current_user.account.first_name} #{current_user.account.last_name}" %> [<%= link_to "Sign out", destroy_user_session_path, :method => :delete %>]
+    <div class="right mr">
+      <%#= "#{current_user.account.first_name} #{current_user.account.last_name}" %> <%= button_to "Sign out", destroy_user_session_path, :method => :delete %>
     </div>
   <% end %>
 </div>
