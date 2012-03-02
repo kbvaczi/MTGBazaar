@@ -58,7 +58,7 @@
     </div>
     
     <div class="mt-m search-abilities">
-      <%#= label_tag "Text Attribues:" %>
+      <%= label_tag "Abilities:" %>
       <%= select_tag "abilities" , options_for_select(["Trample", "First strike", "Haste", "Lifelink"], :selected => params[:abilities]), { :multiple => true, :placeholder => 'All abilities...', :class => "search-select chzn-select"} %>                        
     </div>    
 
@@ -66,7 +66,7 @@
     <div class="mt-m mr search-seller">
       <%#= label_tag "Seller:" %>
       <%#="<br/>"%>
-      <%= autocomplete_field_tag "seller", params[:seller], autocomplete_user_username_users_path, :placeholder => "Seller name...", :style => "width:100%;"%>
+      <%= autocomplete_field_tag "seller", params[:seller], autocomplete_user_username_users_path, :placeholder => "Seller name...", :style => "width:140px;"%>
       <%#= select_tag "seller" , options_for_select(["bob", "joe", "chris"], :selected => params[:seller]) , {:prompt => 'All sellers...', :class => "search-select chzn-select"} %>                        
     </div>
 

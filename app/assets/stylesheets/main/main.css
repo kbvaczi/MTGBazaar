@@ -14,7 +14,7 @@ html {
   background-color: #eee;
   font-family: "Trebuchet MS", "Verdana", "Helvetica", sans-serif;
   font-size: 12px;
-  color: #555;
+  color: #444;
   height: 100%;
   line-height: 140%;
 }
@@ -69,9 +69,9 @@ a:hover, a:focus {
 	text-decoration: underline;
 }
 select, input {
- color: #888;
- border: 1px solid #bbb;
- padding: 3px 5px;
+
+ border: 1px solid #aaa;
+ padding: 3px 8px;
  
  -moz-border-radius: 10px;
  -webkit-border-radius: 10px;
@@ -200,7 +200,7 @@ input {
 }
 #topnav {
   padding: 5px 15px 5px 15px;
-  
+
   -webkit-border-bottom-right-radius: 5px;
   -webkit-border-bottom-left-radius: 5px;
   -moz-border-radius-bottomright: 5px;
@@ -230,8 +230,8 @@ input {
 
   background: #ABB0B1;
   
-  -moz-border-radius: 0px 10px 0px 30px;
-  border-radius: 0px 10px 0px 30px;
+  -moz-border-radius: 0px 10px 0px 35px;
+  border-radius: 0px 10px 0px 35px;
 
   -moz-box-shadow:    0px 1px 1px 0px rgba(106,108,110,0.8);
   -webkit-box-shadow: 0px 1px 1px 0px rgba(106,108,110,0.8);

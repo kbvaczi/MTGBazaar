@@ -3,17 +3,24 @@
 /* @group Base */
 .chzn-container {
   font-size: 100%;
-  color: #555;
+  color: #555;  
+}
+.chzn-container-multi {
+
+}
+.chzn-container-active {
+ 
 }
 .chzn-container .chzn-drop {
 }
+
 /* @end */
 
 /* @group Single Chosen */
 .chzn-container-single .chzn-single {
-  -webkit-border-radius: 8px;
-  -moz-border-radius   : 8px;
-  border-radius        : 8px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius   : 10px;
+  border-radius        : 10px;
   height: 20px;
   line-height: 20px;
   font-size: 100%;
@@ -22,9 +29,9 @@
 .chzn-container-single .chzn-single span {
 }
 .chzn-container-single .chzn-single div {
-  -webkit-border-radius: 0 8px 8px 0;
-  -moz-border-radius   : 0 8px 8px 0;
-  border-radius        : 0 8px 8px 0;
+  -webkit-border-radius: 0 10px 10px 0;
+  -moz-border-radius   : 0 10px 10px 0;
+  border-radius        : 0 10px 10px 0;
 }
 .chzn-container-single .chzn-single div b {
   background: image-url('chosen-sprite.png') no-repeat 0 -2px;
@@ -37,9 +44,48 @@
   line-height: 12px;
 }
 .chzn-container-single .chzn-drop {
-  -webkit-border-radius: 0 0 8px 8px;
-  -moz-border-radius   : 0 0 8px 8px;
-  border-radius        : 0 0 8px 8px;
+  -webkit-border-radius: 0 0 10px 10px;
+  -moz-border-radius   : 0 0 10px 10px;
+  border-radius        : 0 0 10px 10px;
+}
+/* @end */
+
+/* @group Multi Chosen */
+.chzn-container-multi .chzn-choices {
+
+  -webkit-border-radius: 10px;
+  -moz-border-radius   : 10px;
+  border-radius        : 10px;
+}
+.chzn-container-multi .chzn-choices li {
+
+}
+.chzn-container-multi .chzn-choices .search-field {
+
+}
+.chzn-container-multi .chzn-choices .search-field input {
+
+}
+.chzn-container-multi .chzn-choices .search-field .default {
+
+}
+.chzn-container-multi .chzn-choices .search-choice {
+  -webkit-border-radius: 10px;
+  -moz-border-radius   : 10px;
+  border-radius        : 10px;
+  font-size:80%;
+}
+.chzn-container-multi .chzn-choices .search-choice-focus {
+  background: #d4d4d4;
+}
+.chzn-container-multi .chzn-choices .search-choice .search-choice-close {
+
+}
+.chzn-container-multi .chzn-choices .search-choice .search-choice-close:hover {
+
+}
+.chzn-container-multi .chzn-choices .search-choice-focus .search-choice-close {
+
 }
 /* @end */
 
@@ -122,7 +168,7 @@
 /* @end */
 
 .chzn-rtl .chzn-single div { 
-  -webkit-border-radius: 8px 0 0 8px;
-  -moz-border-radius   : 8px 0 0 8px;
-  border-radius        : 8px 0 0 8px; 
+  -webkit-border-radius: 10px 0 0 10px;
+  -moz-border-radius   : 10px 0 0 10px;
+  border-radius        : 10px 0 0 10px; 
 }

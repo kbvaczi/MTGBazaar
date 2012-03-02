@@ -35,8 +35,8 @@
   margin: 4px 10px;
 }
 .simple_form .select select , .simple_form .select .chzn-container {
-  width: 230px;
-  margin: 2px 0 5px 2px;
+  width: 240px;
+  margin: 2px 0 5px 0px;
 }
 .simple_form .date select , .simple_form .date .chzn-container{
   width: 73px;
