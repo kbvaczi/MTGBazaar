@@ -43,7 +43,7 @@
   margin: 2px 0 5px 2px;
 }
 .simple_form .input input[type='text'], .simple_form .input input[type='email'], .simple_form .input input[type='password'] {
-  width:220px;
+  width:228px;
 }
 
 div.boolean, .simple_form input[type='submit'] {
@@ -84,9 +84,9 @@ input.check_boxes {
 
 .simple_form textarea.text {
   resize: none; 
-  width:218px;
+  width:226px;
   height:200px;
-  margin-left: 3px;
+
   vertical-align: -3px;
 }
 

@@ -68,7 +68,7 @@ a:hover, a:focus {
 select, input {
 
  border: 1px solid #aaa;
- padding: 3px 8px;
+ padding: 3px 4px;
  
  -moz-border-radius: 10px;
  -webkit-border-radius: 10px;

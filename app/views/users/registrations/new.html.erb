@@ -48,12 +48,7 @@
   
   <h2>Confirmation</h2>
 
-
-  <%# Recaptcha box %>
-  <div class = "center" style = "width: 300px;">
-    <%= javascript_tag "var RecaptchaOptions = { theme : 'white' };" %>
-    <%= recaptcha_tags if not captcha_verified? %>
-  </div>
+  <%= render :partial => "shared/recaptcha_box" %>
 
   <br class = "spacer"/>
   

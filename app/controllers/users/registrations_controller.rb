@@ -24,14 +24,5 @@ class Users::RegistrationsController < Devise::RegistrationsController
   
   protected
   
-  def check_humanity
-    if verify_recaptcha or session[:captcha] == true
-      session[:captcha] = true if not session[:captcha]
-      return true
-    else
-      return false
-    end
-    
-  end
   
 end

@@ -1,3 +1,4 @@
+
 <%= simple_form_for @contact, :url => { :action => "create" }, :html => { :method => :post } do |f| %>
   
   <%= f.input :sender_name , :label => "Your name", :required => 'true'%>
@@ -7,6 +8,9 @@
                               :collection => [["Give us kudos","kudos"], ["General feedback","general"], ["Report a bug","bug"], ["Ask a question","question"], ["Give a suggestion", "suggestion"], ["File a complaint", "complaint"], ["Inquire about advertising", "ad"]], 
                               :input_html => { :class => "chzn-select" } %>
   <%= f.input :content, :label => "Your message", :as => :text, :required => 'true', :input_html => {:maxlength => "500"} %>
+
+  <br class = "spacer"/>  
+  <%= render :partial => "shared/recaptcha_box" %>
   
   <br class = "spacer"/>
   <%= f.submit 'Submit' , :class => 'center' %>
