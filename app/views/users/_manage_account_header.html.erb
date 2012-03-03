@@ -1,0 +1,21 @@
+<%
+  @links = Array.new
+  @links << ["Summary", user_path(current_user)]
+  @links << ["Edit", edit_user_registration_path]  
+  @links << ["Make a deposit", new_account_deposit_path]
+  @links << ["Make a withdraw", new_account_withdraw_path]  
+%>
+
+<h1>Manage Account</h1>
+<div id="account_tabs" class="group">
+  <ul class="tabs center">
+    <% @links.each do |l| %>
+      <% if request.env['PATH_INFO'] == l[1] %>
+        <% @class = "class = \'current\'" %>
+      <% else %>  
+        <% @class = "" %>      
+      <% end %>        
+      <li <%= @class %>><%= link_to l[0], l[1] %></li>
+    <% end %>
+  </ul>
+</div>

@@ -1,4 +1,4 @@
 require 'test_helper'
 
-class Users::BalanceTransfersHelperTest < ActionView::TestCase
+class AccountDepositsHelperTest < ActionView::TestCase
 end

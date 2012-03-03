@@ -12,20 +12,19 @@ MTGBazaar::Application.routes.draw do
   resources :mtg_cards, :only => [:index, :show] do # don't allow users to create/destroy mtg cards by only allowing index and show routes
   end
 
-
-
   # USERS -------------------- #
-  namespace :users do 
-    resources :deposits
-  end
   # resources :users must be declared after devise_for because earlier declarations take precedence 
   # see http://stackoverflow.com/questions/5051487/combining-devise-with-resources-users-in-rails
+  get 'users/deposit' => 'users#new_account_deposit', :as => 'new_account_deposit'
+  post 'users/deposit' => 'users#create_account_deposit', :as => 'create_account_deposit'
+  get 'users/withdraw' => 'users#new_account_withdraw', :as => 'new_account_withdraw'
+  post 'users/withdraw' => 'users#create_account_withdraw', :as => 'create_account_withdraw'  
   devise_for :users, :controllers => { :registrations => 'users/registrations' , :sessions => 'users/sessions' }
   resources :users, :only => [:index, :show], :controllers => { :users => "users/users"} do
     get :autocomplete_user_username, :on => :collection
   end  
-
   resources :accounts
+
   
   # MISC ROUTES -------------- #
   root :to => "home#index"

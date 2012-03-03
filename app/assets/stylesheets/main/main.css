@@ -497,131 +497,31 @@ input {
 .ma-m {margin: 10px; }
 .t-s {font-size: 70%; line-height:2.9;}
 
-
-/*------------------------------------*/
-/*-------jQuery TOOLS CSS ------------*/
-/*------------------------------------*/
 /* root element for tabs  */
 .tabs { 
 	list-style:none; 
-	margin:0 !important; 
-	padding:0;
-	height:30px;
-	border-bottom:1px solid #666;
+	margin:10px 15px 0 15px; 
+	display:inline-block;
 }
 
-/* single tab */
 .tabs li { 
-	float:left;	 
-	text-indent:0;
-	padding:0;
-	margin:0 !important;
-	list-style-image:none !important; 
+	float:left;
+  text-indent:0;
+	list-style: none;
 }
 
-/* link inside the tab. uses a background image */
-.tabs a { 
-	background: url(/images/tabs.png) no-repeat -652px 0;
-	font-size:11px;
+.tabs li a { 
 	display:block;
-	height: 30px;  
-	line-height:30px;
-	width: 111px;
 	text-align:center;	
 	text-decoration:none;
-	color:#000;
-	padding:0px;
-	margin:0px;	
-	position:relative;
-	top:1px;
+	color:#444;
+	padding: 2px 10px 2px 10px;
+	margin: 0 10px 0 10px;	
 }
 
-.tabs a:active {
-	outline:none;		
-}
-
-/* when mouse enters the tab move the background image */
-.tabs a:hover {
-	background-position: -652px -31px;	
-	color:#fff;	
-}
-
-/* active tab uses a class name "current". it's highlight is also done by moving the background image. */
-.tabs .current, .tabs .current:hover, .tabs li.current a {
-	background-position: -652px -62px;		
-	cursor:default !important; 
-	color:#000 !important;
-}
-
-/* Different widths for tabs: use a class name: w1, w2, w3 or w2 */
-/* width 1 */
-.tabs .w1 			{ background-position: -519px 0; width:134px; }
-.tabs .w1:hover 	{ background-position: -519px -31px; }
-.tabs .w1.current { background-position: -519px -62px; }
-
-/* width 2 */
-.tabs .w2 			{ background-position: -366px -0px; width:154px; }
-.tabs .w2:hover 	{ background-position: -366px -31px; }
-.tabs .w2.current { background-position: -366px -62px; }
-
-
-/* width 3 */
-.tabs .w3 			{ background-position: -193px -0px; width:174px; }
-.tabs .w3:hover 	{ background-position: -193px -31px; }
-.tabs .w3.current { background-position: -193px -62px; }
-
-/* width 4 */
-.tabs .w4 			{ background-position: -0px -0px; width:194px; }
-.tabs .w4:hover 	{ background-position: -0px -31px; }
-.tabs .w4.current { background-position: -0px -62px; }
-
-
-/* initially all panes are hidden */ 
-.panes .pane{
-	display:none;
-}
-
-
-/* the overlayed element */
-.overlay {
-    
-    /* must be initially hidden */
-    display:none;
-    
-    /* place overlay on top of other elements */
-    z-index:10000;
-    
-    /* styling */
-    background-color:#CCC;
-    background: rgb(240,240,240); /* Old browsers */
-    background: -moz-linear-gradient(top, rgba(240,240,240,1) 0%, rgba(227,227,227,1) 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(240,240,240,1)), color-stop(100%,rgba(227,227,227,1))); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, rgba(240,240,240,1) 0%,rgba(227,227,227,1) 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, rgba(240,240,240,1) 0%,rgba(227,227,227,1) 100%); /* Opera11.10+ */
-    background: -ms-linear-gradient(top, rgba(240,240,240,1) 0%,rgba(227,227,227,1) 100%); /* IE10+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f0f0', endColorstr='#e3e3e3',GradientType=0 ); /* IE6-9 */
-    background: linear-gradient(top, rgba(240,240,240,1) 0%,rgba(227,227,227,1) 100%); /* W3C */
-    
-    padding: 30px;
-    padding-top: 20px;
-    width:600px;    
-    min-height:200px;
-    
-    /* CSS3 styling for latest browsers */
-    -moz-box-shadow:0 0 90px 5px #000;
-    -webkit-box-shadow: 0 0 90px #000;  
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-}
-
-/* close button positioned on upper right corner */
-.overlay .close {
-    background-image:url(../images/close.png);
-    position:absolute;
-    right:-15px;
-    top:-15px;
-    cursor:pointer;
-    height:35px;
-    width:35px;
+.tabs .current a, .tabs li a:hover{
+  background-color: rgba(237,241,242,1);
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
 }

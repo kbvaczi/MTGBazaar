@@ -1,16 +1,16 @@
 
 <% if @user == current_user %>
-  <% title "Account Info" %>
-  <h1><div class="left">Account</div><div class="right t-s"><%= link_to "edit", edit_user_registration_path %></div></h1>
+  <% title "Manage Account" %>
+
+  <%= render :partial => "users/manage_account_header" %>
   <div class="ml mr">
-    <h2>Account Info</h2>
+      <h2>Account Info</h2>
       <div class="ma-s">
         <div><%= "Username: #{current_user.username}" %></div>
         <div><%= "Email: #{current_user.email}" %></div>        
         <div><%= "Balance: #{number_to_currency(@user.account.balance/100)}" %></div>
         <div><%= "Paypal Account: #{@user.account.paypal_username if !@user.account.paypal_username.empty?}#{"None added yet" if @user.account.paypal_username.empty?}" %></div>
         <div><%= "Status: #{"On Vacation" if @user.account.vacation}#{"Active" if !@user.account.vacation}" %></div>
-        <%= link_to "Make a Deposit", new_users_deposit_path %>        
       </div>
     <h2>Personal Info</h2>
     <div class="ma-s">

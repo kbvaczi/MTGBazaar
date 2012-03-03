@@ -1,7 +1,6 @@
 <% title 'Edit Account' %>
 
-<h1>Edit Account Information</h1>
-
+<%= render :partial => "users/manage_account_header" %>
 
 <%# use @user instance variable to capture changes in @account for incorrect form entry%>
 <%= simple_form_for(@user.with_account, :as => @user, :url => registration_path(@user)) do |f| %>
@@ -12,7 +11,7 @@
   <h2>Account Setup</h2>   
 
   <%= f.input :email , :required => 'true' %>
-  <%= f.input :password , :label => "Change password", :hint => "leave empty to keep existing password" %>
+  <%= f.input :password , :label => "New password", :hint => "leave empty to keep existing password" %>
   <%= f.input :password_confirmation, :label => "Confirm password" %>
 
   <br class = "spacer"/>

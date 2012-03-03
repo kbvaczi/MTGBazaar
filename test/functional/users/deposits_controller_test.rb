@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class Users::DepositsControllerTest < ActionController::TestCase
+class AccountDepositsControllerTest < ActionController::TestCase
   setup do
     @users_deposit = users_deposits(:one)
   end
@@ -8,7 +8,7 @@ class Users::DepositsControllerTest < ActionController::TestCase
   test "should get index" do
     get :index
     assert_response :success
-    assert_not_nil assigns(:users_deposits)
+    assert_not_nil assigns(:account_deposits)
   end
 
   test "should get new" do
@@ -17,11 +17,11 @@ class Users::DepositsControllerTest < ActionController::TestCase
   end
 
   test "should create users_deposit" do
-    assert_difference('Users::Deposit.count') do
+    assert_difference('AccountDeposit.count') do
       post :create, users_deposit: @users_deposit.attributes
     end
 
-    assert_redirected_to users_deposit_path(assigns(:users_deposit))
+    assert_redirected_to users_deposit_path(assigns(:account_deposit))
   end
 
   test "should show users_deposit" do
@@ -36,11 +36,11 @@ class Users::DepositsControllerTest < ActionController::TestCase
 
   test "should update users_deposit" do
     put :update, id: @users_deposit, users_deposit: @users_deposit.attributes
-    assert_redirected_to users_deposit_path(assigns(:users_deposit))
+    assert_redirected_to users_deposit_path(assigns(:account_deposit))
   end
 
   test "should destroy users_deposit" do
-    assert_difference('Users::Deposit.count', -1) do
+    assert_difference('AccountDeposit.count', -1) do
       delete :destroy, id: @users_deposit
     end
 

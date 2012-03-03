@@ -1,0 +1,20 @@
+<%= render :partial => "users/manage_account_header" %>
+<%= simple_form_for @deposit, :url => new_account_deposit_path do |f| %>
+  <br class="spacer"/>
+  <br class="spacer"/>
+  <div class="inputs">
+    <%= f.input :balance,       :label => "Amount to deposit",
+                                :as => :select,
+                                :required => 'true' , 
+                                :collection => list_deposit_options , 
+                                :include_blank => false , 
+                                :input_html => { :class => 'chzn-select' } %>    
+  </div>
+  <br class="spacer"/>
+  <%= f.input :current_password, :required => "true", :hint => "enter current password to confirm deposit"%>
+  <br class="spacer"/>
+  <br class="spacer"/>  
+  <div class="center">
+    <%= f.button :submit, "Submit", :class => "center"%>
+  </div>
+<% end %>

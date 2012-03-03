@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class Users::BalanceTransferTest < ActiveSupport::TestCase
+class AccountDepositTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
