@@ -23,8 +23,10 @@ class UsersController < ApplicationController
     end
   end
   
-  def display_current_listings
-    
+  def display_current_listings 
+  end
+  
+  def account_info 
   end
   
   def new_account_deposit

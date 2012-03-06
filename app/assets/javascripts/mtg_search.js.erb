@@ -27,7 +27,7 @@ $(document).ready(function() {
   //DO THIS WHEN AUTOCOMPLETE NAME IS CLICKED
   $('#name').bind('railsAutocomplete.select', function(event, data){
     $.cookie('search_name', $("#name").val(), { expires: 1, path: '/' });
-    window.location.replace(location.protocol + '//' + location.host + "/mtg/cards/search?name=" + $("#name").val());
+    window.location.href = location.protocol + '//' + location.host + "/mtg/cards/search?name=" + $("#name").val();
   });
   
   //UPDATE COOKEIS TO STORE SEARCH INFO

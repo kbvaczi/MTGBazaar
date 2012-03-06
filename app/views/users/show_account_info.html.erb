@@ -1,0 +1,31 @@
+<% title "Manage Account" %>
+
+ <%= render :partial => "users/manage_account_header" %>
+ <div class="ml mr">
+     <h2>Account Info</h2>
+     <div class="ma-s">
+       <div><%= "Username: #{current_user.username}" %></div>
+       <div><%= "Email: #{current_user.email}" %></div>        
+       <div><%= "Balance: #{number_to_currency(current_user.account.balance/100)}" %></div>
+       <div><%= "Paypal Account: #{current_user.account.paypal_username if !current_user.account.paypal_username.empty?}#{"None added yet" if current_user.account.paypal_username.empty?}" %></div>
+       <div><%= "Status: #{"On Vacation" if current_user.account.vacation}#{"Active" if !current_user.account.vacation}" %></div>
+     </div>
+   <h2>Personal Info</h2>
+   <div class="ma-s">
+     <div><%= "Name: #{capitalize_first_word(current_user.account.first_name)} #{capitalize_first_word(current_user.account.last_name)}" %></div>
+     <div><%= "Address: #{current_user.account.address1}" %></div>
+     <div><%= "#{current_user.account.address2}".html_safe %></div>            
+     <div><%= "#{capitalize_first_word(current_user.account.city)}, #{capitalize_first_word(current_user.account.state)} #{current_user.account.zipcode}".html_safe %></div>                  
+     <div><%= current_user.account.country.capitalize %></div>
+     <div><%= current_user.created_at.strftime("Member Since: %B %d, %Y") %></div>
+
+
+   </div>
+   <h2>Seller Statistics</h2>
+   <div class="ma-s">
+     <%= 'Seller: ' + current_user.username %>
+
+     <div><%= "number of sales: " + current_user.account.number_sales.to_s %></div>
+     <div><%= "Average wait before shipping: " + current_user.account.number_sales.to_s %></div>
+   </div>
+ </div>

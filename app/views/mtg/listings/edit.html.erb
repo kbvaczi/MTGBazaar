@@ -1,4 +1,45 @@
-<% title "Create a listing"%>
+<% title "Edit Listing"%>
 
-<h1>Create a listing</h1>
-<%= render :partial => 'form' %>
+<h1>Edit listing</h1>
+
+<%= simple_form_for @listing, :url => update_listing_mtg_cards_path, :method => :put do |f| %>
+  <br class="spacer"/>
+  <br class="spacer"/>
+  <div class="inputs">
+    <%= f.input :name,          :label => "Card Name",
+                                :as => :string,
+                                :input_html => { :value => "#{@listing.card.name}" , :disabled => 'disabled'},
+                                :required => 'true' %>
+                                
+    <%= f.input :set,           :label => "Set",
+                                :as => :string,
+                                :input_html => { :value => "#{@listing.card.set.name}" , :disabled => 'disabled'},
+                                :required => 'true' %>
+
+    <%= f.input :price,         :label => "Asking Price",
+                                :as => :string,
+                                :required => 'true' %>
+
+    <%= f.input :condition,     :label => "Condition",
+                                :as => :select,
+                                :collection => condition_list,
+                                :default => "NM",
+                                :input_html => { :class => "chzn-select" },
+                                :required => 'true' %>
+    <%= f.input :description,   :label => "Description",
+                                :as => :string %>
+    <%= f.input :foil,          :label => "Foil?",
+                                :default => false %>                                     
+    <%= f.input :foreign,       :label => "Foreign?",
+                                :default => false %> 
+    <%= f.input :defect,        :label => "Rarities or miscuts?",
+                                :default => false %> 
+
+  </div>
+  <br class="spacer"/>
+  <br class="spacer"/>
+  <br class="spacer"/>  
+  <div class="center">
+    <%= f.button :submit, "Update Listing", :class => "center" %>
+  </div>
+<% end %>

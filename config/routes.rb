@@ -7,29 +7,30 @@ MTGBazaar::Application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   
   # MTG ----------------------- #
-#  match 'mtg/cards/:id/listing' => 'listings#new',    :via => :get,  :as => 'new_mtg_listing'
-#  match 'mtg/cards/:id/listing' => 'listings#create', :via => :post, :as => 'create_mtg_listing'
   namespace :mtg do
-
-#    match 'cards/search/' => 'cards#search', :as => 'mtg_cards_search' #card search
-#    match 'cards/autocomplete_name' => 'cards#autocomplete_name', :as => 'autocomplete_name_mtg_cards' #autocomplete card name search field
     resources :cards, :only => [:index, :show] do # don't allow users to create/destroy mtg cards by only allowing index and show routes
       get  "autocomplete_name", :on => :collection
       get  "search", :as => 'search', :on => :collection      
       post "search", :as => 'search', :on => :collection
+
       get  "listing" => "listings#new",    :on => :member
       post "listing" => "listings#create", :on => :member
+      get  "listings/:id" => "listings#edit", :as => 'edit_listing', :on => :collection
+      put  "listings/:id" => "listings#update", :as => 'update_listing', :on => :collection      
+      delete  "listings/:id" => "listings#delete", :as => 'delete_listing', :on => :collection            
     end
   end
   
   # USERS -------------------- #
   # resources :users must be declared after devise_for because earlier declarations take precedence 
   # see http://stackoverflow.com/questions/5051487/combining-devise-with-resources-users-in-rails
+  
   get 'users/listings' => 'users#display_current_listings', :as => 'user_current_listings'
   get 'users/deposit' => 'users#new_account_deposit', :as => 'new_account_deposit'
   post 'users/deposit' => 'users#create_account_deposit', :as => 'create_account_deposit'
   get 'users/withdraw' => 'users#new_account_withdraw', :as => 'new_account_withdraw'
-  post 'users/withdraw' => 'users#create_account_withdraw', :as => 'create_account_withdraw'  
+  post 'users/withdraw' => 'users#create_account_withdraw', :as => 'create_account_withdraw'
+  get 'users/account' => 'users#show_account_info', :as => 'show_account_info'
   devise_for :users, :controllers => { :registrations => 'users/registrations' , :sessions => 'users/sessions' }
   resources :users, :only => [:index, :show], :controllers => { :users => "users/users"} do
     get :autocomplete_user_username, :on => :collection

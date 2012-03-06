@@ -1,7 +1,7 @@
 <% title "Manage Account"%>
 <%
   @links = Array.new
-  @links << ["Summary", user_path(current_user)]
+  @links << ["Summary", show_account_info_path]
   @links << ["Edit Info", edit_user_registration_path]
   @links << ["My Listings", user_current_listings_path]  
   @links << ["Deposit", new_account_deposit_path]

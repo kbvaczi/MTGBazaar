@@ -1,58 +1,24 @@
+<% title @user.username %>
 
-<% if @user == current_user %>
-  <% title "Manage Account" %>
-
-  <%= render :partial => "users/manage_account_header" %>
-  <div class="ml mr">
-      <h2>Account Info</h2>
-      <div class="ma-s">
-        <div><%= "Username: #{current_user.username}" %></div>
-        <div><%= "Email: #{current_user.email}" %></div>        
-        <div><%= "Balance: #{number_to_currency(@user.account.balance/100)}" %></div>
-        <div><%= "Paypal Account: #{@user.account.paypal_username if !@user.account.paypal_username.empty?}#{"None added yet" if @user.account.paypal_username.empty?}" %></div>
-        <div><%= "Status: #{"On Vacation" if @user.account.vacation}#{"Active" if !@user.account.vacation}" %></div>
-      </div>
-    <h2>Personal Info</h2>
-    <div class="ma-s">
-      <div><%= "Name: #{capitalize_first_word(@user.account.first_name)} #{capitalize_first_word(@user.account.last_name)}" %></div>
-      <div><%= "Address: #{@user.account.address1}" %></div>
-      <div><%= "#{@user.account.address2}".html_safe %></div>            
-      <div><%= "#{capitalize_first_word(@user.account.city)}, #{capitalize_first_word(@user.account.state)} #{@user.account.zipcode}".html_safe %></div>                  
-      <div><%= @user.account.country.capitalize %></div>
-      <div><%= @user.created_at.strftime("Member Since: %B %d, %Y") %></div>
-
-
-    </div>
-    <h2>Seller Statistics</h2>
-    <div class="ma-s">
-      <%= 'Seller: ' + @user.username %>
-
-      <div><%= "number of sales: " + @user.account.number_sales.to_s %></div>
-      <div><%= "Average wait before shipping: " + @user.account.number_sales.to_s %></div>
-    </div>
+<h1><div class="left">Seller Profile:</div><div class="right"><%= @user.username %></div></h1>
+<div class="ml mr">
+  <h2>Seller Statistics</h2>
+  <div class="ma">
+    <%= 'Seller: ' + @user.username %>
+    <div><%= @user.created_at.strftime("Member Since: %B %d, %Y") %></div>
+    <div><%= "number of sales: " + @user.account.number_sales.to_s %></div>
+    <div><%= "Average wait before shipping: " + @user.account.number_sales.to_s %></div>
   </div>
-<% else %>
-  <% title @user.username %>
-    <h1><div class="left">Seller Profile:</div><div class="right"><%= @user.username %></div></h1>
-  <div class="ml mr">
-    <h2>Seller Statistics</h2>
-    <div class="ma">
-      <%= 'Seller: ' + @user.username %>
-      <div><%= @user.created_at.strftime("Member Since: %B %d, %Y") %></div>
-      <div><%= "number of sales: " + @user.account.number_sales.to_s %></div>
-      <div><%= "Average wait before shipping: " + @user.account.number_sales.to_s %></div>
-    </div>
 
-    <h2>Location Information</h2>
-    <div class="ma">
-      <div><%= 'Country: ' + capitalize_first_word(@user.account.country) %></div>
-      <div><%= 'Shipping from: ' + capitalize_first_word(@user.account.city.capitalize) + ", " + capitalize_first_word(@user.account.state.capitalize) %></div>
-    </div>
-
-    <h2>Seller Feedback</h2>
-    <div class="ma">
-      <div><%= 'Average rating: ' + @user.account.average_rating.round(1).to_s + ' out of 5.0'%></div>
-      <%# add recent feedback%>
-    </div>
+  <h2>Location Information</h2>
+  <div class="ma">
+    <div><%= 'Country: ' + capitalize_first_word(@user.account.country) %></div>
+    <div><%= 'Shipping from: ' + capitalize_first_word(@user.account.city.capitalize) + ", " + capitalize_first_word(@user.account.state.capitalize) %></div>
   </div>
-<% end %>
+
+  <h2>Seller Feedback</h2>
+  <div class="ma">
+    <div><%= 'Average rating: ' + @user.account.average_rating.round(1).to_s + ' out of 5.0'%></div>
+    <%# add recent feedback%>
+  </div>
+</div>
