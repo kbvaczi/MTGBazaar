@@ -12,13 +12,13 @@ MTGBazaar::Application.routes.draw do
   namespace :mtg do
 
 #    match 'cards/search/' => 'cards#search', :as => 'mtg_cards_search' #card search
-#    match 'cards/autocomplete_name' => 'cards#autocomplete_name', :as => 'mtg_autocomplete_name' #autocomplete card name search field
+#    match 'cards/autocomplete_name' => 'cards#autocomplete_name', :as => 'autocomplete_name_mtg_cards' #autocomplete card name search field
     resources :cards, :only => [:index, :show] do # don't allow users to create/destroy mtg cards by only allowing index and show routes
-      get  "autocomplete_name", :as => 'mtg_autocomplete_name', :on => :collection
-    #  get  "search", :as => 'mtg_cards_search', :on => :collection      
-      post "search", :as => 'mtg_cards_search', :on => :collection
-      get  "listing" => "listings#new",    :as => 'new_mtg_listing',    :on => :member
-      post "listing" => "listings#create", :as => 'create_mtg_listing', :on => :member
+      get  "autocomplete_name", :on => :collection
+      get  "search", :as => 'search', :on => :collection      
+      post "search", :as => 'search', :on => :collection
+      get  "listing" => "listings#new",    :on => :member
+      post "listing" => "listings#create", :on => :member
     end
   end
   
