@@ -1,0 +1,2 @@
+module Mtg::ListingsHelper
+end

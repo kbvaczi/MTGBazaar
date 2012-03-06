@@ -1,4 +1,4 @@
 require 'test_helper'
 
-class MtgCardsHelperTest < ActionView::TestCase
+class Mtg::CardsHelperTest < ActionView::TestCase
 end

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class MtgCardsControllerTest < ActionController::TestCase
+class Mtg::CardsControllerTest < ActionController::TestCase
   setup do
     @mtg_card = mtg_cards(:one)
   end
@@ -17,7 +17,7 @@ class MtgCardsControllerTest < ActionController::TestCase
   end
 
   test "should create mtg_card" do
-    assert_difference('MtgCard.count') do
+    assert_difference('Mtg::Card.count') do
       post :create, mtg_card: @mtg_card.attributes
     end
 
@@ -40,7 +40,7 @@ class MtgCardsControllerTest < ActionController::TestCase
   end
 
   test "should destroy mtg_card" do
-    assert_difference('MtgCard.count', -1) do
+    assert_difference('Mtg::Card.count', -1) do
       delete :destroy, id: @mtg_card.to_param
     end
 

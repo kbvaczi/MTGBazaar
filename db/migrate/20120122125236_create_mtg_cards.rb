@@ -1,4 +1,4 @@
-class CreateMtgCards < ActiveRecord::Migration
+class CreateMtg::Cards < ActiveRecord::Migration
   def up
     create_table :mtg_cards do |t|
       t.integer  :set_id    #foreign key for sets

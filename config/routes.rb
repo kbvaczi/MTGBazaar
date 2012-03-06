@@ -6,18 +6,22 @@ MTGBazaar::Application.routes.draw do
   # ADMIN USERS -------------- #
   devise_for :admin_users, ActiveAdmin::Devise.config
   
-  # MTG CARDS ---------------- #
+  # MTG ----------------------- #
+#  match 'mtg/cards/:id/listing' => 'listings#new',    :via => :get,  :as => 'new_mtg_listing'
+#  match 'mtg/cards/:id/listing' => 'listings#create', :via => :post, :as => 'create_mtg_listing'
+  namespace :mtg do
 
-
-  match 'mtg_cards/search/' => 'mtg_cards#search', :as => 'mtg_cards_search'
-  match 'mtg_cards/autocomplete_name' => 'mtg_cards#autocomplete_name', :as => 'mtg_autocomplete_name'  
-  resources :mtg_cards, :only => [:index, :show] do # don't allow users to create/destroy mtg cards by only allowing index and show routes
-  
+#    match 'cards/search/' => 'cards#search', :as => 'mtg_cards_search' #card search
+#    match 'cards/autocomplete_name' => 'cards#autocomplete_name', :as => 'mtg_autocomplete_name' #autocomplete card name search field
+    resources :cards, :only => [:index, :show] do # don't allow users to create/destroy mtg cards by only allowing index and show routes
+      get  "autocomplete_name", :as => 'mtg_autocomplete_name', :on => :collection
+    #  get  "search", :as => 'mtg_cards_search', :on => :collection      
+      post "search", :as => 'mtg_cards_search', :on => :collection
+      get  "listing" => "listings#new",    :as => 'new_mtg_listing',    :on => :member
+      post "listing" => "listings#create", :as => 'create_mtg_listing', :on => :member
+    end
   end
-  match 'mtg_cards/:id/listing' => 'mtg_listings#new', :via => :get,  :as => 'new_mtg_listing'
-  match 'mtg_cards/:id/listing' => 'mtg_listings#create', :via => :post, :as => 'create_mtg_listing'  
   
-
   # USERS -------------------- #
   # resources :users must be declared after devise_for because earlier declarations take precedence 
   # see http://stackoverflow.com/questions/5051487/combining-devise-with-resources-users-in-rails
@@ -29,7 +33,8 @@ MTGBazaar::Application.routes.draw do
   devise_for :users, :controllers => { :registrations => 'users/registrations' , :sessions => 'users/sessions' }
   resources :users, :only => [:index, :show], :controllers => { :users => "users/users"} do
     get :autocomplete_user_username, :on => :collection
-  end  
+  end
+  
   resources :accounts
 
   

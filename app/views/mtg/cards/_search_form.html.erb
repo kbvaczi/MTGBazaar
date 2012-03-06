@@ -8,7 +8,7 @@
     <div class="search-divider">Card Filters:</div>
     <div class= "mt-m search-set">
       <%#= label_tag "Set:" %>
-      <%= select_tag "set" , options_for_select(MtgSet.where(:active => true).collect {|s| [ s.name, s.code ] }, :selected => params[:set]), {:prompt => 'All sets...', :class => "search-select chzn-select"} %>
+      <%= select_tag "set" , options_for_select(Mtg::Set.where(:active => true).collect {|s| [ s.name, s.code ] }, :selected => params[:set]), {:prompt => 'All sets...', :class => "search-select chzn-select"} %>
     </div>
 
     <div class="mt-m search-color">
@@ -80,7 +80,7 @@
     <div class="left" id="clear-filters">
       Clear
     </div>
-  
+
     <%= submit_tag "Search", :class => "submit search-submit" %>
     <br/>
     

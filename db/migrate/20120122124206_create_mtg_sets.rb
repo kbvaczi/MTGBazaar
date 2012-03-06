@@ -1,4 +1,4 @@
-class CreateMtgSets < ActiveRecord::Migration
+class CreateMtg::Sets < ActiveRecord::Migration
   
   def up
     

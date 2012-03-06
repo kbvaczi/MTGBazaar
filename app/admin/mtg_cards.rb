@@ -1,10 +1,10 @@
 # encoding: UTF-8
-ActiveAdmin.register MtgCard do
+ActiveAdmin.register Mtg::Card do
   menu :label => "Cards", :parent => "MTG"
 
  
   #access mtg_card helpers inside this class
-  extend MtgCardsHelper
+  extend Mtg::CardsHelper
 
 
   # ------ SCOPES ------- #
@@ -68,7 +68,7 @@ ActiveAdmin.register MtgCard do
   # ------ FILTERS FOR INDEX ------- #
   begin   
     filter :name
-    #filter :block_name, :label => "Block", :as => :select, :collection => MtgBlock.all.map(&:name), :input_html => {:class => "chzn-select"}
+    #filter :block_name, :label => "Block", :as => :select, :collection => Mtg::Block.all.map(&:name), :input_html => {:class => "chzn-select"}
     filter :block, :as => :select, :input_html => {:class => "chzn-select"}  
     filter :set, :input_html => {:class => "chzn-select"}  
     filter :card_type, :as => :select, :collection => card_type_list, :input_html => {:class => "chzn-select"}
@@ -112,22 +112,22 @@ ActiveAdmin.register MtgCard do
       @file.css("block").each do |b| #for each block
         #create block if none exists, otherwise select existing block that matches for child set/card creation       
 
-        if MtgBlock.where(:name => b.css("name")[0].text).count > 0 #if block already exists in database
-          #@block = MtgBlock.where(:name => b.css("name")[0].text)[0] #set instance object to the block
+        if Mtg::Block.where(:name => b.css("name")[0].text).count > 0 #if block already exists in database
+          #@block = Mtg::Block.where(:name => b.css("name")[0].text)[0] #set instance object to the block
           puts "Block: #{b.css("name")[0].text} already exists!!!!" #do nothing
         else
           @block_data << {:name => b.css("name")[0].text, :active => true}
-          #@block = MtgBlock.create(:name => b.css("name")[0].text, :active => true) #create a block in database and set instance object
+          #@block = Mtg::Block.create(:name => b.css("name")[0].text, :active => true) #create a block in database and set instance object
           puts "Block: #{b.css("name")[0].text} created"
         end
 
         #create sets if none exists, otherwise select existing matching set for child card creation
         b.css("set").each do |s| #for each set in this block   
-          if MtgSet.where(:name => s.css("name").text).count > 0 #if set already exists in database
+          if Mtg::Set.where(:name => s.css("name").text).count > 0 #if set already exists in database
               puts "Set: #{s.css("name").text} already exists!!!!" #do nothing
           else
               @set_data << {:block => b.css("name")[0].text, :name => s.css("name").text, :code => s.css("code").text, :release_date => s.css("date").text, :active => false}
-              #@block.sets << MtgSet.create(:name => s.css("name").text, :code => s.css("code").text, :release_date => s.css("date").text, :active => true) #create a new set and assign to current block
+              #@block.sets << Mtg::Set.create(:name => s.css("name").text, :code => s.css("code").text, :release_date => s.css("date").text, :active => true) #create a new set and assign to current block
               puts "Set: #{s.css("name").text} created"
           end # if
         end # for each set
@@ -136,7 +136,7 @@ ActiveAdmin.register MtgCard do
       #import cards
       puts "Importing MTG Cards..."
       @file.css("cards card").each do |c| # for each card
-        if MtgCard.where(:multiverse_id => c.css("id").text).count > 0 # if card already exists in database
+        if Mtg::Card.where(:multiverse_id => c.css("id").text).count > 0 # if card already exists in database
           puts "Card: #{c.css("name").text} already exists!!!!" # do nothing
         else
           @card_data << { :set => c.css("set").text, 
@@ -168,24 +168,24 @@ ActiveAdmin.register MtgCard do
       @set_data = Rails.cache.read("set_data")
       @card_data = Rails.cache.read("card_data")
       @block_data.each do |b|
-        MtgBlock.create(:name => b[:name], :active => b[:active]) if MtgBlock.where(:name => b[:name]).empty?
+        Mtg::Block.create(:name => b[:name], :active => b[:active]) if Mtg::Block.where(:name => b[:name]).empty?
         puts "Block: #{b[:name]} created"
       end
       @set_data.each do |s|
         release_date = Date.strptime(s[:release_date], '%m/%Y') rescue nil
-        block = MtgBlock.where(:name => s[:block])[0]
-        block.sets << MtgSet.create(:name => s[:name], :code => s[:code], :release_date => release_date, :active => false) if MtgSet.where(:code => s[:code]).empty?
+        block = Mtg::Block.where(:name => s[:block])[0]
+        block.sets << Mtg::Set.create(:name => s[:name], :code => s[:code], :release_date => release_date, :active => false) if Mtg::Set.where(:code => s[:code]).empty?
         puts "Set: #{s[:name]} created"
       end
       @card_data.each do |c|
-        set = MtgSet.where(:code => c[:set])[0]
+        set = Mtg::Set.where(:code => c[:set])[0]
         active = false #set card inactive if it's a new card in an old set (i.e. a set which is probably already active)
         @set_data.each do |s|
           if s[:code] == c[:set]
             active = true # this is part of a new set, so we will activate this card assuming the set will be deactivated
           end
         end
-        set.cards << MtgCard.create(  :name => c[:name], 
+        set.cards << Mtg::Card.create(  :name => c[:name], 
                                       :card_type => c[:card_type],
                                       :card_subtype => c[:card_subtype],
                                       :card_number => c[:card_number],
@@ -199,13 +199,13 @@ ActiveAdmin.register MtgCard do
                                       :toughness => c[:toughness],
                                       :multiverse_id => c[:multiverse_id],
                                       :image_path => c[:image_path],
-                                      :active => active) if MtgCard.where(:multiverse_id => c[:multiverse_id]).empty?
+                                      :active => active) if Mtg::Card.where(:multiverse_id => c[:multiverse_id]).empty?
         puts "Card: #{c[:name]} created"
       end      
       redirect_to admin_mtg_cards_path, :notice => "XML imported successfully!"              
     end #import_xml method
     member_action :delete_card do
-      MtgCard.find(params[:id]).destroy
+      Mtg::Card.find(params[:id]).destroy
       respond_to do |format|
         format.html { redirect_to admin_mtg_cards_path, :notice => "Card Deleted..."}
       end

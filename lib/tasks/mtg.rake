@@ -16,20 +16,20 @@ namespace :mtg do
       
       @file.css("blocks block").each do |b| #for each block       
         
-        if MtgBlock.where(:name => b.css("name")[0].text).count > 0 #if block already exists in database
-          @block = MtgBlock.where(:name => b.css("name")[0].text)[0] #set instance object to the block
+        if Mtg::Block.where(:name => b.css("name")[0].text).count > 0 #if block already exists in database
+          @block = Mtg::Block.where(:name => b.css("name")[0].text)[0] #set instance object to the block
           puts "Block: #{b.css("name")[0].text} already exists!!!!" #do nothing
         else
-          @block = MtgBlock.create(:name => b.css("name")[0].text, :active => true) #create a block in database and set instance object
+          @block = Mtg::Block.create(:name => b.css("name")[0].text, :active => true) #create a block in database and set instance object
           puts "Block: #{@block.name} created"
           @blocks_created = @blocks_created + 1
         end
         
         b.css("set").each do |s| #for each set in this block   
-         if MtgSet.where(:name => s.css("name").text).count > 0 #if set already exists in database
+         if Mtg::Set.where(:name => s.css("name").text).count > 0 #if set already exists in database
             puts "Set: #{s.css("name").text} already exists!!!!" #do nothing
           else
-            @block.sets << MtgSet.create(:name => s.css("name").text, :code => s.css("code").text, :release_date => s.css("date").text, :active => true) #create a new set and assign to current block
+            @block.sets << Mtg::Set.create(:name => s.css("name").text, :code => s.css("code").text, :release_date => s.css("date").text, :active => true) #create a new set and assign to current block
             puts "Set: #{s.css("name").text} created"
             @sets_created = @sets_created + 1
           end # if
@@ -50,13 +50,13 @@ namespace :mtg do
       
       @file.css("cards card").each do |c| # for each card
 
-        if MtgCard.where(:multiverse_id => c.css("id").text).count > 0 # if card already exists in database
+        if Mtg::Card.where(:multiverse_id => c.css("id").text).count > 0 # if card already exists in database
           puts "Card: #{c.css("name").text} already exists!!!!" # do nothing
         else
-          @set = MtgSet.where(:code => c.css("set").text)[0] # otherwise, look up the set which the card belongs to
+          @set = Mtg::Set.where(:code => c.css("set").text)[0] # otherwise, look up the set which the card belongs to
           number = c.css("number").text
           formatted_number = "%03d" % number.to_i.to_s + number.delete(number.to_i.to_s)
-          @set.cards << MtgCard.create( 
+          @set.cards << Mtg::Card.create( 
                                         :name => c.css("name").text, 
                                         :card_type => compute_type(c.css("type").text),
                                         :card_subtype => compute_subtype(c.css("type").text),
@@ -101,7 +101,7 @@ namespace :mtg do
 
   #lists all available color codes
   task :activate_all => :environment do
-    MtgBlock.all.each do |b|
+    Mtg::Block.all.each do |b|
       b.active = true
       b.save      
       b.sets.all.each do |s|
@@ -119,7 +119,7 @@ namespace :mtg do
   #lists all available color codes
   task :list_colors => :environment do
    @array = Array.new
-    MtgCard.all.each do |c|
+    Mtg::Card.all.each do |c|
       @array << c.mana_color
     end
     puts @array.uniq
@@ -128,7 +128,7 @@ namespace :mtg do
   #lists all available rarities
   task :list_rarities => :environment do
    @array = Array.new
-    MtgCard.all.each do |c|
+    Mtg::Card.all.each do |c|
       @array << c.rarity
     end
     puts @array.uniq
@@ -137,7 +137,7 @@ namespace :mtg do
   #lists all available legality codes
   task :list_legalities => :environment do
    @array = Array.new
-    MtgCard.all.each do |c|
+    Mtg::Card.all.each do |c|
       @array << c.legality_standard
       @array << c.legality_commander  
       @array << c.legality_highlander
@@ -155,7 +155,7 @@ namespace :mtg do
 
 
   task :convert_names => :environment do
-    MtgCard.all.each do |c|
+    Mtg::Card.all.each do |c|
       before = c.card_number
       if c.card_number.length > 0
         numeral = c.card_number.match(/[0-9]+/)[0]

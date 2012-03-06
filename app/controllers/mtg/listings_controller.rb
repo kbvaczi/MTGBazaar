@@ -1,4 +1,4 @@
-class MtgListingsController < ApplicationController
+class Mtg::ListingsController < ApplicationController
   
   before_filter :authenticate_user!
   
@@ -8,7 +8,7 @@ class MtgListingsController < ApplicationController
       render 'edit'
       return
     end
-    @listing = MtgCard.find(params[:id]).listings.build
+    @listing = Mtg::Card.find(params[:id]).listings.build
 
     respond_to do |format|
       format.html
@@ -16,11 +16,11 @@ class MtgListingsController < ApplicationController
   end
   
   def edit
-    @listing = MtgCard.find(params[:id]).listings.build(params[:mtg_listing])
+    @listing = Mtg::Card.find(params[:id]).listings.build(params[:mtg_listing])
   end  
   
   def create
-    @listing = MtgCard.find(params[:id]).listings.build(params[:mtg_listing])
+    @listing = Mtg::Card.find(params[:id]).listings.build(params[:mtg_listing])
     if @listing.save
       current_user.mtg_listings << @listing                             # this is the current user's listing
       if params[:mtg_listing][:quantity].present?
@@ -33,6 +33,5 @@ class MtgListingsController < ApplicationController
       render 'edit'
     end  
   end
-  
-  
+    
 end

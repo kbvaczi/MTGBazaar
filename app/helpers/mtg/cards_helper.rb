@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
-module MtgCardsHelper
-  # make this module available to be included in other areas by using "include MtgCardsHelper"
+module Mtg::CardsHelper
+  # make this module available to be included in other areas by using "include Mtg::CardsHelper"
   def self.camelcase_to_spaced(word)
     word.gsub(/([A-Z])/, " \\1").strip
   end

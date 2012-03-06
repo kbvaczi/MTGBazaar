@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class MtgBlockTest < ActiveSupport::TestCase
+class Mtg::BlockTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

@@ -1,5 +1,7 @@
-class MtgListing < ActiveRecord::Base
-  belongs_to :card, :class_name => "MtgCard"
+class Mtg::Listing < ActiveRecord::Base
+  set_table_name :mtg_listings
+  
+  belongs_to :card, :class_name => "Mtg::Card"
   belongs_to :seller, :class_name => "User"  
   
   

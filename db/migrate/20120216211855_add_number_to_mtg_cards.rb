@@ -1,4 +1,4 @@
-class AddNumberToMtgCards < ActiveRecord::Migration
+class AddNumberToMtg::Cards < ActiveRecord::Migration
   def self.up
     add_column :mtg_cards, :card_number, :string 
   end

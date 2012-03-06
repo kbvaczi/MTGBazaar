@@ -1,8 +1,8 @@
-ActiveAdmin.register MtgBlock do
+ActiveAdmin.register Mtg::Block do
   menu :label => "Blocks", :parent => "MTG"
 
   #access mtg_card helpers inside this class
-  extend MtgCardsHelper
+  extend Mtg::CardsHelper
 
 
   # ------ ACTION ITEMS (BUTTONS) ------- #  
@@ -12,7 +12,7 @@ ActiveAdmin.register MtgBlock do
       link_to 'Edit Block', edit_admin_mtg_block_path(mtg_block)
     end    
     action_item :only => :show do
-      link_to 'Delete Block', delete_block_admin_mtg_block_path(mtg_block), :confirm => "Are you sure you want to delete this block, along with #{MtgBlock.find(params[:id]).sets.count} sets and #{MtgCard.joins(:block).count(:conditions => "mtg_blocks.name LIKE \'#{MtgBlock.find(params[:id]).name}\'")} cards?"
+      link_to 'Delete Block', delete_block_admin_mtg_block_path(mtg_block), :confirm => "Are you sure you want to delete this block, along with #{Mtg::Block.find(params[:id]).sets.count} sets and #{Mtg::Card.joins(:block).count(:conditions => "mtg_blocks.name LIKE \'#{Mtg::Block.find(params[:id]).name}\'")} cards?"
     end
     action_item :only => :index do
       link_to 'Create New Block', new_admin_mtg_block_path
@@ -50,7 +50,7 @@ ActiveAdmin.register MtgBlock do
   # ------ CONTROLLER ACTIONS ------- #
    # note: collection_actions work on collections, member_acations work on individual  
     member_action :delete_block do
-      @block = MtgBlock.find(params[:id])
+      @block = Mtg::Block.find(params[:id])
       @block.sets.each do |s|
         s.cards.each {|c| c.destroy}
         s.destroy

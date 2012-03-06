@@ -1,7 +1,8 @@
 class User < ActiveRecord::Base
   # database relationships
   has_one  :account, :dependent => :destroy
-  has_many :mtg_listings, :foreign_key => "seller_id"
+  has_many :mtg_listings, :class_name => "Mtg::Listing", :foreign_key => "seller_id"
+
 
   # Include default devise modules. Others available are:
   #:token_authenticatable, :encryptable, :confirmable, :lockable, and :omniauthable

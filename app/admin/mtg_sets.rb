@@ -1,6 +1,6 @@
-ActiveAdmin.register MtgSet do
+ActiveAdmin.register Mtg::Set do
   menu :label => "Sets", :parent => "MTG"
-  extend MtgCardsHelper   # access mtg_card helpers inside this class
+  extend Mtg::CardsHelper   # access mtg_card helpers inside this class
 
   # ------ ACTION ITEMS (BUTTONS) ------- #  
   begin
@@ -9,7 +9,7 @@ ActiveAdmin.register MtgSet do
       link_to 'Edit Set', edit_admin_mtg_set_path(mtg_set)
     end    
     action_item :only => :show do
-      link_to 'Delete Set', delete_set_admin_mtg_set_path(mtg_set), :confirm => "Warning! Deleting this set will also delete the #{MtgSet.find(params[:id]).cards.count} cards that belong to this set.  Are you sure you want to do this?"
+      link_to 'Delete Set', delete_set_admin_mtg_set_path(mtg_set), :confirm => "Warning! Deleting this set will also delete the #{Mtg::Set.find(params[:id]).cards.count} cards that belong to this set.  Are you sure you want to do this?"
     end
     action_item :only => :index do
       link_to 'Create New Set', new_admin_mtg_set_path
@@ -49,7 +49,7 @@ ActiveAdmin.register MtgSet do
   # ------ CONTROLLER ACTIONS ------- #
   # note: collection_actions work on collections, member_acations work on individual  
    member_action :delete_set do
-      @mtg_set = MtgSet.find(params[:id])
+      @mtg_set = Mtg::Set.find(params[:id])
       @mtg_set.cards.each { |c| c.destroy }
       @mtg_set.destroy
       respond_to do |format|

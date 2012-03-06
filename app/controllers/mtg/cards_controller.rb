@@ -1,4 +1,4 @@
-class MtgCardsController < ApplicationController
+class Mtg::CardsController < ApplicationController
   
   # GET /mtg_cards
   def index
@@ -6,10 +6,10 @@ class MtgCardsController < ApplicationController
     @title = "MTG Cards"
     # LIST ALL CARDS BY SET    
     if params[:set]
-      @mtg_cards = MtgSet.order("name").where(:code => params[:set], :active => true).first.cards
+      @mtg_cards = Mtg::Set.order("name").where(:code => params[:set], :active => true).first.cards
      @sets = []
     else
-      @sets = MtgSet.order("name").where(:active => true)
+      @sets = Mtg::Set.order("name").where(:active => true)
       @mtg_cards = []
     end
   
@@ -19,9 +19,9 @@ class MtgCardsController < ApplicationController
     
   end
 
-  # GET /mtg_cards/1
+  # GET /mtg/cards/1
   def show
-    @mtg_card = MtgCard.find(params[:id])
+    @mtg_card = Mtg::Card.find(params[:id])
     if not (@mtg_card.active or current_admin_user)
       redirect_to (:root)
       return false
@@ -50,14 +50,14 @@ class MtgCardsController < ApplicationController
     query << ["card_subtype LIKE ?", "%#{params[:subtype]}%"] if params[:subtype].present?
     query << ["artist LIKE ?", "%#{params[:artist]}%"] if params[:artist].present?
     query << SmartTuple.new(" AND ").add_each(params[:abilities]) {|v| ["description LIKE ?", "%#{v}%"]} if params[:abilities].present? 
-    @mtg_cards = MtgCard.joins(:set).where(query.compile).order("name").page(params[:page]).per(25)
+    @mtg_cards = Mtg::Card.joins(:set).where(query.compile).order("name").page(params[:page]).per(25)
     if @mtg_cards.length == 1
       redirect_to mtg_card_path(@mtg_cards[0])
     end
   end
   
   def autocomplete_name
-    @mtg_cards = MtgCard.joins(:set).where("mtg_cards.name LIKE ? AND mtg_cards.active LIKE ? AND mtg_sets.active LIKE ?", "%#{params[:term]}%", true, true).limit(20) #grab 20.  we will display only 10, but will filter out repeats later.
+    @mtg_cards = Mtg::Card.joins(:set).where("mtg_cards.name LIKE ? AND mtg_cards.active LIKE ? AND mtg_sets.active LIKE ?", "%#{params[:term]}%", true, true).limit(20) #grab 20.  we will display only 10, but will filter out repeats later.
     respond_to do |format|
       format.json {}  #loads view autocomplete_name.json.erb which returns json hash array of information
     end
