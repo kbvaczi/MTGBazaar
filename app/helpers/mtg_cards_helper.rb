@@ -90,8 +90,22 @@ module MtgCardsHelper
         return "Timeshifted"
       else return "Unknown"
     end
-  end 
+  end
   
+  def display_condition(string)
+     case string
+       when /NM/ #contains "C" 
+         return "Near-Mint"
+       when /E/ #contains "U" 
+         return "Excellent"
+       when /F/ #contains "R" 
+         return "Fine"
+       when /G/ #contains "M" 
+         return "Good"
+       else return "Unknown"
+     end
+   end
+     
   # Defines an array containing all the card types for select boxes
   def card_type_list
     Array.new(["Artifact", "Creature", "Enchantment", "Instant", "Interrupt", "Land", "Plane", "Planeswalker", "Scheme", "Sorcery", "Summon", "Tribal"])

@@ -10,13 +10,16 @@
     <div class="ma">
       <div class="mt-s"> <div class="left">Items in Cart:</div>  <div class="right">0</div>  </div>
       <br/>
-      <div class="mt-s"> <div class="left">Active Transactions:</div>  <div class="right">0</div>  </div>
+      <div class="mt-s"> <div class="left">My Active Transactions:</div>  <div class="right">0</div>  </div>
       <br/>
-      <div class="mt-s"> <div class="left">Pending Transactions:</div> <div class="right">0</div>  </div>
+      <div class="mt-s"> <div class="left">My Pending Transactions:</div> <div class="right">0</div>  </div>
+      <br/>
+      <div class="mt-s"><div class="left">My Active Listings:</div><div class="right"><%= current_user.mtg_listings.count %></div></div>
       <br/>
       <div class="mt"><div class="left">Status:</div><div class="right">active</div></div>
-	  <br/><br/>
-      <%= link_to "Make a Deposit", new_account_deposit_path %>   
+      <br/>
+      <%= link_to "Manage Account", user_path(current_user), :class => "left mt-s"%>
+
     </div>
   <% end %>  
 </div>

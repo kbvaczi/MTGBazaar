@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120303052908) do
+ActiveRecord::Schema.define(:version => 20120304063951) do
 
   create_table "account_balance_transfers", :force => true do |t|
     t.integer  "account_id"
@@ -121,6 +121,33 @@ ActiveRecord::Schema.define(:version => 20120303052908) do
   add_index "mtg_cards", ["name"], :name => "index_mtg_cards_on_name"
   add_index "mtg_cards", ["rarity"], :name => "index_mtg_cards_on_rarity"
   add_index "mtg_cards", ["set_id"], :name => "index_mtg_cards_on_set_id"
+
+  create_table "mtg_listings", :force => true do |t|
+    t.integer  "card_id"
+    t.integer  "seller_id"
+    t.integer  "price",       :default => 100
+    t.string   "condition",   :default => "NM"
+    t.string   "language",    :default => "english"
+    t.string   "description", :default => ""
+    t.boolean  "foreign",     :default => false
+    t.boolean  "defect",      :default => false
+    t.boolean  "foil",        :default => false
+    t.boolean  "sold",        :default => false
+    t.boolean  "reserved",    :default => false
+    t.boolean  "active",      :default => true
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+  end
+
+  add_index "mtg_listings", ["active"], :name => "index_mtg_listings_on_active"
+  add_index "mtg_listings", ["card_id"], :name => "index_mtg_listings_on_card_id"
+  add_index "mtg_listings", ["condition"], :name => "index_mtg_listings_on_condition"
+  add_index "mtg_listings", ["defect"], :name => "index_mtg_listings_on_defect"
+  add_index "mtg_listings", ["foil"], :name => "index_mtg_listings_on_foil"
+  add_index "mtg_listings", ["foreign"], :name => "index_mtg_listings_on_foreign"
+  add_index "mtg_listings", ["reserved"], :name => "index_mtg_listings_on_reserved"
+  add_index "mtg_listings", ["seller_id"], :name => "index_mtg_listings_on_seller_id"
+  add_index "mtg_listings", ["sold"], :name => "index_mtg_listings_on_sold"
 
   create_table "mtg_sets", :force => true do |t|
     t.integer  "block_id"

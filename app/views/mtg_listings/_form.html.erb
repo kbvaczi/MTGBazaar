@@ -1,0 +1,64 @@
+<%= simple_form_for @listing, :url => create_mtg_listing_path, :method => :post do |f| %>
+  <br class="spacer"/>
+  <br class="spacer"/>
+  <div class="inputs">
+    <%= f.input :name,          :label => "Card Name",
+                                :as => :string,
+                                :input_html => { :value => "#{@listing.card.name}" , :disabled => 'disabled'},
+                                :required => 'true' %>
+                                
+    <%= f.input :set,           :label => "Set",
+                                :as => :string,
+                                :input_html => { :value => "#{@listing.card.set.name}" , :disabled => 'disabled'},
+                                :required => 'true' %>
+
+    <%= f.input :price,         :label => "Asking Price",
+                                :as => :string,
+                                :required => 'true' %>
+
+    <%= f.input :condition,     :label => "Condition",
+                                :as => :select,
+                                :collection => condition_list,
+                                :default => "NM",
+                                :input_html => { :class => "chzn-select" },
+                                :required => 'true' %>
+    <%= f.input :description,   :label => "Description",
+                                :as => :string %>
+    <%= f.input :foil,          :label => "Foil?",
+                                :default => false %>                                     
+    <%= f.input :foreign,       :label => "Foreign?",
+                                :default => false %> 
+    <%= f.input :defect,        :label => "Rarities or miscuts?",
+                                :default => false %> 
+    <%= f.input :quantity,      :label => "Quantity",
+                                :as => :select,
+                                :collection => [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+                                :default => 1,
+                                :input_html => { :class => "chzn-select" },
+                                :required => 'true' %>
+
+  </div>
+  <br class="spacer"/>
+  <br class="spacer"/>
+  <br class="spacer"/>  
+  <div class="center">
+    <%= f.button :submit, "Submit", :class => "center" , :confirm => "are you sure you want to create this card listing?" %>
+  </div>
+<% end %>
+
+<%#
+t.integer  "card_id"
+ t.integer  "seller_id"
+ t.integer  "price",       :default => 100
+ t.string   "condition",   :default => "NM"
+ t.string   "language",    :default => "english"
+ t.string   "description", :default => ""
+ t.boolean  "foreign",     :default => false
+ t.boolean  "defect",      :default => false
+ t.boolean  "foil",        :default => false
+ t.boolean  "sold",        :default => false
+ t.boolean  "reserved",    :default => false
+ t.boolean  "active",      :default => true
+ t.datetime "created_at",                         :null => false
+ t.datetime "updated_at",
+ %>

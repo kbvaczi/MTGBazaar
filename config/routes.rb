@@ -7,14 +7,21 @@ MTGBazaar::Application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   
   # MTG CARDS ---------------- #
+
+
   match 'mtg_cards/search/' => 'mtg_cards#search', :as => 'mtg_cards_search'
   match 'mtg_cards/autocomplete_name' => 'mtg_cards#autocomplete_name', :as => 'mtg_autocomplete_name'  
   resources :mtg_cards, :only => [:index, :show] do # don't allow users to create/destroy mtg cards by only allowing index and show routes
+  
   end
+  match 'mtg_cards/:id/listing' => 'mtg_listings#new', :via => :get,  :as => 'new_mtg_listing'
+  match 'mtg_cards/:id/listing' => 'mtg_listings#create', :via => :post, :as => 'create_mtg_listing'  
+  
 
   # USERS -------------------- #
   # resources :users must be declared after devise_for because earlier declarations take precedence 
   # see http://stackoverflow.com/questions/5051487/combining-devise-with-resources-users-in-rails
+  get 'users/listings' => 'users#display_current_listings', :as => 'user_current_listings'
   get 'users/deposit' => 'users#new_account_deposit', :as => 'new_account_deposit'
   post 'users/deposit' => 'users#create_account_deposit', :as => 'create_account_deposit'
   get 'users/withdraw' => 'users#new_account_withdraw', :as => 'new_account_withdraw'

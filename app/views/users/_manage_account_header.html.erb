@@ -1,9 +1,11 @@
+<% title "Manage Account"%>
 <%
   @links = Array.new
   @links << ["Summary", user_path(current_user)]
-  @links << ["Edit", edit_user_registration_path]  
-  @links << ["Make a deposit", new_account_deposit_path]
-  @links << ["Make a withdraw", new_account_withdraw_path]  
+  @links << ["Edit Info", edit_user_registration_path]
+  @links << ["My Listings", user_current_listings_path]  
+  @links << ["Deposit", new_account_deposit_path]
+  @links << ["Withdraw", new_account_withdraw_path]  
 %>
 
 <h1>Manage Account</h1>

@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
   autocomplete :user, :username
-  before_filter :authenticate_user!, :only => [:new_account_deposit, :create_account_deposit]
+  before_filter :authenticate_user!, :except => [:new, :create]
 
   def index
     @users = User.all
@@ -21,6 +21,10 @@ class UsersController < ApplicationController
       format.html # show.html.erb
       format.json { render json: @user }
     end
+  end
+  
+  def display_current_listings
+    
   end
   
   def new_account_deposit
@@ -75,6 +79,6 @@ class UsersController < ApplicationController
       flash[:error] = "There were one or more errors while trying to process your request"
       render 'new_account_withdraw'
     end
-  end  
-  
+  end
+    
 end

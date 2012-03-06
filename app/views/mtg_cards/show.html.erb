@@ -2,74 +2,79 @@
 
 <h1><%= display_name(@mtg_card.name) %></h1>
 <div class="content">
-  <div class="card_image_wrapper">
-    <%= image_tag(@mtg_card.image_path, :class => "mtg_card_image") %>
-  </div>
-  <!-- SET -->
-  <div class="card_show_info">
-    <div class="card_show_info_row">
-      <div class="card_show_info_label">
-        Set:
-      </div>
-      <div class="card_show_info_value">
-        <%= display_name(@mtg_card.set.name) %>
-      </div>   
+  <div class="card_info_wrapper group">
+    <div class="card_image_wrapper">
+      <%= image_tag(@mtg_card.image_path, :class => "mtg_card_image") %>
     </div>
-  <!-- COST -->    
-    <div class="card_show_info_row">
-      <div class="card_show_info_label">
-        Cost:
-      </div>
-      <div class="card_show_info_value">
-        <%= display_symbols(@mtg_card.mana_string) %>
-      </div>      
-    </div>
-  <!-- COLOR -->    
-    <div class="card_show_info_row">
-      <div class="card_show_info_label">
-        Color:
-      </div>
-      <div class="card_show_info_value">
-        <%= display_color(@mtg_card.mana_color) %>
-      </div>      
-    </div>
-  <!-- COLOR -->    
-    <div class="card_show_info_row">
-      <div class="card_show_info_label">
-        Type:
-      </div>
-      <div class="card_show_info_value">
-        <%= "#{@mtg_card.card_type}" %>
-        <%= "- #{@mtg_card.card_subtype}" if not @mtg_card.card_subtype.empty? %>
-      </div>      
-    </div>    
-  <!-- TEXT -->        
-    <div class="card_show_info_row">
-      <div class="card_show_info_label">
-        Text:
-      </div>
-      <div class="card_show_info_value">
-        <p><%= display_symbols(@mtg_card.description) %></p>
-      </div>      
-    </div>    
-    <!-- RARITY -->        
+    <!-- SET -->
+    <div class="card_show_info">
       <div class="card_show_info_row">
         <div class="card_show_info_label">
-          Rarity:
+          Set:
         </div>
         <div class="card_show_info_value">
-          <%= display_rarity(@mtg_card.rarity) %>
+          <%= display_name(@mtg_card.set.name) %>
+        </div>   
+      </div>
+    <!-- COST -->    
+      <div class="card_show_info_row">
+        <div class="card_show_info_label">
+          Cost:
+        </div>
+        <div class="card_show_info_value">
+          <%= display_symbols(@mtg_card.mana_string) %>
         </div>      
       </div>
+    <!-- COLOR -->    
+      <div class="card_show_info_row">
+        <div class="card_show_info_label">
+          Color:
+        </div>
+        <div class="card_show_info_value">
+          <%= display_color(@mtg_card.mana_color) %>
+        </div>      
+      </div>
+    <!-- COLOR -->    
+      <div class="card_show_info_row">
+        <div class="card_show_info_label">
+          Type:
+        </div>
+        <div class="card_show_info_value">
+          <%= "#{@mtg_card.card_type}" %>
+          <%= "- #{@mtg_card.card_subtype}" if not @mtg_card.card_subtype.empty? %>
+        </div>      
+      </div>    
+    <!-- TEXT -->        
+      <div class="card_show_info_row">
+        <div class="card_show_info_label">
+          Text:
+        </div>
+        <div class="card_show_info_value">
+          <p><%= display_symbols(@mtg_card.description) %></p>
+        </div>      
+      </div>    
       <!-- RARITY -->        
         <div class="card_show_info_row">
           <div class="card_show_info_label">
-            Artist:
+            Rarity:
           </div>
           <div class="card_show_info_value">
-            <%= @mtg_card.artist %>
+            <%= display_rarity(@mtg_card.rarity) %>
           </div>      
-        </div>      
-  </div>
-  
-</div>
+        </div>
+        <!-- RARITY -->        
+          <div class="card_show_info_row">
+            <div class="card_show_info_label">
+              Artist:
+            </div>
+            <div class="card_show_info_value">
+              <%= @mtg_card.artist %>
+            </div>      
+          </div>      
+    </div>
+  </div> <!-- card_info_wrapper -->
+  <%= button_to "Sell this card", new_mtg_listing_path , :method => :get , :class => "right"%>
+  <h2>Listings</h2>
+  <%= render :partial => "listings", :locals => {:mtg_card => @mtg_card} %>        
+
+</div> <!-- content -->

@@ -1,0 +1,31 @@
+<%= render :partial => "users/manage_account_header" %>
+<div class="ma">
+  <h2><%="#{current_user.mtg_listings.count} Active Listings"%></h2>
+  <table style="width:100%;">
+    <tr style="text-align:left;">
+    	<th>Card Name</th><th>Price</th><th>Condition</th><th>Language</th><th>Foil</th><th>Defects</th>
+    </tr>
+    <% current_user.mtg_listings.each do |listing| %>
+      <tr>
+          <td>
+            <%= display_name(listing.card.name)%>
+          </td>      
+          <td>
+            <%= number_to_currency(listing.price / 100) %>
+          </td>
+          <td>
+            <%= display_condition(listing.condition) %>
+          </td>
+          <td>
+            <%= capitalize_first_word(listing.language) %>
+          </td>    
+          <td>
+            <%= listing.foil %>
+          </td>    
+          <td>
+            <%= listing.defect %>
+          </td>
+      </tr>
+    <% end %>
+  </table>
+</div>

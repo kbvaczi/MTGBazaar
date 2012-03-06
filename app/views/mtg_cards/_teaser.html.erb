@@ -1,4 +1,4 @@
-<!-- local variables: card = current card -->
+<!-- local variables: mtg_card = current card -->
 
 <div class="mtg_teaser">
   <div class="mtg_teaser_image_wrapper">
@@ -13,14 +13,15 @@
     </h2>
     <div class= "ml-s">      
       <%= display_type(mtg_card.card_type, mtg_card.card_subtype) %>
-      <br/>
-      <%= mtg_card.set.name %>   
-      <div class="right mr">
-        <%= link_to "#{Random.rand(1000)} in stock", mtg_card_path(mtg_card)  %>
+      <div class="right mr-s">
+        <%= link_to "#{mtg_card.listings.count} in stock", mtg_card_path(mtg_card)  %>
         <%= %>
-      </div>        
+      </div>      
       <br class="spacer"/>
-        <%= button_to "Quick Buy: $#{Random.rand(50)}.#{"%02d" % Random.rand(99)}",  root_path , :class => "right"%>
+      <%= mtg_card.set.name %>
+      <br class="spacer"/>
+      <i><%= "(#{display_rarity(mtg_card.rarity)})" %></i>  <%= button_to "Quick Buy: $#{Random.rand(50)}.#{"%02d" % Random.rand(99)}",  root_path , :class => "right"%>
+
     </div>
 
 

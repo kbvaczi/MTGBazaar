@@ -48,6 +48,7 @@ h2 {
   text-shadow: 0 1px 0px #EEE;
   display:block;
   border-bottom: 1px solid #eee;
+  text-indent: 10px;
 }
 ul, ol {
   list-style-position: inside;
@@ -500,7 +501,7 @@ input {
 /* root element for tabs  */
 .tabs { 
 	list-style:none; 
-	margin:10px 15px 0 15px; 
+	margin:10px 5px 0 5px; 
 	display:inline-block;
 }
 
