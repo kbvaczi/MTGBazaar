@@ -54,7 +54,8 @@ class Mtg::ListingsController < ApplicationController
     if @listing.seller == current_user
       return true
     else
-      flash[:error] = "You don't have permission to view this page!"
+      flash[:error] = "You don't have permission to perform this action..."
+      redirect_to :root
       return false
     end
   end
