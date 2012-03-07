@@ -14,7 +14,7 @@
             <%= listing.card.set.code%>
           </td>          
           <td>
-            <%= number_to_currency(listing.price.to_f / 100 ) %>
+            <%= number_to_currency(listing.price) %>
           </td>
           <td>
             <%= display_condition(listing.condition) %>

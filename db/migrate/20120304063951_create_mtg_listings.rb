@@ -5,16 +5,16 @@ class CreateMtgListings < ActiveRecord::Migration
       t.integer   :card_id
       t.integer   :seller_id
 
-      t.integer   :price,         :default => 100      
-      t.string    :condition,     :default => "NM"
-      t.string    :language,      :default => "english"
-      t.string    :description,   :default => ""
-      t.boolean   :foreign,       :default => false
-      t.boolean   :defect,        :default => false
-      t.boolean   :foil,          :default => false
-      t.boolean   :sold,          :default => false
-      t.boolean   :reserved,      :default => false
-      t.boolean   :active,        :default => true
+      t.integer   :price,         :default => 100,            :null => false
+      t.string    :condition,     :default => "NM",           :null => false
+      t.string    :language,      :default => "english",      :null => false
+      t.string    :description,   :default => "",             :null => false
+      t.boolean   :foreign,       :default => false,          :null => false
+      t.boolean   :defect,        :default => false,          :null => false
+      t.boolean   :foil,          :default => false,          :null => false
+      t.boolean   :sold,          :default => false,          :null => false
+      t.boolean   :reserved,      :default => false,          :null => false
+      t.boolean   :active,        :default => true,           :null => false
 
       t.timestamps
     end

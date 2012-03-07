@@ -1,5 +1,5 @@
 class Mtg::Card < ActiveRecord::Base
-  set_table_name :mtg_cards
+  self.table_name = 'mtg_cards'  
 
   include Mtg::CardsHelper   # include ActionView::Helpers::AssetTagHelper
 

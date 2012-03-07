@@ -6,18 +6,17 @@
   <br class="spacer"/>
   <br class="spacer"/>
   <div class="inputs">
-    <%= f.input :name,          :label => "Card Name",
-                                :as => :string,
-                                :input_html => { :value => "#{@listing.card.name}" , :disabled => 'disabled'},
-                                :required => 'true' %>
+    <%#= f.label "Card Name" %>
+    <%= f.input :name,          :label => "Card",
+                                :input_html => { :value => "#{@listing.card.name}" , :disabled => 'disabled' },
+                                :required => 'false' %>
                                 
     <%= f.input :set,           :label => "Set",
-                                :as => :string,
                                 :input_html => { :value => "#{@listing.card.set.name}" , :disabled => 'disabled'},
-                                :required => 'true' %>
+                                :required => 'false' %>
 
     <%= f.input :price,         :label => "Asking Price",
-                                :as => :string,
+                                :as => :currency,
                                 :required => 'true' %>
 
     <%= f.input :condition,     :label => "Condition",

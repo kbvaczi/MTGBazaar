@@ -12,6 +12,7 @@ class Mtg::ListingsController < ApplicationController
   end
   
   def create
+    #params[:mtg_listing][:price] = params[:mtg_listing][:price].to_f * 100 #convert money to cents for storage
     @listing = Mtg::Card.find(params[:id]).listings.build(params[:mtg_listing])
     if @listing.save
       current_user.mtg_listings << @listing                             # this is the current user's listing
@@ -26,6 +27,7 @@ class Mtg::ListingsController < ApplicationController
   end
   
   def edit
+    session[:return_to] = request.referer #set backlink    
     @listing = Mtg::Listing.find(params[:id])  
     respond_to do |format|
       format.html
@@ -33,6 +35,7 @@ class Mtg::ListingsController < ApplicationController
   end  
   
   def update
+    #params[:mtg_listing][:price] = params[:mtg_listing][:price].to_f * 100 #convert money to cents for storage
     @listing = Mtg::Listing.find(params[:id])
     if @listing.update_attributes(params[:mtg_listing])
       redirect_to session[:return_to] || root_path, :notice => "Listing Updated!"

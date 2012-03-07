@@ -11,7 +11,7 @@ gem "activeadmin", "~> 0.4.0"                                       # Administra
 gem "kaminari", "~> 0.13.0"                                         # Pagination
 gem "rails3-jquery-autocomplete", "~> 1.0.6"                        # Autocomplete text fields
 gem "smart_tuple", "~> 0.1.2"                                       # Aid for building complex and conditional queries
-
+gem "money", "~> 4.0.2"                                             # handles currency inputs and currency conversions if we need those in the future
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'

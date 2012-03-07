@@ -9,23 +9,24 @@
     <%= f.input :name,          :label => "Card Name",
                                 :as => :string,
                                 :input_html => { :value => "#{@listing.card.name}" , :disabled => 'disabled'},
-                                :required => 'true' %>
+                                :required => false %>
                                 
     <%= f.input :set,           :label => "Set",
                                 :as => :string,
                                 :input_html => { :value => "#{@listing.card.set.name}" , :disabled => 'disabled'},
-                                :required => 'true' %>
+                                :required => false %>
 
     <%= f.input :price,         :label => "Asking Price",
-                                :as => :string,
-                                :required => 'true' %>
+                                :as => :currency,
+                                :input_html => { :value => @listing.price },
+                                :required => true %>
 
     <%= f.input :condition,     :label => "Condition",
                                 :as => :select,
                                 :collection => condition_list,
                                 :default => "NM",
                                 :input_html => { :class => "chzn-select" },
-                                :required => 'true' %>
+                                :required => true %>
     <%= f.input :description,   :label => "Description",
                                 :as => :string %>
     <%= f.input :foil,          :label => "Foil?",

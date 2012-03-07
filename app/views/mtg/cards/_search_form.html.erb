@@ -1,6 +1,6 @@
 <%= form_tag search_mtg_cards_path , :method => "post", :id => "search-form" do %>   
 
-  <h1><%= autocomplete_field_tag "name", params[:name], autocomplete_name_mtg_cards_path , :class => "search-text" , :placeholder => "Search cards by name..." %></h1>
+  <h1><%= autocomplete_field_tag "name", params[:name], autocomplete_name_mtg_cards_path, :class => "search-text" , :placeholder => "Search cards by name..." %></h1>
   <%# autocomplete_mtg_card_name_mtg_cards_path%>
   <div class="ma">
 
