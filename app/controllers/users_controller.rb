@@ -29,6 +29,9 @@ class UsersController < ApplicationController
   def account_info 
   end
   
+  def show_cart
+  end
+  
   def new_account_deposit
     if params[:account_balance_transfer].present?
       @deposit = AccountBalanceTransfer.new(params[:account_balance_transfer]) 

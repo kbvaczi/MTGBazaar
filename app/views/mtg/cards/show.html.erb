@@ -73,7 +73,7 @@
           </div>      
     </div>
   </div> <!-- card_info_wrapper -->
-  <%= button_to "Sell this card", listing_mtg_card_path , :method => :get , :class => "right"%>
+  <%= link_to "Sell this card", new_mtg_listing_path(:card_id => @mtg_card.id), :class => "right"%>
   <h2>Listings</h2>
   <%= render :partial => "listings", :locals => {:mtg_card => @mtg_card} %>        
 

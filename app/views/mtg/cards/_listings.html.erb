@@ -1,13 +1,13 @@
 <!-- local variables: mtg_card = current card -->
-<% unless @mtg_card.listings.empty?%>
+<% unless mtg_card.listings.empty?%>
   <table style="width:100%;">
     <tr style="text-align:left;">
-    	<th>Price</th><th>Seller</th><th>Condition</th><th>Language</th><th>Foil</th><th>Defects</th><th>Description</th>
+    	<th>Price</th><th>Seller</th><th>Condition</th><th>Language</th><th>Foil</th><th>Defects</th><th>Actions</th>
     </tr>
-    <% @mtg_card.listings.each do |listing| %>
+    <% mtg_card.listings.each do |listing| %>
       <tr>
           <td>
-            <%= number_to_currency(listing.price / 100) %>
+            <%= number_to_currency(listing.price) %>
           </td>
           <td>
             <%= "#{listing.seller.username} (#{listing.seller.account.average_rating})" %>
@@ -24,10 +24,13 @@
           <td>
             <%= listing.defect %>
           </td>
+          <td>
+            <%= link_to "Add to Cart", add_to_cart_mtg_listings_path(listing.id), :method => :post %>
+          </td>          
       </tr>
     <% end %>
   </table>  
 <% else %>
   <%= "There are currently no listings for this card." %>
-  <%= link_to "List this card", listing_mtg_card_path , :method => :get %>
+  <%= link_to "List this card", new_mtg_listing_path(:card_id => mtg_card.id) %>
 <% end %>

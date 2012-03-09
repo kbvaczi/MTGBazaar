@@ -2,11 +2,14 @@
 
 <h1>Create a listing</h1>
 
-<%= simple_form_for @listing,:url => listing_mtg_card_path, :method => :post do |f| %>
+<%= simple_form_for @listing, :url => mtg_listings_path, :method => :post do |f| %>
   <br class="spacer"/>
   <br class="spacer"/>
   <div class="inputs">
     <%#= f.label "Card Name" %>
+    <%= f.input :card_id,       :as => :hidden,
+                                :input_html => { :value => params[:card_id] } %>
+                            
     <%= f.input :name,          :label => "Card",
                                 :input_html => { :value => "#{@listing.card.name}" , :disabled => 'disabled' },
                                 :required => 'false' %>

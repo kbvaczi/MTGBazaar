@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120304063951) do
+ActiveRecord::Schema.define(:version => 20120307074635) do
 
   create_table "account_balance_transfers", :force => true do |t|
     t.integer  "account_id"
@@ -81,6 +81,12 @@ ActiveRecord::Schema.define(:version => 20120304063951) do
   add_index "admin_users", ["email"], :name => "index_admin_users_on_email", :unique => true
   add_index "admin_users", ["reset_password_token"], :name => "index_admin_users_on_reset_password_token", :unique => true
 
+  create_table "carts", :force => true do |t|
+    t.datetime "purchased_at"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
   create_table "mtg_blocks", :force => true do |t|
     t.string   "name",       :default => "",   :null => false
     t.datetime "created_at",                   :null => false
@@ -125,29 +131,24 @@ ActiveRecord::Schema.define(:version => 20120304063951) do
   create_table "mtg_listings", :force => true do |t|
     t.integer  "card_id"
     t.integer  "seller_id"
-    t.integer  "price",       :default => 100
-    t.string   "condition",   :default => "NM"
-    t.string   "language",    :default => "english"
-    t.string   "description", :default => ""
-    t.boolean  "foreign",     :default => false
-    t.boolean  "defect",      :default => false
-    t.boolean  "foil",        :default => false
-    t.boolean  "sold",        :default => false
-    t.boolean  "reserved",    :default => false
-    t.boolean  "active",      :default => true
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
+    t.integer  "transaction_id"
+    t.integer  "price",          :default => 100,       :null => false
+    t.string   "condition",      :default => "NM",      :null => false
+    t.string   "language",       :default => "english", :null => false
+    t.string   "description",    :default => "",        :null => false
+    t.boolean  "foreign",        :default => false,     :null => false
+    t.boolean  "defect",         :default => false,     :null => false
+    t.boolean  "foil",           :default => false,     :null => false
+    t.boolean  "sold",           :default => false,     :null => false
+    t.boolean  "reserved",       :default => false,     :null => false
+    t.boolean  "active",         :default => true,      :null => false
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
   end
 
-  add_index "mtg_listings", ["active"], :name => "index_mtg_listings_on_active"
   add_index "mtg_listings", ["card_id"], :name => "index_mtg_listings_on_card_id"
-  add_index "mtg_listings", ["condition"], :name => "index_mtg_listings_on_condition"
-  add_index "mtg_listings", ["defect"], :name => "index_mtg_listings_on_defect"
-  add_index "mtg_listings", ["foil"], :name => "index_mtg_listings_on_foil"
-  add_index "mtg_listings", ["foreign"], :name => "index_mtg_listings_on_foreign"
-  add_index "mtg_listings", ["reserved"], :name => "index_mtg_listings_on_reserved"
   add_index "mtg_listings", ["seller_id"], :name => "index_mtg_listings_on_seller_id"
-  add_index "mtg_listings", ["sold"], :name => "index_mtg_listings_on_sold"
+  add_index "mtg_listings", ["transaction_id"], :name => "index_mtg_listings_on_transaction_id"
 
   create_table "mtg_sets", :force => true do |t|
     t.integer  "block_id"
@@ -163,6 +164,24 @@ ActiveRecord::Schema.define(:version => 20120304063951) do
   add_index "mtg_sets", ["code"], :name => "index_mtg_sets_on_code"
   add_index "mtg_sets", ["name"], :name => "index_mtg_sets_on_name"
   add_index "mtg_sets", ["release_date"], :name => "index_mtg_sets_on_release_date"
+
+  create_table "mtg_transactions", :force => true do |t|
+    t.integer  "buyer_id"
+    t.integer  "seller_id"
+    t.integer  "cart_id"
+    t.datetime "buyer_confirmed"
+    t.datetime "seller_confirmed"
+    t.datetime "seller_shipped"
+    t.string   "seller_tracking_number", :default => "",    :null => false
+    t.datetime "seller_delivered"
+    t.boolean  "final",                  :default => false, :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
+  end
+
+  add_index "mtg_transactions", ["buyer_id"], :name => "index_mtg_transactions_on_buyer_id"
+  add_index "mtg_transactions", ["cart_id"], :name => "index_mtg_transactions_on_cart_id"
+  add_index "mtg_transactions", ["seller_id"], :name => "index_mtg_transactions_on_seller_id"
 
   create_table "transactions", :force => true do |t|
     t.integer  "test1_id"

@@ -5,20 +5,30 @@ MTGBazaar::Application.routes.draw do
   
   # ADMIN USERS -------------- #
   devise_for :admin_users, ActiveAdmin::Devise.config
+ 
+ 
+  # SHOPPING CART ------------- #
+  
+  
   
   # MTG ----------------------- #
   namespace :mtg do
+  
+    resources :listings, :except => [:index, :show ] do
+#      get  "listing" => "listings#new",    :on => :member
+#      post "listing" => "listings#create", :on => :member
+#      get  "listings/:id" => "listings#edit", :as => 'edit_listing', :on => :collection
+#      put  "listings/:id" => "listings#update", :as => 'update_listing', :on => :collection
+
+#      delete  "listings/:id" => "listings#delete", :as => 'delete_listing', :on => :collection
+      post ":id" => "carts#add_mtg_card_to_cart", :as => 'add_to_cart', :on => :collection
+    end
     resources :cards, :only => [:index, :show] do # don't allow users to create/destroy mtg cards by only allowing index and show routes
       get  "autocomplete_name", :on => :collection
-      get  "search", :as => 'search', :on => :collection      
-      post "search", :as => 'search', :on => :collection
-
-      get  "listing" => "listings#new",    :on => :member
-      post "listing" => "listings#create", :on => :member
-      get  "listings/:id" => "listings#edit", :as => 'edit_listing', :on => :collection
-      put  "listings/:id" => "listings#update", :as => 'update_listing', :on => :collection      
-      delete  "listings/:id" => "listings#delete", :as => 'delete_listing', :on => :collection            
+      get  "search", :as => 'search', :on => :collection  # can't figure out how to send autocorrect click link via post so we need get too for now
+      post "search", :as => 'search', :on => :collection      
     end
+
   end
   
   # USERS -------------------- #
@@ -31,6 +41,7 @@ MTGBazaar::Application.routes.draw do
   get 'users/withdraw' => 'users#new_account_withdraw', :as => 'new_account_withdraw'
   post 'users/withdraw' => 'users#create_account_withdraw', :as => 'create_account_withdraw'
   get 'users/account' => 'users#show_account_info', :as => 'show_account_info'
+  get 'users/cart' => 'users#show_cart', :as => 'show_cart'
   devise_for :users, :controllers => { :registrations => 'users/registrations' , :sessions => 'users/sessions' }
   resources :users, :only => [:index, :show], :controllers => { :users => "users/users"} do
     get :autocomplete_user_username, :on => :collection

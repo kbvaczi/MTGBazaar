@@ -4,12 +4,13 @@ class CreateMtgTransactions < ActiveRecord::Migration
       #foreign keys
       t.integer   :buyer_id
       t.integer   :seller_id
+      t.integer   :cart_id
 
-      t.datetime  :buyer_confirmed,
-      t.datetime  :seller_confirmed,
-      t.datetime  :seller_shipped,
+      t.datetime  :buyer_confirmed
+      t.datetime  :seller_confirmed
+      t.datetime  :seller_shipped
       t.string    :seller_tracking_number,    :default => "",           :null => false
-      t.datetime  :seller_delivered,  
+      t.datetime  :seller_delivered
       t.boolean   :final,                     :default => false,        :null => false
       
       t.timestamps
@@ -18,6 +19,7 @@ class CreateMtgTransactions < ActiveRecord::Migration
     # Table Indexes
     add_index :mtg_transactions, :buyer_id
     add_index :mtg_transactions, :seller_id
+    add_index :mtg_transactions, :cart_id    
 
   end
 

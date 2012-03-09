@@ -4,6 +4,7 @@ class CreateMtgListings < ActiveRecord::Migration
       #foreign keys      
       t.integer   :card_id
       t.integer   :seller_id
+      t.integer   :transaction_id
 
       t.integer   :price,         :default => 100,            :null => false
       t.string    :condition,     :default => "NM",           :null => false
@@ -22,14 +23,7 @@ class CreateMtgListings < ActiveRecord::Migration
     # Table Indexes
     add_index :mtg_listings, :card_id
     add_index :mtg_listings, :seller_id
-    
-    add_index :mtg_listings, :condition
-    add_index :mtg_listings, :foil
-    add_index :mtg_listings, :defect
-    add_index :mtg_listings, :sold
-    add_index :mtg_listings, :reserved
-    add_index :mtg_listings, :active
-    add_index :mtg_listings, :foreign    
+    add_index :mtg_listings, :transaction_id
                         
   end
   

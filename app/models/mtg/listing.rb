@@ -2,7 +2,8 @@ class Mtg::Listing < ActiveRecord::Base
   self.table_name = 'mtg_listings'    
   
   belongs_to :card, :class_name => "Mtg::Card"
-  belongs_to :seller, :class_name => "User"  
+  belongs_to :seller, :class_name => "User"
+  belongs_to :transaction, :class_name => "Mtg::Transaction"
   
   # Implement Money gem foro price column
   composed_of   :price,
@@ -12,7 +13,7 @@ class Mtg::Listing < ActiveRecord::Base
                 :converter => Proc.new { |value| value.respond_to?(:to_money) ? value.to_money : Money.empty }  
   
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :set, :quantity, :price, :condition, :language, :description, :foreign, :defect, :foil
+  attr_accessible :card_id, :name, :set, :quantity, :price, :condition, :language, :description, :foreign, :defect, :foil
 
   # not-in-model field for current password confirmation
   attr_accessor :name, :set, :quantity

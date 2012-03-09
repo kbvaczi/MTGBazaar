@@ -1,0 +1,37 @@
+<%= render :partial => "users/manage_account_header" %>
+<div class="ma">
+  <h2><%="#{@current_cart.mtg_listings.count} items in your cart"%></h2>
+  <table style="width:100%; font-size:80%;">
+    <th>Card Name</th><th>Set</th><th>Price</th><th>Condition</th><th>Language</th><th>Foil</th><th>Defects</th>
+    <% @current_cart.mtg_transactions.each do |t| %>
+      <tr>
+        <th> <%="Seller: #{t.seller.username}" %> </th>
+      </tr>
+      <% t.listings.each do |l| %>
+        <tr>
+            <td>
+              <%= display_name(l.card.name)%>
+            </td>      
+            <td>
+              <%= l.card.set.code%>
+            </td>          
+            <td>
+              <%= number_to_currency(l.price) %>
+            </td>
+            <td>
+              <%= display_condition(l.condition) %>
+            </td>
+            <td>
+              <%= capitalize_first_word(l.language) %>
+            </td>    
+            <td>
+              <%= l.foil %>
+            </td>    
+            <td>
+              <%= l.defect %>
+            </td>            
+        </tr>
+      <% end %>
+    <% end %>
+  </table>
+</div>
