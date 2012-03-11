@@ -10,7 +10,7 @@
   <%= f.input :content, :label => "Your message", :as => :text, :required => 'true', :input_html => {:maxlength => "500"} %>
 
   <br class = "spacer"/>  
-  <%= render :partial => "shared/recaptcha_box" %>
+  <%= render :partial => "shared/recaptcha_box" unless current_user %> 
   
   <br class = "spacer"/>
   <%= f.submit 'Submit' , :class => 'center' %>
