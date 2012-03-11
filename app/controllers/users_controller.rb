@@ -23,13 +23,16 @@ class UsersController < ApplicationController
     end
   end
   
-  def display_current_listings 
+  def display_current_listings
+    create_back_path
   end
   
   def account_info 
+    create_back_path    
   end
   
   def show_cart
+    create_back_path    
   end
   
   def new_account_deposit

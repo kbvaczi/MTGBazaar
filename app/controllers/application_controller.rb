@@ -1,9 +1,10 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  
+  helper :all
+
   before_filter :user_banned?                   # make sure the user is not banned before loading anything
   before_filter :production_authenticate        # simple HTTP authentication for production (TEMPORARY)
-  before_filter :current_cart                    # every user gets a cart when they come to the webpage... items added to cart are reserved... carts will expire every 30 minutes and inventory will be returned to the store.
+  before_filter :current_cart                   # every user gets a cart when they come to the webpage... items added to cart are reserved... carts will expire every 30 minutes and inventory will be returned to the store.
 
   protected
 
@@ -34,11 +35,18 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  # returns the cart object for the current user
-  # no need to encrypt cart_id since it is tamper resistant by default
+  # returns the current users's cart model 
   def current_cart
-    session[:cart_id] ||= Cart.create!.id
-    @current_cart ||= Cart.find(session[:cart_id])
+    @current_cart ||= Cart.new(session)      
+  end
+  helper_method :current_cart  
+  
+  def create_back_path
+    session[:return_to] = request.fullpath
+  end
+
+  def back_path
+    return session[:return_to] || root_path
   end
   
   def help
@@ -46,6 +54,7 @@ class ApplicationController < ActionController::Base
   end
 
   class Helper
+
     include Singleton
     include ActionView::Helpers::TextHelper
   end

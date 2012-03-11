@@ -5,10 +5,10 @@ class User < ActiveRecord::Base
 
 
   # Include default devise modules. Others available are:
-  #:token_authenticatable, :encryptable, :confirmable, :lockable, and :omniauthable
+  #:token_authenticatable, :encryptable, :confirmable, :lockable, :rememberable, :timeoutable, and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable,
-         :token_authenticatable, :confirmable, :lockable, :timeoutable
+         :recoverable, :trackable, :validatable,
+         :token_authenticatable, :confirmable, :lockable
 
   # Setup accessible (or protected) attributes for your model
   # :account_attributes allows nested model support for account while editing form for user
@@ -32,7 +32,7 @@ class User < ActiveRecord::Base
   
   # username must be between 3 and 15 characters and can only have letters, numbers, dash, period, or underscore (no other special characters)
   validates             :username,  :length => { :minimum => 3, :maximum   => 15 },
-                                    :format => { :with => /\A[\w\d]+\z/, :message => "no special characters"}
+                                    :format => { :with => /\A[\w\d]+\z/, :message => "no special characters please"}
 
   # validates account model when user model is saved
   validates_associated :account

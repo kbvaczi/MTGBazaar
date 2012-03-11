@@ -4,6 +4,7 @@ class Mtg::Listing < ActiveRecord::Base
   belongs_to :card, :class_name => "Mtg::Card"
   belongs_to :seller, :class_name => "User"
   belongs_to :transaction, :class_name => "Mtg::Transaction"
+  belongs_to :cart
   
   # Implement Money gem foro price column
   composed_of   :price,
@@ -17,5 +18,24 @@ class Mtg::Listing < ActiveRecord::Base
 
   # not-in-model field for current password confirmation
   attr_accessor :name, :set, :quantity
+  
+  # determins if listing is available to be added to cart (active, not already in cart, and not already sold)
+  def available?
+    self.reserved == false and self.active == true and self.sold_at == nil
+  end
+  
+  def reserve!
+    self.update_attribute(:reserved, true)
+  end
+
+  def free!
+    self.update_attribute(:reserved, false)
+  end  
+  
+  def self.available
+    where(:reserved => false, :active => true, :sold_at => nil)
+  end
+  
+
 
 end

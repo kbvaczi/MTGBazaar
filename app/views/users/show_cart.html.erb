@@ -1,37 +1,45 @@
 <%= render :partial => "users/manage_account_header" %>
 <div class="ma">
-  <h2><%="#{@current_cart.mtg_listings.count} items in your cart"%></h2>
+  <h2><%="#{current_cart.item_count} items in your cart"%></h2>
   <table style="width:100%; font-size:80%;">
-    <th>Card Name</th><th>Set</th><th>Price</th><th>Condition</th><th>Language</th><th>Foil</th><th>Defects</th>
-    <% @current_cart.mtg_transactions.each do |t| %>
+    <th>Card Name</th><th>Set</th><th>Price</th><th>Condition</th><th>Language</th><th>Foil</th><th>Defects</th><th>Actions</th>
+    <% current_cart.seller_ids.each do |s_id| %>
       <tr>
-        <th> <%="Seller: #{t.seller.username}" %> </th>
+        <td>
+          <%= "Seller: #{User.where(:id => s_id).pluck(:username).first}" %>
+        </td>
       </tr>
-      <% t.listings.each do |l| %>
+      <% current_cart.listings_for_seller_id(s_id).each do |listing| %>
         <tr>
-            <td>
-              <%= display_name(l.card.name)%>
-            </td>      
-            <td>
-              <%= l.card.set.code%>
-            </td>          
-            <td>
-              <%= number_to_currency(l.price) %>
-            </td>
-            <td>
-              <%= display_condition(l.condition) %>
-            </td>
-            <td>
-              <%= capitalize_first_word(l.language) %>
-            </td>    
-            <td>
-              <%= l.foil %>
-            </td>    
-            <td>
-              <%= l.defect %>
-            </td>            
-        </tr>
+          <td>
+            <%= listing.card.name%>
+          </td>
+          <td>
+            <%= listing.card.set.name%>
+          </td>
+          <td>
+            <%= number_to_currency(listing.price)%>
+          </td>          
+          <td>
+            <%= listing.condition %>
+          </td>
+          <td>
+            <%= listing.language %>
+          </td>          
+          <td>
+            <%= listing.foil %>
+          </td>
+          <td>
+            <%= listing.defect %>
+          </td>
+          <td>
+            <%= link_to "remove", remove_from_cart_mtg_listings_path(:id => listing.id), :method => :delete %>
+          </td>   
+        <tr/>
       <% end %>
     <% end %>
   </table>
+  <div class="right">
+    <%= "Total Price: #{number_to_currency(current_cart.total_price)}" %>
+  </div>
 </div>

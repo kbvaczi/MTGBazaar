@@ -13,4 +13,8 @@ module ApplicationHelper
     word.split(' ').map {|w| w.capitalize }.join(' ')
   end
   
+  def back_path
+    return session[:return_to]
+  end
+  
 end

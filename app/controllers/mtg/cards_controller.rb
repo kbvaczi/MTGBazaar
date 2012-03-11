@@ -21,7 +21,9 @@ class Mtg::CardsController < ApplicationController
 
   # GET /mtg/cards/1
   def show
+    create_back_path
     @mtg_card = Mtg::Card.find(params[:id])
+    @listings = @mtg_card.listings.available
     if not (@mtg_card.active or current_admin_user)
       redirect_to (:root)
       return false

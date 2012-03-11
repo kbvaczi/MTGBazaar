@@ -5,6 +5,7 @@ class CreateMtgListings < ActiveRecord::Migration
       t.integer   :card_id
       t.integer   :seller_id
       t.integer   :transaction_id
+      t.integer   :cart_id
 
       t.integer   :price,         :default => 100,            :null => false
       t.string    :condition,     :default => "NM",           :null => false
@@ -13,9 +14,9 @@ class CreateMtgListings < ActiveRecord::Migration
       t.boolean   :foreign,       :default => false,          :null => false
       t.boolean   :defect,        :default => false,          :null => false
       t.boolean   :foil,          :default => false,          :null => false
-      t.boolean   :sold,          :default => false,          :null => false
       t.boolean   :reserved,      :default => false,          :null => false
       t.boolean   :active,        :default => true,           :null => false
+      t.datetime  :sold_at      
 
       t.timestamps
     end
@@ -24,6 +25,7 @@ class CreateMtgListings < ActiveRecord::Migration
     add_index :mtg_listings, :card_id
     add_index :mtg_listings, :seller_id
     add_index :mtg_listings, :transaction_id
+    add_index :mtg_listings, :cart_id    
                         
   end
   

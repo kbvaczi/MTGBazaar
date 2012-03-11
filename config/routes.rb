@@ -21,7 +21,8 @@ MTGBazaar::Application.routes.draw do
 #      put  "listings/:id" => "listings#update", :as => 'update_listing', :on => :collection
 
 #      delete  "listings/:id" => "listings#delete", :as => 'delete_listing', :on => :collection
-      post ":id" => "carts#add_mtg_card_to_cart", :as => 'add_to_cart', :on => :collection
+      post    ":id/add_to_cart" => "carts#add_mtg_card",    :as => 'add_to_cart'      , :on => :collection
+      delete  ":id/remove_from_cart" => "carts#remove_mtg_card", :as => 'remove_from_cart' , :on => :collection      
     end
     resources :cards, :only => [:index, :show] do # don't allow users to create/destroy mtg cards by only allowing index and show routes
       get  "autocomplete_name", :on => :collection

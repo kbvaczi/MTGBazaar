@@ -14,7 +14,7 @@
     <div class= "ml-s">      
       <%= display_type(mtg_card.card_type, mtg_card.card_subtype) %>
       <div class="right mr-s">
-        <%= link_to "#{mtg_card.listings.count} in stock", mtg_card_path(mtg_card)  %>
+        <%= link_to "#{mtg_card.listings.available.count} in stock", mtg_card_path(mtg_card)  %>
         <%= %>
       </div>      
       <br class="spacer"/>
