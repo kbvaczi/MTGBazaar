@@ -1,6 +1,9 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.0'  
+# -----------
+# CUSTOM GEMS
+# -----------
+
 gem "devise", "~> 2.0.0"                                            # user authentication
 gem "simple_form", "~> 1.5.2"                                       # simplified form creation
 gem "chosen_rails", "~> 0.1.0"                                      # customized select boxes using chosen (http://harvesthq.github.com/chosen/). requires jquery
@@ -13,11 +16,17 @@ gem "rails3-jquery-autocomplete", "~> 1.0.6"                        # Autocomple
 gem "smart_tuple", "~> 0.1.2"                                       # Aid for building complex and conditional queries
 gem "money", "~> 4.0.2"                                             # handles currency inputs and currency conversions if we need those in the future
 gem "encryptor", "~> 1.1.3"                                         # 2-way encryption using SSL
+gem "heroku"                                                        # allows application to talk to heroku web hosting service
+
+# -------------
+# STANDARD GEMS
+# -------------
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
-
+gem 'rails', '3.2.0'
 gem 'sqlite3'
+gem "mysql2"                                                        # allows application to use a mysql database
 gem 'json'
 
 # Gems used only for assets and not required

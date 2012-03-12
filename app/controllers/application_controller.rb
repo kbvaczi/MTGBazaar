@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
   end
 
   def check_humanity
-    if current_user or verify_recaptcha or session[:captcha] == true
+    if current_user.present? or verify_recaptcha or session[:captcha] == true
       session[:captcha] = true if not session[:captcha]
       return true
     else

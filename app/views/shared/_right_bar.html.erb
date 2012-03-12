@@ -8,7 +8,7 @@
   <% else %>
     <h1><div class="left t-s"><%= "#{current_user.username}" %></div> <div class="right t-s"><%= number_to_currency(current_user.account.balance / 100) %></div></h1>
     <div class="ma">
-      <div class="mt-s"> <div class="left">Items in Cart:</div>  <div class="right"><%= current_cart.item_count %></div>  </div>
+      <div class="mt-s"> <div class="left">Items in Cart:</div>  <div class="right"><%= link_to current_cart.item_count, show_cart_path if current_cart.item_count > 0 %><%= 0 if current_cart.item_count == 0 %></div>  </div>
       <br/>
       <div class="mt-s"> <div class="left">My Active Transactions:</div>  <div class="right">0</div>  </div>
       <br/>
