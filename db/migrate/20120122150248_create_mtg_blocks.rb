@@ -1,4 +1,4 @@
-class CreateMtg::Blocks < ActiveRecord::Migration
+class CreateMtgBlocks < ActiveRecord::Migration
 
     def up
       create_table :mtg_blocks do |t|
