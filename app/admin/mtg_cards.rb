@@ -153,7 +153,7 @@ ActiveAdmin.register Mtg::Card do
                           :power => c.css("power").text,
                           :toughness => c.css("toughness").text,
                           :multiverse_id => c.css("id").text,
-                          :image_path => "mtg/cards/#{c.css("set").text}/#{format_number(c.css("number").text)}.jpg",
+                          :image_path => "https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/#{c.css("set").text}/#{format_number(c.css("number").text)}.jpg",
                           :active => true }
           puts "Set: #{c.css("set").text}, Card: #{c.css("id").text}, #{c.css("name").text} created" # notification that card was created
         end # if card exists           

@@ -81,7 +81,7 @@ namespace :mtg do
                                         :legality_peasant => c.css("legality_Peasant").text,
                                         :legality_pauper => c.css("legality_Pauper").text,
                                         :multiverse_id => c.css("id").text,
-                                        :image_path => "mtg/cards/#{c.css("set").text}/#{formatted_number}.jpg",
+                                        :image_path => "https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/#{c.css("set").text}/#{formatted_number}.jpg",
                                         :active => true
                                       ) # create the card under its corresponding set
                          
