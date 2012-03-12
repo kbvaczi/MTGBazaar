@@ -25,9 +25,12 @@ gem "heroku"                                                        # allows app
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 gem 'rails', '3.2.0'
-gem 'sqlite3'
 gem "mysql2"                                                        # allows application to use a mysql database
 gem 'json'
+
+group :development, :test do
+  gem 'sqlite3'
+end
 
 # Gems used only for assets and not required
 # in production environments by default.
