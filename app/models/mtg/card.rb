@@ -13,4 +13,9 @@ class Mtg::Card < ActiveRecord::Base
     "#{id}-#{display_name(name)}".parameterize
   end
   
+  def dual_sided_card?
+    return true if card_number.match(/[\d]+[aAbB]/).present?
+    return false
+  end
+  
 end

@@ -186,20 +186,20 @@ ActiveAdmin.register Mtg::Card do
           end
         end
         set.cards << Mtg::Card.create(  :name => c[:name], 
-                                      :card_type => c[:card_type],
-                                      :card_subtype => c[:card_subtype],
-                                      :card_number => c[:card_number],
-                                      :rarity => c[:rarity],
-                                      :artist => c[:artist],
-                                      :description => c[:description],
-                                      :mana_string => c[:mana_string],
-                                      :mana_color => c[:mana_color],
-                                      :mana_cost => c[:mana_cost],
-                                      :power => c[:power],
-                                      :toughness => c[:toughness],
-                                      :multiverse_id => c[:multiverse_id],
-                                      :image_path => c[:image_path],
-                                      :active => active) if Mtg::Card.where(:multiverse_id => c[:multiverse_id]).empty?
+                                        :card_type => c[:card_type],
+                                        :card_subtype => c[:card_subtype],
+                                        :card_number => c[:card_number],
+                                        :rarity => c[:rarity],
+                                        :artist => c[:artist],
+                                        :description => c[:description],
+                                        :mana_string => c[:mana_string],
+                                        :mana_color => c[:mana_color],
+                                        :mana_cost => c[:mana_cost],
+                                        :power => c[:power],
+                                        :toughness => c[:toughness],
+                                        :multiverse_id => c[:multiverse_id],
+                                        :image_path => c[:image_path],
+                                        :active => active) if Mtg::Card.where(:multiverse_id => c[:multiverse_id]).empty?
         puts "Card: #{c[:name]} created"
       end      
       redirect_to admin_mtg_cards_path, :notice => "XML imported successfully!"              

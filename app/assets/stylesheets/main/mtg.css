@@ -1,3 +1,6 @@
+.card_info_wrapper_back {
+  display:none;
+}
 .card_image_wrapper {
   height: 220px;
   width: 150px;
