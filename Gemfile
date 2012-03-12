@@ -26,9 +26,10 @@ gem "heroku"                                                        # allows app
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 gem 'rails', '3.2.0'
 gem 'json'
+gem 'sass-rails',   '~> 3.2.3'                                      # take sass-rails out of assets group to prevent problems with heroku
 
 group :production do
-  gem "mysql2"                                                        # allows application to use a mysql database  
+  gem "mysql2"                                                      # allows application to use a mysql database  
 end
 
 group :development, :test do
@@ -39,7 +40,6 @@ end
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
 end
