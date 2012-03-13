@@ -8,28 +8,17 @@ MTGBazaar::Application.routes.draw do
  
  
   # SHOPPING CART ------------- #
-  
-  
+  post    "mtg/listings/:id/add_to_cart"      => "carts#add_mtg_card",    :as => 'add_to_cart_mtg_listing'      
+  delete  "mtg/listings/:id/remove_from_cart" => "carts#remove_mtg_card", :as => 'remove_from_cart_mtg_listing' 
   
   # MTG ----------------------- #
   namespace :mtg do
-  
-    resources :listings, :except => [:index, :show ] do
-#      get  "listing" => "listings#new",    :on => :member
-#      post "listing" => "listings#create", :on => :member
-#      get  "listings/:id" => "listings#edit", :as => 'edit_listing', :on => :collection
-#      put  "listings/:id" => "listings#update", :as => 'update_listing', :on => :collection
-
-#      delete  "listings/:id" => "listings#delete", :as => 'delete_listing', :on => :collection
-      post    ":id/add_to_cart" => "carts#add_mtg_card",    :as => 'add_to_cart'      , :on => :collection
-      delete  ":id/remove_from_cart" => "carts#remove_mtg_card", :as => 'remove_from_cart' , :on => :collection      
-    end
+    resources :listings, :except => [:index, :show ]    
     resources :cards, :only => [:index, :show] do # don't allow users to create/destroy mtg cards by only allowing index and show routes
       get  "autocomplete_name", :on => :collection
       get  "search", :as => 'search', :on => :collection  # can't figure out how to send autocorrect click link via post so we need get too for now
       post "search", :as => 'search', :on => :collection      
     end
-
   end
   
   # USERS -------------------- #

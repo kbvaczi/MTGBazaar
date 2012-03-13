@@ -33,7 +33,7 @@
             <%= listing.defect %>
           </td>
           <td>
-            <%= link_to "remove", remove_from_cart_mtg_listings_path(:id => listing.id), :method => :delete %>
+            <%= link_to "remove", remove_from_cart_mtg_listing_path(:id => listing.id), :method => :delete %>
           </td>   
         <tr/>
       <% end %>

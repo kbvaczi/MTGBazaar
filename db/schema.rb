@@ -106,7 +106,7 @@ ActiveRecord::Schema.define(:version => 20120309123233) do
     t.string   "card_subtype",    :default => "",   :null => false
     t.string   "rarity",          :default => "",   :null => false
     t.string   "artist",          :default => "",   :null => false
-    t.string   "description",     :default => "",   :null => false
+    t.text     "description",     :default => "",   :null => false
     t.string   "mana_string",     :default => "",   :null => false
     t.string   "mana_color",      :default => "",   :null => false
     t.string   "mana_cost",       :default => "",   :null => false
@@ -158,7 +158,7 @@ ActiveRecord::Schema.define(:version => 20120309123233) do
     t.integer  "block_id"
     t.string   "name",         :default => "",           :null => false
     t.string   "code",         :default => "",           :null => false
-    t.date     "release_date", :default => '2012-03-12'
+    t.date     "release_date", :default => '2012-03-13'
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.boolean  "active",       :default => false,        :null => false
