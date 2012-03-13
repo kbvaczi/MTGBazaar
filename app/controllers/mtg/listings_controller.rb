@@ -19,7 +19,7 @@ class Mtg::ListingsController < ApplicationController
       if params[:mtg_listing][:quantity].present?
         (params[:mtg_listing][:quantity].to_i - 1).times { @listing.dup.save } #make quantity-1 copies (-1 since we already made one before)
       end  
-      redirect_to session[:return_to] || root_path, :notice => " #{help.pluralize(params[:quantity], "Listing", "Listings")} Created... Good Luck!"
+      redirect_to session[:return_to] || root_path, :notice => " #{help.pluralize(params[:mtg_listing][:quantity], "Listing", "Listings")} Created... Good Luck!"
     else
       flash[:error] = "There were one or more errors while trying to process your request"
       render 'new'
