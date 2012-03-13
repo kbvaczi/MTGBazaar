@@ -18,4 +18,8 @@ class Mtg::Card < ActiveRecord::Base
     return false
   end
   
+  def thumb_image_path
+    return image_path.gsub(".jpg", "_thumb.jpg")
+  end
+  
 end

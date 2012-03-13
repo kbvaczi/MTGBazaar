@@ -6,7 +6,7 @@ module ApplicationHelper
   end
   
   def title(page_title)
-    content_for(:title) { page_title + " | " }
+    content_for(:title) { " | " + page_title }
   end
   
   def capitalize_first_word(word)
