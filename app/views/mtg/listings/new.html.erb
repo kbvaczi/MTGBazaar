@@ -17,7 +17,13 @@
     <%= f.input :set,           :label => "Set",
                                 :input_html => { :value => "#{@listing.card.set.name}" , :disabled => 'disabled'},
                                 :required => 'false' %>
-
+    <%= f.label "Price Options" %>
+    <%= f.input :price_options, :label => false,
+                                :as => :radio,
+                                :collection => [["Low (#{@listing.card.listing_price_low})", 1.20], ["Med (#{@listing.card.listing_price_med})", 1.00], ["High (#{@listing.card.listing_price_high})", 0.90]],
+                                :wrapper_html => { :class => 'testy' },
+                                :required => 'true' %>
+                                
     <%= f.input :price,         :label => "Asking Price",
                                 :as => :currency,
                                 :required => 'true' %>

@@ -3,23 +3,27 @@
 /*------------simple form-------------*/
 /*------------------------------------*/
 /* ----- SimpleForm Styles ----- */
+
 .simple_form {
-  margin:auto; 
-  width:400px; 
-  align:center; 
+  display:block;
+  margin: 15px;
+}
+.simple_form h2 {
+  margin-right: 30px;
+  margin-left: 30px;  
 }
 .simple_form .error {
   clear:   left;
   color:   red;
   display: block;
-  margin-left: 150px;
+  margin-left: 35%;
   margin-bottom: 10px;
   font-size:    12px;
   font-style: italic;
 }
 .simple_form .hint {
   clear: left;
-  margin-left: 150px;
+  margin-left: 35%;
   font-size:    12px;
   color: #bbb;
   display: block;
@@ -30,24 +34,25 @@
 }
 .simple_form label {
   float: left;
-  width: 130px;
+  width: 30%;
   text-align: right;
   margin: 4px 10px;
 }
 .simple_form .select select , .simple_form .select .chzn-container {
-  width: 240px;
-  margin: 2px 0 5px 0px;
+  width: 52.5%;
+  margin: 2px 0 5px 0;
+  paddding: none;
 }
 .simple_form .date select , .simple_form .date .chzn-container{
-  width: 73px;
+  width: 50%;
   margin: 2px 0 5px 2px;
 }
 .simple_form .input input[type='text'], .simple_form .input input[type='email'], .simple_form .input input[type='password'] {
-  width:228px;
+  width:50%;
 }
 
 div.boolean, .simple_form input[type='submit'] {
-  margin-left: 153px;
+  margin-left: 50%;
   margin-right: auto;
 
 }
@@ -61,6 +66,12 @@ label.collection_radio {
   margin-right: 10px;
   vertical-align: -2px;
   margin-left:   2px;
+}
+.simple_form .input.radio span {
+  display:table-cell;
+}
+.simple_form label.radio {
+
 }
 .field_with_errors {
   display: inline;
@@ -84,7 +95,7 @@ input.check_boxes {
 
 .simple_form textarea.text {
   resize: none; 
-  width:226px;
+  width:50%;
   height:200px;
 
   vertical-align: -3px;

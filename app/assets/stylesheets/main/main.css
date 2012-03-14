@@ -7,7 +7,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
   vertical-align: baseline;
   background: transparent;
 }
-html {
+html, body {
   margin: 0;
   margin-bottom: 25px;
   padding: 0;
@@ -44,7 +44,7 @@ h2 {
   width:auto;
   font-size: 130%;
   line-height: 1.5;
-  margin: 15px 0 15px 0;
+  margin: 15px 0 25px 0;
   text-shadow: 0 1px 0px #EEE;
   display:block;
   border-bottom: 1px solid #eee;
@@ -111,7 +111,7 @@ textarea, textarea:hover, textarea:focus {
 }
 
 #site {
-  width: 960px;
+  width: 1000px;
   margin: auto;
   position: relative;
 }
@@ -319,7 +319,7 @@ input {
   float:left;
   min-height:605px;
   margin: 10px;
-  width: 500px;
+  width: 540px;
   background: #FFF;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;

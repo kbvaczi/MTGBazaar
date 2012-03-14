@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-
+require 'open-uri'
 
 namespace :mtg do
 
@@ -12,7 +12,7 @@ namespace :mtg do
       @blocks_created = 0
       @sets_created = 0
       puts "Importing MTG Sets..."      
-      @file = Nokogiri::XML(open('db/mtg_data/mtg_sets.xml')) #open file containing block/set information      
+      @file = Nokogiri::XML(open('https://s3.amazonaws.com/mtg_card_data/mtg_sets.xml')) #open file containing block/set information      
       
       @file.css("blocks block").each do |b| #for each block       
         
@@ -46,7 +46,7 @@ namespace :mtg do
     task :cards => :sets do
       @cards_created = 0
       puts "Importing MTG Cards..."
-      @file = Nokogiri::XML(open('db/mtg_data/cards/mtg_cards.xml')) #open file containing card information
+      @file = Nokogiri::XML(open('https://s3.amazonaws.com/mtg_card_data/mtg_cards.xml')) #open file containing block/set information      
       
       @file.css("cards card").each do |c| # for each card
 
@@ -69,17 +69,6 @@ namespace :mtg do
                                         :mana_cost => c.css("converted_manacost").text,
                                         :power => c.css("power").text,
                                         :toughness => c.css("toughness").text,
-                                        :legality_block => c.css("legality_Block").text,
-                                        :legality_standard => c.css("legality_Standard").text,
-                                        :legality_extended => c.css("legality_Extended").text,
-                                        :legality_modern => c.css("legality_Modern").text,
-                                        :legality_legacy => c.css("legality_Legacy").text,
-                                        :legality_vintage => c.css("legality_Vintage").text,
-                                        :legality_highlander => c.css("legality_Highlander").text,
-                                        :legality_french_commander => c.css("legality_French_Commander").text,
-                                        :legality_commander => c.css("legality_Commander").text,
-                                        :legality_peasant => c.css("legality_Peasant").text,
-                                        :legality_pauper => c.css("legality_Pauper").text,
                                         :multiverse_id => c.css("id").text,
                                         :image_path => "https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/#{c.css("set").text}/#{formatted_number}.jpg",
                                         :active => true

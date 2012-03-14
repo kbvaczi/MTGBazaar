@@ -17,7 +17,7 @@ class Mtg::Listing < ActiveRecord::Base
   attr_accessible :card_id, :name, :set, :quantity, :price, :condition, :language, :description, :foreign, :defect, :foil
 
   # not-in-model field for current password confirmation
-  attr_accessor :name, :set, :quantity
+  attr_accessor :name, :set, :quantity, :price_options
   
   # determins if listing is available to be added to cart (active, not already in cart, and not already sold)
   def available?

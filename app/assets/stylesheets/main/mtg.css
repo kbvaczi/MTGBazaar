@@ -10,7 +10,7 @@
 .card_show_info {
   display:table;
   margin: 0 0px 0 15px;
-  width: 300px;
+  width: 340px;
   float:left;
   text-align:justify;
 }
@@ -69,6 +69,6 @@
 .mtg_teaser_info{
   display:inline;
   float:left;
-  width:365px;
+  width:405px;
   margin: -10px 5px 0 15px;
 }
