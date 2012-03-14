@@ -60,7 +60,7 @@ class Mtg::CardsController < ApplicationController
   end
   
   def autocomplete_name
-    @mtg_cards = Mtg::Card.joins(:set).where("mtg_cards.name LIKE ? AND mtg_cards.active LIKE ? AND mtg_sets.active LIKE ?", "%#{params[:term]}%", true, true).limit(20) #grab 20.  we will display only 10, but will filter out repeats later.
+    @mtg_cards = Mtg::Card.joins(:set).where("mtg_cards.name LIKE ? AND mtg_cards.active LIKE ? AND mtg_sets.active LIKE ?", "%#{params[:term]}%", true, true).limit(25) #grab 25.  we will display only 15, but will filter out repeats later.
     respond_to do |format|
       format.json {}  #loads view autocomplete_name.json.erb which returns json hash array of information
     end
