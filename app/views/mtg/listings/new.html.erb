@@ -3,29 +3,29 @@
 <h1>Create a listing</h1>
 
 <%= simple_form_for @listing, :url => mtg_listings_path, :method => :post do |f| %>
-  <br class="spacer"/>
-  <br class="spacer"/>
+
+
   <div class="inputs">
-    <%#= f.label "Card Name" %>
+    <br class="spacer"/>
+    <br class="spacer"/>  
     <%= f.input :card_id,       :as => :hidden,
-                                :input_html => { :value => params[:card_id] } %>
+                                :input_html => { :value => params[:card_id], :name => :card_id } %>
                             
     <%= f.input :name,          :label => "Card",
-                                :input_html => { :value => "#{@listing.card.name}" , :disabled => 'disabled' },
+                                :input_html => { :value => "#{@listing.card.name}" },
+                                :disabled => true,
                                 :required => 'false' %>
                                 
     <%= f.input :set,           :label => "Set",
-                                :input_html => { :value => "#{@listing.card.set.name}" , :disabled => 'disabled'},
+                                :input_html => { :value => "#{@listing.card.set.name}" },
+                                :disabled => true,                                
                                 :required => 'false' %>
-    <%= f.label "Price Options" %>
-    <%= f.input :price_options, :label => false,
-                                :as => :radio,
-                                :collection => [["Low (#{@listing.card.listing_price_low})", 1.20], ["Med (#{@listing.card.listing_price_med})", 1.00], ["High (#{@listing.card.listing_price_high})", 0.90]],
-                                :wrapper_html => { :class => 'testy' },
-                                :required => 'true' %>
                                 
-    <%= f.input :price,         :label => "Asking Price",
-                                :as => :currency,
+    <%= f.input :quantity,      :label => "Quantity",
+                                :as => :select,
+                                :collection => [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+                                :default => 1,
+                                :input_html => { :class => "chzn-select" },
                                 :required => 'true' %>
 
     <%= f.input :condition,     :label => "Condition",
@@ -34,20 +34,42 @@
                                 :default => "NM",
                                 :input_html => { :class => "chzn-select" },
                                 :required => 'true' %>
-    <%= f.input :description,   :label => "Description",
-                                :as => :string %>
-    <%= f.input :foil,          :label => "Foil?",
-                                :default => false %>                                     
-    <%= f.input :foreign,       :label => "Foreign?",
-                                :default => false %> 
-    <%= f.input :defect,        :label => "Rarities or miscuts?",
-                                :default => false %> 
-    <%= f.input :quantity,      :label => "Quantity",
-                                :as => :select,
-                                :collection => [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-                                :default => 1,
-                                :input_html => { :class => "chzn-select" },
+                                                                
+    <%= f.input :price_options, :label => "Asking Price",
+                                :as => :radio,
+                                :collection => [["Low (#{@listing.card.listing_price_low})".html_safe,      @listing.card.listing_price_low], 
+                                                ["Average (#{@listing.card.listing_price_med})".html_safe,  @listing.card.listing_price_med], 
+                                                ["High (#{@listing.card.listing_price_high})".html_safe,    @listing.card.listing_price_high],
+                                                ["Other #{text_field_tag "mtg_listing[price]"}".html_safe, "other"]],
+                                :checked => @listing.card.listing_price_med,                                                                                                
                                 :required => 'true' %>
+                                
+    <%#= f.input :price,         :label => "Asking Price",
+                                :as => :currency,
+                                :required => 'true' %>
+    <br class="spacer"/>  
+    <br class="spacer"/>  
+    <%= f.input :language,      :label => "Language",
+                                :as => :select,
+                                :collection => @listing.card.list_language_options,
+                                :default => "EN",
+                                :input_html => { :class => "chzn-select" },
+                                :required => false %>    
+                                
+    <%= f.input :description,   :label => "Optional Description",
+                                :as => :string %>
+                                
+    <%= f.label "", :label => "Unique Attributes"%>
+    
+    <%= f.input :foil,          :label => "This card is foil stamped",
+                                :default => false %>                                     
+                                
+    <%= f.input :signed,        :label => "This card is signed by the artist",
+                                :default => false %> 
+                                
+    <%= f.input :defect,        :label => "This card has a rare manufacturing mistake",
+                                :default => false %> 
+
 
   </div>
   <br class="spacer"/>

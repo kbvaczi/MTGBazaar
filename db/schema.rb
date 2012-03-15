@@ -135,18 +135,18 @@ ActiveRecord::Schema.define(:version => 20120309123233) do
     t.integer  "seller_id"
     t.integer  "transaction_id"
     t.integer  "cart_id"
-    t.integer  "price",          :default => 100,       :null => false
-    t.string   "condition",      :default => "NM",      :null => false
-    t.string   "language",       :default => "english", :null => false
-    t.string   "description",    :default => "",        :null => false
-    t.boolean  "foreign",        :default => false,     :null => false
-    t.boolean  "defect",         :default => false,     :null => false
-    t.boolean  "foil",           :default => false,     :null => false
-    t.boolean  "reserved",       :default => false,     :null => false
-    t.boolean  "active",         :default => true,      :null => false
+    t.integer  "price",          :default => 100,   :null => false
+    t.string   "condition",      :default => "NM",  :null => false
+    t.string   "language",       :default => "EN",  :null => false
+    t.string   "description",    :default => "",    :null => false
+    t.boolean  "signed",         :default => false, :null => false
+    t.boolean  "defect",         :default => false, :null => false
+    t.boolean  "foil",           :default => false, :null => false
+    t.boolean  "reserved",       :default => false, :null => false
+    t.boolean  "active",         :default => true,  :null => false
     t.datetime "sold_at"
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
   end
 
   add_index "mtg_listings", ["card_id"], :name => "index_mtg_listings_on_card_id"

@@ -9,11 +9,12 @@ class CreateMtgListings < ActiveRecord::Migration
 
       t.integer   :price,         :default => 100,            :null => false
       t.string    :condition,     :default => "NM",           :null => false
-      t.string    :language,      :default => "english",      :null => false
+      t.string    :language,      :default => "EN",           :null => false
       t.string    :description,   :default => "",             :null => false
-      t.boolean   :foreign,       :default => false,          :null => false
+      t.boolean   :signed,        :default => false,          :null => false
       t.boolean   :defect,        :default => false,          :null => false
       t.boolean   :foil,          :default => false,          :null => false
+      
       t.boolean   :reserved,      :default => false,          :null => false
       t.boolean   :active,        :default => true,           :null => false
       t.datetime  :sold_at      

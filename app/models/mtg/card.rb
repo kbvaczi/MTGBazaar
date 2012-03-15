@@ -22,8 +22,6 @@ class Mtg::Card < ActiveRecord::Base
     return image_path.gsub(".jpg", "_thumb.jpg")
   end
   
-  
-
   def listing_price_high
     return number_to_currency(1.50)
   end
@@ -36,4 +34,7 @@ class Mtg::Card < ActiveRecord::Base
     return  number_to_currency(1.00)
   end
   
+  def list_language_options
+    return [["English","EN"], ["Russian","RU"], ["French","FR"], ["Japanese","JN"], ["Chinese","CN"], ["Korean","KO"], ["German","GN"]]
+  end
 end

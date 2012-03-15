@@ -4,7 +4,6 @@ class Mtg::Listing < ActiveRecord::Base
   belongs_to :card, :class_name => "Mtg::Card"
   belongs_to :seller, :class_name => "User"
   belongs_to :transaction, :class_name => "Mtg::Transaction"
-  belongs_to :cart
   
   # Implement Money gem foro price column
   composed_of   :price,
@@ -14,27 +13,36 @@ class Mtg::Listing < ActiveRecord::Base
                 :converter => Proc.new { |value| value.respond_to?(:to_money) ? value.to_money : Money.empty }  
   
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :card_id, :name, :set, :quantity, :price, :condition, :language, :description, :foreign, :defect, :foil
+  attr_accessible :name,  :set, :quantity, :price, :condition, :language, :description, 
+                          :foreign, :defect, :foil, :signed, :price_options, :price_other
 
   # not-in-model field for current password confirmation
-  attr_accessor :name, :set, :quantity, :price_options
+  attr_accessor :name, :set, :quantity, :price_options, :price_other
+  
+  # validations
+  validates_presence_of :quantity, :price, :condition, :language
   
   # determins if listing is available to be added to cart (active, not already in cart, and not already sold)
   def available?
     self.reserved == false and self.active == true and self.sold_at == nil
   end
+
+  # used for searching for available listings... Mtg::Listing.available will return all available listings
+  def self.available
+    where(:reserved => false, :active => true, :sold_at => nil)
+  end
   
+  # mark a listing as reserved (added to a cart)
   def reserve!
     self.update_attribute(:reserved, true)
   end
 
+  # mark a listing as NOT reserved (removed from a cart)
   def free!
     self.update_attribute(:reserved, false)
   end  
   
-  def self.available
-    where(:reserved => false, :active => true, :sold_at => nil)
-  end
+
   
 
 

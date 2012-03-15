@@ -13,9 +13,14 @@ class Mtg::ListingsController < ApplicationController
   end
   
   def create
+    @card = Mtg::Card.find(params[:card_id])
+    if params[:mtg_listing] && params[:mtg_listing][:price_options] != "other"
+      params[:mtg_listing][:price] = params[:mtg_listing][:price_options]
+    end
     @listing = Mtg::Listing.new(params[:mtg_listing])
     if @listing.save
-      current_user.mtg_listings << @listing                             # this is the current user's listing
+      @card.listings.push(@listing)                                       # add listing to the corresponding card
+      current_user.mtg_listings.push(@listing)                            # this is the current user's listing
       if params[:mtg_listing][:quantity].present?
         (params[:mtg_listing][:quantity].to_i - 1).times { @listing.dup.save } #make quantity-1 copies (-1 since we already made one before)
       end  

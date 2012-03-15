@@ -1,5 +1,5 @@
 /* ACTIVATES CHOSEN SELECT BOXES */
-$(document).ready(function() {
+$(document).ready(function() { 
 
   $(".chzn-select").chosen();
   

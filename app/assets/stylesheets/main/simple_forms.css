@@ -50,29 +50,34 @@
 .simple_form .input input[type='text'], .simple_form .input input[type='email'], .simple_form .input input[type='password'] {
   width:50%;
 }
-
 div.boolean, .simple_form input[type='submit'] {
-  margin-left: 50%;
+  margin-left: 34%;
   margin-right: auto;
-
 }
-
 div.boolean label, label.collection_radio {
   float: none;
   margin: 0;
 }
 
 label.collection_radio {
+
   margin-right: 10px;
   vertical-align: -2px;
   margin-left:   2px;
 }
-.simple_form .input.radio span {
-  display:table-cell;
-}
-.simple_form label.radio {
+.simple_form .input.radio {
 
 }
+.simple_form .input.radio label.radio {
+  display:table-column-group;
+}
+.simple_form .input.radio span {
+  display:table-row;
+  line-height:20px;
+
+}
+
+
 .field_with_errors {
   display: inline;
   color: red;
