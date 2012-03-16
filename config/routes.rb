@@ -10,6 +10,11 @@ MTGBazaar::Application.routes.draw do
   # SHOPPING CART ------------- #
   post    "mtg/listings/:id/add_to_cart"      => "carts#add_mtg_card",    :as => 'add_to_cart_mtg_listing'      
   delete  "mtg/listings/:id/remove_from_cart" => "carts#remove_mtg_card", :as => 'remove_from_cart_mtg_listing' 
+  get     'users/cart'                        => 'users#show_cart',       :as => 'show_cart'
+  post    'users/cart/checkout'               => 'carts#checkout',        :as => 'cart_checkout'
+  
+  # TRANSACTIONS -------------- #
+  get     'users/transactions'  => 'users#transactions_index', :as => 'user_transactions_index'
   
   # MTG ----------------------- #
   namespace :mtg do
@@ -31,7 +36,7 @@ MTGBazaar::Application.routes.draw do
   get 'users/withdraw' => 'users#new_account_withdraw', :as => 'new_account_withdraw'
   post 'users/withdraw' => 'users#create_account_withdraw', :as => 'create_account_withdraw'
   get 'users/account' => 'users#show_account_info', :as => 'show_account_info'
-  get 'users/cart' => 'users#show_cart', :as => 'show_cart'
+  
   devise_for :users, :controllers => { :registrations => 'users/registrations' , :sessions => 'users/sessions' }
   resources :users, :only => [:index, :show], :controllers => { :users => "users/users"} do
     get :autocomplete_user_username, :on => :collection

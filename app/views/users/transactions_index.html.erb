@@ -1,0 +1,44 @@
+<%= render :partial => "users/manage_account_header" %>
+<div class="ma">
+  <h2><%="#{pluralize(current_user.pending_transactions.count,"Pending Transaction","Pending Transactions")}"%></h2>
+  <% current_user.pending_transactions.each do |t| %>
+    <div class="left"> Purchase from <%= t.seller.username %> on <%= t.created_at.strftime("%m/%d/%Y") %></div>
+    <div class="right"> Status: Waiting on seller approval</div>
+    <br class="spacer"/>
+    <br class="spacer"/>    
+    <table style="width:100%; font-size:80%;">
+      <th>Card Name</th><th>Set</th><th>Price</th><th>Condition</th><th>Language</th><th>Foil</th><th>Defects</th>    
+      <% t.listings.each do |listing| %>
+        <div>
+          <tr>
+            <td>
+              <%= listing.card.name%>
+            </td>
+            <td>
+              <%= listing.card.set.name%>
+            </td>
+            <td>
+              <%= number_to_currency(listing.price)%>
+            </td>          
+            <td>
+              <%= listing.condition %>
+            </td>
+            <td>
+              <%= listing.language %>
+            </td>          
+            <td>
+              <%= listing.foil %>
+            </td>
+            <td>
+              <%= listing.defect %>
+            </td> 
+          <tr/>
+        </div>
+      <% end %>
+    </table>
+    <br class="spacer"/>
+    <div class="right"> Total Value: <%= number_to_currency(t.total_value) %></div>
+    <br class="spacer"/>
+    <br class="spacer"/>        
+  <% end %>
+</div>

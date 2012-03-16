@@ -88,5 +88,9 @@ class UsersController < ApplicationController
       render 'new_account_withdraw'
     end
   end
+  
+  def transactions_index
+    
+  end
     
 end

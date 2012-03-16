@@ -1,7 +1,9 @@
 class User < ActiveRecord::Base
   # database relationships
   has_one  :account, :dependent => :destroy
-  has_many :mtg_listings, :class_name => "Mtg::Listing", :foreign_key => "seller_id"
+  has_many :mtg_listings,   :class_name => "Mtg::Listing",      :foreign_key => "seller_id"
+  has_many :mtg_purchases,  :class_name => "Mtg::Transaction", :foreign_key => "buyer_id"
+  has_many :mtg_sales,      :class_name => "Mtg::Transaction", :foreign_key => "seller_id"  
 
 
   # Include default devise modules. Others available are:
@@ -48,4 +50,11 @@ class User < ActiveRecord::Base
     self
   end
   
+  def pending_transactions
+    Mtg::Transaction.where(:buyer_id => id, :seller_confirmed_at => nil)
+  end
+  
+  def active_transactions
+    Mtg::Transaction.where(:buyer_id => id).where("seller_confirmed_at IS NOT NULL")
+  end  
 end

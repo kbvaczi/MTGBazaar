@@ -1,45 +1,52 @@
 <%= render :partial => "users/manage_account_header" %>
 <div class="ma">
-  <h2><%="#{current_cart.item_count} items in your cart"%></h2>
-  <table style="width:100%; font-size:80%;">
-    <th>Card Name</th><th>Set</th><th>Price</th><th>Condition</th><th>Language</th><th>Foil</th><th>Defects</th><th>Actions</th>
-    <% current_cart.seller_ids.each do |s_id| %>
-      <tr>
-        <td>
-          <%= "Seller: #{User.where(:id => s_id).pluck(:username).first}" %>
-        </td>
-      </tr>
-      <% current_cart.listings_for_seller_id(s_id).each do |listing| %>
+  <h2><%="#{pluralize(current_cart.item_count,"item","items")} in your cart"%></h2>
+  <% if current_cart.item_count >0 %>
+    <table style="width:100%; font-size:80%;">
+      <th>Card Name</th><th>Set</th><th>Price</th><th>Condition</th><th>Language</th><th>Foil</th><th>Defects</th><th>Actions</th>
+      <% current_cart.seller_ids.each do |s_id| %>
         <tr>
           <td>
-            <%= listing.card.name%>
+            <%= "Seller: #{User.where(:id => s_id).pluck(:username).first}" %>
           </td>
-          <td>
-            <%= listing.card.set.name%>
-          </td>
-          <td>
-            <%= number_to_currency(listing.price)%>
-          </td>          
-          <td>
-            <%= listing.condition %>
-          </td>
-          <td>
-            <%= listing.language %>
-          </td>          
-          <td>
-            <%= listing.foil %>
-          </td>
-          <td>
-            <%= listing.defect %>
-          </td>
-          <td>
-            <%= link_to "remove", remove_from_cart_mtg_listing_path(:id => listing.id), :method => :delete %>
-          </td>   
-        <tr/>
+        </tr>
+        <% current_cart.mtg_listings_for_seller_id(s_id).each do |listing| %>
+          <tr>
+            <td>
+              <%= listing.card.name%>
+            </td>
+            <td>
+              <%= listing.card.set.name%>
+            </td>
+            <td>
+              <%= number_to_currency(listing.price)%>
+            </td>          
+            <td>
+              <%= listing.condition %>
+            </td>
+            <td>
+              <%= listing.language %>
+            </td>          
+            <td>
+              <%= listing.foil %>
+            </td>
+            <td>
+              <%= listing.defect %>
+            </td>
+            <td>
+              <%= link_to "remove", remove_from_cart_mtg_listing_path(:id => listing.id), :method => :delete %>
+            </td>   
+          <tr/>
+        <% end %>
       <% end %>
-    <% end %>
-  </table>
-  <div class="right">
-    <%= "Total Price: #{number_to_currency(current_cart.total_price)}" %>
-  </div>
+    </table>
+    <br class="spacer"/>
+    <div class="right">
+      <%= "Total Price: #{number_to_currency(current_cart.total_price)}" %>
+    </div>
+    <br class="spacer"/>
+    <div class="center">
+      <%= button_to "Check Out", cart_checkout_path, :method => :post %>
+    </div>
+  <% end %>
 </div>
