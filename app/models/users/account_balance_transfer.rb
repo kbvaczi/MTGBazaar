@@ -9,4 +9,12 @@ class AccountBalanceTransfer < ActiveRecord::Base
   
   # not-in-model field for current password confirmation
   attr_accessor :current_password  
+  
+  # Implement Money gem for balance column
+  composed_of   :balance,
+                :class_name => 'Money',
+                :mapping => %w(balance cents),
+                :constructor => Proc.new { |cents| Money.new(cents || 0) },                
+                :converter => Proc.new { |value| value.respond_to?(:to_money) ? value.to_money : Money.empty }
+  
 end

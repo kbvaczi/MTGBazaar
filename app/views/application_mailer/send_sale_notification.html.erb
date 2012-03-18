@@ -1,0 +1,43 @@
+<h2>Congratulations!</h2>
+<h3>You have received a purchase request from <%= link_to @transaction.buyer.username, user_url(@transaction.buyer) %> for the following items:</h3><br/>
+
+<table>
+  <th>Card Name</th><th>Set</th><th>Price</th><th>Condition</th><th>Language</th><th>Foil</th><th>Defects</th>    
+  <% @transaction.listings.each do |listing| %>
+    <div>
+      <tr>
+        <td>
+          <%= listing.card.name%>
+        </td>
+        <td>
+          <%= listing.card.set.name%>
+        </td>
+        <td>
+          <%= number_to_currency(listing.price)%>
+        </td>          
+        <td>
+          <%= listing.condition %>
+        </td>
+        <td>
+          <%= listing.language %>
+        </td>          
+        <td>
+          <%= listing.foil %>
+        </td>
+        <td>
+          <%= listing.defect %>
+        </td> 
+      <tr/>
+    </div>
+  <% end %>
+</table>
+
+<br class="spacer"/>
+<p>Please confirm that these items are still in your possession and are ready to be shipped to buyer.</p>
+<%= link_to "Confirm Sale", root_url %>
+<br class="spacer"/>
+<br class="spacer"/>
+<%= link_to "Reject Sale", root_url %>
+<p>Shipping information will be provided upon confirmation.</p>
+<p>Cheers!</p>
+<%= image_tag "logo.png" %>

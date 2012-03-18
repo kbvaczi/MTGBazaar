@@ -5,7 +5,7 @@ MTGBazaar::Application.configure do
   # CUSTOM OPTIONS
   
   # this is needed for devise to work on heroku
-  config.action_mailer.default_url_options = { :host => 'mtgbazaar.heroku.com' }
+  config.action_mailer.default_url_options = { :host => 'mtgbazaar.herokuapp.com' }
   
   # STANDARD OPTIONS
 
@@ -55,7 +55,8 @@ MTGBazaar::Application.configure do
 
   # Disable delivery errors, bad email addresses will be ignored
   config.action_mailer.raise_delivery_errors = false
-
+  config.action_mailer.asset_host = "http://mtgbazaar.herokuapp.com"
+  
   # Enable threaded mode
   # config.threadsafe!
 

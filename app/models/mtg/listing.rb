@@ -5,7 +5,7 @@ class Mtg::Listing < ActiveRecord::Base
   belongs_to :seller, :class_name => "User"
   belongs_to :transaction, :class_name => "Mtg::Transaction"
   
-  # Implement Money gem foro price column
+  # Implement Money gem for price column
   composed_of   :price,
                 :class_name => 'Money',
                 :mapping => %w(price cents),

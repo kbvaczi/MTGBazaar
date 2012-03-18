@@ -6,7 +6,7 @@ class Mtg::Transaction < ActiveRecord::Base
   has_many :listings,   :class_name => "Mtg::Listing", :foreign_key => "transaction_id"
   
   def total_value
-     Mtg::Listing.by_id(listing_ids).to_a.sum(&:price).dollars
+     Mtg::Listing.by_id(listing_ids).to_a.sum(&:price)
   end
   
 end

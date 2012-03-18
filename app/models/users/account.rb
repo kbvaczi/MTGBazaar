@@ -7,6 +7,13 @@ class Account < ActiveRecord::Base
   belongs_to :user
   has_many :balance_transfers, :class_name => 'AccountBalanceTransfer', :dependent => :destroy    
 
+  # Implement Money gem for balance column
+  composed_of   :balance,
+                :class_name => 'Money',
+                :mapping => %w(balance cents),
+                :constructor => Proc.new { |cents| Money.new(cents || 0) },                
+                :converter => Proc.new { |value| value.respond_to?(:to_money) ? value.to_money : Money.empty }
+
   # --------------------------------------- #
   # ------------ Validations -------------- #
   # --------------------------------------- #
@@ -42,5 +49,10 @@ class Account < ActiveRecord::Base
 
   # Attributes accessible to multiple assign.  Others must be individually assigned.
   attr_accessible :first_name, :last_name, :country, :state, :city, :address1, :address2, :zipcode, :security_question, :security_answer
+  
+  # returns full name of user
+  def full_name
+    first_name + " " + last_name
+  end
   
 end

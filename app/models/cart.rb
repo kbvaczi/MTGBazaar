@@ -1,5 +1,7 @@
 class Cart
-
+  include ActiveModel::Validations
+  include ActiveModel::Conversion
+  extend ActiveModel::Naming
   include ActionView::Helpers::NumberHelper  # needed for number_to_currency  
   
   def initialize(session)
@@ -49,8 +51,8 @@ class Cart
     Mtg::Listing.by_id(@session[:cart][:seller_ids][id])
   end
   
-  def total_price       #returns total price of items in cart not including shipping
-    @session[:cart][:total_price]
+  def total_price       #returns total price of items in cart not including shipping as a money object.
+    @session[:cart][:total_price].to_money
   end
   
   def item_count        #returns total count of items in cart

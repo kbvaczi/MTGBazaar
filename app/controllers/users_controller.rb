@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
   autocomplete :user, :username
-  before_filter :authenticate_user!, :except => [:new, :create]
+  before_filter :authenticate_user!, :except => [:new, :create, :show]
 
   def index
     @users = User.all

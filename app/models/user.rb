@@ -57,4 +57,6 @@ class User < ActiveRecord::Base
   def active_transactions
     Mtg::Transaction.where(:buyer_id => id).where("seller_confirmed_at IS NOT NULL")
   end  
+  
+
 end

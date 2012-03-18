@@ -14,12 +14,14 @@ class CartsController < ApplicationController
   
   def checkout
     if current_user.account.balance >= current_cart.total_price # does user have money to purchase?
-      current_user.account.update_attribute(:balance, current_user.account.balance - current_cart.total_price * 100)  # take money out of user's balance
+      current_user.account.update_attribute(:balance, current_user.account.balance - current_cart.total_price)  # take money out of user's balance
       current_cart.seller_ids.each do |id|
         @transaction = Mtg::Transaction.create()
+        @seller = User.find(id)
         current_user.mtg_purchases.push(@transaction) # create transaction for this buyer
-        User.find(id).mtg_sales.push(@transaction) # add seller
+        @seller.mtg_sales.push(@transaction) # add seller
         current_cart.mtg_listings_for_seller_id(id).each { |l| @transaction.listings.push(l) } # add the listings to transaction
+        ApplicationMailer.send_sale_notification(@seller, @transaction).deliver # send sale notification email to seller
       end
       current_cart.empty! # empty the shopping cart
       redirect_to back_path, :notice => "Your purchase has been submitted.  Expect seller confirmation soon."
