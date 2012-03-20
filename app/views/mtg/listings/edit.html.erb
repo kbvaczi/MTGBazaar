@@ -27,14 +27,27 @@
                                 :default => "NM",
                                 :input_html => { :class => "chzn-select" },
                                 :required => true %>
+
+    <%= f.input :language,      :label => "Language",
+                                :as => :select,
+                                :collection => @listing.card.list_language_options,
+                                :default => "EN",
+                                :input_html => { :class => "chzn-select" },
+                                :required => false %>                                
+
     <%= f.input :description,   :label => "Description",
                                 :as => :string %>
-    <%= f.input :foil,          :label => "Foil?",
+
+    <%= f.label "", :label => "Unique Attributes"%>
+
+    <%= f.input :foil,          :label => "This card is foil stamped",
                                 :default => false %>                                     
-    <%= f.input :foreign,       :label => "Foreign?",
+
+    <%= f.input :signed,        :label => "This card is signed by the artist",
                                 :default => false %> 
-    <%= f.input :defect,        :label => "Rarities or miscuts?",
-                                :default => false %> 
+
+    <%= f.input :defect,        :label => "This card has a rare manufacturing mistake",
+                                :default => false %>
 
   </div>
   <br class="spacer"/>

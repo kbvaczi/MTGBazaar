@@ -14,10 +14,12 @@ MTGBazaar::Application.routes.draw do
   post    'users/cart/checkout'               => 'carts#checkout',        :as => 'cart_checkout'
   
   # TRANSACTIONS -------------- #
-  get     'users/transactions'  => 'users#transactions_index', :as => 'user_transactions_index'
+  get   'users/transactions'        => 'users#transactions_index', :as => 'user_transactions_index'
+  get   'transactions/confirm/:id'  => 'mtg/transactions#seller_sale_confirmation', :as => 'seller_sale_confirmation'    
   
   # MTG ----------------------- #
   namespace :mtg do
+
     resources :listings, :except => [:index, :show ]    
     resources :cards, :only => [:index, :show] do # don't allow users to create/destroy mtg cards by only allowing index and show routes
       get  "autocomplete_name", :on => :collection
@@ -54,6 +56,7 @@ MTGBazaar::Application.routes.draw do
   match 'contact'         => 'contact#index'
   match 'contact_create'  => 'contact#create'
   match 'help'            => 'home#help'
+  match 'test_hash_redirect' => 'home#birthday'
   
   
   

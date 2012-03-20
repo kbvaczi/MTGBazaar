@@ -1,0 +1,40 @@
+<table style="width:100%; font-size:80%;">
+  <tr style="text-align:left;">
+  	<th>Card Name</th><th>Set</th><th>Price</th><th>Condition</th><th>Language</th><th>Foil</th><th>Defects</th><th>Listing Date</th><th colspan="3">Actions</th>
+  </tr>
+  <% listings.each do |listing| %>
+    <tr>
+        <td>
+          <%= display_name(listing.card.name)%>
+        </td>      
+        <td>
+          <%= listing.card.set.code%>
+        </td>          
+        <td>
+          <%= number_to_currency(listing.price) %>
+        </td>
+        <td>
+          <%= display_condition(listing.condition) %>
+        </td>
+        <td>
+          <%= capitalize_first_word(listing.language) %>
+        </td>    
+        <td>
+          <%= listing.foil %>
+        </td>    
+        <td>
+          <%= listing.defect %>
+        </td>
+        <td>
+          <%= listing.created_at.strftime("%d-%b-%Y") %>
+        </td>
+        <td>
+          <%= link_to "edit", edit_mtg_listing_path(listing)%>
+        </td>
+        <td>|</td>
+        <td>
+          <%= link_to "remove", mtg_listing_path(listing), :method => :delete , :confirm => "Are you sure you want to permanently delete this listing?"%>
+        </td>                              
+    </tr>
+  <% end %>
+</table>

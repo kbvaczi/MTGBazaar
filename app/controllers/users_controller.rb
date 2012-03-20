@@ -25,6 +25,8 @@ class UsersController < ApplicationController
   
   def display_current_listings
     create_back_path
+    @active_listings = current_user.mtg_listings.active
+    @inactive_listings = current_user.mtg_listings.inactive    
   end
   
   def account_info 

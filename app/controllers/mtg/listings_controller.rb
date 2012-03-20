@@ -1,8 +1,8 @@
 class Mtg::ListingsController < ApplicationController
   
   before_filter :authenticate_user! # must be logged in to make or edit listings
-  before_filter :verify_owner!, :except => [:new, :create]  # prevent a user from editing another user's listings
-  before_filter :verify_not_in_cart!, :only => [:edit, :update, :destroy]  # don't allow users to change listings when they're in someone's cart
+  before_filter :verify_owner?, :except => [:new, :create]  # prevent a user from editing another user's listings
+  before_filter :verify_available?, :only => [:edit, :update, :destroy]  # don't allow users to change listings when they're in someone's cart or when they're in a transaction.
   
   def new
     session[:return_to] = request.referer #set backlink
@@ -56,8 +56,8 @@ class Mtg::ListingsController < ApplicationController
     end
   end
     
-  def verify_owner!
-    @listing = Mtg::Listing.find(params[:id])
+  def verify_owner?
+    @listing ||= Mtg::Listing.find(params[:id])
     if @listing.seller == current_user
       return true
     else
@@ -67,8 +67,19 @@ class Mtg::ListingsController < ApplicationController
     end
   end
   
-  def verify_not_in_cart!
-    return true
+  def verify_available?
+    @listing ||= Mtg::Listing.find(params[:id])
+    if @listing.available?
+      return true
+    else 
+      if @listing.transaction_id.present?
+        flash[:error] = "This item is no longer available..."
+      else
+        flash[:error] = "You cannot modify this item now.  It may be in someone's cart for purchase..."
+      end
+      redirect_to back_path
+      return false      
+    end
   end
   
 end

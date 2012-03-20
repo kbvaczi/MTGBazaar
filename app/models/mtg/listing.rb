@@ -42,6 +42,16 @@ class Mtg::Listing < ActiveRecord::Base
     where(:reserved => false, :active => true, :sold_at => nil, :transaction_id => nil)
   end
   
+  # used for searching for active listings...
+  def self.active
+    where(:active => true, :sold_at => nil, :transaction_id => nil)
+  end
+  
+  # used for searching for inactive listings...
+  def self.inactive
+    where(:active => false, :sold_at => nil, :transaction_id => nil)
+  end
+  
   # used for searching listings by seller...  Mtg::Listing.by_seller_id([2,3]) will return all listings from seller 2 and 3
   def self.by_seller_id(id)
     where(:seller_id => id )

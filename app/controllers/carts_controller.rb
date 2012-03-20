@@ -21,7 +21,7 @@ class CartsController < ApplicationController
         current_user.mtg_purchases.push(@transaction) # create transaction for this buyer
         @seller.mtg_sales.push(@transaction) # add seller
         current_cart.mtg_listings_for_seller_id(id).each { |l| @transaction.listings.push(l) } # add the listings to transaction
-        ApplicationMailer.send_sale_notification(@seller, @transaction).deliver # send sale notification email to seller
+        ApplicationMailer.send_seller_sale_notification(@transaction).deliver # send sale notification email to seller
       end
       current_cart.empty! # empty the shopping cart
       redirect_to back_path, :notice => "Your purchase has been submitted.  Expect seller confirmation soon."

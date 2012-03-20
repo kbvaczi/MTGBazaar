@@ -34,7 +34,7 @@
 
 <br class="spacer"/>
 <p>Please confirm that these items are still in your possession and are ready to be shipped to buyer.</p>
-<%= link_to "Confirm Sale", root_url %>
+<%= link_to "Confirm Sale", seller_sale_confirmation_url(@transaction.id) %>
 <br class="spacer"/>
 <br class="spacer"/>
 <%= link_to "Reject Sale", root_url %>

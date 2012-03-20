@@ -1,0 +1,40 @@
+<h2>Shipping Information</h2>
+<h3>Our records indicate that you have confirmed a sale to <%= @transaction.buyer.username %></h3>
+<br class="spacer"/>
+<h3>Please package the following cards:</h3>
+<br class="spacer"/>
+<table>
+  <th>Card Name</th><th>Set</th><th>Condition</th><th>Language</th><th>Foil</th><th>Defects</th>    
+  <% @transaction.listings.each do |listing| %>
+    <div>
+      <tr>
+        <td>
+          <%= listing.card.name%>
+        </td>
+        <td>
+          <%= listing.card.set.name%>
+        </td>
+        <td>
+          <%= listing.condition %>
+        </td>
+        <td>
+          <%= listing.language %>
+        </td>          
+        <td>
+          <%= listing.foil %>
+        </td>
+        <td>
+          <%= listing.defect %>
+        </td> 
+      <tr/>
+    </div>
+  <% end %>
+</table>
+<h3>Ship cards to the following address:</h3>
+<p>MTGBazaar buyer <%= @transaction.buyer.username %></p>
+<p><%= @transaction.buyer.account.address1 %></p>
+<p><%= @transaction.buyer.account.address2 if not @transaction.buyer.account.address2.empty? %></p>
+<p><%= "#{@transaction.buyer.account.city}, #{@transaction.buyer.account.state} #{@transaction.buyer.account.zipcode}" %></p>
+<br class="spacer"/>
+<p>Cheers!</p>
+<%= image_tag "logo.png" %>
