@@ -1,0 +1,48 @@
+<h2>Sale Confirmation</h2>
+<h3>Your purchase request from <%= link_to @transaction.seller.username, user_url(@transaction.seller) %> for the following items has been confirmed:</h3><br/>
+
+<table>
+  <th>Card Name</th><th>Set</th><th>Price</th><th>Condition</th><th>Language</th><th>Foil</th><th>Defects</th>    
+  <% @transaction.listings.each do |listing| %>
+    <div>
+      <tr>
+        <td>
+          <%= listing.card.name%>
+        </td>
+        <td>
+          <%= listing.card.set.name%>
+        </td>
+        <td>
+          <%= number_to_currency(listing.price)%>
+        </td>          
+        <td>
+          <%= listing.condition %>
+        </td>
+        <td>
+          <%= listing.language %>
+        </td>          
+        <td>
+          <%= listing.foil %>
+        </td>
+        <td>
+          <%= listing.defect %>
+        </td> 
+      <tr/>
+    </div>
+  <% end %>
+</table>
+
+<br class="spacer"/>
+<p>
+  <b>Next Steps:</b>
+  <ul>
+    <li>The seller will be packaging up your order and will ship the items shortly.</li>
+    <li>Once shipped, you will receive a shipping notification including estimated delivery date.</li>
+    <li>When the package arrives please take the time to inspect items and confirm everything arrived as anticipated.</li>
+    <li>To finalize the transaction, please fill out the seller feedback form.</li>
+  </ul>
+</p>
+<br class="spacer"/>
+<br class="spacer"/>
+<p>Cheers!</p>
+<%= image_tag "logo.png" %>

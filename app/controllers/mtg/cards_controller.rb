@@ -21,7 +21,7 @@ class Mtg::CardsController < ApplicationController
 
   # GET /mtg/cards/1
   def show
-    create_back_path
+    set_back_path
     @mtg_card = Mtg::Card.find(params[:id])
     @mtg_card_back = Mtg::Card.joins(:set).where("card_number LIKE ? AND mtg_sets.code LIKE ?", "%03d" % @mtg_card.card_number.to_i.to_s + "b", @mtg_card.set.code).first if @mtg_card.dual_sided_card?
     @listings = @mtg_card.listings.available

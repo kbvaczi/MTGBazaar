@@ -24,17 +24,17 @@ class UsersController < ApplicationController
   end
   
   def display_current_listings
-    create_back_path
+    set_back_path
     @active_listings = current_user.mtg_listings.active
     @inactive_listings = current_user.mtg_listings.inactive    
   end
   
   def account_info 
-    create_back_path    
+    set_back_path    
   end
   
   def show_cart
-    create_back_path    
+    set_back_path    
   end
   
   def new_account_deposit

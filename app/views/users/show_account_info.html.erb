@@ -6,7 +6,7 @@
      <div class="ma-s">
        <div><%= "Username: #{current_user.username}" %></div>
        <div><%= "Email: #{current_user.email}" %></div>        
-       <div><%= "Balance: #{number_to_currency(current_user.account.balance/100)}" %></div>
+       <div><%= "Balance: #{number_to_currency(current_user.account.balance)}" %></div>
        <div><%= "Paypal Account: #{current_user.account.paypal_username if !current_user.account.paypal_username.empty?}#{"None added yet" if current_user.account.paypal_username.empty?}" %></div>
        <div><%= "Status: #{"On Vacation" if current_user.account.vacation}#{"Active" if !current_user.account.vacation}" %></div>
      </div>

@@ -26,7 +26,7 @@ class CartsController < ApplicationController
       current_cart.empty! # empty the shopping cart
       redirect_to back_path, :notice => "Your purchase has been submitted.  Expect seller confirmation soon."
     else
-      create_back_path # set back path so that user is returned to cart after depositing
+      set_back_path # set back path so that user is returned to cart after depositing
       flash[:error] = "Insufficient Balance... Please deposit funds." 
       redirect_to new_account_deposit_path # redirect to deposit page
     end

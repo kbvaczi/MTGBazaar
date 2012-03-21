@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  helper :all
+  #helper :all
 
   before_filter :user_banned?                   # make sure the user is not banned before loading anything
   before_filter :production_authenticate        # simple HTTP authentication for production (TEMPORARY)
@@ -41,12 +41,20 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_cart  
   
-  def create_back_path
+  def set_back_path
     session[:return_to] = request.fullpath
   end
-
+  
+  # returns to the url where set_back_path has last been set and clears back_path
   def back_path
-    return session[:return_to] || root_path
+    return_path = session[:return_to] || root_path
+    session[:return_to] = nil
+    return return_path
+  end
+  
+  # devise redirect after sign in
+  def after_sign_in_path_for(resource)
+    back_path
   end
   
   def help
@@ -54,7 +62,6 @@ class ApplicationController < ActionController::Base
   end
 
   class Helper
-
     include Singleton
     include ActionView::Helpers::TextHelper
   end

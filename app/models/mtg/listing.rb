@@ -35,6 +35,16 @@ class Mtg::Listing < ActiveRecord::Base
   # mark a listing as NOT reserved (removed from a cart)
   def free!
     self.update_attribute(:reserved, false)
+  end
+  
+  # mark a listing as sold
+  def mark_as_sold!
+    self.update_attribute(:sold_at, Time.now)
+  end
+
+  # mark a listing as NOT sold
+  def mark_as_unsold!
+    self.update_attribute(:sold_at, nil)
   end  
   
   # used for searching for available listings... Mtg::Listing.available will return all available listings
