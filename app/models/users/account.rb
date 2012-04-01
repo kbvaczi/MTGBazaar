@@ -55,4 +55,26 @@ class Account < ActiveRecord::Base
     first_name + " " + last_name
   end
   
+  # credit this account's balance with amount in dollars
+  def balance_credit!(amount=0)
+    self.balance += amount.to_money
+    self.save!
+#    if amount.class == Fixnum #amount is a number, do straight math
+#      self.update_attribute(:balance, self.balance.dollars + amount)    
+#    elsif amount.class == Money # amount is a money class... need to get dollar value before doing math
+#      self.update_attribute(:balance, self.balance.dollars + amount.dollars)    
+#    end
+  end
+
+  # debit this account's balance with amount in dollars
+  def balance_debit!(amount=0)
+    self.balance -= amount.to_money
+    self.save!
+#    if amount.class == Fixnum #amount is a number, do straight math
+#      self.update_attribute(:balance, self.balance.dollars - amount)    
+#    elsif amount.class == Money # amount is a money class... need to get dollar value before doing math
+#      self.update_attribute(:balance, self.balance.dollars - amount.dollars)    
+#    end
+  end  
+  
 end

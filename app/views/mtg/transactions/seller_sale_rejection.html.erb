@@ -1,0 +1,33 @@
+<% title "Reject Sale"%>
+
+<h1>Reject Sale</h1>
+
+<%= simple_form_for @transaction, :url => create_seller_sale_rejection_path, :method => :put do |f| %>
+  <br class="spacer" />
+  <p>
+    Note: It is not recommended to reject a sale unless you have a good reason to do so.  Too many rejected sales can reflect poorly on a seller's profile.
+  </p>
+  <br class="spacer" />
+  <br class="spacer" />  
+  
+  <div class="inputs">
+    <%= f.input :rejection_reason,    :label => "Reason for Rejection",
+                                      :as => :select,
+                                      :collection => [["Card(s) no longer available","availability"], ["Poor buyer reputation","reputation"], ["Other","other"]],
+                                      :include_blank => false ,
+                                      :input_html => {:class => 'chzn-select'},
+                                      :required => true %>
+    <br class="spacer"/>                        
+    <%= f.input :rejection_message,   :label => "Optional Message",
+                                      :as => :text,
+                                      :hint => "Optional message to the buyer",
+                                      :required => false,
+                                      :input_html => {:max_length => '255'} %>
+  </div>
+  <br class="spacer"/>
+  <br class="spacer"/>
+  <br class="spacer"/>  
+  <div class="center">
+    <%= f.button :submit, "Reject Sale", :class => "center" %>
+  </div>
+<% end %>

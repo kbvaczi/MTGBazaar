@@ -15,7 +15,12 @@ MTGBazaar::Application.routes.draw do
   
   # TRANSACTIONS -------------- #
   get   'users/transactions'        => 'users#transactions_index', :as => 'user_transactions_index'
-  get   'transactions/confirm/:id'  => 'mtg/transactions#seller_sale_confirmation', :as => 'seller_sale_confirmation'    
+  get   'transactions/:id/confirm'  => 'mtg/transactions#seller_sale_confirmation', :as => 'seller_sale_confirmation'    
+  get   'transactions/:id/reject'   => 'mtg/transactions#seller_sale_rejection', :as => 'seller_sale_rejection'
+  put   'transactions/:id/reject'   => 'mtg/transactions#create_seller_sale_rejection', :as => 'create_seller_sale_rejection'  
+  get   'transactions/:id/seller_feedback' => 'mtg/transactions#buyer_sale_feedback', :as => 'buyer_sale_feedback'
+  put   'transactions/:id/seller_feedback' => 'mtg/transactions#create_buyer_sale_feedback', :as => 'create_buyer_sale_feedback'  
+
   
   # MTG ----------------------- #
   namespace :mtg do
@@ -49,7 +54,6 @@ MTGBazaar::Application.routes.draw do
   
   # MISC ROUTES -------------- #
   root :to => "home#index"
-  match 'feedback'        => 'home#feedback'
   match 'about'           => 'home#about'
   match 'terms'           => 'home#terms_of_service'
   match 'privacy'         => 'home#privacy'

@@ -16,8 +16,14 @@ class ApplicationMailer < ActionMailer::Base
 
   def send_buyer_sale_confirmation(transaction) #recipient is a User object, transaction is an Mtg::Transaction object
     @transaction = transaction
-    @recipient = transaction.seller
+    @recipient = transaction.buyer
     mail(:to => @recipient.email, :subject => "Purchase confirmation from #{@transaction.seller.username}" ) 
+  end  
+  
+  def send_buyer_sale_rejection(transaction) #recipient is a User object, transaction is an Mtg::Transaction object
+    @transaction = transaction
+    @recipient = transaction.buyer
+    mail(:to => @recipient.email, :subject => "Purchase rejection from #{@transaction.seller.username}" ) 
   end  
 
 end

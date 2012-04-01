@@ -174,12 +174,17 @@ ActiveRecord::Schema.define(:version => 20120309123233) do
     t.integer  "seller_id"
     t.datetime "buyer_confirmed_at"
     t.datetime "seller_confirmed_at"
+    t.datetime "seller_rejected_at"
+    t.string   "rejection_reason",       :default => ""
+    t.string   "rejection_message",      :default => ""
     t.datetime "seller_shipped_at"
-    t.string   "seller_tracking_number", :default => "",    :null => false
+    t.string   "seller_tracking_number", :default => ""
     t.datetime "seller_delivered_at"
-    t.boolean  "final",                  :default => false, :null => false
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
+    t.integer  "seller_rating"
+    t.string   "seller_feedback",        :default => ""
+    t.string   "status",                 :default => ""
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
   end
 
   add_index "mtg_transactions", ["buyer_id"], :name => "index_mtg_transactions_on_buyer_id"

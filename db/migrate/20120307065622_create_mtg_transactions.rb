@@ -7,11 +7,20 @@ class CreateMtgTransactions < ActiveRecord::Migration
 
       t.datetime  :buyer_confirmed_at
       t.datetime  :seller_confirmed_at
-      t.datetime  :seller_shipped_at
-      t.string    :seller_tracking_number,    :default => "",           :null => false
-      t.datetime  :seller_delivered_at
-      t.boolean   :final,                     :default => false,        :null => false
       
+      t.datetime  :seller_rejected_at
+      t.string    :rejection_reason,          :default => ""
+      t.string    :rejection_message,         :default => ""
+      
+      t.datetime  :seller_shipped_at
+      t.string    :seller_tracking_number,    :default => ""
+      t.datetime  :seller_delivered_at
+      
+      t.integer   :seller_rating
+      t.string    :seller_feedback,           :default => ""
+
+      t.string    :status,                    :default => ""                              # final, rejected?
+
       t.timestamps
     end
 

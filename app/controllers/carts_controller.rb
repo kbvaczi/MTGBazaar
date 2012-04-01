@@ -14,7 +14,7 @@ class CartsController < ApplicationController
   
   def checkout
     if current_user.account.balance >= current_cart.total_price # does user have money to purchase?
-      current_user.account.update_attribute(:balance, current_user.account.balance - current_cart.total_price)  # take money out of user's balance
+      current_user.account.balance_debit!(current_cart.total_price)  # take money out of user's balance
       current_cart.seller_ids.each do |id|
         @transaction = Mtg::Transaction.create()
         @seller = User.find(id)

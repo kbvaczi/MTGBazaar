@@ -1,5 +1,7 @@
-<h2>Congratulations!</h2>
-<h3>You have received a purchase request from <%= link_to @transaction.buyer.username, user_url(@transaction.buyer) %> for the following items:</h3><br/>
+<h2>Sale Rejection</h2>
+<h3>We regret to inform you that your purchase request to <%= link_to @transaction.seller.username, user_url(@transaction.seller) %> for the following items has been rejected:</h3>
+
+<br/>
 
 <table>
   <th>Card Name</th><th>Set</th><th>Price</th><th>Condition</th><th>Language</th><th>Foil</th><th>Defects</th>    
@@ -31,19 +33,25 @@
     </div>
   <% end %>
 </table>
-
 <br class="spacer"/>
+
+<% if @transaction.rejection_message.empty? %>
+  <h3>Seller's Message:</h3>
+  <p>
+    <%= @transaction.rejection_message %>
+  </p>
+  <br class="spacer"/>
+<% end %>
+
 <p>
-  Please confirm that these items are still in your possession and are ready to be shipped to buyer.
-  <br/>
-  Shipping information will be provided upon confirmation.  
+  <b>Next Steps:</b>
+  <ul>
+    <li>Funds for this purchase have already been deposited back into your account.</li>
+    <li>You can <%= link_to "click here", buyer_sale_feedback_url(@transaction) %> to submit seller feedback on this transaction.</li>
+    <li>Please feel free to browse for these cards again from other sellers on MTGBazaar!</li>
+  </ul>
 </p>
-<%= link_to "Confirm Sale", seller_sale_confirmation_url(@transaction.id) %>
 <br class="spacer"/>
 <br class="spacer"/>
-<%= link_to "Reject Sale", seller_sale_rejection_url(@transaction.id), :confirm => "Are you sure you want to reject this sale?" %>
-<br class="spacer"/>
-<br class="spacer"/>
-
 <p>Cheers!</p>
 <%= image_tag "logo.png" %>

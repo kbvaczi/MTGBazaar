@@ -1,0 +1,34 @@
+<% title "Seller Feedback"%>
+
+<h1>Seller Feedback</h1>
+
+<%= simple_form_for @transaction, :url => create_buyer_sale_feedback_path, :method => :put do |f| %>
+  <br class="spacer" />
+  <p>
+    Note: All feedback is public. Please be as fair and honest as possible when submitting feedback. Negative reviews can significantly hurt a seller's reputation.
+  </p>
+  <br class="spacer" />
+  <br class="spacer" />  
+  
+  <div class="inputs">
+    <%= f.input :seller_rating,       :label => "Seller Rating",
+                                      :as => :select,
+                                      :collection => [1,2,3,4,5],
+                                      :include_blank => false ,
+                                      :input_html => {:class => 'chzn-select'},
+                                      :required => true %>
+    <br class="spacer"/>                        
+    <%= f.input :seller_feedback,     :label => "Optional Feedback",
+                                      :as => :text,
+                                      :hint => "all feedback will be public",
+                                      :required => false,
+                                      :input_html => {:max_length => '255'} %>
+  </div>
+  <br class="spacer"/>
+  <br class="spacer"/>
+  <br class="spacer"/>  
+  
+  <div class="center">
+    <%= f.button :submit, "Submit Feedback", :class => "center" %>
+  </div>
+<% end %>
