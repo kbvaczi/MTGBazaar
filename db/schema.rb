@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120309123233) do
+ActiveRecord::Schema.define(:version => 20120405001141) do
 
   create_table "account_balance_transfers", :force => true do |t|
     t.integer  "account_id"
@@ -82,12 +82,9 @@ ActiveRecord::Schema.define(:version => 20120309123233) do
   add_index "admin_users", ["reset_password_token"], :name => "index_admin_users_on_reset_password_token", :unique => true
 
   create_table "carts", :force => true do |t|
-    t.string   "session_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer "total_price", :default => 0, :null => false
+    t.integer "item_count",  :default => 0, :null => false
   end
-
-  add_index "carts", ["session_id"], :name => "index_carts_on_session_id"
 
   create_table "mtg_blocks", :force => true do |t|
     t.string   "name",       :default => "",   :null => false
@@ -145,6 +142,7 @@ ActiveRecord::Schema.define(:version => 20120309123233) do
     t.boolean  "reserved",       :default => false, :null => false
     t.boolean  "active",         :default => true,  :null => false
     t.datetime "sold_at"
+    t.datetime "rejected_at"
     t.datetime "created_at",                        :null => false
     t.datetime "updated_at",                        :null => false
   end

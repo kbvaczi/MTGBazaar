@@ -23,7 +23,7 @@
       <% @listings.each do |listing| %>
         <tr>
             <td>
-              <%= number_to_currency(listing.price) %>
+              <%= number_to_currency(listing.price.dollars) %>
             </td>
             <td>
               <%= "#{listing.seller.username} (#{listing.seller.account.average_rating})" %>

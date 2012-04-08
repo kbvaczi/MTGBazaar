@@ -10,7 +10,6 @@ class Mtg::TransactionsController < ApplicationController
       redirect_to root_path
     elsif not @transaction.seller_confirmed? # this transaction hasn't been previously confirmed by seller
       @transaction.mark_as_seller_confirmed! # this transaction is now confirmed by seller
-      @transaction.listings.each { |l| l.mark_as_sold! } # mark all listings for this transaction as sold
       ApplicationMailer.send_seller_shipping_information(@transaction).deliver # send sale notification email to seller
       ApplicationMailer.send_buyer_sale_confirmation(@transaction).deliver # notify buyer that the sale has been confirmed      
       redirect_to root_path, :notice => "Sale successfully confirmed! Shipping information will be delivered to you shortly."
@@ -28,13 +27,10 @@ class Mtg::TransactionsController < ApplicationController
   def create_seller_sale_rejection
     @transaction = Mtg::Transaction.where(:seller_id => current_user.id, :id => params[:id]).first
     return if not verify_rejection_privileges?(@transaction) # this transaction exists, current user is seller, and transaction hasn't been previously confirmed or rejected already    
-    if @transaction.update_attributes(:seller_rejected_at =>  Time.now, 
-                                      :rejection_reason =>    params[:mtg_transaction][:rejection_reason],
-                                      :rejection_message =>   params[:mtg_transaction][:rejection_message])
+    if @transaction.mark_as_seller_rejected!(params[:mtg_transaction][:rejection_reason], params[:mtg_transaction][:rejection_message])
       ApplicationMailer.send_buyer_sale_rejection(@transaction).deliver # notify buyer that the sale has been confirmed
       @transaction.buyer.account.balance_credit!(@transaction.total_value) # credit buyer's account
-      # need to send mail and credit buyer account prior to deleting transaction
-      @transaction.remove_listings! # clear all the listings underneath this transaction so they can be purchased again        
+      @transaction.reject_listings! # clear all the listings underneath this transaction so they can be purchased again        
       redirect_to root_path, :notice => "You rejected this sale..."
     else
       flash[:error] = "There were one or more errors while trying to process your request..."

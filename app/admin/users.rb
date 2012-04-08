@@ -35,7 +35,7 @@ ActiveAdmin.register User do
     end  
     column :email    
     column "balance", :sortable => :'accounts.balance' do |user|
-      number_to_currency user.account.balance / 100 #balance is in cents
+      number_to_currency user.account.balance.dollars #balance is in cents
     end
     column "Rating", :sortable => :'accounts.average_rating' do |user|
       user.account.average_rating

@@ -37,9 +37,15 @@ class ApplicationController < ActionController::Base
 
   # returns the current users's cart model 
   def current_cart
-    @current_cart ||= Cart.new(session)      
+    if session[:cart_id]
+      @current_cart ||= Cart.find(session[:cart_id]) 
+    elsif session[:cart_id].nil?
+      @current_cart = Cart.create!
+      session[:cart_id] = @current_cart.id
+    end
+    @current_cart
   end
-  helper_method :current_cart  
+  helper_method :current_cart
   
   def set_back_path
     session[:return_to] = request.fullpath

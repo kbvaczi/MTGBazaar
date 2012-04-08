@@ -17,8 +17,9 @@ class CreateMtgListings < ActiveRecord::Migration
       
       t.boolean   :reserved,      :default => false,          :null => false
       t.boolean   :active,        :default => true,           :null => false
-      t.datetime  :sold_at      
-
+      t.datetime  :sold_at,       :default => nil      
+      t.datetime  :rejected_at,   :default => nil
+      
       t.timestamps
     end
     

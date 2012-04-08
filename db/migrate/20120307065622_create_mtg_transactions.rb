@@ -31,6 +31,6 @@ class CreateMtgTransactions < ActiveRecord::Migration
   end
 
   def down
-    drop_table :mtg_transactions
+    drop_table :mtg_transactions    
   end
 end
