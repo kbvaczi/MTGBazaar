@@ -18,8 +18,8 @@ MTGBazaar::Application.routes.draw do
   get   'transactions/:id/confirm'  => 'mtg/transactions#seller_sale_confirmation', :as => 'seller_sale_confirmation'    
   get   'transactions/:id/reject'   => 'mtg/transactions#seller_sale_rejection', :as => 'seller_sale_rejection'
   put   'transactions/:id/reject'   => 'mtg/transactions#create_seller_sale_rejection', :as => 'create_seller_sale_rejection'  
-  get   'transactions/:id/seller_feedback' => 'mtg/transactions#buyer_sale_feedback', :as => 'buyer_sale_feedback'
-  put   'transactions/:id/seller_feedback' => 'mtg/transactions#create_buyer_sale_feedback', :as => 'create_buyer_sale_feedback'  
+  get   'transactions/:id/buyer_feedback' => 'mtg/transactions#buyer_sale_feedback', :as => 'buyer_sale_feedback'
+  put   'transactions/:id/buyer_feedback' => 'mtg/transactions#create_buyer_sale_feedback', :as => 'create_buyer_sale_feedback'  
 
   
   # MTG ----------------------- #

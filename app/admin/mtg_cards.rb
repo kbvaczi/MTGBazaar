@@ -2,7 +2,6 @@
 ActiveAdmin.register Mtg::Card do
   menu :label => "Cards", :parent => "MTG"
 
- 
   #access mtg_card helpers inside this class
   extend Mtg::CardsHelper
 

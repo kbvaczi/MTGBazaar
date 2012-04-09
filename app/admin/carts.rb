@@ -1,59 +1,33 @@
 # encoding: UTF-8
-ActiveAdmin.register Mtg::Listing do
-  menu :label => "Listings", :parent => "MTG"
+ActiveAdmin.register Cart do
   #extend Mtg::CardsHelper   # access mtg_card helpers inside this class
 
   # ------ ACTION ITEMS (BUTTONS) ------- #  
   config.clear_action_items! #clear standard buttons
-  
-  # ------ SCOPES (auto sorts) ------ #
-  scope :all, :default => true
-  scope :active do |listings|
-    listings.active
-  end
-  scope :inactive do |listings|
-    listings.inactive
-  end
-  scope :reserved do |listings|
-    listings.reserved
-  end
-  scope :sold do |listings|
-    listings.sold
-  end
-  scope :rejected do |listings|
-    listings.rejected
-  end  
-  
+   
   # ------ INDEX PAGE CUSTOMIZATIONS ------ #
   # Customize columns displayed on the index screen in the table
   index do
-    column :id, :sortable => :id do |l|
-      link_to l.id, admin_mtg_listing_path(l)
+    column :id, :sortable => :id do |cart|
+      link_to cart.id, admin_cart_path(cart)
     end
-    column :seller
-    column "Card", :sortable => false do |l|
-      link_to display_name(l.card.name), admin_mtg_card_path(l.card.id)
+    column "User", :sortable => :user_id do |cart|
+      if cart.user_id 
+        link_to User.find(cart.user_id).username, admin_users_path(cart.user_id)
+      else
+        "Anonymous"
+      end
     end
-    column "Set", :sortable => false do |l|
-      link_to l.card.set.name, admin_mtg_set_path(l.card.set.id)
+    column "MTG Cards", :sortable => false do |cart|
+      link_to cart.mtg_listings.count, admin_mtg_listings_path("q[cart_id_eq]" => cart.id) if not cart.mtg_listings.empty?
     end
-    column "Price", :sortable => :price do |l|
-      number_to_currency(l.price.dollars)
+    column "Total Price", :sortable => :total_price do |cart|
+      number_to_currency(cart.total_price.dollars)
     end
-    column :language
-    column :condition
-    column :defect
-    column :description
-    column :cart, :sortable => false do |l| 
-      link_to l.cart_id, admin_mtg_listings_path("q[cart_id_eq]" => l.cart_id) if l.cart_id
-    end
-    column :created_at
-    column :updated_at
-    column :sold_at
-    column :rejected_at    
-    column :active
+    #column :created_at
+    #column :updated_at
   end
-  
+=begin  
   # ------ FILTERS FOR INDEX ------- #
   filter :seller, :as => :select, :input_html => {:class => "chzn-select"}    
   filter :price, :label => "Price (in cents)"
@@ -89,4 +63,5 @@ ActiveAdmin.register Mtg::Listing do
     end
     active_admin_comments
   end
+=end
 end

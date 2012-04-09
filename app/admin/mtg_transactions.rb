@@ -51,7 +51,7 @@ ActiveAdmin.register Mtg::Transaction do
     column :seller_shipped_at
     column :seller_delivered_at    
     column :seller_rating
-    column :seller_feedback  
+    column :buyer_feedback  
     column :created_at
     column :updated_at    
   end
@@ -67,7 +67,7 @@ ActiveAdmin.register Mtg::Transaction do
   filter :seller_shipped_at
   filter :seller_delivered_at    
   filter :seller_rating, :as => :select, :collection => ["1","2","3","4","5"], :input_html => {:class => "chzn-select"}      
-  filter :seller_feedback
+  filter :buyer_feedback
   filter :created_at
   filter :updated_at
   filter :sold_at  

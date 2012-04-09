@@ -37,11 +37,12 @@ class ApplicationController < ActionController::Base
 
   # returns the current users's cart model 
   def current_cart
-    if session[:cart_id]
+    if session[:cart_id] # current session already has a cart, let's link to it
       @current_cart ||= Cart.find(session[:cart_id]) 
-    elsif session[:cart_id].nil?
-      @current_cart = Cart.create!
-      session[:cart_id] = @current_cart.id
+      @current_cart.update_attribute(:user_id, current_user.id) if current_user # assign user to cart when they log in
+    elsif session[:cart_id].nil? # there is no cart for current session, let's create one
+      @current_cart ||= Cart.create! # create a cart if there isn't one already
+      session[:cart_id] = @current_cart.id # link cart to current session
     end
     @current_cart
   end
@@ -56,11 +57,6 @@ class ApplicationController < ActionController::Base
     return_path = session[:return_to] || root_path
     session[:return_to] = nil
     return return_path
-  end
-  
-  # devise redirect after sign in
-  def after_sign_in_path_for(resource)
-    back_path
   end
   
   def help

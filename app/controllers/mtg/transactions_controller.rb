@@ -51,7 +51,7 @@ class Mtg::TransactionsController < ApplicationController
     @transaction = Mtg::Transaction.where(:buyer_id => current_user.id, :id => params[:id]).first
     return if not verify_feedback_privileges?(@transaction) # this transaction hasn't been previously reviewed and is valid
     if @transaction.update_attributes(:seller_rating => params[:mtg_transaction][:seller_rating], 
-                                      :seller_feedback => params[:mtg_transaction][:seller_feedback])
+                                      :buyer_feedback => params[:mtg_transaction][:buyer_feedback])
       redirect_to root_path, :notice => "Your feedback was sent..."
     else
       flash[:error] = "There were one or more errors while trying to process your request..."

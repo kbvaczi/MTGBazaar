@@ -16,8 +16,8 @@ class CreateMtgTransactions < ActiveRecord::Migration
       t.string    :seller_tracking_number,    :default => ""
       t.datetime  :seller_delivered_at
       
-      t.integer   :seller_rating
-      t.string    :seller_feedback,           :default => ""
+      t.integer   :seller_rating                                                          # seller's rating given by buyer
+      t.string    :buyer_feedback,            :default => ""
 
       t.string    :status,                    :default => ""                              # final, rejected?
 

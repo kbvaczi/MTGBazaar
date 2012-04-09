@@ -82,9 +82,12 @@ ActiveRecord::Schema.define(:version => 20120405001141) do
   add_index "admin_users", ["reset_password_token"], :name => "index_admin_users_on_reset_password_token", :unique => true
 
   create_table "carts", :force => true do |t|
+    t.integer "user_id"
     t.integer "total_price", :default => 0, :null => false
     t.integer "item_count",  :default => 0, :null => false
   end
+
+  add_index "carts", ["user_id"], :name => "index_carts_on_user_id"
 
   create_table "mtg_blocks", :force => true do |t|
     t.string   "name",       :default => "",   :null => false
@@ -179,7 +182,7 @@ ActiveRecord::Schema.define(:version => 20120405001141) do
     t.string   "seller_tracking_number", :default => ""
     t.datetime "seller_delivered_at"
     t.integer  "seller_rating"
-    t.string   "seller_feedback",        :default => ""
+    t.string   "buyer_feedback",         :default => ""
     t.string   "status",                 :default => ""
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false

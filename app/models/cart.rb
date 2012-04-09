@@ -1,6 +1,7 @@
 class Cart < ActiveRecord::Base
   
-  has_many :mtg_listings, :class_name => "Mtg::Listing"  
+  has_many    :mtg_listings, :class_name => "Mtg::Listing"
+  belongs_to  :user
   
   # Implement Money gem for total_price column
   composed_of   :total_price,
