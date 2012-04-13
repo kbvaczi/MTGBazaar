@@ -1,6 +1,6 @@
 # encoding: UTF-8
 ActiveAdmin.register Cart do
-  #extend Mtg::CardsHelper   # access mtg_card helpers inside this class
+  extend Mtg::CardsHelper   # access mtg_card helpers inside this class
 
   # ------ ACTION ITEMS (BUTTONS) ------- #  
   config.clear_action_items! #clear standard buttons
