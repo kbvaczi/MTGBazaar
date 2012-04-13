@@ -62,7 +62,6 @@ class Mtg::TransactionsController < ApplicationController
     @transaction = Mtg::Transaction.where(:buyer_id => current_user.id, :id => params[:id]).first
     if @transaction.update_attributes(:seller_rating => params[:mtg_transaction][:seller_rating], 
                                       :buyer_feedback => params[:mtg_transaction][:buyer_feedback],
-                                      :mark_as_seller_delivered!(params[:mtg_transaction][:buyer_delivery_confirmation],
                                       :seller_delivered_at => Time.now,
                                       :buyer_delivery_confirmation => params[:mtg_transaction][:buyer_delivery_confirmation],
                                       :status => "delivered")
