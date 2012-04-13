@@ -1,7 +1,6 @@
 class ApplicationMailer < ActionMailer::Base
   
   helper "mtg::cards"
-  helper :All
   
   default :from => "\"MTGBazaar Notifications\" <admin@mtgbazaar.com>"
 
