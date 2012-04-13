@@ -9,12 +9,9 @@
   </div>
   <h2><%="#{pluralize(@sales.count, "Sale", "Sales")}"%></h2>
   <% @sales.each do |t| %>
-    <div class="left"> Sale to <%= t.buyer.username %> on <%= t.created_at.strftime("%d-%b-%y") %></div>
-    <div class="right"> Status: </div>
-    <br class="spacer"/>
-    <br class="spacer"/>
     
-    <%= render :partial => "mtg/transactions/teaser" , :locals => {:transaction => t} %> 
+    <%= render :partial => "mtg/transactions/teaser" , :locals => {:transaction => t} %>
+    <%= render :partial => "mtg/transactions/options" , :locals => {:transaction => t} %>          
   <!--  <table style="width:100%; font-size:80%;">
       <th>Card Name</th><th>Set</th><th>Price</th><th>Condition</th><th>Language</th><th>Foil</th><th>Defects</th>    
       <% t.listings.each do |listing| %>
@@ -45,9 +42,6 @@
         </div>
       <% end %>
     </table> -->
-    <br class="spacer"/>
-    <div class="right"> Total Value: <%= number_to_currency(t.total_value) %></div>
-    <br class="spacer"/>
-    <br class="spacer"/>        
+      
   <% end %>
 </div>

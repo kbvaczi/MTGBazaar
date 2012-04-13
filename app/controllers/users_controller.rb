@@ -95,7 +95,7 @@ class UsersController < ApplicationController
   end
   
   def account_sales
-    @sales = current_user.mtg_sales.where(:status => params[:status])
+    @sales = current_user.mtg_sales.where(:status => params[:status]).order("created_at")
   end
     
 end
