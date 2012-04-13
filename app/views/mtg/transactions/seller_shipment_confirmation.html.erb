@@ -1,0 +1,22 @@
+<% title "Shipment Confirmation"%>
+
+<h1>Shipment Confirmation</h1>
+
+<%= simple_form_for @transaction, :url => create_seller_shipment_confirmation_path, :method => :put do |f| %>
+  <br class="spacer" />
+  <br class="spacer" />
+  <br class="spacer" />  
+  
+  <div class="inputs">
+    <%= f.input :seller_tracking_number,    :label => "Tracking Number",
+                                            :required => false,
+                                            :hint => "From the postage service" %>
+  </div>
+  
+  <br class="spacer"/>
+  <br class="spacer"/>
+  <br class="spacer"/>  
+  <div class="center">
+    <%= f.button :submit, "Confirm Shipment", :class => "center" %>
+  </div>
+<% end %>

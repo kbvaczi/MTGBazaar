@@ -14,17 +14,19 @@ MTGBazaar::Application.routes.draw do
   post    'users/cart/checkout'               => 'carts#checkout',        :as => 'cart_checkout'
   
   # TRANSACTIONS -------------- #
-  get   'users/transactions'        => 'users#transactions_index', :as => 'user_transactions_index'
-  get   'transactions/:id/confirm'  => 'mtg/transactions#seller_sale_confirmation', :as => 'seller_sale_confirmation'    
-  get   'transactions/:id/reject'   => 'mtg/transactions#seller_sale_rejection', :as => 'seller_sale_rejection'
-  put   'transactions/:id/reject'   => 'mtg/transactions#create_seller_sale_rejection', :as => 'create_seller_sale_rejection'  
-  get   'transactions/:id/buyer_feedback' => 'mtg/transactions#buyer_sale_feedback', :as => 'buyer_sale_feedback'
-  put   'transactions/:id/buyer_feedback' => 'mtg/transactions#create_buyer_sale_feedback', :as => 'create_buyer_sale_feedback'  
-
+  get   'users/transactions'              => 'users#transactions_index',                              :as => 'user_transactions_index'
+  get   'transactions/:id/confirm'        => 'mtg/transactions#seller_sale_confirmation',             :as => 'seller_sale_confirmation'    
+  get   'transactions/:id/reject'         => 'mtg/transactions#seller_sale_rejection',                :as => 'seller_sale_rejection'
+  put   'transactions/:id/reject'         => 'mtg/transactions#create_seller_sale_rejection',         :as => 'create_seller_sale_rejection'  
+  get   'transactions/:id/buyer_feedback' => 'mtg/transactions#buyer_sale_feedback',                  :as => 'buyer_sale_feedback'
+  put   'transactions/:id/buyer_feedback' => 'mtg/transactions#create_buyer_sale_feedback',           :as => 'create_buyer_sale_feedback'  
+  get   'transactions/:id/shipment'       => 'mtg/transactions#seller_shipment_confirmation',         :as => 'seller_shipment_confirmation'
+  put   'transactions/:id/shipment'       => 'mtg/transactions#create_seller_shipment_confirmation',  :as => 'create_seller_shipment_confirmation'
+  get   'transactions/:id/delivery'       => 'mtg/transactions#buyer_delivery_confirmation',          :as => 'buyer_delivery_confirmation'
+  put   'transactions/:id/delivery'       => 'mtg/transactions#create_buyer_delivery_confirmation',   :as => 'create_buyer_delivery_confirmation'  
   
   # MTG ----------------------- #
   namespace :mtg do
-
     resources :listings, :except => [:index, :show ]    
     resources :cards, :only => [:index, :show] do # don't allow users to create/destroy mtg cards by only allowing index and show routes
       get  "autocomplete_name", :on => :collection
@@ -43,6 +45,7 @@ MTGBazaar::Application.routes.draw do
   get 'users/withdraw' => 'users#new_account_withdraw', :as => 'new_account_withdraw'
   post 'users/withdraw' => 'users#create_account_withdraw', :as => 'create_account_withdraw'
   get 'users/account' => 'users#show_account_info', :as => 'show_account_info'
+  get 'users/account/sales' => 'users#account_sales', :as => 'account_sales'  
   
   devise_for :users, :controllers => { :registrations => 'users/registrations' , :sessions => 'users/sessions' }
   resources :users, :only => [:index, :show], :controllers => { :users => "users/users"} do
@@ -50,7 +53,6 @@ MTGBazaar::Application.routes.draw do
   end
   
   resources :accounts
-
   
   # MISC ROUTES -------------- #
   root :to => "home#index"

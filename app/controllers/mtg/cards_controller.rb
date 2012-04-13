@@ -2,7 +2,6 @@ class Mtg::CardsController < ApplicationController
   
   # GET /mtg_cards
   def index
-    
     @title = "MTG Cards"
     # LIST ALL CARDS BY SET    
     if params[:set]
@@ -15,15 +14,15 @@ class Mtg::CardsController < ApplicationController
   
     respond_to do |format|
       format.html #index.html.erb
-    end
-    
+    end 
   end
 
-  # GET /mtg/cards/1
+  # GET /mtg/cards/:id
   def show
     set_back_path
     @mtg_card = Mtg::Card.find(params[:id])
     @mtg_card_back = Mtg::Card.joins(:set).where("card_number LIKE ? AND mtg_sets.code LIKE ?", "%03d" % @mtg_card.card_number.to_i.to_s + "b", @mtg_card.set.code).first if @mtg_card.dual_sided_card?
+    @card_variants = Mtg::Card.joins(:set).where("mtg_cards.name LIKE ?", @mtg_card.name)    
     @listings = @mtg_card.listings.available
     if not (@mtg_card.active or current_admin_user)
       redirect_to (:root)

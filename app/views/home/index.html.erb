@@ -4,5 +4,10 @@
 <div class= "content">
 
   <%= link_to("MTG Cards!", mtg_cards_path)%>
-
+  <br/>
+  <% Mtg::Set.all.each do |set| %>
+  <%= "#{set.name} - #{set.code}" %>
+  <%= display_set_symbol(set) %>
+  <br/>
+  <% end %>
 </div>

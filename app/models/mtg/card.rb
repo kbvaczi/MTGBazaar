@@ -34,6 +34,10 @@ class Mtg::Card < ActiveRecord::Base
     return  number_to_currency(1.00)
   end
   
+  def formatted_name
+    return  name.truncate(30, :omission => "...")
+  end
+  
   # lists the available languages this card has
   def list_language_options
     return [["English","EN"], ["Russian","RU"], ["French","FR"], ["Japanese","JN"], ["Chinese","CN"], ["Korean","KO"], ["German","GN"]]

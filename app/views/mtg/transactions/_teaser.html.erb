@@ -1,0 +1,35 @@
+<%# displays listings in a given transaction %>
+<%# LOCALS: transaction = current transaction %>
+<div>
+  <% transaction.listings.each do |listing| %>
+    <div style="position:relative;display:inline-block;float:left;width:160px;height:140px;font-size:10px;color:#333;overflow:none;">
+      <p> <%= listing.card.formatted_name %></p>
+      <div style="float:left">
+        <%= link_to image_tag(listing.card.thumbnail_image_path, :height => "117px", :width => "85px"), mtg_card_url(listing.card) %>
+      </div>
+      <div style="margin-left:5px;float:left;">
+        <%= display_set_symbol(listing.card.set) %>
+        <br/>
+        <%= listing.formatted_condition %>
+        <br/>
+        <%= listing.language %>
+        <br/>        
+        <% if listing.foil? %>
+          <%= "Foil" %>        
+          <br/>        
+        <% end %>
+        <% if listing.signed? %>
+          <%= "Signed" %>        
+          <br/>        
+        <% end %>  
+        <% if listing.defect? %>
+          <%= "Irregularity" %>        
+          <br/>        
+        <% end %>              
+      </div>
+      <br class="spacer"/>
+      <%= number_to_currency(listing.price.dollars) %>  
+    </div>
+  <% end %>
+</div>
+<br style="clear:both;">

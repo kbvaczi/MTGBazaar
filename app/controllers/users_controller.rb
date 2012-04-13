@@ -92,7 +92,10 @@ class UsersController < ApplicationController
   end
   
   def transactions_index
-    
+  end
+  
+  def account_sales
+    @sales = current_user.mtg_sales.where(:status => params[:status])
   end
     
 end

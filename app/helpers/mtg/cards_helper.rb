@@ -1,14 +1,14 @@
 # encoding: UTF-8
-
+# make this module available to be included in other areas by using "include Mtg::CardsHelper"
 module Mtg::CardsHelper
-  # make this module available to be included in other areas by using "include Mtg::CardsHelper"
+
   def self.camelcase_to_spaced(word)
     word.gsub(/([A-Z])/, " \\1").strip
   end
   
   # display only first 30 characters of a name"
   def display_name(name)
-    name.truncate(30, :omission => "...")
+    name.truncate(25, :omission => "...")
   end
   
   # display only first 30 characters of a name"
@@ -28,9 +28,9 @@ module Mtg::CardsHelper
       string.gsub(/[{]([a-zA-Z0-9]+)[}]/) do |letter| #find the pattern "{xy}" where xy are any letters or numbers
           letter = letter.gsub(/[{](.+)[}]/, '\1').downcase #strip the {} and lowercase the letters
           if letter == "t" #if the letters are t, create tap image
-            image_tag('/assets/mtg/various_symbols/tap.jpg', :class => "mtg_symbol") if letter == "t"          
+            image_tag('/assets/mtg/various_symbols/tap.jpg', :class => "mtg_symbol")         
           else #else the symbol must be a mana symbol, create corresponding mana symbol 
-            image_tag("/assets/mtg/mana_symbols/mana_#{letter}.jpg", :class => "mtg_symbol") if letter != "t"
+            image_tag("/assets/mtg/mana_symbols/mana_#{letter}.jpg", :class => "mtg_symbol")
           end
       end.html_safe
       #return_string = string
@@ -134,5 +134,10 @@ module Mtg::CardsHelper
   # lists all available languages for select boxes
   def language_list
     return [["English","EN"], ["Russian","RU"], ["French","FR"], ["Japanese","JN"], ["Chinese","CN"], ["Korean","KO"], ["German","GN"]]
+  end
+
+  # displays set symbol for a given set code
+  def display_set_symbol(set)
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/set_symbols/#{set.code}.jpg", :title => "#{set.name}", :style => "height:15px;")         
   end
 end

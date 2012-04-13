@@ -1,0 +1,39 @@
+<% title "Delivery Confirmation"%>
+
+<h1>Delivery Confirmation</h1>
+
+<%= simple_form_for @transaction, :url => create_buyer_delivery_confirmation_path, :method => :put do |f| %>
+  <br class="spacer" />
+  <br class="spacer" />
+  <br class="spacer" />  
+  
+  <div class="inputs">
+    <%= f.input :buyer_delivery_confirmation,   :label => "Confirm Delivery",
+                                                :as => :select,
+                                                :collection => [["All items received as expected", true], ["There is a problem with the order", false]],
+                                                :include_blank => false,
+                                                :input_html => {:class => 'chzn-select'},
+                                                :required => true %>
+
+    <%= f.input :seller_rating,       :label => "Seller Rating",
+                                      :as => :select,
+                                      :collection => [1,2,3,4,5],
+                                      :default => 5,
+                                      :include_blank => false ,
+                                      :input_html => {:class => 'chzn-select'},
+                                      :required => true %>
+          
+    <%= f.input :buyer_feedback,      :label => "Optional Feedback",
+                                      :as => :text,
+                                      :hint => "all feedback will be public",
+                                      :required => false,
+                                      :input_html => {:max_length => '255'} %>
+  </div>
+  <br class="spacer"/>
+  <br class="spacer"/>
+  <br class="spacer"/>  
+  
+  <div class="center">
+    <%= f.button :submit, "Confirm Delivery", :class => "center" %>
+  </div>
+<% end %>

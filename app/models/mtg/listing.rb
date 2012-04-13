@@ -99,4 +99,17 @@ class Mtg::Listing < ActiveRecord::Base
     where(:id => id )
   end  
   
+  def formatted_condition
+    case self.condition
+      when /NM/ #contains "C" 
+        return "Near-Mint"
+      when /E/ #contains "U" 
+        return "Excellent"
+      when /F/ #contains "R" 
+        return "Fine"
+      when /G/ #contains "M" 
+        return "Good"
+      else return "Unknown"
+    end
+  end
 end

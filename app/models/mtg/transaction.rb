@@ -41,13 +41,13 @@ class Mtg::Transaction < ActiveRecord::Base
   end
   
   # seller has shipped this transaction
-  def mark_as_seller_shipped!
-    self.update_attributes(:seller_shipped_at => Time.now, :status => "shipped")
+  def mark_as_seller_shipped!(tracking_number)
+    self.update_attributes(:seller_shipped_at => Time.now, :seller_tracking_number => tracking_number, :status => "shipped")
   end  
   
   # seller has delivered this transaction
-  def mark_as_seller_delivered!
-    self.update_attributes(:seller_delivered_at => Time.now, :status => "delivered")
+  def mark_as_seller_delivered!(confirmation)
+    self.update_attributes(:seller_delivered_at => Time.now, :buyer_delivery_confirmation => confirmation, :status => "delivered")
   end  
   
   # buyer is happy with sale

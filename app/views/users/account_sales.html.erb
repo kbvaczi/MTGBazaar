@@ -1,9 +1,16 @@
 <%= render :partial => "users/manage_account_header" %>
 <div class="ma">
-  <h2><%="#{pluralize(current_user.pending_transactions.count,"Pending Transaction","Pending Transactions")}"%></h2>
-  <% current_user.mtg_purchases.each do |t| %>
-    <div class="left"> Purchase from <%= t.seller.username %> on <%= t.created_at.strftime("%d-%b-%y") %></div>
-    <div class="right"> Status: Waiting on seller approval</div>
+  <div class="group">
+    <ul class="tabs center">
+        <li> <%= link_to "Confirmation Needed (#{current_user.mtg_sales.where(:status => "pending").count})", account_sales_path(:status => "pending")%> </li>
+        <li> <%= link_to "Ready to Deliver (#{current_user.mtg_sales.where(:status => "confirmed").count})", account_sales_path(:status => "confirmed") %> </li>      
+        <li> <%= link_to "Complete (#{current_user.mtg_sales.where(:status => "delivered").count})", account_sales_path(:status => "delivered") %> </li>
+    </ul>
+  </div>
+  <h2><%="#{pluralize(@sales.count, "Sale", "Sales")}"%></h2>
+  <% @sales.each do |t| %>
+    <div class="left"> Sale to <%= t.buyer.username %> on <%= t.created_at.strftime("%d-%b-%y") %></div>
+    <div class="right"> Status: </div>
     <br class="spacer"/>
     <br class="spacer"/>
     

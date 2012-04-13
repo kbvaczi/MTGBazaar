@@ -2,6 +2,7 @@ class Users::SessionsController < Devise::SessionsController
 
 protected
 
+  # do this after a user signs in
   def after_sign_in_path_for(resource) 
     if resource.is_a?(User) && resource.banned?
       sign_out resource

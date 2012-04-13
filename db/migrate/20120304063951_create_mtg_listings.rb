@@ -27,7 +27,7 @@ class CreateMtgListings < ActiveRecord::Migration
     add_index :mtg_listings, :card_id
     add_index :mtg_listings, :seller_id
     add_index :mtg_listings, :transaction_id
-    add_index :mtg_listings, :cart_id    
+    add_index :mtg_listings, :cart_id
                         
   end
   

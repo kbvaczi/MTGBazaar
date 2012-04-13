@@ -1,5 +1,7 @@
 class ApplicationMailer < ActionMailer::Base
- 
+  
+  helper "mtg::cards"
+  
   default :from => "\"MTGBazaar Notifications\" <admin@mtgbazaar.com>"
 
   def send_seller_sale_notification(transaction) #recipient is a User object, transaction is an Mtg::Transaction object
@@ -18,6 +20,12 @@ class ApplicationMailer < ActionMailer::Base
     @transaction = transaction
     @recipient = transaction.buyer
     mail(:to => @recipient.email, :subject => "Purchase confirmation from #{@transaction.seller.username}" ) 
+  end
+
+  def send_buyer_shipment_confirmation(transaction) #recipient is a User object, transaction is an Mtg::Transaction object
+    @transaction = transaction
+    @recipient = transaction.buyer
+    mail(:to => @recipient.email, :subject => "Shipment confirmation from #{@transaction.seller.username}" ) 
   end  
   
   def send_buyer_sale_rejection(transaction) #recipient is a User object, transaction is an Mtg::Transaction object

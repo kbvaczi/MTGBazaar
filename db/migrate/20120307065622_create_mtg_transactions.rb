@@ -14,7 +14,9 @@ class CreateMtgTransactions < ActiveRecord::Migration
       
       t.datetime  :seller_shipped_at
       t.string    :seller_tracking_number,    :default => ""
+      
       t.datetime  :seller_delivered_at
+      t.boolean   :buyer_delivery_confirmation,  :default => nil
       
       t.integer   :seller_rating                                                          # seller's rating given by buyer
       t.string    :buyer_feedback,            :default => ""
@@ -27,6 +29,7 @@ class CreateMtgTransactions < ActiveRecord::Migration
     # Table Indexes
     add_index :mtg_transactions, :buyer_id
     add_index :mtg_transactions, :seller_id
+    add_index :mtg_transactions, :status    
 
   end
 

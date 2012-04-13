@@ -1,57 +1,29 @@
-<h2>Sale Rejection</h2>
-<h3>We regret to inform you that your purchase request to <%= link_to @transaction.seller.username, user_url(@transaction.seller) %> for the following items has been rejected:</h3>
+<div style="width:550px;">
+  <h2>Sale Rejection</h2>
+  <h3>We regret to inform you that your purchase request to <%= link_to @transaction.seller.username, user_url(@transaction.seller) %> for the following items has been rejected:</h3>
 
-<br/>
+  <br/>
+  <%= render :partial => "mtg/transactions/teaser" , :locals => {:transaction => @transaction} %> 
 
-<table>
-  <th>Card Name</th><th>Set</th><th>Price</th><th>Condition</th><th>Language</th><th>Foil</th><th>Defects</th>    
-  <% @transaction.listings.each do |listing| %>
-    <div>
-      <tr>
-        <td>
-          <%= listing.card.name%>
-        </td>
-        <td>
-          <%= listing.card.set.name%>
-        </td>
-        <td>
-          <%= number_to_currency(listing.price.dollars)%>
-        </td>          
-        <td>
-          <%= listing.condition %>
-        </td>
-        <td>
-          <%= listing.language %>
-        </td>          
-        <td>
-          <%= listing.foil %>
-        </td>
-        <td>
-          <%= listing.defect %>
-        </td> 
-      <tr/>
-    </div>
+  <br class="spacer"/>
+
+  <% if not @transaction.rejection_message.empty? %>
+    <h3>Seller's Message:</h3>
+    <p>
+      <%= @transaction.rejection_message %>
+    </p>
+    <br class="spacer"/>
   <% end %>
-</table>
-<br class="spacer"/>
 
-<% if @transaction.rejection_message.empty? %>
-  <h3>Seller's Message:</h3>
   <p>
-    <%= @transaction.rejection_message %>
+    <b>Next Steps:</b>
+    <ul>
+      <li>Funds for this purchase have already been deposited back into your account.</li>
+      <li>Please feel free to browse for these cards again from other sellers on MTGBazaar!</li>
+    </ul>
   </p>
   <br class="spacer"/>
-<% end %>
-
-<p>
-  <b>Next Steps:</b>
-  <ul>
-    <li>Funds for this purchase have already been deposited back into your account.</li>
-    <li>You can <%= link_to "click here", buyer_sale_feedback_url(@transaction) %> to submit seller feedback on this transaction.</li>
-    <li>Please feel free to browse for these cards again from other sellers on MTGBazaar!</li>
-  </ul>
-</p>
-<br class="spacer"/>
-<br class="spacer"/>
-<p>Cheers!</p>
-<%= image_tag "logo.png" %>
+  <br class="spacer"/>
+  <p>Cheers!</p>
+  <%= image_tag "logo.png" %>
+</div>

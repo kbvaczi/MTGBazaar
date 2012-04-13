@@ -1,6 +1,6 @@
 <div style="width:550px;">
-  <h2>Sale Confirmation</h2>
-  <h3>Your purchase request from <%= link_to @transaction.seller.username, user_url(@transaction.seller) %> for the following items has been confirmed:</h3><br/>
+  <h2>Shipment Confirmation</h2>
+  <h3>Your purchase from <%= link_to @transaction.seller.username, user_url(@transaction.seller) %> for the following items has been shipped:</h3><br/>
 
   <%= render :partial => "mtg/transactions/teaser" , :locals => {:transaction => @transaction} %> 
 
@@ -8,9 +8,8 @@
   <p>
     <b>Next Steps:</b>
     <ul>
-      <li>The seller will be packaging up your order and will ship the items shortly.</li>
-      <li>Once shipped, you will receive a shipping notification including estimated delivery date.</li>
       <li>When the package arrives please take the time to inspect items and confirm everything arrived as anticipated.</li>
+      <li>Click <%= link_to "here", buyer_delivery_confirmation_url(@transaction) %> to confirm delivery</li>
       <li>To finalize the transaction, please fill out the seller feedback form.</li>
     </ul>
   </p>

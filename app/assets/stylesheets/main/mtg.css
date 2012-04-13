@@ -23,14 +23,14 @@
   display: table-cell;
   font-weight: bold;
   text-transform: capitalize;
-  width:15%;
+  width:17%;
   padding-bottom: 5px;  
 
   vertical-align:middle;
 }
 .card_show_info_value {
   display: table-cell;
-  width:85%;
+  width:83%;
   padding-bottom: 5px;
 }
 .mtg_symbol {
