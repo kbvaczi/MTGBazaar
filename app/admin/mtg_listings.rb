@@ -42,7 +42,7 @@ ActiveAdmin.register Mtg::Listing do
     end
     column :language
     column :condition
-    column :defect
+    column :misprint
     column :description
     column :cart, :sortable => false do |l| 
       link_to l.cart_id, admin_mtg_listings_path("q[cart_id_eq]" => l.cart_id) if l.cart_id
@@ -59,7 +59,7 @@ ActiveAdmin.register Mtg::Listing do
   filter :price, :label => "Price (in cents)"
   filter :language, :as => :select, :collection => language_list, :input_html => {:class => "chzn-select"}    
   filter :condition, :as => :select, :collection => condition_list, :input_html => {:class => "chzn-select"}    
-  filter :defect
+  filter :misprint
   filter :created_at
   filter :updated_at
   filter :sold_at  
@@ -76,7 +76,7 @@ ActiveAdmin.register Mtg::Listing do
       end
       row :language
       row :condition
-      row :defect
+      row :misprint
       row :description
       row :cart do 
         link_to listing.cart_id, admin_mtg_listings_path("q[cart_id_eq]" => listing.cart_id) if listing.cart_id

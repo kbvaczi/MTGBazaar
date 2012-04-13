@@ -16,36 +16,30 @@
 
   <h2>Listings</h2>
   <% unless @listings.empty? %>
-    <table style="width:100%;">
-      <tr style="text-align:left;">
-      	<th>Price</th><th>Seller</th><th>Condition</th><th>Language</th><th>Foil</th><th>Defects</th><th>Actions</th>
-      </tr>
+    <div class="mtg_listing_teaser">
+      <div class="mtg_listing_teaser_seller">
+        Seller (feedback)
+      </div>
+      <div class="mtg_listing_teaser_language">
+        Lang.
+      </div>  
+      <div class="mtg_listing_teaser_condition">
+        Cond.
+      </div>      
+      <div class="mtg_listing_teaser_options">
+        Options
+      </div>
+      <div class="mtg_listing_teaser_price">
+        Price
+      </div>
+      <div class="mtg_listing_teaser_buy">
+        Quantity to Buy
+      </div>  
+    </div>    
       <% @listings.each do |listing| %>
-        <tr>
-            <td>
-              <%= number_to_currency(listing.price.dollars) %>
-            </td>
-            <td>
-              <%= "#{listing.seller.username} (#{listing.seller.account.average_rating})" %>
-            </td>
-            <td>
-              <%= display_condition(listing.condition) %>
-            </td>
-            <td>
-              <%= listing.language %>
-            </td>    
-            <td>
-              <%= listing.foil %>
-            </td>    
-            <td>
-              <%= listing.defect %>
-            </td>
-            <td>
-              <%= link_to "Add to Cart", add_to_cart_mtg_listing_path(listing.id), :method => :post %>
-            </td>          
-        </tr>
+        <%= render :partial => "mtg/listings/teaser", :locals => {:listing => listing} %>
       <% end %>
-    </table>  
+
   <% else %>
     <%= "There are currently no listings for this card." %>
     <%= link_to "List this card", new_mtg_listing_path(:card_id => @mtg_card.id) %>

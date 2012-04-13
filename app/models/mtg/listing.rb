@@ -14,8 +14,8 @@ class Mtg::Listing < ActiveRecord::Base
                 :converter => Proc.new { |value| value.respond_to?(:to_money) ? value.to_money : Money.empty }  
   
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name,  :set, :quantity, :price, :condition, :language, :description, 
-                          :foreign, :defect, :foil, :signed, :price_options, :price_other
+  attr_accessible :name,  :set, :quantity, :price, :condition, :language, :description, :altart,
+                          :foreign, :misprint, :foil, :signed, :price_options, :price_other
 
   # not-in-model field for current password confirmation
   attr_accessor :name, :set, :quantity, :price_options, :price_other

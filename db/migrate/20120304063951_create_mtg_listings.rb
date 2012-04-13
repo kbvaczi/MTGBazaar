@@ -12,8 +12,9 @@ class CreateMtgListings < ActiveRecord::Migration
       t.string    :language,      :default => "EN",           :null => false
       t.string    :description,   :default => "",             :null => false
       t.boolean   :signed,        :default => false,          :null => false
-      t.boolean   :defect,        :default => false,          :null => false
+      t.boolean   :misprint,      :default => false,          :null => false
       t.boolean   :foil,          :default => false,          :null => false
+      t.boolean   :altart,        :default => false,          :null => false
       
       t.boolean   :reserved,      :default => false,          :null => false
       t.boolean   :active,        :default => true,           :null => false

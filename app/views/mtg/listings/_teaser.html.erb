@@ -1,0 +1,33 @@
+<div class="mtg_listing_teaser">
+  <div class="mtg_listing_teaser_seller">
+    <%= "#{listing.seller.username} (20,00#{listing.seller.account.number_sales})" %>
+  </div>
+  <div class="mtg_listing_teaser_language">
+    <%= display_flag_symbol(listing) %>
+    <%#= image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/flags/#{listing.language}.png", :title => "#{listing.language}", :style => "height:20px;") %>   
+    <%#= listing.language %>
+  </div>
+  <div class="mtg_listing_teaser_condition">
+    <%= listing.condition %>
+  </div>    
+  <div class="mtg_listing_teaser_options">
+    <% if listing.foil %>
+      <div class ="left"> Foil </div><div class="right">X</div><br/>
+    <% end %>
+    <% if listing.misprint %>
+      <div class ="left"> Misprint </div><div class="right">X</div><br/>
+    <% end %>
+    <% if listing.signed %>
+      <div class ="left"> Signed </div><div class="right">X</div><br/>
+    <% end %>
+    <% if listing.altart %>
+      <div class ="left"> Alt. Art </div><div class="right">X</div><br/>
+    <% end %>    
+  </div>
+  <div class="mtg_listing_teaser_price">
+    <%= number_to_currency(listing.price) %>
+  </div>
+  <div class="mtg_listing_teaser_buy">
+    <%= link_to "Add to Cart", add_to_cart_mtg_listing_path(listing.id), :method => :post %>
+  </div>  
+</div>

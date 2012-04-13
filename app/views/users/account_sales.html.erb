@@ -13,7 +13,7 @@
     <%= render :partial => "mtg/transactions/teaser" , :locals => {:transaction => t} %>
     <%= render :partial => "mtg/transactions/options" , :locals => {:transaction => t} %>          
   <!--  <table style="width:100%; font-size:80%;">
-      <th>Card Name</th><th>Set</th><th>Price</th><th>Condition</th><th>Language</th><th>Foil</th><th>Defects</th>    
+      <th>Card Name</th><th>Set</th><th>Price</th><th>Condition</th><th>Language</th><th>Foil</th><th>misprints</th>    
       <% t.listings.each do |listing| %>
         <div>
           <tr>
@@ -36,7 +36,7 @@
               <%= listing.foil %>
             </td>
             <td>
-              <%= listing.defect %>
+              <%= listing.misprint %>
             </td> 
           <tr/>
         </div>

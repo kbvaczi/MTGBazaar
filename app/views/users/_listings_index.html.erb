@@ -1,6 +1,6 @@
 <table style="width:100%; font-size:80%;">
   <tr style="text-align:left;">
-  	<th>Card Name</th><th>Set</th><th>Price</th><th>Condition</th><th>Language</th><th>Foil</th><th>Defects</th><th>Listing Date</th><th colspan="3">Actions</th>
+  	<th>Card Name</th><th>Set</th><th>Price</th><th>Condition</th><th>Language</th><th>Foil</th><th>misprints</th><th>Listing Date</th><th colspan="3">Actions</th>
   </tr>
   <% listings.each do |listing| %>
     <tr>
@@ -23,7 +23,7 @@
           <%= listing.foil %>
         </td>    
         <td>
-          <%= listing.defect %>
+          <%= listing.misprint %>
         </td>
         <td>
           <%= listing.created_at.strftime("%d-%b-%Y") %>

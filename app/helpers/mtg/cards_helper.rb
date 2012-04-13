@@ -133,11 +133,38 @@ module Mtg::CardsHelper
   
   # lists all available languages for select boxes
   def language_list
-    return [["English","EN"], ["Russian","RU"], ["French","FR"], ["Japanese","JN"], ["Chinese","CN"], ["Korean","KO"], ["German","GN"]]
+    return [["English","EN"], ["Russian","RU"], ["French","FR"], ["Japanese","JN"], ["Chinese","CN"], ["Korean","KO"], ["German","GN"], ["Portuguese", "PG"], ["Spanish", "SP"], ["Italian", "IT"]]
   end
 
   # displays set symbol for a given set code
   def display_set_symbol(set)
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/set_symbols/#{set.code}.jpg", :title => "#{set.name}", :style => "height:15px;")         
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/set_symbols/#{set.code}.jpg", :title => "#{set.name}", :style => "height:15px;vertical-align:bottom;padding-bottom:5px;")         
   end
+  
+  # displays set symbol for a given set code
+  def display_flag_symbol(listing)
+    case listing.language
+      when "EN"
+        language = "English"
+      when "RU"
+        language = "Russian"
+      when "FR"
+        language = "French"
+      when "JN"
+        language = "Japanese"
+      when "CN"
+        language = "Chinese"
+      when "KO"
+        language = "Korean"
+      when "GN"
+        language = "German"                              
+      when "PG"
+        language = "Portuguese"        
+      when "SP"
+        language = "Spanish"
+      when "IT"
+        language = "Italian"                
+    end
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/flags/#{language.downcase}.png", :title => "#{language}", :style => "height:20px;vertical-align:bottom;")         
+  end  
 end

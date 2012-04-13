@@ -142,8 +142,9 @@ ActiveRecord::Schema.define(:version => 20120405001141) do
     t.string   "language",       :default => "EN",  :null => false
     t.string   "description",    :default => "",    :null => false
     t.boolean  "signed",         :default => false, :null => false
-    t.boolean  "defect",         :default => false, :null => false
+    t.boolean  "misprint",       :default => false, :null => false
     t.boolean  "foil",           :default => false, :null => false
+    t.boolean  "altart",         :default => false, :null => false
     t.boolean  "reserved",       :default => false, :null => false
     t.boolean  "active",         :default => true,  :null => false
     t.datetime "sold_at"
@@ -193,6 +194,7 @@ ActiveRecord::Schema.define(:version => 20120405001141) do
 
   add_index "mtg_transactions", ["buyer_id"], :name => "index_mtg_transactions_on_buyer_id"
   add_index "mtg_transactions", ["seller_id"], :name => "index_mtg_transactions_on_seller_id"
+  add_index "mtg_transactions", ["status"], :name => "index_mtg_transactions_on_status"
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false

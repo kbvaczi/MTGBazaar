@@ -3,7 +3,7 @@
   <h2><%="#{pluralize(current_cart.item_count,"item","items")} in your cart"%></h2>
   <% if current_cart.item_count >0 %>
     <table style="width:100%; font-size:80%;">
-      <th>Card Name</th><th>Set</th><th>Price</th><th>Condition</th><th>Language</th><th>Foil</th><th>Defects</th><th>Actions</th>
+      <th>Card Name</th><th>Set</th><th>Price</th><th>Condition</th><th>Language</th><th>Foil</th><th>misprints</th><th>Actions</th>
       <% current_cart.seller_ids.each do |s_id| %>
         <tr>
           <td>
@@ -31,7 +31,7 @@
               <%= listing.foil %>
             </td>
             <td>
-              <%= listing.defect %>
+              <%= listing.misprint %>
             </td>
             <td>
               <%= link_to "remove", remove_from_cart_mtg_listing_path(:id => listing.id), :method => :delete %>
