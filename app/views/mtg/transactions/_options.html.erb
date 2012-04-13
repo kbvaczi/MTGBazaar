@@ -1,0 +1,12 @@
+<%# displays options for a given transaction %>
+<%# LOCALS: transaction = current transaction %>
+<div>
+  <%= link_to "Confirm this sale", seller_sale_confirmation_path(transaction), :class => "right ml" if current_user == transaction.seller && transaction.status == "pending" %>
+  <%= link_to "Reject this sale", seller_sale_rejection_path(transaction), :class => "right ml" if current_user == transaction.seller && transaction.status == "pending" %>    
+  <%= link_to "Confirm this sale has shipped", seller_shipment_confirmation_path(transaction), :class => "right ml" if current_user == transaction.seller && transaction.status == "confirmed" %>
+  <%= link_to "Confirm delivery", buyer_delivery_confirmation_path(transaction), :class => "right ml" if current_user == transaction.buyer && transaction.status == "shipped" %>
+  <br style="clear:both;">  
+  <br style="clear:both;">  
+  <br style="clear:both;">    
+</div>
+
