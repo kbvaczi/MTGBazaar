@@ -3,12 +3,28 @@ class CartsController < ApplicationController
   before_filter :authenticate_user!
   
   def add_mtg_card
-    if current_cart.add_mtg_listing(Mtg::Listing.find(params[:id])) # add this listing to cart
-      redirect_to back_path, :notice => "Card added to cart!"
-    else
-      flash[:error] = "there was a problem processing your request"
+    @listing = Mtg::Listing.find(params[:id])
+    if params[:quantity].to_i > 1 # user wants to buy more than one of this card
+      @duplicate_listings = Mtg::Listing.duplicate_listings_of(@listing, params[:quantity]) # show me *quantity* of available duplicate listings
+      if params[:quantity].to_i > @duplicate_listings.count # ERROR - user wants to buy more than is really available
+        flash[:error] = "there are not that many listings available to buy"
+        redirect_to back_path
+        return
+      else
+        @duplicate_listings.each do |l|
+          unless current_cart.add_mtg_listing(l) # add this listing to cart, this returns false if there is a problem
+            flash[:error] = "there was a problem processing your request" # ERROR - problem while adding listing to cart?
+            redirect_to back_path
+            return
+          end
+        end
+      end
+    elsif not current_cart.add_mtg_listing(@listing) # add this listing to cart, this returns false if there is a problem
+      flash[:error] = "there was a problem processing your request" # ERROR - problem while adding listing to cart?
       redirect_to back_path
+      return
     end
+    redirect_to back_path, :notice => "Card added to cart!"    
     return #stop method, don't display a view
   end
   

@@ -24,7 +24,7 @@ class Mtg::ListingsController < ApplicationController
       if params[:mtg_listing][:quantity].present?
         (params[:mtg_listing][:quantity].to_i - 1).times { @listing.dup.save } #make quantity-1 copies (-1 since we already made one before)
       end  
-      redirect_to session[:return_to] || root_path, :notice => " #{help.pluralize(params[:mtg_listing][:quantity], "Listing", "Listings")} Created... Good Luck!"
+      redirect_to back_path, :notice => " #{help.pluralize(params[:mtg_listing][:quantity], "Listing", "Listings")} Created... Good Luck!"
     else
       flash[:error] = "There were one or more errors while trying to process your request"
       render 'new'
@@ -41,8 +41,11 @@ class Mtg::ListingsController < ApplicationController
   
   def update
     @listing = Mtg::Listing.find(params[:id])
+    if params[:mtg_listing] && params[:mtg_listing][:price_options] != "other"
+      params[:mtg_listing][:price] = params[:mtg_listing][:price_options]
+    end    
     if @listing.update_attributes(params[:mtg_listing])
-      redirect_to session[:return_to] || root_path, :notice => "Listing Updated!"
+      redirect_to back_path, :notice => "Listing Updated!"
     else
       flash[:error] = "There were one or more errors while trying to process your request"
       render 'edit'

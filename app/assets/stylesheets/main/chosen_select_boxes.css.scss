@@ -5,10 +5,9 @@
 /* @group Base */
 .chzn-container {
   font-size: 100%;
-  color: #555;  
+  color: #555;
 }
 .chzn-container-multi {
-
 }
 .chzn-container-active {
  
@@ -54,7 +53,7 @@
 
 /* @group Multi Chosen */
 .chzn-container-multi .chzn-choices {
-
+  min-height:60px;
   -webkit-border-radius: 10px;
   -moz-border-radius   : 10px;
   border-radius        : 10px;

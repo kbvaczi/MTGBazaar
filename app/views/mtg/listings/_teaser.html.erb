@@ -1,11 +1,9 @@
 <div class="mtg_listing_teaser">
   <div class="mtg_listing_teaser_seller">
-    <%= "#{listing.seller.username} (20,00#{listing.seller.account.number_sales})" %>
+    <%= "#{listing.seller.username} (#{listing.seller.account.number_sales})" %>
   </div>
   <div class="mtg_listing_teaser_language">
     <%= display_flag_symbol(listing) %>
-    <%#= image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/flags/#{listing.language}.png", :title => "#{listing.language}", :style => "height:20px;") %>   
-    <%#= listing.language %>
   </div>
   <div class="mtg_listing_teaser_condition">
     <%= listing.condition %>

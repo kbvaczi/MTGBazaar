@@ -112,4 +112,74 @@ class Mtg::Listing < ActiveRecord::Base
       else return "Unknown"
     end
   end
+  
+  # returns true if other_listing is a duplicate listing to this listing otherwise returns false
+  def duplicate_listing?(other_listing)
+    return true if self.seller_id == other_listing.seller_id && 
+                   self.card_id == other_listing.card_id && 
+                   self.price == other_listing.price &&
+                   self.condition == other_listing.condition &&
+                   self.language == other_listing.language &&
+                   self.foil == other_listing.foil &&
+                   self.misprint == other_listing.misprint &&
+                   self.altart == other_listing.altart &&                   
+                   self.signed == other_listing.signed &&
+                   self.description == other_listing.description
+    return false
+  end
+  
+  # returns true if other_listing is a duplicate listing to this listing otherwise returns false
+  def self.duplicate_listings_of(listing, count = false, include_self = true)
+    results = where(:seller_id => listing.seller_id,
+              :card_id => listing.card_id)
+              .where(:price => listing.price,
+              :condition => listing.condition,
+              :language => listing.language,
+              :foil => listing.foil,
+              :misprint => listing.misprint,
+              :altart => listing.altart,
+              :signed => listing.signed,
+              :description => listing.description)
+              .available
+    results = results.where("id <> ?", listing.id) unless include_self
+    results = results.limit(count) if count
+    results # return results
+  end
+  
+  # returns the number of listings that are a duplicate of this listing in a subset if specified or in the entire database if subset not specified
+  def duplicate_listing_count(subset = nil)
+    if subset
+      relation_of_listings = subset
+    else 
+      relation_of_listings = Mtg::Listing.where(:seller_id => self.seller_id, :card_id => self.card_id).available
+    end
+    count = 0
+    relation_of_listings.each do |l|
+      count += 1 if self.duplicate_listing?(l)
+    end
+    count #return count
+  end
+  
+  # organizes an activerecord relation of Mtg::Listings by duplicates 
+  # in the form of [{"count" => count, "listing" => reference listing}, {"count" => count, "listing" => reference listing}]
+  def self.organize_by_duplicates
+    array_of_listings = available
+    array_of_duplicates = Array.new
+    array_of_listings.each do |l|
+      array_of_duplicates << {"count" => l.duplicate_listing_count(array_of_listings), "listing" => l}
+      array_of_listings.delete_if {|x| x.duplicate_listing?(l) && x != l}
+    end
+    #inefficient code - array_of_duplicates.each {|d| array_of_duplicates.delete_if {|x| d["listing"].duplicate_listing?(x["listing"]) && d["listing"] != x["listing"] }}
+    array_of_duplicates
+  end
+  
+  # finds the first available listing that is duplicate to this one
+  def find_duplicate_listing(subset = nil)
+    if subset
+      array_of_listings = subset
+    else 
+      array_of_listings = Mtg::Listing.where(:seller_id => self.seller_id, :card_id => self.card_id).available
+    end
+      
+  end
 end

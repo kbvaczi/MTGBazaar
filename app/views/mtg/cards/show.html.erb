@@ -2,47 +2,21 @@
 
 <h1><%= display_name(@mtg_card.name) %></h1>
 <div class="content">
-  <div class="card_info_wrapper group">
-    <%= render :partial => "show_card_info", :locals => { :mtg_card => @mtg_card }%>
-  </div> <!-- card_info_wrapper -->
-  <% if @mtg_card_back.present? %>
-    <div class="card_info_wrapper_back group">
-      <%= render :partial => "show_card_info", :locals => { :mtg_card => @mtg_card_back }%>
+  <div>
+    <div class="card_info_wrapper group">
+      <%= render :partial => "show_card_info", :locals => { :mtg_card => @mtg_card }%>
     </div> <!-- card_info_wrapper -->
-  <% end %>
-  <br class="spacer"/>
-  <%= link_to "Sell this card", new_mtg_listing_path(:card_id => @mtg_card.id), :class => "right"%>
+    <% if @mtg_card_back.present? %>
+      <div class="card_info_wrapper_back group">
+        <%= render :partial => "show_card_info", :locals => { :mtg_card => @mtg_card_back }%>
+      </div> <!-- card_info_wrapper -->
+    <% end %>
+    <br class="spacer"/>
+    <%= link_to "Sell this card", new_mtg_listing_path(:card_id => @mtg_card.id), :class => "right"%>
+  </div>
+  <div>
+    <%= render :partial => "show_listings", :locals => { :listings => @listings }%>
+  </div>
 
-
-  <h2>Listings</h2>
-  <% unless @listings.empty? %>
-    <div class="mtg_listing_teaser">
-      <div class="mtg_listing_teaser_seller">
-        Seller (feedback)
-      </div>
-      <div class="mtg_listing_teaser_language">
-        Lang.
-      </div>  
-      <div class="mtg_listing_teaser_condition">
-        Cond.
-      </div>      
-      <div class="mtg_listing_teaser_options">
-        Options
-      </div>
-      <div class="mtg_listing_teaser_price">
-        Price
-      </div>
-      <div class="mtg_listing_teaser_buy">
-        Quantity to Buy
-      </div>  
-    </div>    
-      <% @listings.each do |listing| %>
-        <%= render :partial => "mtg/listings/teaser", :locals => {:listing => listing} %>
-      <% end %>
-
-  <% else %>
-    <%= "There are currently no listings for this card." %>
-    <%= link_to "List this card", new_mtg_listing_path(:card_id => @mtg_card.id) %>
-  <% end %>     
-
+    
 </div> <!-- content -->
