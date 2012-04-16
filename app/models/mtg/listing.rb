@@ -129,7 +129,7 @@ class Mtg::Listing < ActiveRecord::Base
   end
   
   # returns true if other_listing is a duplicate listing to this listing otherwise returns false
-  def self.duplicate_listings_of(listing, count = false, include_self = true)
+  def self.duplicate_listings_of(listing, count = false, show_only_available = true, include_self = true)
     results = where(:seller_id => listing.seller_id,
               :card_id => listing.card_id)
               .where(:price => listing.price,
@@ -140,9 +140,9 @@ class Mtg::Listing < ActiveRecord::Base
               :altart => listing.altart,
               :signed => listing.signed,
               :description => listing.description)
-              .available
+    results = results.available if show_only_available
     results = results.where("id <> ?", listing.id) unless include_self
-    results = results.limit(count) if count
+    results = results.limit(count.to_i) if count #convert count to integer to prevent sql injection
     results # return results
   end
   
@@ -162,8 +162,9 @@ class Mtg::Listing < ActiveRecord::Base
   
   # organizes an activerecord relation of Mtg::Listings by duplicates 
   # in the form of [{"count" => count, "listing" => reference listing}, {"count" => count, "listing" => reference listing}]
-  def self.organize_by_duplicates
-    array_of_listings = available
+  def self.organize_by_duplicates(show_only_available = true)
+    array_of_listings = available if show_only_available
+    array_of_listings = find(:all) if not show_only_available
     array_of_duplicates = Array.new
     array_of_listings.each do |l|
       array_of_duplicates << {"count" => l.duplicate_listing_count(array_of_listings), "listing" => l}

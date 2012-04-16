@@ -9,7 +9,7 @@ MTGBazaar::Application.routes.draw do
  
   # SHOPPING CART ------------- #
   post    "mtg/listings/:id/add_to_cart"      => "carts#add_mtg_card",    :as => 'add_to_cart_mtg_listing'      
-  delete  "mtg/listings/:id/remove_from_cart" => "carts#remove_mtg_card", :as => 'remove_from_cart_mtg_listing' 
+  delete  "mtg/listings/:id/remove_from_cart" => "carts#remove_mtg_cards", :as => 'remove_from_cart_mtg_listing' 
   get     'users/cart'                        => 'users#show_cart',       :as => 'show_cart'
   post    'users/cart/checkout'               => 'carts#checkout',        :as => 'cart_checkout'
   

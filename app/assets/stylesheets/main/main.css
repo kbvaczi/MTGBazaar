@@ -19,7 +19,6 @@ html, body {
   line-height: 140%;
 }
 h1 {
-  color: #888;
   font-size: 150%;
   line-height: 2;
   padding:0 15px 0 15px;
@@ -44,6 +43,15 @@ h2 {
   font-size: 130%;
   line-height: 1.5;
   margin: 15px 0 25px 0;
+  text-shadow: 0 1px 0px #EEE;
+  display:block;
+  border-bottom: 1px solid #eee;
+}
+h3 {
+  width:auto;
+  font-size: 110%;
+  line-height: 1.25;
+  margin: 10px 0 10px 0;
   text-shadow: 0 1px 0px #EEE;
   display:block;
   border-bottom: 1px solid #eee;

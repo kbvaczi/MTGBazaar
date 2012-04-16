@@ -28,13 +28,27 @@ class CartsController < ApplicationController
     return #stop method, don't display a view
   end
   
-  def remove_mtg_card
-    if current_cart.remove_mtg_listing(Mtg::Listing.find(params[:id])) # remove this listing from cart
-      redirect_to back_path, :notice => "Card removed!"
+  # removes listing/listings from the current user's cart.  params[:id] is the id of the listing to be removed
+  # params[:quantity] determines the number of duplicate listings to remove, if nil, only one listing is removed
+  def remove_mtg_cards
+    @card = Mtg::Listing.find(params[:id])
+    if params[:quantity].to_i > 1
+      @duplicates = current_cart.mtg_listings.duplicate_listings_of(@card,params[:quantity].to_i,false) #show me params[:quantity] duplicates of @card, including @card itself and unavailable cards
+      @duplicates.each do |l|
+        unless current_cart.remove_mtg_listing(l)
+          flash[:error] = "there was a problem processing your request"
+          redirect_to back_path
+          return
+        end
+      end
     else
-      flash[:error] = "there was a problem processing your request"
-      redirect_to back_path
+      unless current_cart.remove_mtg_listing(@card) # remove this listing from cart
+        flash[:error] = "there was a problem processing your request"
+        redirect_to back_path
+        return
+      end
     end
+    redirect_to back_path, :notice => "Item(s) removed!"
     return #stop method, don't display a view
   end
   
