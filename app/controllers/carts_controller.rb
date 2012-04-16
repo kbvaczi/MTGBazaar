@@ -52,6 +52,39 @@ class CartsController < ApplicationController
     return #stop method, don't display a view
   end
   
+  def update_quantity_mtg_cards
+    card = Mtg::Listing.find(params[:id])
+    duplicates_in_cart = current_cart.mtg_listings.duplicate_listings_of(card, false, false) #get the duplicates in this cart
+    current_quantity = duplicates_in_cart.count #count the number of duplicates to this card in cart
+    if params[:quantity].to_i > current_quantity #the user wants to add more cards
+      available_duplicates = Mtg::Listing.duplicate_listings_of(card) # get the duplicate cards available on the market
+      quantity_to_add = params[:quantity].to_i - current_quantity
+      available_duplicates.each_with_index do |l, i|
+        next if i >= quantity_to_add # break the loop we've added enough cards
+        unless current_cart.add_mtg_listing(l)
+          flash[:error] = "there was a problem processing your request"
+          redirect_to back_path
+          return
+        end
+      end
+    elsif params[:quantity].to_i < current_quantity # the user wants to remove cards
+      quantity_to_remove = current_quantity - params[:quantity].to_i
+      duplicates_in_cart.each_with_index do |l, i|
+        next if i >= quantity_to_remove # break the loop we've removed enough cards
+        unless current_cart.remove_mtg_listing(l)
+          flash[:error] = "there was a problem processing your request"
+          redirect_to back_path
+          return
+        end
+      end
+    else # the user wants to keep number of cards the same
+      redirect_to back_path # do nothing
+      return
+    end # standard cases satisfied
+    redirect_to back_path, :notice => "Item quantity updated..."
+    return #stop method, don't display a view
+  end
+  
   def checkout
     if current_user.account.balance >= current_cart.total_price # does user have money to purchase?
       current_cart.seller_ids.each do |id|

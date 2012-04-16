@@ -54,7 +54,7 @@ h3 {
   margin: 10px 0 10px 0;
   text-shadow: 0 1px 0px #EEE;
   display:block;
-  border-bottom: 1px solid #eee;
+  text-decoration: underline;
 }
 ul, ol {
   list-style-position: inside;

@@ -9,8 +9,19 @@
       <h3><%= "Items to be purchased from #{User.where(:id => s_id).pluck(:username).first}" %></h3>
         <%# show the items under this seller, organize by duplicates, include unavailable listings (since they're already in a cart) %>
         <% current_cart.mtg_listings_for_seller_id(s_id).organize_by_duplicates(false).each do |duplicate_item| %>
-          <table>
-            <tr>
+          <table style="width:100%; font-size:80%;">
+            <tr style="text-align:center;">
+              <th>Name</th>
+              <th>Set</th>
+              <th>Price</th>
+              <th>Cond.</th>
+              <th>Lang.</th>
+              <th>Options</th>
+              <th>Quantity</th>
+              <th>Remove</th>              
+            </tr>
+
+                        <tr style="text-align:center;">
               <td>
                 <%= display_name(duplicate_item["listing"].card.name)%>
               </td>
@@ -41,10 +52,22 @@
                 <% end %>
               </td>
               <td>
-                <%= duplicate_item["count"] %>
+                <%= form_tag update_quantity_in_cart_mtg_cards_path(duplicate_item["listing"].id), :method => :post do %>
+                  <% duplicates_available = duplicate_item["count"] + duplicate_item["listing"].duplicate_listing_count %>
+                  <% if duplicates_available > 1 %>
+                    <% quantity_array = [] %>
+                    <% duplicates_available.times { |i| quantity_array << "#{i + 1}" } %>
+                    <%= select_tag "quantity", options_for_select( quantity_array, :selected => duplicate_item["count"] ), :id => nil, :class => "chzn-select", :style => "width:55px;"%>
+                  <% else %>
+                    <%= duplicate_item["count"] %> &nbsp; &nbsp;
+                  <% end %>
+                  <%= submit_tag "Update" %>
+                <% end %>
               </td>
               <td>
-                <%= link_to "remove", remove_from_cart_mtg_listing_path(:id => duplicate_item["listing"].id), :method => :delete %>
+                <%= form_tag remove_from_cart_mtg_listing_path(:id => duplicate_item["listing"].id, :quantity => duplicate_item["count"]), :method => :delete do %>
+                  <%= submit_tag "X" %>
+                <% end %>
               </td>   
             <tr/>
           </table>          
