@@ -2,10 +2,10 @@ class CartsController < ApplicationController
   
   before_filter :authenticate_user!
   
-  def add_mtg_card
+  def add_mtg_cards
     @listing = Mtg::Listing.find(params[:id])
     if params[:quantity].to_i > 1 # user wants to buy more than one of this card
-      @duplicate_listings = Mtg::Listing.duplicate_listings_of(@listing, params[:quantity]) # show me *quantity* of available duplicate listings
+      @duplicate_listings = Mtg::Listing.available.duplicate_listings_of(@listing).limit(params[:quantity].to_i) # show me *quantity* of available duplicate listings      
       if params[:quantity].to_i > @duplicate_listings.count # ERROR - user wants to buy more than is really available
         flash[:error] = "there are not that many listings available to buy"
         redirect_to back_path
@@ -24,17 +24,17 @@ class CartsController < ApplicationController
       redirect_to back_path
       return
     end
-    redirect_to back_path, :notice => "Card added to cart!"    
+    redirect_to back_path, :notice => "#{params[:quantity]} cards added to cart!"    
     return #stop method, don't display a view
   end
   
   # removes listing/listings from the current user's cart.  params[:id] is the id of the listing to be removed
   # params[:quantity] determines the number of duplicate listings to remove, if nil, only one listing is removed
   def remove_mtg_cards
-    @card = Mtg::Listing.find(params[:id])
+    card = Mtg::Listing.find(params[:id])
     if params[:quantity].to_i > 1
-      @duplicates = current_cart.mtg_listings.duplicate_listings_of(@card,params[:quantity].to_i,false) #show me params[:quantity] duplicates of @card, including @card itself and unavailable cards
-      @duplicates.each do |l|
+      duplicates = current_cart.mtg_listings.duplicate_listings_of(card).limit(params[:quantity].to_i) #show me params[:quantity] duplicates of card, including card itself in cart
+      duplicates.each do |l|
         unless current_cart.remove_mtg_listing(l)
           flash[:error] = "there was a problem processing your request"
           redirect_to back_path
@@ -42,7 +42,7 @@ class CartsController < ApplicationController
         end
       end
     else
-      unless current_cart.remove_mtg_listing(@card) # remove this listing from cart
+      unless current_cart.remove_mtg_listing(card) # remove this listing from cart
         flash[:error] = "there was a problem processing your request"
         redirect_to back_path
         return
@@ -54,10 +54,10 @@ class CartsController < ApplicationController
   
   def update_quantity_mtg_cards
     card = Mtg::Listing.find(params[:id])
-    duplicates_in_cart = current_cart.mtg_listings.duplicate_listings_of(card, false, false) #get the duplicates in this cart
+    duplicates_in_cart = current_cart.mtg_listings.duplicate_listings_of(card) #get the duplicates in this cart
     current_quantity = duplicates_in_cart.count #count the number of duplicates to this card in cart
     if params[:quantity].to_i > current_quantity #the user wants to add more cards
-      available_duplicates = Mtg::Listing.duplicate_listings_of(card) # get the duplicate cards available on the market
+      available_duplicates = Mtg::Listing.available.duplicate_listings_of(card) # get the duplicate cards available on the market
       quantity_to_add = params[:quantity].to_i - current_quantity
       available_duplicates.each_with_index do |l, i|
         next if i >= quantity_to_add # break the loop we've added enough cards

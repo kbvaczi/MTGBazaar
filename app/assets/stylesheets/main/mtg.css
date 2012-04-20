@@ -91,25 +91,31 @@
 .mtg_listing_teaser_condition {
   vertical-align:middle;  
   display:table-cell;
-  width:10%;
+  width:9%;
   text-align:center;    
 }
 .mtg_listing_teaser_language {
   vertical-align:middle;  
   display:table-cell;
-  width:10%;
+  width:9%;
   text-align:center;    
 }
 .mtg_listing_teaser_options {
   vertical-align:middle;  
   display:table-cell;
-  width:15%;
+  width:11%;
   text-align:center;  
 }  
 .mtg_listing_teaser_price {
   vertical-align:middle;  
   display:table-cell;
-  width:15%;
+  width:12%;
+  text-align:center;
+}
+.mtg_listing_teaser_availability {
+  vertical-align:middle;  
+  display:table-cell;
+  width:10%;
   text-align:center;
 }
 .mtg_listing_teaser_buy {

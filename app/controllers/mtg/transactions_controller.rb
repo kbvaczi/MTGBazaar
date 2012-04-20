@@ -65,6 +65,7 @@ class Mtg::TransactionsController < ApplicationController
                                       :seller_delivered_at => Time.now,
                                       :buyer_delivery_confirmation => params[:mtg_transaction][:buyer_delivery_confirmation],
                                       :status => "delivered")
+      current_user.account.balance_credit!(@transaction.total_value)  # credit sellers account
       redirect_to back_path, :notice => "Your delivery confirmation was sent..."
     else
       flash[:error] = "There were one or more errors while trying to process your request..."

@@ -16,11 +16,10 @@
                                 :input_html => { :value => "#{@listing.card.set.name}" , :disabled => 'disabled'},
                                 :required => false %>
 
-    <%#= f.input :price,         :label => "Asking Price",
-                                :as => :currency,
-                                :input_html => { :value => @listing.price },
-                                :required => true %>
-                                
+    <%= f.input :quantity,      :label => "Quantity for sale",
+                                :as => :integer,
+                                :input_html => { :value => Mtg::Listing.active.duplicate_listing_count(@listing) },
+                                :required => 'true' %>                                
                                 
     <%= f.input :price_options, :label => "Asking Price",
                                 :as => :radio,
@@ -34,32 +33,32 @@
     <%= f.input :condition,     :label => "Condition",
                                 :as => :select,
                                 :collection => condition_list,
-                                :default => "NM",
-                                :input_html => { :class => "chzn-select" },
+                                :selected => "NM",
+                                :input_html => { :class => "chzn-select chzn-nosearch" },
                                 :required => true %>
 
     <%= f.input :language,      :label => "Language",
                                 :as => :select,
                                 :collection => @listing.card.list_language_options,
-                                :default => "EN",
-                                :input_html => { :class => "chzn-select" },
+                                :selected => "EN",
+                                :input_html => { :class => "chzn-select chzn-nosearch" },
                                 :required => false %>                                
 
     <%= f.input :description,   :label => "Description",
                                 :as => :string %>
 
-    <%= f.label "", :label => "Unique Options"%>
+    <%= f.label "Options" %>
 
-    <%= f.input :foil,          :label => "This card is foil stamped",
+    <%= f.input :foil,          :label => "Foil stamped",
                                 :default => false %>                                     
 
-    <%= f.input :signed,        :label => "This card is signed by the artist",
+    <%= f.input :signed,        :label => "Signed by the artist",
                                 :default => false %> 
 
-    <%= f.input :misprint,      :label => "This card has a rare print mistake",
+    <%= f.input :misprint,      :label => "Misprinted",
                                 :default => false %>
                                 
-    <%= f.input :altart,        :label => "This card has alternate art",
+    <%= f.input :altart,        :label => "Contains alternate art",
                                 :default => false %>                                
                                 
 

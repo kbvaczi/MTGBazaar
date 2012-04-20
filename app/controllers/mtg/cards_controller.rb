@@ -24,7 +24,19 @@ class Mtg::CardsController < ApplicationController
     @mtg_card_back = Mtg::Card.joins(:set).where("card_number LIKE ? AND mtg_sets.code LIKE ?", "%03d" % @mtg_card.card_number.to_i.to_s + "b", @mtg_card.set.code).first if @mtg_card.dual_sided_card?
     @card_variants = Mtg::Card.joins(:set).where("mtg_cards.name LIKE ?", @mtg_card.name)    
     @listings = @mtg_card.listings.available
-    if not (@mtg_card.active or current_admin_user)
+    case params[:sort_by]
+      when "price"
+        @listings = @listings.order(:price)
+      when "condition"
+        @listings = @listings.order(:condition)
+      when "language"
+        @listings = @listings.order(:language)
+      when "seller"
+        @listings.sort { |a,b| a.seller.username <=> b.seller.username }
+      when "seller_rating"
+        @listings.sort { |a,b| a.seller.average_rating <=> b.seller.average_rating }        
+    end
+    if not (@mtg_card.active or current_admin_user) # normal users cannot see inactive cards
       redirect_to (:root)
       return false
     end

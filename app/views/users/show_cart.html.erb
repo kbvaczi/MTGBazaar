@@ -53,7 +53,7 @@
               </td>
               <td>
                 <%= form_tag update_quantity_in_cart_mtg_cards_path(duplicate_item["listing"].id), :method => :post do %>
-                  <% duplicates_available = duplicate_item["count"] + duplicate_item["listing"].duplicate_listing_count %>
+                  <% duplicates_available = duplicate_item["count"] + Mtg::Listing.available.duplicate_listing_count(duplicate_item["listing"]) %>
                   <% if duplicates_available > 1 %>
                     <% quantity_array = [] %>
                     <% duplicates_available.times { |i| quantity_array << "#{i + 1}" } %>

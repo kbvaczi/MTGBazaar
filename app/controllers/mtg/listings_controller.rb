@@ -33,23 +33,40 @@ class Mtg::ListingsController < ApplicationController
   
   def edit
     session[:return_to] = request.referer #set backlink    
-    @listing = Mtg::Listing.find(params[:id])  
+    @listing = Mtg::Listing.find(params[:id])
     respond_to do |format|
       format.html
     end
   end  
   
   def update
-    @listing = Mtg::Listing.find(params[:id])
-    if params[:mtg_listing] && params[:mtg_listing][:price_options] != "other"
-      params[:mtg_listing][:price] = params[:mtg_listing][:price_options]
-    end    
-    if @listing.update_attributes(params[:mtg_listing])
-      redirect_to back_path, :notice => "Listing Updated!"
-    else
-      flash[:error] = "There were one or more errors while trying to process your request"
-      render 'edit'
-    end  
+    listing = Mtg::Listing.find(params[:id])
+    duplicate_listings = Mtg::Listing.duplicate_listings_of(listing)
+    duplicate_listing_count = duplicate_listings.count
+    # handle pricing select options to determine how to update price
+        if params[:mtg_listing] && params[:mtg_listing][:price_options] != "other"
+          params[:mtg_listing][:price] = params[:mtg_listing][:price_options]
+        end    
+    # handle updating listings before creating/destroying just in case there is a problem with update
+        duplicate_listings.each do |l|
+          unless l.update_attributes(params[:mtg_listing])
+            flash[:error] = "There were one or more errors while trying to process your request"
+            render 'edit'      
+          end
+        end 
+    # handle adding/removing duplicate listings
+        if params[:mtg_listing][:quantity].to_i > duplicate_listing_count # the user wants to add more listings
+          quantity_to_add = params[:mtg_listing][:quantity].to_i - duplicate_listing_count
+          quantity_to_add.times { listing.dup.save } # make copies and save
+        elsif params[:mtg_listing][:quantity].to_i < duplicate_listing_count # the user wants to remove some listings
+          quantity_to_remove = duplicate_listing_count - params[:mtg_listing][:quantity].to_i
+          duplicate_listings.each_with_index do |l, i|
+            next if i >= quantity_to_remove
+            l.destroy
+          end
+        end
+    redirect_to back_path, :notice => "Listing Updated!"
+    return # don't show a view
   end
   
   def destroy
@@ -72,7 +89,8 @@ class Mtg::ListingsController < ApplicationController
   
   def verify_available?
     @listing ||= Mtg::Listing.find(params[:id])
-    if @listing.available?
+    @duplicate_listings_in_carts =  Mtg::Listing.reserved.duplicate_listings_of(@listing)
+    if @duplicate_listings_in_cart
       return true
     else 
       if @listing.transaction_id.present?

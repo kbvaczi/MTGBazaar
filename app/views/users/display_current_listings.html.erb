@@ -1,5 +1,80 @@
 <%= render :partial => "users/manage_account_header" %>
 <div class="ma">
   <h2><%="#{@active_listings.count} Active Listings"%></h2>
-  <%= render :partial => "listings_index", :locals => { :listings => @active_listings } %>
+  
+  <%# Do this if the user has listings %>
+  <% if @active_listings.count > 0 %>
+    <% @active_listings.organize_by_duplicates(false).each do |duplicate_item| %>
+      <table style="width:100%; font-size:80%;">
+        <tr style="text-align:center;">
+          <th>Name</th>
+          <th>Set</th>
+          <th>Price</th>
+          <th>Cond.</th>
+          <th>Lang.</th>
+          <th>Options</th>
+          <th>Quantity</th>
+          <th>Remove</th>              
+        </tr>
+        <tr style="text-align:center;">
+          <td>
+            <%= display_name(duplicate_item["listing"].card.name)%>
+          </td>
+          <td>
+            <%= display_set_symbol(duplicate_item["listing"].card.set)%>
+          </td>
+          <td>
+            <%= number_to_currency(duplicate_item["listing"].price)%>
+          </td>          
+          <td>
+            <%= duplicate_item["listing"].condition %>
+          </td>
+          <td>
+            <%= display_flag_symbol(duplicate_item["listing"]) %>
+          </td>          
+          <td>
+            <% if duplicate_item["listing"].foil %>
+              <div class ="left"> Foil </div><div class="right"> X </div><br/>
+            <% end %>
+            <% if duplicate_item["listing"].misprint %>
+              <div class ="left"> Misprint </div><div class="right"> X </div><br/>
+            <% end %>
+            <% if duplicate_item["listing"].signed %>
+              <div class ="left"> Signed </div><div class="right"> X </div><br/>
+            <% end %>
+            <% if duplicate_item["listing"].altart %>
+              <div class ="left"> Alt. Art </div><div class="right"> X </div><br/>
+            <% end %>
+          </td>
+          <td>
+            <%= duplicate_item["count"] %> &nbsp; &nbsp;
+          </td>
+          <td>
+            <%= link_to "edit", edit_mtg_listing_path(duplicate_item["listing"])%>
+          </td>
+          <td>|</td>
+          <td>
+            <%= link_to "remove", mtg_listing_path(duplicate_item["listing"]), :method => :delete , :confirm => "Are you sure you want to permanently delete this listing?"%>
+          </td>
+        <tr/>
+      </table>          
+    <% end %>
+
+
+    <br class="spacer"/>
+    <div class="right">
+      <%= "Subtotal: #{number_to_currency(current_cart.total_price)}" %>
+    </div>
+    <br class="spacer"/>
+    <div class="center">
+      <%= button_to "Check Out", cart_checkout_path, :method => :post %>
+    </div>
+
+    <%# do this if there are no items in the user's cart%>
+    <% else %>
+    
+      <div class="center"><%= "Your cart is currently empty" %></div>
+      
+    <% end %>  
+  
 </div>

@@ -41,13 +41,13 @@
       <div class="search-rarity">
         <%= label_tag "Rarity:" %>
         <br/>
-        <%= select_tag "rarity" , options_for_select(rarity_list, :selected => params[:rarity]) , {:prompt => 'All...', :class => "search-select-rarity chzn-select"} %>                        
+        <%= select_tag "rarity" , options_for_select(rarity_list, :selected => params[:rarity]) , {:prompt => 'All...', :class => "search-select-rarity chzn-select chzn-nosearch"} %>                        
       </div>        
 
       <div class="search-condition">
-        <%= label_tag "Condition:" %>
+        <%#= label_tag "Condition:" %>
         <br/>
-        <%= select_tag "condition" , options_for_select(condition_list, :selected => params[:condition]) , {:prompt => 'All...', :class => "search-select-condition chzn-select"} %>                        
+        <%#= select_tag "condition" , options_for_select(condition_list, :selected => params[:condition]) , {:prompt => 'All...', :class => "search-select-condition chzn-select"} %>                        
       </div>
     </div>
     <br class="spacer"/>
@@ -72,10 +72,6 @@
       <%#= select_tag "seller" , options_for_select(["bob", "joe", "chris"], :selected => params[:seller]) , {:prompt => 'All sellers...', :class => "search-select chzn-select"} %>                        
     </div>
 
-    <div class="mt-m search-seller-rating">
-      <%#="<br/>"%>          
-      <%= select_tag "rating" , options_for_select(["3.0 or above","3.5 or above", "4.0 or above", "4.5 or above", "5.0"], :selected => params[:rating]) , {:prompt => 'Minimum rating...', :class => "search-select chzn-select"} %>                        
-    </div>                
           
     <br/>
     <div class="left" id="clear-filters">

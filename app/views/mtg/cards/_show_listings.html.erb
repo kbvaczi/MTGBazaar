@@ -4,17 +4,18 @@
 
   <!-- Heading -->
   <div class="mtg_listing_teaser">
-    <div class="mtg_listing_teaser_seller"> Seller (feedback) </div>
-    <div class="mtg_listing_teaser_language"> Lang. </div>  
-    <div class="mtg_listing_teaser_condition"> Cond. </div>      
+    <div class="mtg_listing_teaser_seller"> <%= link_to "Seller", mtg_card_path(@mtg_card, :sort_by => "seller") %> (feedback) </div>
+    <div class="mtg_listing_teaser_language"> <%= link_to "Lang", mtg_card_path(@mtg_card, :sort_by => "language") %> </div>  
+    <div class="mtg_listing_teaser_condition"> <%= link_to "Cond", mtg_card_path(@mtg_card, :sort_by => "condition") %> </div>      
     <div class="mtg_listing_teaser_options"> Options </div>
-    <div class="mtg_listing_teaser_price"> Price </div> 
-    <div class="mtg_listing_teaser_buy"> Quantity to Buy </div>  
+    <div class="mtg_listing_teaser_price"> <%= link_to "Price", mtg_card_path(@mtg_card, :sort_by => "price") %> </div> 
+    <div class="mtg_listing_teaser_availability"> Available </div>     
+    <div class="mtg_listing_teaser_buy"> Add to Cart </div>  
   </div>
   
   <!-- listings -->
   <%# listings.each do |duplicate_item| %>
-  <% listings.organize_by_duplicates.each do |duplicate_item| %>      
+  <% @listings.organize_by_duplicates.each do |duplicate_item| %>      
     <%#= render :partial => "mtg/listings/teaser", :locals => {:listing => duplicate_item} %>
     <div class="mtg_listing_teaser <%= cycle("even", "odd") %>">
       <div class="mtg_listing_teaser_seller">
@@ -28,27 +29,32 @@
       </div>    
       <div class="mtg_listing_teaser_options">
         <% if duplicate_item["listing"].foil %>
-          <div class ="left"> Foil </div><div class="right"> X </div><br/>
+          F
         <% end %>
         <% if duplicate_item["listing"].misprint %>
-          <div class ="left"> Misprint </div><div class="right"> X </div><br/>
+          M
         <% end %>
         <% if duplicate_item["listing"].signed %>
-          <div class ="left"> Signed </div><div class="right"> X </div><br/>
+          S
         <% end %>
         <% if duplicate_item["listing"].altart %>
-          <div class ="left"> Alt. Art </div><div class="right"> X </div><br/>
+          A
         <% end %>    
       </div>
       <div class="mtg_listing_teaser_price">
         <%= number_to_currency(duplicate_item["listing"].price) %>
       </div>
+      <div class="mtg_listing_teaser_availability">
+        <%= duplicate_item["count"] %>
+      </div>      
       <div class="mtg_listing_teaser_buy">
         <%= form_tag add_to_cart_mtg_listing_path(duplicate_item["listing"].id), :method => :post do %>
           <% if duplicate_item["count"] > 1 %>
-            <% quantity_array = [] %>
-            <% duplicate_item["count"].times { |i| quantity_array << "#{i + 1}" } %>
-            <%= select_tag "quantity", options_for_select( quantity_array, :selected => duplicate_item["count"] ), :id => nil, :class => "chzn-select", :style => "width:55px;"%>
+            <%= text_field_tag "quantity", 1, :id => nil, :style => "width:30px;"%>            
+            <%# SELECT BOX NOT IMPLEMENTED... MAY HAVE 1000+ Cards... pain in the ass with select box %>
+            <%# quantity_array = [] %>
+            <%# duplicate_item["count"].times { |i| quantity_array << "#{i + 1}" } %>
+            <%#= select_tag "quantity", options_for_select( quantity_array, :selected => duplicate_item["count"] ), :id => nil, :class => "chzn-select", :style => "width:55px;"%>
           <% else %>
             <%= duplicate_item["count"] %> &nbsp; &nbsp;
           <% end %>
