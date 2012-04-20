@@ -17,7 +17,7 @@ gem "smart_tuple", "~> 0.1.2"                                       # Aid for bu
 gem "money", "~> 4.0.2"                                             # handles currency inputs and currency conversions if we need those in the future
 gem "encryptor", "~> 1.1.3"                                         # 2-way encryption using SSL
 gem "heroku"                                                        # allows application to talk to heroku web hosting service
-
+gem 'unicorn'                                                       # unicorn webserver
 # -------------
 # STANDARD GEMS
 # -------------
@@ -31,8 +31,8 @@ gem 'sass-rails',   '~> 3.2.3'                                      # take sass-
 group :production do
   gem "mysql2"                                                      # allows application to use a mysql database  
   gem "newrelic_rpm", "~> 3.3.2"                                    # performance monitoring
-  #gem 'thin'                                                        # production webserver
-  gem 'unicorn'
+  #gem 'thin'                                                       # production webserver... using unicorn instead of thin
+
 end
 
 group :development, :test do
