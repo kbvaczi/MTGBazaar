@@ -29,7 +29,7 @@ class Mtg::TransactionsController < ApplicationController
     if @transaction.mark_as_seller_rejected!(params[:mtg_transaction][:rejection_reason], params[:mtg_transaction][:rejection_message])
       ApplicationMailer.send_buyer_sale_rejection(@transaction).deliver # notify buyer that the sale has been confirmed
       @transaction.buyer.account.balance_credit!(@transaction.total_value) # credit buyer's account
-      @transaction.reject_listings! # clear all the listings underneath this transaction so they can be purchased again        
+      @transaction.reject_items! # mark items as rejected move listings back to available
       redirect_to back_path, :notice => "You rejected this sale..."
     else
       flash[:error] = "There were one or more errors while trying to process your request..."

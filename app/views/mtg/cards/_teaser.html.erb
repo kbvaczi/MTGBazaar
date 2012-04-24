@@ -19,7 +19,7 @@
       <%= mtg_card.set.name %> &nbsp; 
       <br class="spacer"/>
       <div class="right mr-s">
-        <%= link_to "#{mtg_card.listings.available.count} in stock", mtg_card_path(mtg_card)  %>
+        <%= link_to "#{mtg_card.listings.available.pluck(:quantity_available).inject(:+) || 0} Available", mtg_card_path(mtg_card)  %>
       </div>
       <i><%= "(#{display_rarity(mtg_card.rarity)})" %></i>  <%#= button_to "Quick Buy: $#{Random.rand(50)}.#{"%02d" % Random.rand(99)}",  root_path , :class => "right"%>
 

@@ -6,73 +6,69 @@
   <% if current_cart.item_count > 0 %>
     <%# organize items in cart by seller %>
     <% current_cart.seller_ids.each do |s_id| %>
-      <h3><%= "Items to be purchased from #{User.where(:id => s_id).pluck(:username).first}" %></h3>
-        <%# show the items under this seller, organize by duplicates, include unavailable listings (since they're already in a cart) %>
-        <% current_cart.mtg_listings_for_seller_id(s_id).organize_by_duplicates(false).each do |duplicate_item| %>
-          <table style="width:100%; font-size:80%;">
-            <tr style="text-align:center;">
-              <th>Name</th>
-              <th>Set</th>
-              <th>Price</th>
-              <th>Cond.</th>
-              <th>Lang.</th>
-              <th>Options</th>
-              <th>Quantity</th>
-              <th>Remove</th>              
-            </tr>
-
-                        <tr style="text-align:center;">
-              <td>
-                <%= display_name(duplicate_item["listing"].card.name)%>
-              </td>
-              <td>
-                <%= display_set_symbol(duplicate_item["listing"].card.set)%>
-              </td>
-              <td>
-                <%= number_to_currency(duplicate_item["listing"].price)%>
-              </td>          
-              <td>
-                <%= duplicate_item["listing"].condition %>
-              </td>
-              <td>
-                <%= display_flag_symbol(duplicate_item["listing"]) %>
-              </td>          
-              <td>
-                <% if duplicate_item["listing"].foil %>
-                  <div class ="left"> Foil </div><div class="right"> X </div><br/>
-                <% end %>
-                <% if duplicate_item["listing"].misprint %>
-                  <div class ="left"> Misprint </div><div class="right"> X </div><br/>
-                <% end %>
-                <% if duplicate_item["listing"].signed %>
-                  <div class ="left"> Signed </div><div class="right"> X </div><br/>
-                <% end %>
-                <% if duplicate_item["listing"].altart %>
-                  <div class ="left"> Alt. Art </div><div class="right"> X </div><br/>
-                <% end %>
-              </td>
-              <td>
-                <%= form_tag update_quantity_in_cart_mtg_cards_path(duplicate_item["listing"].id), :method => :post do %>
-                  <% duplicates_available = duplicate_item["count"] + Mtg::Listing.available.duplicate_listing_count(duplicate_item["listing"]) %>
-                  <% if duplicates_available > 1 %>
-                    <% quantity_array = [] %>
-                    <% duplicates_available.times { |i| quantity_array << "#{i + 1}" } %>
-                    <%= select_tag "quantity", options_for_select( quantity_array, :selected => duplicate_item["count"] ), :id => nil, :class => "chzn-select", :style => "width:55px;"%>
-                  <% else %>
-                    <%= duplicate_item["count"] %> &nbsp; &nbsp;
-                  <% end %>
-                  <%= submit_tag "Update" %>
-                <% end %>
-              </td>
-              <td>
-                <%= form_tag remove_from_cart_mtg_listing_path(:id => duplicate_item["listing"].id, :quantity => duplicate_item["count"]), :method => :delete do %>
-                  <%= submit_tag "X" %>
-                <% end %>
-              </td>   
-            <tr/>
-          </table>          
-        <% end %>
-      <% end %>
+      <% seller_items = @reservations.where("mtg_listings.seller_id" => s_id) %>
+      <h3><%= "#{seller_items.sum(:quantity)} Items from #{User.where(:id => s_id).pluck(:username).first}" %></h3>
+        <%# show the items under this seller %>
+      <!-- Heading -->
+      <div class="cart_item_teaser">
+        <div class="cart_item_teaser_name"> Name </div>
+        <div class="cart_item_teaser_set"> Set </div>  
+        <div class="cart_item_teaser_condition"> Cond </div>      
+        <div class="cart_item_teaser_language"> Lang </div>
+        <div class="cart_item_teaser_options"> Options </div> 
+        <div class="cart_item_teaser_price"> Price </div>     
+        <div class="cart_item_teaser_available"> Available </div>                  
+        <div class="cart_item_teaser_quantity"> In cart </div>
+        <div class="cart_item_teaser_remove"> Remove </div>  
+      </div>        
+      <% seller_items.each do |reservation| %>
+        <!-- listings -->
+        <div class="cart_item_teaser <%= cycle("even", "odd") %>">
+          <div class="cart_item_teaser_name">
+            <%= display_name(reservation.card.name)%>
+          </div>
+          <div class="cart_item_teaser_set">
+            <%= display_set_symbol(reservation.card.set)%>
+          </div>
+          <div class="cart_item_teaser_condition">
+            <%= display_condition(reservation.listing.condition) %>
+          </div>    
+          <div class="cart_item_teaser_language">
+            <%= display_flag_symbol(reservation.listing) %>
+          </div>          
+          <div class="cart_item_teaser_options">
+            <% if reservation.listing.foil %>
+              F
+            <% end %>
+            <% if reservation.listing.misprint %>
+              M
+            <% end %>
+            <% if reservation.listing.signed %>
+              S
+            <% end %>
+            <% if reservation.listing.altart %>
+              A
+            <% end %>    
+          </div>
+          <div class="cart_item_teaser_price">
+            <%= number_to_currency(reservation.listing.price) %>
+          </div>
+          <div class="cart_item_teaser_available"> <%= reservation.quantity + reservation.listing.quantity_available %> </div>                            
+          <div class="cart_item_teaser_quantity">
+            <%= form_tag update_quantity_in_cart_mtg_cards_path(reservation), :method => :post do %>
+              <%= text_field_tag "quantity", 1, :class => "quantity_in_cart", :id => nil, :value => reservation.quantity, :style => "width:30px;text-align:center;"%>
+              <%# This form is automatically submitted when changed per cart.js.erb no need for submit tag %>
+              <%#= submit_tag "Update" , :style => "display:none;"%>
+            <% end %>
+          </div>      
+          <div class="cart_item_teaser_remove">
+            <%= form_tag remove_from_cart_mtg_listing_path(:id => reservation.id, :quantity => reservation.quantity ), :method => :delete do %>
+              <%= submit_tag "X" %>
+            <% end %>
+          </div>  
+        </div>
+      <% end %>        
+    <% end %>
 
     <br class="spacer"/>
     <div class="right">
@@ -91,3 +87,4 @@
     <% end %>  
   
 </div>
+

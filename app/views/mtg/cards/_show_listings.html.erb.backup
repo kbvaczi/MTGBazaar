@@ -9,64 +9,66 @@
     <div class="mtg_listing_teaser_condition"> <%= link_to "Cond", mtg_card_path(@mtg_card, :sort_by => "condition") %> </div>      
     <div class="mtg_listing_teaser_options"> Options </div>
     <div class="mtg_listing_teaser_price"> <%= link_to "Price", mtg_card_path(@mtg_card, :sort_by => "price") %> </div> 
-    <div class="mtg_listing_teaser_availability"> Quantity </div>     
+    <div class="mtg_listing_teaser_availability"> Available </div>     
     <div class="mtg_listing_teaser_buy"> Add to Cart </div>  
   </div>
   
   <!-- listings -->
-  <% @listings.each do |listing| %>      
+  <%# listings.each do |duplicate_item| %>
+  <% @listings.organize_by_duplicates.each do |duplicate_item| %>      
+    <%#= render :partial => "mtg/listings/teaser", :locals => {:listing => duplicate_item} %>
     <div class="mtg_listing_teaser <%= cycle("even", "odd") %>">
       <div class="mtg_listing_teaser_seller">
-        <%= "#{listing.seller.username} (#{listing.seller.account.number_sales})" %>
+        <%= "#{duplicate_item["listing"].seller.username} (#{duplicate_item["listing"].seller.account.number_sales})" %>
       </div>
       <div class="mtg_listing_teaser_language">
-        <%= display_flag_symbol(listing) %>
+        <%= display_flag_symbol(duplicate_item["listing"]) %>
       </div>
       <div class="mtg_listing_teaser_condition">
-        <%= display_condition(listing.condition) %>
+        <%= duplicate_item["listing"].condition %>
       </div>    
       <div class="mtg_listing_teaser_options">
-        <% if listing.foil %>
+        <% if duplicate_item["listing"].foil %>
           F
         <% end %>
-        <% if listing.misprint %>
+        <% if duplicate_item["listing"].misprint %>
           M
         <% end %>
-        <% if listing.signed %>
+        <% if duplicate_item["listing"].signed %>
           S
         <% end %>
-        <% if listing.altart %>
+        <% if duplicate_item["listing"].altart %>
           A
         <% end %>    
       </div>
       <div class="mtg_listing_teaser_price">
-        <%= number_to_currency(listing.price) %>
+        <%= number_to_currency(duplicate_item["listing"].price) %>
       </div>
       <div class="mtg_listing_teaser_availability">
-        <%= listing.quantity_available %>
+        <%= duplicate_item["count"] %>
       </div>      
       <div class="mtg_listing_teaser_buy">
-        <%= form_tag add_to_cart_mtg_listing_path(listing.id), :method => :post do %>
-          <% if listing.quantity > 1 %>
-            <%= text_field_tag "quantity", 1, :id => nil, :style => "width:30px;text-align:center;"%>            
+        <%= form_tag add_to_cart_mtg_listing_path(duplicate_item["listing"].id), :method => :post do %>
+          <% if duplicate_item["count"] > 1 %>
+            <%= text_field_tag "quantity", 1, :id => nil, :style => "width:30px;"%>            
             <%# SELECT BOX NOT IMPLEMENTED... MAY HAVE 1000+ Cards... pain in the ass with select box %>
             <%# quantity_array = [] %>
             <%# duplicate_item["count"].times { |i| quantity_array << "#{i + 1}" } %>
             <%#= select_tag "quantity", options_for_select( quantity_array, :selected => duplicate_item["count"] ), :id => nil, :class => "chzn-select", :style => "width:55px;"%>
           <% else %>
-            <%= listing.quantity %> &nbsp; &nbsp;
-            <%= text_field_tag "quantity", 1, :id => nil, :style => "width:30px;text-align:center;display:none;"%>            
+            <%= duplicate_item["count"] %> &nbsp; &nbsp;
           <% end %>
           <%= submit_tag "Buy" %>
+          <%# link_to "Add to Cart", add_to_cart_mtg_listing_path(duplicate_item["listing"].id), :method => :post %>
         <% end %>
       </div>  
     </div>
   <% end %>
 
 <% else %>
-  <br class="spacer"/>
-  <div style="text-align:center;">
-    <%= "There are currently no listings for this card." %>
-  </div>
+
+  <%= "There are currently no listings for this card." %>
+  <%= link_to "List this card", new_mtg_listing_path(:card_id => @mtg_card.id) %>
+  
 <% end %>
  

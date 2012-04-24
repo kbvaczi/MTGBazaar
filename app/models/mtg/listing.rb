@@ -1,10 +1,11 @@
 class Mtg::Listing < ActiveRecord::Base
   self.table_name = 'mtg_listings'    
   
-  belongs_to :card, :class_name => "Mtg::Card"
-  belongs_to :seller, :class_name => "User"
-  belongs_to :transaction, :class_name => "Mtg::Transaction"
-  belongs_to :cart
+  belongs_to :card,         :class_name => "Mtg::Card"
+  belongs_to :seller,       :class_name => "User"
+  belongs_to :transaction,  :class_name => "Mtg::Transaction"
+  has_many   :reservations, :class_name => "Mtg::Reservation"
+  has_many   :carts,        :through => :reservations
   
   # Implement Money gem for price column
   composed_of   :price,
@@ -14,18 +15,33 @@ class Mtg::Listing < ActiveRecord::Base
                 :converter => Proc.new { |value| value.respond_to?(:to_money) ? value.to_money : Money.empty }  
   
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name,  :set, :quantity, :price, :condition, :language, :description, :altart,
-                          :foreign, :misprint, :foil, :signed, :price_options, :price_other
+  attr_accessible :name, :set, :quantity, :price, :condition, :language, :description, :altart,
+                  :misprint, :foil, :signed, :price_options, :quantity_available
 
   # not-in-model field for current password confirmation
-  attr_accessor :name, :set, :quantity, :price_options, :price_other
+  attr_accessor :name, :set, :price_options
   
   # validations
-  validates_presence_of :price, :condition, :language
+  validates_presence_of :price, :condition, :language, :quantity
+  validates :quantity, :numericality => {:greater_than => 0, :less_than => 10000}
+
   
-  # determins if listing is available to be added to cart (active, not already in cart, and not already sold)
+  before_create do      # all cards are available when created
+    self.quantity_available = self.quantity
+  end
+  
+  # determines if listing is available to be added to cart (active, not already in cart, and not already sold)
   def available?
-    self.cart_id == nil and self.active == true and self.sold_at == nil and self.transaction_id == nil and self.rejected_at == nil
+    self.cart_id == nil and self.active == true and self.sold_at == nil and self.transaction_id == nil and self.rejected_at == nil and self.quantity_available > 0
+  end
+  
+  # used for searching for available listings... Mtg::Listing.available will return all available listings
+  def self.available
+    where(:cart_id => nil, :active => true, :sold_at => nil, :transaction_id => nil, :rejected_at => nil).where("quantity_available > 0")
+  end
+  
+  def in_cart?
+    not (self.quantity_available == self.quantity and quantity_available > 0)
   end
   
   # mark a listing as reserved (added to a cart)
@@ -59,10 +75,7 @@ class Mtg::Listing < ActiveRecord::Base
     self.update_attribute(:active, false)    
   end  
   
-  # used for searching for available listings... Mtg::Listing.available will return all available listings
-  def self.available
-    where(:cart_id => nil, :active => true, :sold_at => nil, :transaction_id => nil, :rejected_at => nil)
-  end
+
 
   # returns listings that are in a shopping cart
   def self.reserved
@@ -101,14 +114,14 @@ class Mtg::Listing < ActiveRecord::Base
   
   def formatted_condition
     case self.condition
-      when /NM/ #contains "C" 
-        return "Near-Mint"
-      when /E/ #contains "U" 
-        return "Excellent"
-      when /F/ #contains "R" 
-        return "Fine"
-      when /G/ #contains "M" 
-        return "Good"
+      when /1/ 
+        return "NM"
+      when /2/ 
+        return "EX"
+      when /3/ 
+        return "FN"
+      when /4/ 
+        return "GD"
       else return "Unknown"
     end
   end

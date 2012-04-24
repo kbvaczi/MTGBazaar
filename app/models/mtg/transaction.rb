@@ -3,11 +3,11 @@ class Mtg::Transaction < ActiveRecord::Base
   
   belongs_to :seller,   :class_name => "User"
   belongs_to :buyer,    :class_name => "User"
-  has_many :listings,   :class_name => "Mtg::Listing", :foreign_key => "transaction_id"
+  has_many   :items,    :class_name => "Mtg::TransactionItem", :foreign_key => "transaction_id"
   
   # returns the total value of a transaction
   def total_value
-    Mtg::Listing.by_id(listing_ids).to_a.sum(&:price)
+    Mtg::TransactionItem.by_id(item_ids).sum("mtg_transaction_items.price * mtg_transaction_items.quantity").to_f / 100
   end
   
   # check whether seller has confirmed this transaction or not
@@ -55,18 +55,50 @@ class Mtg::Transaction < ActiveRecord::Base
     self.update_attributes(:status => "final")
   end  
   
-  # removes listings and ensures they are free to be purchased again
-  def remove_listings!
-    self.listings.each { |l| l.free! } # free listings in this transaction
-    self.listings.clear # delete listings out of this transaction
+  # creates a dummy copy of listings to be saved with rejected transaction (for tracking purposes) then frees all originals so they can be purchased again
+  def reject_items!
+    self.items.each do |i|
+      i.update_attribute(:rejected_at, Time.now)
+      self.create_listing_from_item(i)
+    end
   end
   
-  # creates a dummy copy of listings to be saved with rejected transaction (for tracking purposes) then frees all originals so they can be purchased again
-  def reject_listings!
-    self.listings.each do |l| 
-      l.dup.mark_as_rejected!
-      l.free! # remove listing from cart and this transaction
-    end 
+  def create_item_from_reservation(reservation)
+    item = Mtg::TransactionItem.new( :quantity => reservation.quantity,
+                                     :price => reservation.listing.price,
+                                     :condition => reservation.listing.condition,
+                                     :language => reservation.listing.language,
+                                     :description => reservation.listing.description,
+                                     :altart => reservation.listing.altart,
+                                     :misprint => reservation.listing.misprint,
+                                     :foil => reservation.listing.foil,
+                                     :signed => reservation.listing.signed )
+    item.card_id = reservation.listing.card_id
+    item.buyer_id = self.buyer_id
+    item.seller_id = self.seller_id
+    item.transaction_id = self.id
+    item.save
+  end
+  
+  def create_listing_from_item(item)
+    listing = Mtg::Listing.new(      :quantity => item.quantity,
+                                     :price => item.price,
+                                     :condition => item.condition,
+                                     :language => item.language,
+                                     :description => item.description,
+                                     :altart => item.altart,
+                                     :misprint => item.misprint,
+                                     :foil => item.foil,
+                                     :signed => item.signed )
+    listing.card_id = item.card_id
+    listing.seller_id = self.seller_id
+    duplicate = Mtg::Listing.duplicate_listings_of(listing).first
+    if duplicate.present? # there is already a duplicate listing, just update quantity of cards
+      duplicate.update_attributes(  :quantity => duplicate.quantity + item.quantity, 
+                                    :quantity_available => duplicate.quantity_available + item.quantity )
+    else # there is no duplicate listing, create a new one from item
+      listing.save
+    end
   end
   
 end

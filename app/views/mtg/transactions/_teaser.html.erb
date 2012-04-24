@@ -1,41 +1,42 @@
-<%# displays listings in a given transaction %>
+<%# displays items in a given transaction %>
 <%# LOCALS: transaction = current transaction %>
 <div>
   <div class="left"> Sale to <%= transaction.buyer.username %> on <%= transaction.created_at.strftime("%d-%b %Y") %></div>
   <div class="right"> Status: </div>
   <br class="spacer"/>
   <br class="spacer"/>
-  <% transaction.listings.each do |listing| %>
-
+  <% transaction.items.each do |item| %>
+  <div style="clear:both;display:block;">
     <div style="position:relative;display:inline-block;float:left;width:160px;height:140px;font-size:10px;color:#333;overflow:none;">
-      <p> <%= listing.card.formatted_name %></p>
+      <p> <%= item.card.formatted_name %></p>
       <div style="float:left">
-        <%= link_to image_tag(listing.card.thumbnail_image_path, :height => "117px", :width => "85px"), mtg_card_url(listing.card) %>
+        <%= link_to image_tag(item.card.thumbnail_image_path, :height => "117px", :width => "85px"), mtg_card_url(item.card) %>
+        <br class="spacer"/>
+        <%= "#{number_to_currency(item.price.dollars)} x #{item.quantity}"%>  
+        <br class="spacer"/>  
       </div>
       <div style="margin-left:5px;float:left;">
-        <%= display_set_symbol(listing.card.set) %>
+        <%= display_set_symbol(item.card.set) %>
         <br/>
-        <%= listing.formatted_condition %>
+        <%= item.formatted_condition %>
         <br/>
-        <%= listing.language %>
+        <%= item.language %>
         <br/>        
-        <% if listing.foil? %>
+        <% if item.foil? %>
           <%= "Foil" %>        
           <br/>        
         <% end %>
-        <% if listing.signed? %>
+        <% if item.signed? %>
           <%= "Signed" %>        
           <br/>        
         <% end %>  
-        <% if listing.misprint? %>
+        <% if item.misprint? %>
           <%= "Irregularity" %>        
           <br/>        
         <% end %>              
-      </div>
-      <br class="spacer"/>
-      <%= number_to_currency(listing.price.dollars) %>  
-      <br class="spacer"/>      
+      </div>     
     </div>
+  </div>    
   <% end %>
   <br class="spacer"/>  
   <br class="spacer"/>

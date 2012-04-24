@@ -4,7 +4,7 @@
   
   <%# Do this if the user has listings %>
   <% if @active_listings.count > 0 %>
-    <% @active_listings.organize_by_duplicates(false).each do |duplicate_item| %>
+    <% @active_listings.each do |listing| %>
       <table style="width:100%; font-size:80%;">
         <tr style="text-align:center;">
           <th>Name</th>
@@ -18,43 +18,43 @@
         </tr>
         <tr style="text-align:center;">
           <td>
-            <%= display_name(duplicate_item["listing"].card.name)%>
+            <%= display_name(listing.card.name)%>
           </td>
           <td>
-            <%= display_set_symbol(duplicate_item["listing"].card.set)%>
+            <%= display_set_symbol(listing.card.set)%>
           </td>
           <td>
-            <%= number_to_currency(duplicate_item["listing"].price)%>
+            <%= number_to_currency(listing.price)%>
           </td>          
           <td>
-            <%= duplicate_item["listing"].condition %>
+            <%= listing.condition %>
           </td>
           <td>
-            <%= display_flag_symbol(duplicate_item["listing"]) %>
+            <%= display_flag_symbol(listing) %>
           </td>          
           <td>
-            <% if duplicate_item["listing"].foil %>
+            <% if listing.foil %>
               <div class ="left"> Foil </div><div class="right"> X </div><br/>
             <% end %>
-            <% if duplicate_item["listing"].misprint %>
+            <% if listing.misprint %>
               <div class ="left"> Misprint </div><div class="right"> X </div><br/>
             <% end %>
-            <% if duplicate_item["listing"].signed %>
+            <% if listing.signed %>
               <div class ="left"> Signed </div><div class="right"> X </div><br/>
             <% end %>
-            <% if duplicate_item["listing"].altart %>
+            <% if listing.altart %>
               <div class ="left"> Alt. Art </div><div class="right"> X </div><br/>
             <% end %>
           </td>
           <td>
-            <%= duplicate_item["count"] %> &nbsp; &nbsp;
+            <%= listing.quantity %> &nbsp; &nbsp;
           </td>
           <td>
-            <%= link_to "edit", edit_mtg_listing_path(duplicate_item["listing"])%>
+            <%= link_to "edit", edit_mtg_listing_path(listing)%>
           </td>
           <td>|</td>
           <td>
-            <%= link_to "remove", mtg_listing_path(duplicate_item["listing"]), :method => :delete , :confirm => "Are you sure you want to permanently delete this listing?"%>
+            <%= link_to "remove", mtg_listing_path(listing), :method => :delete , :confirm => "Are you sure you want to permanently delete this listing?"%>
           </td>
         <tr/>
       </table>          

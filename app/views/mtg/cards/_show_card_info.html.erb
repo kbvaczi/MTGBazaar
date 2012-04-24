@@ -11,7 +11,7 @@
   <!-- SET -->
   <div class="card_show_info_row">
     <div class="card_show_info_label">
-      Set:
+      Set
     </div>
     <div class="card_show_info_value">
       <%= mtg_card.set.name %>
@@ -20,7 +20,7 @@
   <!-- COST -->    
   <div class="card_show_info_row">
     <div class="card_show_info_label">
-      Cost:
+      Cost
     </div>
     <div class="card_show_info_value">
       <%= display_symbols(mtg_card.mana_string) %>
@@ -29,7 +29,7 @@
   <!-- COLOR -->    
   <div class="card_show_info_row">
     <div class="card_show_info_label">
-      Color:
+      Color
     </div>
     <div class="card_show_info_value">
       <%= display_color(mtg_card.mana_color) %>
@@ -38,7 +38,7 @@
   <!-- COLOR -->    
   <div class="card_show_info_row">
     <div class="card_show_info_label">
-      Type:
+      Type
     </div>
     <div class="card_show_info_value">
       <%= "#{mtg_card.card_type}" %>
@@ -48,7 +48,7 @@
   <!-- TEXT -->        
   <div class="card_show_info_row">
     <div class="card_show_info_label">
-      Text:
+      Text
     </div>
     <div class="card_show_info_value">
       <p><%= display_symbols(mtg_card.description) %></p>
@@ -57,7 +57,7 @@
   <!-- RARITY -->        
   <div class="card_show_info_row">
     <div class="card_show_info_label">
-      Rarity:
+      Rarity
     </div>
     <div class="card_show_info_value">
       <%= display_rarity(mtg_card.rarity) %>
@@ -66,7 +66,7 @@
   <!-- ARTIST -->        
   <div class="card_show_info_row">
     <div class="card_show_info_label">
-      Artist:
+      Artist
     </div>
     <div class="card_show_info_value">
       <%= mtg_card.artist %>
@@ -75,7 +75,7 @@
   <!-- VERSIONS -->
   <div class="card_show_info_row">
     <div class="card_show_info_label">
-      Versions:
+      Versions
     </div>
     <div class="card_show_info_value">
       <% @card_variants.each do |v| %>

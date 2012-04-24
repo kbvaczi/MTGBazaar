@@ -2,17 +2,17 @@
   display:none;
 }
 .card_image_wrapper {
-  height: 220px;
-  width: 150px;
+  min-height: 250px;
+  width: 180px;
   display:inline;
   float:left;
 }
 .card_show_info {
   display:table;
-  margin: 0 0px 0 15px;
-  width: 340px;
+  margin: 0 0px 0 10px;
+  width: 320px;
   float:left;
-  text-align:justify;
+  text-align:left;
 }
 .card_show_info_row {
   display:table-row;
@@ -21,17 +21,18 @@
 }
 .card_show_info_label {
   display: table-cell;
+  text-align:right;
   font-weight: bold;
   text-transform: capitalize;
-  width:17%;
-  padding-bottom: 5px;  
-
+  width:18%;
   vertical-align:middle;
+  padding: 4px 5px 4px 10px;
 }
 .card_show_info_value {
   display: table-cell;
-  width:83%;
-  padding-bottom: 5px;
+  width:82%;
+  padding: 4px 0 4px 5px;
+  border-left:1px solid #eee;
 }
 .mtg_symbol {
   margin:0 0 -2px 1px;
@@ -47,7 +48,7 @@
   -webkit-box-shadow:  0px 1px 2px 1px #777;
   box-shadow:          0px 1px 2px 1px #777;
   
-  width:150px;
+  width:180px;
 }
 .mtg_teaser{
   width: 100%;
@@ -75,7 +76,7 @@
 .even {
   background-color: rgba(243,245,243,1);  
 }
-.mtg_listing_teaser {
+.mtg_listing_teaser, .cart_item_teaser {
   display:table;
   width:100%;
   padding: 5px;
@@ -83,44 +84,65 @@
   -webkit-border-radius: 7px;
   border-radius: 7px;  
 }
-.mtg_listing_teaser_seller {
+
+.mtg_listing_teaser div, .cart_item_teaser div {
   vertical-align:middle;
   display:table-cell;
+  text-align:center;    
+}
+
+.mtg_listing_teaser_seller {
+  text-align:left !important; 
   width:30%;
 }
 .mtg_listing_teaser_condition {
-  vertical-align:middle;  
-  display:table-cell;
   width:9%;
   text-align:center;    
 }
 .mtg_listing_teaser_language {
-  vertical-align:middle;  
-  display:table-cell;
   width:9%;
   text-align:center;    
 }
 .mtg_listing_teaser_options {
-  vertical-align:middle;  
-  display:table-cell;
   width:11%;
   text-align:center;  
 }  
 .mtg_listing_teaser_price {
-  vertical-align:middle;  
-  display:table-cell;
   width:12%;
   text-align:center;
 }
 .mtg_listing_teaser_availability {
-  vertical-align:middle;  
-  display:table-cell;
   width:10%;
   text-align:center;
 }
 .mtg_listing_teaser_buy {
-  vertical-align:middle;  
-  display:table-cell;
-  text-align:right;
+  text-align:right !important;
   width:20%;
 }
+
+.cart_item_teaser_name {
+  width:25%;
+  text-align:left !important; 
+}
+.cart_item_teaser_set {
+  width:8%;
+}
+.cart_item_teaser_condition {
+  width:8%;
+}
+.cart_item_teaser_language {
+  width:8%;
+}
+.cart_item_teaser_options {
+  width:11%;
+}
+.cart_item_teaser_price {
+  width:10%;
+}
+.cart_item_teaser_quantity {
+  width:10%;
+}
+.cart_item_teaser_remove {
+  width:10%;
+}
+  

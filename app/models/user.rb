@@ -2,10 +2,11 @@ class User < ActiveRecord::Base
   # database relationships
   has_one  :account, :dependent => :destroy
   has_one  :cart
-  has_many :mtg_listings,   :class_name => "Mtg::Listing",      :foreign_key => "seller_id"
-  has_many :mtg_purchases,  :class_name => "Mtg::Transaction", :foreign_key => "buyer_id"
-  has_many :mtg_sales,      :class_name => "Mtg::Transaction", :foreign_key => "seller_id"
-
+  has_many :mtg_listings,       :class_name => "Mtg::Listing",              :foreign_key => "seller_id"
+  has_many :mtg_purchases,      :class_name => "Mtg::Transaction",          :foreign_key => "buyer_id"
+  has_many :mtg_purchase_items, :class_name => "Mtg::TransactionItem",    :foreign_key => "buyer_id"  
+  has_many :mtg_sales,          :class_name => "Mtg::Transaction",          :foreign_key => "seller_id"
+  has_many :mtg_sale_items,     :class_name => "Mtg::TransactionItem",    :foreign_key => "seller_id"
 
   # Include default devise modules. Others available are:
   #:token_authenticatable, :encryptable, :confirmable, :lockable, :rememberable, :timeoutable, and :omniauthable

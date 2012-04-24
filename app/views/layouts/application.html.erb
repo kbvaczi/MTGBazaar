@@ -11,12 +11,11 @@
     
 
     <%= stylesheet_link_tag    "application" %>
-    <%= javascript_include_tag "application" %>
-
 
     <% #--------- YIELD STUFF TO PUT IN HEADING SUCH AS JAVASCRIPT INCLUDES, ETC...----# %>
     <%= yield(:head) %>
   
+    <%# cross site forgery protection %>
     <%= csrf_meta_tags %>  
   </head>
 
@@ -62,6 +61,10 @@
       <%= render :partial => 'shared/footer' %>
       
     </div>
+    
+    <%# include javascript at the bottom of page so that page renders faster %>
+    <%= javascript_include_tag "application" %>
+    
   </body>
 
 </html>

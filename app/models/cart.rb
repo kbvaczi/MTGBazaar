@@ -1,7 +1,8 @@
 class Cart < ActiveRecord::Base
-  
-  has_many    :mtg_listings, :class_name => "Mtg::Listing"
+
   belongs_to  :user
+  has_many    :reservations, :class_name => "Mtg::Reservation", :dependent => :destroy
+  has_many    :listings, :class_name => "Mtg::Listing" , :through => :reservations, :foreign_key => "listing_id"
   
   # Implement Money gem for total_price column
   composed_of   :total_price,
@@ -10,47 +11,58 @@ class Cart < ActiveRecord::Base
                 :constructor => Proc.new { |cents| Money.new(cents || 0) },                
                 :converter => Proc.new { |value| value.respond_to?(:to_money) ? value.to_money : Money.empty }  
                     
-  def add_mtg_listing(listing)
-    if listing.cart_id.present? #check to make sure listing isn't already in a cart
-      return false
-    else
-      self.mtg_listings.push(listing) # reserve this listing so nobody else can add it
-      self.total_price += listing.price # keep track of cart's total price
-      self.item_count += 1 # keep track of cart's item count
-      self.save!
+  def add_mtg_listing(listing, quantity = 1)
+    if listing.quantity_available >= quantity && quantity > 0 # check to make sure there are enough cards available in the listing
+      if self.listings.include?(listing) # is there already a reservation for this listing in cart?
+        self.reservations.where(:listing_id => listing.id).first.increment(:quantity, quantity).save # add to existing reservation
+      else
+        self.reservations.create(:listing_id => listing.id, :quantity => quantity) # build a new reservation
+      end
+      self.update_cache! # update item count and price
+      listing.decrement(:quantity_available, quantity).save # keep track of listing available quantity
       return true # success
+    else
+      return false # fail
     end
   end
 
-  def remove_mtg_listing(listing)
-    if listing.cart_id == self.id #check to make sure listing is actually in this cart
-      self.mtg_listings.delete(listing) # make this listing available to others to buy
-      self.total_price -= listing.price # keep track of cart's total price
-      self.item_count -= 1 # keep track of cart's item count    
-      self.save! 
-      return true # success      
-    else
-      return false
+  def remove_mtg_listing(reservation, quantity = 1)
+    if reservation.cart.id == self.id && quantity > 0 #check to make sure reservation is actually in this cart
+      if quantity < reservation.quantity # remove less quantity than reservation holds, just update quantity in reservation
+        reservation.decrement(:quantity, quantity).save
+        reservation.listing.increment(:quantity_available, quantity).save
+      elsif quantity == reservation.quantity # remove reservation completely
+        if reservation.destroy  
+          reservation.listing.increment(:quantity_available, quantity).save # keep track of listing available quantity
+        end
+      end
+      self.update_cache! # update item count and price              
+      return true # success 
     end
+    return false # fail
+  end  
+  
+  def update_cache!
+    reservations = Mtg::Reservation.where(:cart_id => self.id).joins(:listing)
+    self.item_count = reservations.sum("mtg_reservations.quantity")
+    self.total_price = reservations.sum("mtg_listings.price * mtg_reservations.quantity").to_f / 100
+    self.save!
+  end
+
+  def empty!
+    self.reservations.each {|r| self.remove_mtg_listing(r,r.quantity)}
   end  
 
    def mtg_listing_ids   #returns array of ids of mtg_listings in cart
-     self.mtg_listings.collect { |l| l.id }
+     self.listings.collect { |l| l.id }
    end
 
    def seller_ids        #creates a unique list of seller ids
-     self.mtg_listings.collect { |l| l.seller_id }.uniq
+     self.listings.collect { |l| l.seller_id }.uniq
    end
 
    def mtg_listings_for_seller_id(id)
-     self.mtg_listings.where(:seller_id => id)
-   end
-
-   def empty!            #removes all listings from cart
-     self.mtg_listings.delete_all
-     self.total_price = 0
-     self.item_count = 0 
-     self.save!
+     self.listings.where(:seller_id => id)
    end
    
 end

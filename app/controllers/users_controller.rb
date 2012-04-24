@@ -34,7 +34,8 @@ class UsersController < ApplicationController
   end
   
   def show_cart
-    set_back_path    
+    set_back_path
+    @reservations = current_cart.reservations.includes(:listing)
   end
   
   def new_account_deposit

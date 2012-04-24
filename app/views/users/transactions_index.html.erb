@@ -8,36 +8,7 @@
     <br class="spacer"/>
     
     <%= render :partial => "mtg/transactions/teaser" , :locals => {:transaction => t} %> 
-  <!--  <table style="width:100%; font-size:80%;">
-      <th>Card Name</th><th>Set</th><th>Price</th><th>Condition</th><th>Language</th><th>Foil</th><th>misprints</th>    
-      <% t.listings.each do |listing| %>
-        <div>
-          <tr>
-            <td>
-              <%= listing.card.name%>
-            </td>
-            <td>
-              <%= listing.card.set.name%>
-            </td>
-            <td>
-              <%= number_to_currency(listing.price.dollars)%>
-            </td>          
-            <td>
-              <%= listing.condition %>
-            </td>
-            <td>
-              <%= listing.language %>
-            </td>          
-            <td>
-              <%= listing.foil %>
-            </td>
-            <td>
-              <%= listing.misprint %>
-            </td> 
-          <tr/>
-        </div>
-      <% end %>
-    </table> -->
+
     <br class="spacer"/>
     <div class="right"> Total Value: <%= number_to_currency(t.total_value) %></div>
     <br class="spacer"/>

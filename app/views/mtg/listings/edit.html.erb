@@ -18,7 +18,7 @@
 
     <%= f.input :quantity,      :label => "Quantity for sale",
                                 :as => :integer,
-                                :input_html => { :value => Mtg::Listing.active.duplicate_listing_count(@listing) },
+                                #:input_html => { :value => Mtg::Listing.active.duplicate_listing_count(@listing) },
                                 :required => 'true' %>                                
                                 
     <%= f.input :price_options, :label => "Asking Price",
