@@ -12,7 +12,7 @@
       </div> <!-- card_info_wrapper -->
     <% end %>
     <br class="spacer"/>
-    <%= link_to "Sell this card", new_mtg_listing_path(:card_id => @mtg_card.id), :class => "right"%>
+    <%= link_to "Sell this card", new_mtg_listing_path(:card_id => @mtg_card.id), :class => "right button"%>
   </div>
   <div>
     <%= render :partial => "show_listings", :locals => { :listings => @listings }%>

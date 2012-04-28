@@ -5,6 +5,11 @@ class Mtg::Transaction < ActiveRecord::Base
   belongs_to :buyer,    :class_name => "User"
   has_many   :items,    :class_name => "Mtg::TransactionItem", :foreign_key => "transaction_id"
   
+  # creates a unique transaction number based on transaction ID
+  def transaction_number
+    "MTG-#{(self.id + 10000).to_s(36).rjust(6,"0").upcase}"
+  end
+  
   # returns the total value of a transaction
   def total_value
     Mtg::TransactionItem.by_id(item_ids).sum("mtg_transaction_items.price * mtg_transaction_items.quantity").to_f / 100

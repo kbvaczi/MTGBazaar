@@ -9,7 +9,7 @@
 }
 .card_show_info {
   display:table;
-  margin: 0 0px 0 10px;
+  margin: 0 0px 0 5px;
   width: 320px;
   float:left;
   text-align:left;
@@ -74,7 +74,7 @@
   margin: -10px 5px 0 15px;
 }
 .even {
-  background-color: rgba(243,245,243,1);  
+  background-color: rgb(250,250,250);  
 }
 .mtg_listing_teaser, .cart_item_teaser {
   display:table;

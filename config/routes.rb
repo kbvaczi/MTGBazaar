@@ -51,6 +51,7 @@ MTGBazaar::Application.routes.draw do
   
   devise_for :users, :controllers => { :registrations => 'users/registrations' , :sessions => 'users/sessions' }
   resources :users, :only => [:index, :show], :controllers => { :users => "users/users"} do
+    get  "autocomplete_name", :on => :collection
     get :autocomplete_user_username, :on => :collection
   end
   

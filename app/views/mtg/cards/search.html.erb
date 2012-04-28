@@ -7,7 +7,9 @@
     <%= paginate @mtg_cards, :theme => :simple, :remote => true, :collection => @mtg_cards %>
   </div>
   <div id="search_results">
-    <%= render :partial => "teaser", :collection => @mtg_cards, :as => "mtg_card" %>
+    <% @mtg_cards.each do |card| %>
+      <%= render :partial => "teaser", :locals => {:mtg_card => card, :listing_count => card.listings.sum(:quantity_available) }%>
+    <% end %>
   </div>
   <div class="paginator">
     <%= paginate @mtg_cards, :theme => :simple, :remote => true ,:collection => @mtg_cards %>

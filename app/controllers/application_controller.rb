@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   helper :all
 
-  before_filter :user_banned?                   # make sure the user is not banned before loading anything
+  #before_filter :user_banned?                   # make sure the user is not banned before loading anything
   before_filter :production_authenticate        # simple HTTP authentication for production (TEMPORARY)
   
   include Mtg::CardsHelper

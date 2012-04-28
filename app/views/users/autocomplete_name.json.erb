@@ -1,0 +1,11 @@
+<% 
+  return_array = Array.new
+  if @users.present?
+    @users.each do |u|
+      computed_label = u.username
+      computed_value = "#{u.id},#{u.username}"
+      return_array << Hash[ "label" => computed_label, "value" => computed_value ]
+    end
+  end
+%>
+<%= return_array.to_json.html_safe %>

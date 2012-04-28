@@ -37,6 +37,9 @@ ActiveAdmin.register Mtg::Set do
     end
     column :name
     column :code
+    column "Symbol", :sortable => false do |set|
+      display_set_symbol(set)
+    end
     column "Cards", :sortable => false do |set|
        link_to set.cards.count, admin_mtg_cards_path("q[set_id_eq]" => set.id)
     end

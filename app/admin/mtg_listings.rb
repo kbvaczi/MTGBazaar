@@ -17,12 +17,6 @@ ActiveAdmin.register Mtg::Listing do
   scope :reserved do |listings|
     listings.reserved
   end
-  scope :sold do |listings|
-    listings.sold
-  end
-  scope :rejected do |listings|
-    listings.rejected
-  end  
   
   # ------ INDEX PAGE CUSTOMIZATIONS ------ #
   # Customize columns displayed on the index screen in the table
@@ -40,17 +34,18 @@ ActiveAdmin.register Mtg::Listing do
     column "Price", :sortable => :price do |l|
       number_to_currency(l.price.dollars)
     end
+    column "Reserved", :quantity_reserved, :sortable => false
+    column "Available", :quantity_available
+    column "Total", :quantity
     column :language
     column :condition
     column :misprint
+    column "Alt Art", :altart
+    column :signed
+    column :foil
     column :description
-    column :cart, :sortable => false do |l| 
-      link_to l.cart_id, admin_mtg_listings_path("q[cart_id_eq]" => l.cart_id) if l.cart_id
-    end
     column :created_at
     column :updated_at
-    column :sold_at
-    column :rejected_at    
     column :active
   end
   

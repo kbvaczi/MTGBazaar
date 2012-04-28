@@ -18,8 +18,8 @@ ActiveAdmin.register Cart do
         "Anonymous"
       end
     end
-    column "MTG Cards", :sortable => false do |cart|
-      link_to cart.mtg_listings.count, admin_mtg_listings_path("q[cart_id_eq]" => cart.id) if not cart.mtg_listings.empty?
+    column "MTG Cards", :sortable => :item_count do |cart|
+      link_to cart.item_count, admin_mtg_listings_path("q[cart_id_eq]" => cart.id) if cart.item_count > 0
     end
     column "Total Price", :sortable => :total_price do |cart|
       number_to_currency(cart.total_price.dollars)

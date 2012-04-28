@@ -54,15 +54,14 @@
 /* @group Multi Chosen */
 .chzn-container-multi .chzn-choices {
   min-height:60px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius   : 10px;
-  border-radius        : 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius   : 5px;
+  border-radius        : 5px;
 }
 .chzn-container-multi .chzn-choices li {
 
 }
 .chzn-container-multi .chzn-choices .search-field {
-
 }
 .chzn-container-multi .chzn-choices .search-field input {
 
@@ -71,10 +70,6 @@
 
 }
 .chzn-container-multi .chzn-choices .search-choice {
-  -webkit-border-radius: 10px;
-  -moz-border-radius   : 10px;
-  border-radius        : 10px;
-  font-size:80%;
 }
 .chzn-container-multi .chzn-choices .search-choice-focus {
   background: #d4d4d4;
@@ -100,8 +95,8 @@
   overflow-y: auto;
 }
 .chzn-container-multi .chzn-results {
-  margin: -1px 0 0;
-  padding: 0;
+  //margin: -1px 0 0;
+  //padding: 0;
 }
 .chzn-container .chzn-results li {
   line-height: 100%;

@@ -11,6 +11,7 @@ gem 'jquery-rails'                                                  # latest jqu
 gem "recaptcha", "~> 0.3.4", :require => "recaptcha/rails"          # Bot prevention
 gem "nokogiri", "~> 1.5.0"                                          # XML/HTML Parser
 gem "activeadmin", "~> 0.4.0"                                       # Administrator Panel
+gem "formtastic", "~> 2.1.1"                                        # for admin panel only
 gem "kaminari", "~> 0.13.0"                                         # Pagination
 gem "rails3-jquery-autocomplete", "~> 1.0.6"                        # Autocomplete text fields
 gem "smart_tuple", "~> 0.1.2"                                       # Aid for building complex and conditional queries
@@ -32,7 +33,7 @@ gem 'sass-rails',   '~> 3.2.3'                                      # take sass-
 group :production do
   gem "mysql2"                                                      # allows application to use a mysql database  
   gem "newrelic_rpm", "~> 3.3.2"                                    # performance monitoring
-#  gem 'thin'                                                       # production webserver... using unicorn instead of thin
+  gem 'thin'                                                       # production webserver... using unicorn instead of thin
 
 end
 
@@ -55,8 +56,8 @@ end
 
 # Use unicorn as the web server
 gem 'unicorn'
-gem 'hooves'
-require 'hooves/default'
+#gem 'hooves'
+#require 'hooves/default'
 
 # Deploy with Capistrano
 # gem 'capistrano'

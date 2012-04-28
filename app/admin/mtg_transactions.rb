@@ -11,9 +11,7 @@ ActiveAdmin.register Mtg::Transaction do
   scope :pending do |transaction|
     transaction.where(:status => "pending")
   end
-  scope :rejected do |transaction|
-    transaction.where(:status => "rejected")
-  end
+
   scope :confirmed do |transaction|
     transaction.where(:status => "confirmed")
   end  
@@ -26,6 +24,12 @@ ActiveAdmin.register Mtg::Transaction do
   scope :final do |transaction|
     transaction.where(:status => "final")
   end
+  scope :problem do |transaction|
+    transaction.where(:status => "problem")
+  end
+  scope :rejected do |transaction|
+    transaction.where(:status => "rejected")
+  end  
   
   # ------ INDEX PAGE CUSTOMIZATIONS ------ #
   # Customize columns displayed on the index screen in the table
@@ -33,10 +37,10 @@ ActiveAdmin.register Mtg::Transaction do
     column :id, :sortable => :id do |t|
       link_to t.id, admin_mtg_transaction_path(t)
     end
-    column :seller
     column :buyer
-    column "Listings", :sortable => false do |transaction|
-       link_to transaction.listings.count, admin_mtg_listings_path("q[transaction_id_eq]" => transaction.id)
+    column :seller
+    column "Items", :sortable => false do |transaction|
+       link_to transaction.items.sum(:quantity), admin_mtg_listings_path("q[transaction_id_eq]" => transaction.id)
     end
     column :total_value, :sortable => false do |transaction|
       number_to_currency(transaction.total_value)

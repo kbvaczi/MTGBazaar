@@ -13,6 +13,7 @@
 
 //= require autocomplete-rails
 //= require chosen
+//= require mtg_search
 //= require_tree .
 
 

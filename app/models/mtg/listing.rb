@@ -30,6 +30,10 @@ class Mtg::Listing < ActiveRecord::Base
     self.quantity_available = self.quantity
   end
   
+  def quantity_reserved
+    self.quantity - self.quantity_available
+  end
+  
   # determines if listing is available to be added to cart (active, not already in cart, and not already sold)
   def available?
     self.cart_id == nil and self.active == true and self.sold_at == nil and self.transaction_id == nil and self.rejected_at == nil and self.quantity_available > 0
@@ -75,11 +79,9 @@ class Mtg::Listing < ActiveRecord::Base
     self.update_attribute(:active, false)    
   end  
   
-
-
   # returns listings that are in a shopping cart
   def self.reserved
-    where("cart_id IS NOT NULL AND sold_at IS NULL AND transaction_id IS NULL AND rejected_at IS NULL")
+    where("cart_id IS NOT NULL")
   end  
 
   # used for searching for available listings... Mtg::Listing.sold will return all available listings

@@ -5,6 +5,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
       ## Database authenticatable
       t.string :email,              :null => false, :default => ""
       t.string :encrypted_password, :null => false, :default => ""
+      t.string :username,           :null => false
 
       ## Recoverable
       t.string   :reset_password_token
@@ -14,11 +15,12 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.datetime :remember_created_at
 
       ## Trackable
-      t.integer  :sign_in_count, :default => 0
+      t.integer  :sign_in_count,          :default => 0
       t.datetime :current_sign_in_at
       t.datetime :last_sign_in_at
       t.string   :current_sign_in_ip
       t.string   :last_sign_in_ip
+      t.boolean  :banned,                 :default => false
 
       ## Encryptable
       t.string :password_salt
@@ -40,7 +42,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.timestamps
         
     end
-
+    add_index :users, :username,             :unique => true
     add_index :users, :email,                :unique => true
     add_index :users, :reset_password_token, :unique => true
     add_index :users, :confirmation_token,   :unique => true

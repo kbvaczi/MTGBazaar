@@ -1,13 +1,26 @@
 $(document).ready(function() {
 
-  // CLEAR FILTERS WHEN CLICKED
+  //CLEAR ALL BUTTON----------------------------------------------------------------------------------
+  //--  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --
   $("#clear-filters").click(function() {  
 
-    $("#search-form").find("select").val('');    
-    $('#search-form').find(".chzn-container a span").each( function() { 
+    $("#search-form").find("select").val(''); // clear select boxes
+    
+    $('#search-form').find(".chzn-container-single a.chzn-single span").each( function() { 
         $(this).text($(this).parent().parent().parent().find("select option:first").text());
-    });
-    $("#search-form").find("input").removeAttr('checked');
+    }); // clear chsn single select boxes
+    
+    // CLEAR CHZN MULTI-SELECT BOXES
+    $('#search-form').find(".chzn-container-multi .chzn-choices .search-field input").attr("style", "width:102px; ");
+    $('#search-form').find(".chzn-container-multi .chzn-choices .search-choice").remove();    
+    $('#search-form').find(".chzn-container-multi").find(".chzn-drop ul li").removeClass("result-selected active-result").addClass('active-result');
+    $('#search-form').find(".chzn-container-multi").parent().find("input[type='text']").val('Select abilities...');
+
+
+
+    $("#search-form").find("input").removeAttr('checked'); // clear check boxes
+    //$("#search-form input[type='text']").val(''); //clear text boxes, but unfortunately also clears multiselect placeholder
+    $("#search-form input[type='search']").val(''); //clear search boxes
     
     //clear cookies
     $.cookie('search_name', '', { expires: 1, path: '/' });
@@ -21,16 +34,80 @@ $(document).ready(function() {
     $.cookie('search_blue', '', { expires: 1, path: '/' });
     $.cookie('search_black', '', { expires: 1, path: '/' });
     $.cookie('search_red', '', { expires: 1, path: '/' });  
-    $.cookie('search_green', '', { expires: 1, path: '/' });                
+    $.cookie('search_green', '', { expires: 1, path: '/' });
+    $.cookie('search_abilities', '', { expires: 1, path: '/' });    
+    $.cookie('search_seller', '', { expires: 1, path: '/' });     
+    $.cookie('search_seller_id', '', { expires: 1, path: '/' });                    
   });
   
-  //DO THIS WHEN AUTOCOMPLETE NAME IS CLICKED
+  //INDIVIDUAL CLEAR BUTTONS--------------------------------------------------------------------------
+  //--  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --
+  //clear set
+  $("#set_clear").click(function() { 
+    $("#search-form").find(".search-set").find("select").val(''); // clear select box
+    $('#search-form').find(".search-set").find(".chzn-container a span").each( function() { 
+        $(this).text($(this).parent().parent().parent().find("select option:first").text());
+    }); // clear chsn single select box
+    $.cookie('search_set', '', { expires: 1, path: '/' });        
+  });  
+  //clear type
+  $("#type_clear").click(function() { 
+    $("#search-form").find(".search-type").find("select").val(''); // clear select box
+    $('#search-form').find(".search-type").find(".chzn-container a span").each( function() { 
+        $(this).text($(this).parent().parent().parent().find("select option:first").text());
+    }); // clear chsn single select box
+    $.cookie('search_type', '', { expires: 1, path: '/' });    
+  });  
+  //clear subtype
+  $("#subtype_clear").click(function() { 
+    $("#search-form").find(".search-subtype").find("select").val(''); // clear select box
+    $('#search-form').find(".search-subtype").find(".chzn-container a span").each( function() { 
+        $(this).text($(this).parent().parent().parent().find("select option:first").text());
+    }); // clear chsn single select box
+    $.cookie('search_subtype', '', { expires: 1, path: '/' });    
+  });  
+  //clear subtype
+  $("#rarity_clear").click(function() { 
+    $("#search-form").find(".search-rarity").find("select").val(''); // clear select box
+    $('#search-form').find(".search-rarity").find(".chzn-container a span").each( function() { 
+        $(this).text($(this).parent().parent().parent().find("select option:first").text());
+    }); // clear chsn single select box
+    $.cookie('search_rarity', '', { expires: 1, path: '/' });    
+  });  
+  //clear artist
+  $("#artist_clear").click(function() { 
+    $("#search-form").find(".search-artist").find("select").val(''); // clear select box
+    $('#search-form').find(".search-artist").find(".chzn-container a span").each( function() { 
+        $(this).text($(this).parent().parent().parent().find("select option:first").text());
+    }); // clear chsn single select box
+    $.cookie('search_artist', '', { expires: 1, path: '/' });    
+  });  
+
+
+
+  //AUTOCOMPLETE FIELDS HANDLERS----------------------------------------------------------------------
+  //AUTOCOMPLETE FIELDS HANDLERS----------------------------------------------------------------------  
   $('#name').bind('railsAutocomplete.select', function(event, data){
     $.cookie('search_name', $("#name").val(), { expires: 1, path: '/' });
     window.location.href = location.protocol + '//' + location.host + "/mtg/cards/search?name=" + $("#name").val();
   });
   
-  //UPDATE COOKEIS TO STORE SEARCH INFO
+  // don't allow users to freely write text box
+  $("#seller").change(function() {  
+    $(this).val('');
+  });
+  
+  //DO THIS WHEN AUTOCOMPLETE SELLER IS CLICKED
+  $('#seller').bind('railsAutocomplete.select', function(event, data){
+    $.cookie('search_seller', $(this).val().split(',')[1], { expires: 1, path: '/' });
+    $.cookie('search_seller_id', $(this).val().split(',')[0], { expires: 1, path: '/' });    
+    $('#seller_id').val($(this).val().split(',')[0]);
+    $('#seller').val($(this).val().split(',')[1]);    
+  });
+
+
+  //UPDATE COOKEIS TO STORE SEARCH INFO---------------------------------------------------------------------
+  //UPDATE COOKEIS TO STORE SEARCH INFO---------------------------------------------------------------------  
   $("#name").change(function() {  
     $.cookie('search_name', $("#name").val(), { expires: 1, path: '/' });
   });
@@ -66,10 +143,14 @@ $(document).ready(function() {
   });
   $("#green").change(function() {  
     $('#green').is(':checked') ? $.cookie('search_green', true, { expires: 1, path: '/' }) : $.cookie('search_green',"", { expires: 1, path: '/' });
-  });        
+  });   
+  $("#abilities").change(function() {  
+    $.cookie('search_abilities', $("#abilities").val(), { expires: 1, path: '/' });
+  });  
+
   
-  
-  //UPDATE SEARCH INFO WHEN PAGE CHANGES
+  //UPDATE SEARCH FORM ON PAGE LOAD BASED ON COOKIES --------------------------------------------------------------------
+  //UPDATE SEARCH FORM ON PAGE LOAD BASED ON COOKIES --------------------------------------------------------------------  
   //$("#name").val($.cookie('search_name'));
 
   $("#set").val($.cookie('search_set'));
@@ -79,7 +160,7 @@ $(document).ready(function() {
   $("#type").val($.cookie('search_type'));
   $("#type_chzn a span").text( $("#type option:selected").text() );
   $("#type_chzn .chzn-drop .chzn-results li:contains($.cookie('search_type'))").addClass("result-selected");
-  
+
   $("#subtype").val($.cookie('search_subtype'));
   $("#subtype_chzn a span").text( $("#subtype option:selected").text() );
   $("#subtype_chzn .chzn-drop .chzn-results li:contains($.cookie('search_subtype'))").addClass("result-selected");  
@@ -96,10 +177,26 @@ $(document).ready(function() {
   $("#rarity_chzn a span").text( $("#rarity option:selected").text() );
   $("#rarity_chzn .chzn-drop .chzn-results li:contains($.cookie('search_rarity'))").addClass("result-selected");
 
+  $("#seller").val($.cookie('search_seller'));
+  $("#seller_id").val($.cookie('search_seller_id'));    
+
+  var valArr = ($.cookie('search_abilities') || "").split(',');  // || "" cookie because it throws an error when cookie is null
+    i = 0, size = valArr.length;
+    for(i; i < size; i++){
+      //alert(valArr[i]);
+      $("#abilities").find("option[value='"+valArr[i]+"']").attr("selected","selected");
+      //$('#search-form').find(".chzn-container-multi").find(".chzn-drop ul li").each(function() { 
+        //  if($(this).text() == valArr[i]) {
+        //    $('#search-form').find(".chzn-container-multi .chzn-choices").add('test');
+        //  }
+      //}); // clear chsn single select boxes
+    }
+
   $.cookie('search_white') ? $('#white').attr("checked", true) : $('#white').removeAttr("checked");  
   $.cookie('search_blue')  ? $('#blue').attr("checked", true)  : $('#blue').removeAttr("checked");  
   $.cookie('search_black') ? $('#black').attr("checked", true) : $('#black').removeAttr("checked");  
   $.cookie('search_red')   ? $('#red').attr("checked", true)   : $('#red').removeAttr("checked");  
   $.cookie('search_green') ? $('#green').attr("checked", true) : $('#green').removeAttr("checked");          
+
 
 });

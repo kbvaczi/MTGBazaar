@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
-  autocomplete :user, :username
-  before_filter :authenticate_user!, :except => [:new, :create, :show]
+  #autocomplete :user, :username
+  before_filter :authenticate_user!, :except => [:new, :create, :show, :autocomplete_name]
 
   def index
     @users = User.all
@@ -97,6 +97,15 @@ class UsersController < ApplicationController
   
   def account_sales
     @sales = current_user.mtg_sales.where(:status => params[:status]).order("created_at")
+  end
+  
+  # autocomplete name handler for filtering cards by seller
+  def autocomplete_name
+    puts "running!!!!"
+    @users = User.where("username LIKE ?", "%#{params[:term]}%").limit(15).where(:banned => false).sort {|x,y| x[:username] <=> y[:username] } # give me 15 users then filter by banned ones (no index on banned column)
+    respond_to do |format|
+      format.json {}  #loads view autocomplete_name.json.erb which returns json hash array of information
+    end
   end
     
 end
