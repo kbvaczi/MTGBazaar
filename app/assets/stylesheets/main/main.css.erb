@@ -87,16 +87,18 @@ a {
 a:hover, a:focus {
 	text-decoration: underline;
 }
-select, input, .button, input[type="text"] {
+select, input, .button, input[type="text"], input[type="search"]  {
   border: 1px solid #aaa;
   padding: 3px 4px;
   background-color: rgb(250,250,250);
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px;
+}
+input[type="text"], input[type="search"]  {
   -moz-box-shadow:    inset 0px 1px 1px 1px #ddd;
-  -webkit-box-shadow: inset 0px 1px 1px 1px #ddd;
-  box-shadow:         inset 0px 1px 1px 1px #ddd;
+   -webkit-box-shadow: inset 0px 1px 1px 1px #ddd;
+   box-shadow:         inset 0px 1px 1px 1px #ddd;
 }
 select[disabled] {
  color: #bbb;
