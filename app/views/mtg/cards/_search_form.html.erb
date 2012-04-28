@@ -1,6 +1,6 @@
 <%= form_tag search_mtg_cards_path , :method => "put", :id => "search-form" do %>   
 
-  <h1><%= search_field_tag "name", params[:name], {:class => "search-text ui-autocomplete-input" , :placeholder => "Search cards..." , "data-autocomplete" => autocomplete_name_mtg_cards_path }%></h1>
+  <h1><%= text_field_tag "name", params[:name], {:class => "search-text ui-autocomplete-input" , :placeholder => "Search cards..." , "data-autocomplete" => autocomplete_name_mtg_cards_path }%></h1>
 
 
 
@@ -84,7 +84,7 @@
 
     <div class="mt-m search-divider">Filter by Seller:</div>
     <div class="mt-m search-seller">
-      <%= search_field_tag "seller", params[:seller], {:class => "search-text ui-autocomplete-input" , :placeholder => "Search sellers..." , "data-autocomplete" => autocomplete_name_users_path }%>
+      <%= text_field_tag "seller", params[:seller], {:class => "search-text ui-autocomplete-input" , :placeholder => "Search sellers..." , "data-autocomplete" => autocomplete_name_users_path }%>
       <%= text_field_tag "seller_id", params[:seller_id], :style => "display:none;" %>
     </div>
           
