@@ -3,25 +3,6 @@ $(document).ready(function() {
   //CLEAR ALL BUTTON----------------------------------------------------------------------------------
   //--  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --
   $("#clear-filters").click(function() {  
-
-    $("#search-form").find("select").val(''); // clear select boxes
-    
-    $('#search-form').find(".chzn-container-single a.chzn-single span").each( function() { 
-        $(this).text($(this).parent().parent().parent().find("select option:first").text());
-    }); // clear chsn single select boxes
-    
-    // CLEAR CHZN MULTI-SELECT BOXES
-    $('#search-form').find(".chzn-container-multi .chzn-choices .search-field input").attr("style", "width:102px; ");
-    $('#search-form').find(".chzn-container-multi .chzn-choices .search-choice").remove();    
-    $('#search-form').find(".chzn-container-multi").find(".chzn-drop ul li").removeClass("result-selected active-result").addClass('active-result');
-    $('#search-form').find(".chzn-container-multi").parent().find("input[type='text']").val('Select abilities...');
-
-
-
-    $("#search-form").find("input").removeAttr('checked'); // clear check boxes
-    //$("#search-form input[type='text']").val(''); //clear text boxes, but unfortunately also clears multiselect placeholder
-    $("#search-form input[type='search']").val(''); //clear search boxes
-    
     //clear cookies
     $.cookie('search_name', '', { expires: 1, path: '/' });
     $.cookie('search_set', '', { expires: 1, path: '/' });    
@@ -37,7 +18,22 @@ $(document).ready(function() {
     $.cookie('search_green', '', { expires: 1, path: '/' });
     $.cookie('search_abilities', '', { expires: 1, path: '/' });    
     $.cookie('search_seller', '', { expires: 1, path: '/' });     
-    $.cookie('search_seller_id', '', { expires: 1, path: '/' });                    
+    $.cookie('search_seller_id', '', { expires: 1, path: '/' });
+    // clear select boxes
+    $("#search-form").find("select").val(''); 
+    // clear chzn single select boxes
+    $('#search-form').find(".chzn-container-single a.chzn-single span").each( function() { 
+        $(this).text($(this).parent().parent().parent().find("select option:first").text());
+    }); 
+    // clear chzn multiple select boxes
+    $('#search-form').find(".chzn-container-multi .chzn-choices .search-field input").attr("style", "width:102px; ");
+    $('#search-form').find(".chzn-container-multi .chzn-choices .search-choice").remove();    
+    $('#search-form').find(".chzn-container-multi").find(".chzn-drop ul li").removeClass("result-selected active-result").addClass('active-result');
+    $('#search-form').find(".chzn-container-multi").parent().find("input[type='text']").val('Select abilities...');
+    // clear check boxes
+    $("#search-form").find("input").removeAttr('checked'); 
+    //$("#search-form input[type='text']").val(''); //clear text boxes, but unfortunately also clears multiselect placeholder
+    $("#search-form input[type='search']").val(''); //clear search boxes
   });
   
   //INDIVIDUAL CLEAR BUTTONS--------------------------------------------------------------------------
