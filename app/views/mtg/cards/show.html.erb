@@ -6,7 +6,7 @@
     <div class="card_info_wrapper group">
       <%= render :partial => "show_card_info", :locals => { :mtg_card => @mtg_card }%>
     </div> <!-- card_info_wrapper -->
-    <% if @mtg_card_back.present? %>
+    <% if @mtg_card.dual_sided_card? && @mtg_card_back.present? %>
       <div class="card_info_wrapper_back group">
         <%= render :partial => "show_card_info", :locals => { :mtg_card => @mtg_card_back }%>
       </div> <!-- card_info_wrapper -->

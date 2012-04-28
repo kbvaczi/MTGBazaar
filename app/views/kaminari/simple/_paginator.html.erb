@@ -1,12 +1,11 @@
 <%= paginator.render do -%>
   <div class="pagination">
     <div class="ma-s">
+      <%= next_page_tag -%>
       <%= prev_page_tag -%>
       <div class="pagination-info">
         <%= "Displaying #{collection.offset_value + 1} - #{collection.offset_value + collection.length}" %>
       </div>
-      <%= next_page_tag -%>
-      <br class="spacer"/>      
     </div>
   </div>
 

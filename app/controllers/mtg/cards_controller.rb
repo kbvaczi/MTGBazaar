@@ -20,7 +20,7 @@ class Mtg::CardsController < ApplicationController
   # GET /mtg/cards/:id
   def show
     set_back_path
-    @mtg_card = Mtg::Card.find(params[:id])
+    @mtg_card = Mtg::Card.includes(:set, :listings).find(params[:id])
     @mtg_card_back = Mtg::Card.joins(:set).where("card_number LIKE ? AND mtg_sets.code LIKE ?", "%03d" % @mtg_card.card_number.to_i.to_s + "b", @mtg_card.set.code).first if @mtg_card.dual_sided_card?
     @card_variants = Mtg::Card.joins(:set).where("mtg_cards.name LIKE ?", @mtg_card.name)    
     @listings = @mtg_card.listings.available
@@ -67,9 +67,9 @@ class Mtg::CardsController < ApplicationController
         
     if params[:seller_id].present?
       query << ["mtg_listings.seller_id LIKE ? AND mtg_listings.quantity_available > 0", "#{params[:seller_id]}"]
-      @mtg_cards = Mtg::Card.includes(:listings, :set).where(query.compile).order("mtg_cards.name").page(params[:page]).per(20)
+      @mtg_cards = Mtg::Card.includes(:set, :listings).where(query.compile).order("mtg_cards.name").page(params[:page]).per(20)
     else
-      @mtg_cards = Mtg::Card.includes(:set).where(query.compile).order("mtg_cards.name").page(params[:page]).per(20)
+      @mtg_cards = Mtg::Card.includes(:set, :listings).where(query.compile).order("mtg_cards.name").page(params[:page]).per(20)
     end
     
     # Don't show only 1 card in search results... go directly to that card's show page if there is only one.

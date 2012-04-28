@@ -29,11 +29,12 @@ $(document).ready(function() {
     $('#search-form').find(".chzn-container-multi .chzn-choices .search-field input").attr("style", "width:102px; ");
     $('#search-form').find(".chzn-container-multi .chzn-choices .search-choice").remove();    
     $('#search-form').find(".chzn-container-multi").find(".chzn-drop ul li").removeClass("result-selected active-result").addClass('active-result');
-    $('#search-form').find(".chzn-container-multi").parent().find("input[type='text']").val('Select abilities...');
+
     // clear check boxes
     $("#search-form").find("input").removeAttr('checked'); 
-    //$("#search-form input[type='text']").val(''); //clear text boxes, but unfortunately also clears multiselect placeholder
+    $("#search-form input[type='text']").val(''); //clear text boxes, but unfortunately also clears multiselect placeholder
     $("#search-form input[type='search']").val(''); //clear search boxes
+    $('#search-form').find(".chzn-container-multi").parent().find("input[type='text']").val('Select abilities...'); // reset multiselect placeholder    
   });
   
   //INDIVIDUAL CLEAR BUTTONS--------------------------------------------------------------------------
