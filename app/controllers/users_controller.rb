@@ -101,7 +101,6 @@ class UsersController < ApplicationController
   
   # autocomplete name handler for filtering cards by seller
   def autocomplete_name
-    puts "running!!!!"
     @users = User.where("username LIKE ?", "%#{params[:term]}%").limit(15).where(:banned => false).sort {|x,y| x[:username] <=> y[:username] } # give me 15 users then filter by banned ones (no index on banned column)
     respond_to do |format|
       format.json {}  #loads view autocomplete_name.json.erb which returns json hash array of information
