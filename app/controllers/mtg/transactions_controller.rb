@@ -41,7 +41,7 @@ class Mtg::TransactionsController < ApplicationController
     @transaction = Mtg::Transaction.where(:seller_id => current_user.id, :id => params[:id]).first
     return if not verify_shipment_privileges?(@transaction)
   end
-  
+  #TODO: Add a way for buyer to track shipments
   def create_seller_shipment_confirmation
     @transaction = Mtg::Transaction.where(:seller_id => current_user.id, :id => params[:id]).first
     return if not verify_shipment_privileges?(@transaction)    
@@ -60,8 +60,8 @@ class Mtg::TransactionsController < ApplicationController
   
   def create_buyer_delivery_confirmation
     @transaction = Mtg::Transaction.where(:buyer_id => current_user.id, :id => params[:id]).first
-    if @transaction.update_attributes(:seller_rating => params[:mtg_transaction][:seller_rating], 
-                                      :buyer_feedback => params[:mtg_transaction][:buyer_feedback],
+    if @transaction.update_attributes(:buyer_feedback => params[:mtg_transaction][:buyer_feedback], 
+                                      :buyer_feedback_text => params[:mtg_transaction][:buyer_feedback_text],
                                       :seller_delivered_at => Time.now,
                                       :buyer_delivery_confirmation => params[:mtg_transaction][:buyer_delivery_confirmation],
                                       :status => "delivered")

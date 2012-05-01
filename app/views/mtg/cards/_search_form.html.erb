@@ -45,41 +45,37 @@
 
     <div class= "mt-m search-set">
       <%#= label_tag "Set:" %>
-      <div id="set_clear" class="x-icon"></div>
-      <%= select_tag "set" , options_for_select(Mtg::Set.where(:active => true).to_a.collect {|s| [ s.name, s.code ] }, :selected => params[:set]), {:prompt => 'Set...', :class => "search-select chzn-select"} %>
+      <%= select_tag "set" , options_for_select(Mtg::Set.where(:active => true).to_a.collect {|s| [ s.name, s.code ] }, :selected => params[:set]), {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Set...", :class => "search-select chzn-select"} %>
     </div>
     
     <div class="mt-m search-type">
       <%#= label_tag "Type:" %>
-      <div id="type_clear" class="x-icon"></div>
-      <%= select_tag "type", options_for_select(card_type_list, :selected => params[:type]) , {:prompt => 'Type...', :class => "search-select chzn-select"} %>            
+      <%= select_tag "type", options_for_select(card_type_list, :selected => params[:type]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Type...", :class => "search-select chzn-select"} %>            
     </div>
 
     <div class="mt-m search-subtype">
       <%#= label_tag "Subtype:" %>
-      <%#= select_tag "subtype", options_for_select(card_subtype_list, :selected => params[:subtype]) , {:prompt => 'All subtypes...', :class => "search-select chzn-select"} %>            
-      <div id="subtype_clear" class="x-icon"></div>      
-      <%= render :partial => "mtg/cards/search_subtype_select" %>      
+      <%= select_tag "subtype", options_for_select(card_subtype_list, :selected => params[:subtype]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Subtype...", :class => "search-select chzn-select"} %>            
+      <%#= render :partial => "mtg/cards/search_subtype_select" %>      
     </div>          
     
     <div class="mt-m">
       <div class="search-rarity">
-        <%#= label_tag "Rarity:" %>
-        <div id="rarity_clear" class="x-icon"></div>        
-        <%= select_tag "rarity" , options_for_select(rarity_list, :selected => params[:rarity]) , {:prompt => 'Rarity...', :class => "search-select chzn-select chzn-nosearch" } %>                        
+        <%#= label_tag "Rarity:" %>      
+        <%= select_tag "rarity" , options_for_select(rarity_list, :selected => params[:rarity]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Rarity...", :class => "search-select chzn-select chzn-nosearch"} %>                        
       </div>
     </div>
     
     <div class="mt-m search-artist">
       <%#= label_tag "Artist:" %>
-      <%#= select_tag "artist" , options_for_select(artist_list, :selected => params[:artist]) , {:prompt => 'All artists...', :class => "search-select chzn-select"} %>                        
-      <div id="artist_clear" class="x-icon"></div>
-      <%= render :partial => "mtg/cards/search_artist_select" %>
+      <%= select_tag "artist" , options_for_select(artist_list, :selected => params[:artist]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Artist...", :class => "search-select chzn-select"} %>                        
+      <%#= render :partial => "mtg/cards/search_artist_select" %>
     </div>
     
+    <%# TODO: fix delete on abilities not properly removing %>
     <div class="mt-m search-abilities">
       <%#= label_tag "Abilities:" %>
-      <%= select_tag "abilities" , options_for_select(Mtg::CardsHelper::ABILITY_LIST, :selected => params[:abilities]), { :multiple => true, :class => "search-select-multi chzn-select", :style => "", "data-placeholder" => "Select abilities..."} %>                        
+      <%= select_tag "abilities" , options_for_select(Mtg::CardsHelper::ABILITY_LIST, :selected => params[:abilities]), { :multiple => true, :class => "search-select-multi chzn-select", :style => "", "data-placeholder" => "Abilities..."} %>                        
     </div>    
 
     <div class="mt-m search-divider">Filter by Seller:</div>

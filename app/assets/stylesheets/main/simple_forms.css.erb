@@ -3,30 +3,29 @@
 /*------------simple form-------------*/
 /*------------------------------------*/
 /* ----- SimpleForm Styles ----- */
-
 .simple_form {
   display:block;
-  margin: 15px;
+  margin: auto;
+  padding:15px 0 15px 0;
+  width:500px;
 }
 .simple_form h2 {
-  margin-right: 30px;
-  margin-left: 30px;  
+  margin: 1px 30px 10px 30px;
 }
 .simple_form .error {
   clear:   left;
   color:   red;
   display: block;
-  margin-left: 35%;
+  margin-left: 36%;
   margin-bottom: 10px;
-  font-size:    12px;
   font-style: italic;
 }
 .simple_form .hint {
   clear: left;
-  margin-left: 35%;
-  font-size:    12px;
+  margin-left: 36%;
   color: #bbb;
   display: block;
+  margin-bottom:10px;
   font-style: italic;
 }
 .simple_form div.input {
@@ -39,7 +38,7 @@
   margin: 4px 10px;
 }
 .simple_form .select select , .simple_form .select .chzn-container {
-  width: 52.5%;
+  width: 52%;
   margin: 2px 0 5px 0;
   paddding: none;
 }
@@ -51,7 +50,7 @@
   width:50%;
 }
 div.boolean, .simple_form input[type='submit'] {
-  margin-left: 34%;
+  margin-left: 35%;
   margin-right: auto;
 }
 div.boolean label, label.collection_radio {
@@ -60,13 +59,9 @@ div.boolean label, label.collection_radio {
 }
 
 label.collection_radio {
-
   margin-right: 10px;
   vertical-align: -2px;
   margin-left:   2px;
-}
-.simple_form .input.radio {
-
 }
 .simple_form .input.radio label.radio {
   display:table-column-group;
@@ -75,7 +70,6 @@ label.collection_radio {
   display:table-row;
   line-height:20px;
 }
-
 .field_with_errors {
   display: inline;
   color: red;
@@ -86,16 +80,10 @@ label.collection_radio {
 .field_with_errors .hint {
   display: none;
 }
-input.radio {
+.simple_form input.radio {
   margin-right: 5px;
   vertical-align: -3px;
 }
-
-input.check_boxes {
-  margin-left: 3px;
-  vertical-align: -3px;
-}
-
 .simple_form textarea.text {
   resize: none; 
   width:50%;
@@ -103,7 +91,7 @@ input.check_boxes {
   vertical-align: -3px;
 }
 
-label.collection_check_boxes {
+.simple_form label.collection_check_boxes {
   float: none;
   margin: 0;
   vertical-align: -2px;

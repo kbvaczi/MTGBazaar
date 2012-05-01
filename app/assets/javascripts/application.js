@@ -6,14 +6,15 @@
 //
 
 //= require jquery
-//= require jquery_ujs    
+//= require jquery_ujs
+//= require chosen.jquery
+//= require mtg_search    
 //= require jquery-ui
 //= require jquery.ui.autocomplete.html.js
 //= require jquery-cookie
 
 //= require autocomplete-rails
-//= require chosen
-//= require mtg_search
+
 //= require_tree .
 
 

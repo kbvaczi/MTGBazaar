@@ -9,19 +9,21 @@ class CreateMtgTransactions < ActiveRecord::Migration
       t.datetime  :seller_confirmed_at
       
       t.datetime  :seller_rejected_at
-      t.string    :rejection_reason,          :default => ""
-      t.string    :rejection_message,         :default => ""
+      t.string    :rejection_reason,              :default => ""
+      t.string    :rejection_message,             :default => ""
       
       t.datetime  :seller_shipped_at
-      t.string    :seller_tracking_number,    :default => ""
+      t.string    :seller_tracking_number,        :default => ""
       
       t.datetime  :seller_delivered_at
-      t.boolean   :buyer_delivery_confirmation,  :default => nil
+      t.boolean   :buyer_delivery_confirmation,   :default => nil        
+      #t.string    :delivery_problem,              :default => ""         #"condition" condition not right, "content" content not right
+      #t.string    :delivery_problem_text,         :default => ""
       
-      t.integer   :seller_rating                                                          # seller's rating given by buyer
-      t.string    :buyer_feedback,            :default => ""
+      t.string    :buyer_feedback,                :default => "P"         #Positive "P", Negative "N"
+      t.string    :buyer_feedback_text,           :default => ""
 
-      t.string    :status,                    :default => ""                              # final, rejected?
+      t.string    :status,                        :default => "pending"                              # final, rejected?
 
       t.timestamps
     end
@@ -29,7 +31,7 @@ class CreateMtgTransactions < ActiveRecord::Migration
     # Table Indexes
     add_index :mtg_transactions, :buyer_id
     add_index :mtg_transactions, :seller_id
-    add_index :mtg_transactions, :status    
+    add_index :mtg_transactions, :status 
 
   end
 

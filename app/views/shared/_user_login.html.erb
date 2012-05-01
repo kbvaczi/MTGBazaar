@@ -4,18 +4,18 @@
     <%= form_for(:user, :url => user_session_path) do |f| %>
 
       <div class="left">
-        <%= f.submit "Sign In" , :class => "right", :style => "visibility:hidden;" %>       
+
       </div>
 
-      <div class="right">
+      <div class="right mr">
 
-        <%= f.label :email, "Email" %>
+        <%= f.label :email, "Email:" %>
         <%= f.text_field :email, :style =>"width:120px;", :id => "login_email" %>
         &nbsp;
-        <%= f.label :password, "Password" %>
+        <%= f.label :password, "Password:" %>
         <%= f.password_field :password, :style =>"width:120px;", :id => "login_password" %>
         &nbsp;
-
+        <%= f.submit "Sign In" %>       
       </div>
       
     <% end %>

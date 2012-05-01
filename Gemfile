@@ -6,7 +6,8 @@ source 'http://rubygems.org'
 
 gem "devise", "~> 2.0.0"                                            # user authentication
 gem "simple_form", "~> 1.5.2"                                       # simplified form creation
-gem "chosen_rails", "~> 0.1.0"                                      # customized select boxes using chosen (http://harvesthq.github.com/chosen/). requires jquery
+#gem "chosen_rails", "~> 0.1.0"                                      # customized select boxes using chosen (http://harvesthq.github.com/chosen/). requires jquery
+#gem "chosen-rails", "~> 0.9.8"
 gem 'jquery-rails'                                                  # latest jquery library.  need to include "//= require jquery_ujs" and "//= require jquery" in application.js to be loaded in asset pipeline
 gem "recaptcha", "~> 0.3.4", :require => "recaptcha/rails"          # Bot prevention
 gem "nokogiri", "~> 1.5.0"                                          # XML/HTML Parser

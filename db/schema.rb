@@ -222,11 +222,11 @@ ActiveRecord::Schema.define(:version => 20120422115231) do
     t.string   "seller_tracking_number",      :default => ""
     t.datetime "seller_delivered_at"
     t.boolean  "buyer_delivery_confirmation"
-    t.integer  "seller_rating"
-    t.string   "buyer_feedback",              :default => ""
-    t.string   "status",                      :default => ""
-    t.datetime "created_at",                                  :null => false
-    t.datetime "updated_at",                                  :null => false
+    t.string   "buyer_feedback",              :default => "P"
+    t.string   "buyer_feedback_text",         :default => ""
+    t.string   "status",                      :default => "pending"
+    t.datetime "created_at",                                         :null => false
+    t.datetime "updated_at",                                         :null => false
   end
 
   add_index "mtg_transactions", ["buyer_id"], :name => "index_mtg_transactions_on_buyer_id"
