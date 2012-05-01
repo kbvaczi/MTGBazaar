@@ -17,7 +17,7 @@
   -moz-box-shadow   : 0 4px 5px rgba(0,0,0,.15);
   -o-box-shadow     : 0 4px 5px rgba(0,0,0,.15);
   box-shadow        : 0 4px 5px rgba(0,0,0,.15);
-  z-index: 999;
+  z-index: 1010;
 }
 /* @end */
 
@@ -31,9 +31,9 @@
   background-image: -o-linear-gradient(top, #ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%);
   background-image: -ms-linear-gradient(top, #ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%);
   background-image: linear-gradient(top, #ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%); 
-  -webkit-border-radius: 8px;
-  -moz-border-radius   : 8px;
-  border-radius        : 8px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius   : 5px;
+  border-radius        : 5px;
   -moz-background-clip   : padding;
   -webkit-background-clip: padding-box;
   background-clip        : padding-box;
@@ -52,7 +52,7 @@
   text-decoration: none;
 }
 .chzn-container-single .chzn-default {
-	color: #999;
+  color: #999;
 }
 .chzn-container-single .chzn-single span {
   margin-right: 26px;
@@ -66,12 +66,12 @@
 .chzn-container-single .chzn-single abbr {
   display: block;
   position: absolute;
-  right: 18px;
+  right: 26px;
   top: 6px;
   width: 12px;
   height: 13px;
   font-size: 1px;
-  background: url(chosen-sprite.png) right top no-repeat;
+  background: url('chosen-sprite.png') right top no-repeat;
 }
 .chzn-container-single .chzn-single abbr:hover {
   background-position: right -11px;
@@ -85,7 +85,7 @@
   width: 18px;
 }
 .chzn-container-single .chzn-single div b {
-  background: url('<%= image_path("chosen-sprite.png") %>') no-repeat 0 0;
+  background: url('chosen-sprite.png') no-repeat 0 0;
   display: block;
   width: 100%;
   height: 100%;
@@ -98,13 +98,13 @@
   z-index: 1010;
 }
 .chzn-container-single .chzn-search input {
-  background: #fff url('<%= image_path("chosen-sprite.png") %>') no-repeat 100% -22px;
-  background: url('<%= image_path("chosen-sprite.png") %>') no-repeat 100% -22px, -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(1%, #eeeeee), color-stop(15%, #ffffff));
-  background: url('<%= image_path("chosen-sprite.png") %>') no-repeat 100% -22px, -webkit-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
-  background: url('<%= image_path("chosen-sprite.png") %>') no-repeat 100% -22px, -moz-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
-  background: url('<%= image_path("chosen-sprite.png") %>') no-repeat 100% -22px, -o-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
-  background: url('<%= image_path("chosen-sprite.png") %>') no-repeat 100% -22px, -ms-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
-  background: url('<%= image_path("chosen-sprite.png") %>') no-repeat 100% -22px, linear-gradient(top, #eeeeee 1%, #ffffff 15%);
+  background: #fff url('chosen-sprite.png') no-repeat 100% -22px;
+  background: url('chosen-sprite.png') no-repeat 100% -22px, -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(1%, #eeeeee), color-stop(15%, #ffffff));
+  background: url('chosen-sprite.png') no-repeat 100% -22px, -webkit-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
+  background: url('chosen-sprite.png') no-repeat 100% -22px, -moz-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
+  background: url('chosen-sprite.png') no-repeat 100% -22px, -o-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
+  background: url('chosen-sprite.png') no-repeat 100% -22px, -ms-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
+  background: url('chosen-sprite.png') no-repeat 100% -22px, linear-gradient(top, #eeeeee 1%, #ffffff 15%);
   margin: 1px 0;
   padding: 4px 20px 4px 5px;
   outline: 0;
@@ -113,9 +113,9 @@
   font-size: 1em;
 }
 .chzn-container-single .chzn-drop {
-  -webkit-border-radius: 0 0 8px 8px;
-  -moz-border-radius   : 0 0 8px 8px;
-  border-radius        : 0 0 8px 8px;
+  -webkit-border-radius: 0 0 4px 4px;
+  -moz-border-radius   : 0 0 4px 4px;
+  border-radius        : 0 0 4px 4px;
   -moz-background-clip   : padding;
   -webkit-background-clip: padding-box;
   background-clip        : padding-box;
@@ -144,10 +144,6 @@
   height: auto !important;
   height: 1%;
   position: relative;
-  -webkit-border-radius: 8px;
-  -moz-border-radius   : 8px;
-  border-radius        : 8px;
-  min-height:85px;
 }
 .chzn-container-multi .chzn-choices li {
   float: left;
@@ -172,17 +168,14 @@
   -moz-box-shadow   : none;
   -o-box-shadow     : none;
   box-shadow        : none;
-  -webkit-border-radius: 8px;
-  -moz-border-radius   : 8px;
-  border-radius        : 8px;
 }
 .chzn-container-multi .chzn-choices .search-field .default {
   color: #999;
 }
 .chzn-container-multi .chzn-choices .search-choice {
-  -webkit-border-radius: 8px;
-  -moz-border-radius   : 8px;
-  border-radius        : 8px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius   : 3px;
+  border-radius        : 3px;
   -moz-background-clip   : padding;
   -webkit-background-clip: padding-box;
   background-clip        : padding-box;
@@ -216,7 +209,7 @@
   width: 12px;
   height: 13px;
   font-size: 1px;
-  background: url(chosen-sprite.png) right top no-repeat;
+  background: url('chosen-sprite.png') right top no-repeat;
 }
 .chzn-container-multi .chzn-choices .search-choice .search-choice-close:hover {
   background-position: right -11px;
@@ -234,6 +227,7 @@
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .chzn-container-multi .chzn-results {
   margin: -1px 0 0;
@@ -259,7 +253,7 @@
   background-image: -o-linear-gradient(top, #3875d7 20%, #2a62bc 90%);
   background-image: -ms-linear-gradient(top, #3875d7 20%, #2a62bc 90%);
   background-image: linear-gradient(top, #3875d7 20%, #2a62bc 90%);
-  color: #fff; */    
+  color: #fff;*/
   border: 1px solid #999999; background: #dadada url(ui-bg_glass_75_dadada_1x400.png) 50% 50% repeat-x; color: #212121;
   margin: -1px;
 }
@@ -303,10 +297,10 @@
   bottom: 0;
 }
 .chzn-container .chzn-results-scroll-down span {
-  background: url('<%= image_path("chosen-sprite.png") %>') no-repeat -4px -3px;
+  background: url('chosen-sprite.png') no-repeat -4px -3px;
 }
 .chzn-container .chzn-results-scroll-up span {
-  background: url('<%= image_path("chosen-sprite.png") %>') no-repeat -22px -3px;
+  background: url('chosen-sprite.png') no-repeat -22px -3px;
 }
 /* @end */
 
@@ -388,13 +382,13 @@
 .chzn-rtl .chzn-results .group-option { padding-left: 0; padding-right: 15px; }
 .chzn-rtl.chzn-container-active .chzn-single-with-drop div { border-right: none; }
 .chzn-rtl .chzn-search input {
-  background: #fff url('<%= image_path("chosen-sprite.png") %>') no-repeat -38px -22px;
-  background: url('<%= image_path("chosen-sprite.png") %>') no-repeat -38px -22px, -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(1%, #eeeeee), color-stop(15%, #ffffff));
-  background: url('<%= image_path("chosen-sprite.png") %>') no-repeat -38px -22px, -webkit-linear-gradient(top, #eeeeee 1%, #ffffff 15%);  
-  background: url('<%= image_path("chosen-sprite.png") %>') no-repeat -38px -22px, -moz-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
-  background: url('<%= image_path("chosen-sprite.png") %>') no-repeat -38px -22px, -o-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
-  background: url('<%= image_path("chosen-sprite.png") %>') no-repeat -38px -22px, -ms-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
-  background: url('<%= image_path("chosen-sprite.png") %>') no-repeat -38px -22px, linear-gradient(top, #eeeeee 1%, #ffffff 15%);
+  background: #fff url('chosen-sprite.png') no-repeat -38px -22px;
+  background: url('chosen-sprite.png') no-repeat -38px -22px, -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(1%, #eeeeee), color-stop(15%, #ffffff));
+  background: url('chosen-sprite.png') no-repeat -38px -22px, -webkit-linear-gradient(top, #eeeeee 1%, #ffffff 15%);  
+  background: url('chosen-sprite.png') no-repeat -38px -22px, -moz-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
+  background: url('chosen-sprite.png') no-repeat -38px -22px, -o-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
+  background: url('chosen-sprite.png') no-repeat -38px -22px, -ms-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
+  background: url('chosen-sprite.png') no-repeat -38px -22px, linear-gradient(top, #eeeeee 1%, #ffffff 15%);
   padding: 4px 5px 4px 20px;
   direction: rtl;
 }
