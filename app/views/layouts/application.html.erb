@@ -9,8 +9,8 @@
     <meta name="keywords" content="MTG Bazaar: A marketplace for buying and selling Magic the Gathering cards">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
-
     <%= stylesheet_link_tag    "application" %>
+    <%= javascript_include_tag "application" %>
 
     <% #--------- YIELD STUFF TO PUT IN HEADING SUCH AS JAVASCRIPT INCLUDES, ETC...----# %>
     <%= yield(:head) %>
@@ -62,8 +62,8 @@
       
     </div>
     
-    <%# include javascript at the bottom of page so that page renders faster %>
-    <%= javascript_include_tag "application" %>
+    
+    
     
   </body>
 

@@ -1,4 +1,7 @@
 /* @group Base */
+select {
+  visibility:hidden;
+}
 .chzn-container {
   font-size: 13px;
   position: relative;
@@ -31,9 +34,9 @@
   background-image: -o-linear-gradient(top, #ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%);
   background-image: -ms-linear-gradient(top, #ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%);
   background-image: linear-gradient(top, #ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%); 
-  -webkit-border-radius: 5px;
-  -moz-border-radius   : 5px;
-  border-radius        : 5px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius   : 8px;
+  border-radius        : 8px;
   -moz-background-clip   : padding;
   -webkit-background-clip: padding-box;
   background-clip        : padding-box;
@@ -55,7 +58,7 @@
   color: #999;
 }
 .chzn-container-single .chzn-single span {
-  margin-right: 26px;
+  margin-right: 30px;
   display: block;
   overflow: hidden;
   white-space: nowrap;
@@ -66,7 +69,7 @@
 .chzn-container-single .chzn-single abbr {
   display: block;
   position: absolute;
-  right: 26px;
+  right: 22px;
   top: 6px;
   width: 12px;
   height: 13px;
@@ -86,9 +89,19 @@
 }
 .chzn-container-single .chzn-single div b {
   background: url('chosen-sprite.png') no-repeat 0 0;
+  background: url('chosen-sprite.png') no-repeat 0 0, -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(20%, #eeeeee), color-stop(50%, #e5e5e5), color-stop(52%, #dddddd), color-stop(100%, #e6e6e6));
+  background: url('chosen-sprite.png') no-repeat 0 0, -webkit-linear-gradient(top, #eeeeee 20%, #e5e5e5 50%, #dddddd 52%, #e6e6e6 100%);
+  background: url('chosen-sprite.png') no-repeat 0 0, -moz-linear-gradient(top, #eeeeee 20%, #e5e5e5 50%, #dddddd 52%, #e6e6e6 100%);
+  background: url('chosen-sprite.png') no-repeat 0 0, -o-linear-gradient(top, #eeeeee 20%, #e5e5e5 50%, #dddddd 52%, #e6e6e6 100%);
+  background: url('chosen-sprite.png') no-repeat 0 0, -ms-linear-gradient(top, #eeeeee 20%, #e5e5e5 50%, #dddddd 52%, #e6e6e6 100%);
+  background: url('chosen-sprite.png') no-repeat 0 0, linear-gradient(top, #eeeeee 20%, #e5e5e5 50%, #dddddd 52%, #e6e6e6 100%);
   display: block;
   width: 100%;
   height: 100%;
+  border-left: 1px solid #e6e6e6;
+  -webkit-border-radius: 0 8px 8px 0;
+  -moz-border-radius   : 0 8px 8px 0;
+  border-radius        : 0 8px 8px 0;
 }
 .chzn-container-single .chzn-search {
   padding: 3px 4px;
@@ -111,11 +124,14 @@
   border: 1px solid #aaa;
   font-family: sans-serif;
   font-size: 1em;
+  -webkit-border-radius: 4px;
+  -moz-border-radius   : 4px;
+  border-radius        : 4px;
 }
 .chzn-container-single .chzn-drop {
-  -webkit-border-radius: 0 0 4px 4px;
-  -moz-border-radius   : 0 0 4px 4px;
-  border-radius        : 0 0 4px 4px;
+  -webkit-border-radius: 0 0 8px 8px;
+  -moz-border-radius   : 0 0 8px 8px;
+  border-radius        : 0 0 8px 8px;
   -moz-background-clip   : padding;
   -webkit-background-clip: padding-box;
   background-clip        : padding-box;
@@ -144,6 +160,9 @@
   height: auto !important;
   height: 1%;
   position: relative;
+  -webkit-border-radius: 8px;
+  -moz-border-radius   : 8px;
+  border-radius        : 8px;
 }
 .chzn-container-multi .chzn-choices li {
   float: left;
@@ -173,9 +192,10 @@
   color: #999;
 }
 .chzn-container-multi .chzn-choices .search-choice {
-  -webkit-border-radius: 3px;
-  -moz-border-radius   : 3px;
-  border-radius        : 3px;
+
+  -webkit-border-radius: 8px;
+  -moz-border-radius   : 8px;
+  border-radius        : 8px;
   -moz-background-clip   : padding;
   -webkit-background-clip: padding-box;
   background-clip        : padding-box;
@@ -194,9 +214,12 @@
   border: 1px solid #aaaaaa;
   line-height: 13px;
   padding: 3px 20px 3px 5px;
-  margin: 3px 0 3px 5px;
+  margin: 2px 2px 2px 2px;
   position: relative;
   cursor: default;
+}
+.chzn-container-multi .chzn-choices .search-choice span {
+  font-size:11px;
 }
 .chzn-container-multi .chzn-choices .search-choice-focus {
   background: #d4d4d4;
@@ -338,7 +361,8 @@
   border-left: none;
 }
 .chzn-container-active .chzn-single-with-drop div b {
-  background-position: -18px 1px;
+  background: url('chosen-sprite.png') no-repeat -18px 1px;
+  border: none;
 }
 .chzn-container-active .chzn-choices {
   -webkit-box-shadow: 0 0 5px rgba(0,0,0,.3);
