@@ -12,7 +12,7 @@
 
     <div class= "mt-m search-set">
       <%#= label_tag "Set:" %>
-      <%= select_tag "set" , options_for_select(Mtg::Set.where(:active => true).to_a.collect {|s| [ s.name, s.code ] }, :selected => params[:set]), {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Set...", :class => "search-select chzn-select"} %>
+      <%= select_tag "set" , options_for_select(Mtg::Set.where(:active => true).order(:name).to_a.collect {|s| [ s.name, s.code ] }, :selected => params[:set]), {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Set...", :class => "search-select chzn-select"} %>
     </div>
     
     <div class="mt-m search-type">
@@ -107,8 +107,8 @@
 
     <div class="mt-m search-divider">Filter by Seller:</div>
     <div class="mt-m search-seller">
-      <%= text_field_tag "seller", params[:seller], {:class => "search-text ui-autocomplete-input" , :placeholder => "Search sellers..." , "data-autocomplete" => autocomplete_name_users_path }%>
-      <%= text_field_tag "seller_id", params[:seller_id], :style => "display:none;" %>
+      <%= text_field_tag "seller", cookies[:search_seller], {:class => "search-text ui-autocomplete-input" , :placeholder => "Search sellers..." , "data-autocomplete" => autocomplete_name_users_path }%>
+      <%= text_field_tag "seller_id", cookies[:search_seller_id], :style => "display:none;" %>
     </div>
           
     <br/>

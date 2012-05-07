@@ -85,6 +85,8 @@ $(document).ready(function() {
   // don't allow users to freely write text box
   $("#seller").change(function() {  
     $(this).val('');
+    $.cookie('search_seller', "", { expires: 1, path: '/' });
+    $.cookie('search_seller_id', "", { expires: 1, path: '/' });
   });
   
   //DO THIS WHEN AUTOCOMPLETE SELLER IS CLICKED
@@ -94,7 +96,6 @@ $(document).ready(function() {
     $('#seller_id').val($(this).val().split(',')[0]);
     $('#seller').val($(this).val().split(',')[1]);    
   });
-
 
   //UPDATE COOKEIS TO STORE SEARCH INFO---------------------------------------------------------------------
   //UPDATE COOKEIS TO STORE SEARCH INFO---------------------------------------------------------------------  
@@ -149,6 +150,7 @@ $(document).ready(function() {
   $("#search-miscut").change(function() {  
     $('#search-miscut').is(':checked') ? $.cookie('search_miscut', true, { expires: 1, path: '/' }) : $.cookie('search_miscut',"", { expires: 1, path: '/' });
   });  
+
 
   
   //UPDATE SEARCH FORM ON PAGE LOAD BASED ON COOKIES --------------------------------------------------------------------

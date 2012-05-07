@@ -4,7 +4,16 @@
     <%#= link_to image_tag("https://s3.amazonaws.com/mtgbazaar/images/joinus.jpg", :title => "Join MTGBazaar", :style => "height:210px;width:230px;"), new_user_registration_path%>
   <% else %>
     <div id="right_bar">
-      <h1><div class="left t-s"><%= "#{current_user.username}" %></div> <div class="right t-s"><%= number_to_currency(current_user.account.balance.dollars) %></div></h1>
+      <h1>
+        <div style="padding-top:3px;">
+          <table width="100%">
+            <tr>
+              <td align="left"><%= "#{current_user.username}" %></td>
+              <td align="right"><%= number_to_currency(current_user.account.balance.dollars) %></td>
+            </tr>
+          </table>
+        </div>
+      </h1>
       <div class="ma">
         <div class="mt-s"> <div class="left">Shopping Cart (<%= link_to "#{pluralize(current_cart.item_count,"item","items")}", show_cart_path%>):</div>  <div class="right"><%= number_to_currency(current_cart.total_price) %></div>  </div>
         <br/>
