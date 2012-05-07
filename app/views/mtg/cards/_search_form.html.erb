@@ -76,6 +76,8 @@
       <%#= label_tag "Abilities:" %>
       <%= select_tag "abilities" , options_for_select(Mtg::CardsHelper::ABILITY_LIST, :selected => params[:abilities]), { :multiple => true, :class => "search-select-multi chzn-select", :style => "", "data-placeholder" => "Abilities..."} %>                        
     </div>  
+
+   <div class="mt-m search-divider">Global Filters:</div>
     
     <div class="mt-s search-options">
       <%#= label_tag "Color:" %>
@@ -105,7 +107,6 @@
       </table>
     </div>  
 
-    <div class="mt-m search-divider">Filter by Seller:</div>
     <div class="mt-m search-seller">
       <%= text_field_tag "seller", cookies[:search_seller], {:class => "search-text ui-autocomplete-input" , :placeholder => "Search sellers..." , "data-autocomplete" => autocomplete_name_users_path }%>
       <%= text_field_tag "seller_id", cookies[:search_seller_id], :style => "display:none;" %>
