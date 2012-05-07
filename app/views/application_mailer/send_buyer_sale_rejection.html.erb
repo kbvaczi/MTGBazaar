@@ -1,7 +1,8 @@
 <div style="width:550px;">
   <h2>Sale Rejection</h2>
-  <h3>We regret to inform you that your purchase request to <%= link_to @transaction.seller.username, user_url(@transaction.seller) %> for the following items has been rejected:</h3>
-
+  <h3>We regret to inform you that your purchase request to <%= link_to @transaction.seller.username, user_url(@transaction.seller) %> for the following items has been rejected</h3>
+  <h3>Transaction number: <%= @transaction.transaction_number %></h3><br/>
+  
   <br/>
   <%= render :partial => "mtg/transactions/teaser" , :locals => {:transaction => @transaction} %> 
 

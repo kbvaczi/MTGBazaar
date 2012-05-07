@@ -1,10 +1,19 @@
 class Mtg::Transaction < ActiveRecord::Base
+# ---------------- MODEL SETUP ----------------
+
   self.table_name = 'mtg_transactions'
   
   belongs_to :seller,   :class_name => "User"
   belongs_to :buyer,    :class_name => "User"
-  has_many   :items,    :class_name => "Mtg::TransactionItem", :foreign_key => "transaction_id"
-  
+  has_many   :items,    :class_name => "Mtg::TransactionItem" , :foreign_key => "transaction_id"
+  has_many   :issues,   :class_name => "Mtg::TransactionIssue", :foreign_key => "transaction_id"
+
+# ---------------- VALIDATIONS ----------------      
+
+
+
+# ---------------- MEMBER METHODS -------------
+
   # creates a unique transaction number based on transaction ID
   def transaction_number
     "MTG-#{(self.id + 10000).to_s(36).rjust(6,"0").upcase}"

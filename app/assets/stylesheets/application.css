@@ -6,6 +6,7 @@
   *= require_self
   *= require chosen
   *= require jquery-ui-1.8.17.custom
+  *= require main
   *= require_directory ./main
   
 */

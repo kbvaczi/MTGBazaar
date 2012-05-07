@@ -1,0 +1,55 @@
+<% title "Report a problem"%>
+
+<h1>Report a Problem</h1>
+
+<%= simple_form_for @issue, :url => create_mtg_transaction_issue_path, :method => :post do |f| %>
+
+  <div class="inputs">
+    <br class="spacer"/>
+      
+    <div class="input">
+      <%= f.label "Transaction Number" %>
+      <p> <%= @issue.transaction.transaction_number %> </p>
+    </div>
+    <div class="input">
+      <% if current_user.id == @issue.transaction.buyer_id %>
+        <%= f.label "Seller" %>
+        <p><%= @issue.transaction.seller.username %></p>
+      <% else %>
+        <%= f.label "Buyer" %>
+        <p><%= @issue.transaction.buyer.username %></p>
+      <% end %>
+    </div>
+                            
+    <%= f.input :problem,       :label => "Problem",
+                                :as => :select,
+                                :collection => [["Purchase still pending 5 days after request", "confirmation"], 
+                                                ["Purchase not shipped within 5 days after confirmation", "shipment"],
+                                                ["Purchase not delivered within 7 days after shipment", "delivery"],
+                                                ["Purchase delivered, contents damaged", "damage"],                                                
+                                                ["Purchase delivered, contents incorrect", "content"]],
+                                :input_html => { :class => "chzn-select" },
+                                :required => 'true' %>
+                                
+    <%= f.input :description,   :label => "Description",
+                                :as => :text,
+                                :input_html => { :maxlength => "500" },              
+                                :required => 'true' %>                                
+
+    <%= f.label " " %>
+    <div class="input">
+      <p>
+        We encourage users to report problems when you are not completely satisfied.  Please be fair and honest. Abuse of this system could result in the suspension of your account.
+      </p>
+    </div>
+    
+  </div>
+
+  <br class="spacer"/>
+  <br class="spacer"/>  
+  
+  <div class="center">
+    <%= f.button :submit, "Submit", :class => "center" %>
+  </div>
+  
+<% end %>

@@ -60,10 +60,11 @@ class CartsController < ApplicationController
           reservation.purchased! # update listing quantity and destroy this reservation
         end
         ApplicationMailer.send_seller_sale_notification(transaction).deliver # send sale notification email to seller
+        ApplicationMailer.send_buyer_checkout_confirmation(transaction).deliver # notify buyer that the sale has been confirmed               
       end
       current_user.account.balance_debit!(current_cart.total_price)  # take money out of user's balance
       current_cart.update_cache! # empty the shopping cart
-      redirect_to back_path, :notice => "Your purchase has been submitted.  Expect seller confirmation soon."
+      redirect_to back_path, :notice => "Your purchase request has been submitted."
     else
       set_back_path # set back path so that user is returned to cart after depositing
       flash[:error] = "Insufficient Balance... Please deposit funds." 

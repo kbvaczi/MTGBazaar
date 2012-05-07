@@ -1,0 +1,21 @@
+<div style="width:550px;">
+  <h2>Sale Request Submitted</h2>
+  <h3>You sent a sale request to <%= link_to @transaction.seller.username, user_url(@transaction.seller) %> for the following items.</h3>
+  <h3>Transaction number: <%= @transaction.transaction_number %></h3><br/>
+
+  <%= render :partial => "mtg/transactions/teaser" , :locals => {:transaction => @transaction} %> 
+
+  <br class="spacer"/>
+  <p>
+    <b>Next Steps:</b>
+    <ul>
+      <li>The seller will review his/her inventory to confirm these items are still available.</li>
+      <li>Once the items are located, seller will confirm the sale and ship items.</li>
+      <li>If the seller cannot locate these items, he/she will reject your sale request and funds will be automatically returned to your account.</li>
+    </ul>
+  </p>
+  <br class="spacer"/>
+  <br class="spacer"/>
+  <p>Cheers!</p>
+  <%= image_tag "logo.png" %>
+</div>

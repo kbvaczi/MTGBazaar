@@ -17,8 +17,6 @@ class CreateMtgTransactions < ActiveRecord::Migration
       
       t.datetime  :seller_delivered_at
       t.boolean   :buyer_delivery_confirmation,   :default => nil        
-      #t.string    :delivery_problem,              :default => ""         #"condition" condition not right, "content" content not right
-      #t.string    :delivery_problem_text,         :default => ""
       
       t.string    :buyer_feedback,                :default => "P"         #Positive "P", Negative "N"
       t.string    :buyer_feedback_text,           :default => ""

@@ -27,17 +27,21 @@
       </div>    
       <div class="mtg_listing_teaser_options">
         <% if listing.foil %>
-          F
+          <%= listing_option_foil_icon %>
         <% end %>
         <% if listing.misprint %>
-          M
+          <%= listing_option_misprint_icon %>
         <% end %>
         <% if listing.signed %>
-          S
+          <%= listing_option_signed_icon %>
         <% end %>
         <% if listing.altart %>
-          A
+          <%= listing_option_altart_icon %>
         <% end %>    
+        <% if listing.description != "" %>
+          <%= listing_option_description_icon(listing) %>
+        <% end %>        
+        
       </div>
       <div class="mtg_listing_teaser_price">
         <%= number_to_currency(listing.price) %>

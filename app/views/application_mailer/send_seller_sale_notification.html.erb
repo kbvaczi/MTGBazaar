@@ -1,7 +1,8 @@
 <div style="width:550px;">
   <h2>Congratulations!</h2>
-  <h3>You have received a purchase request from <%= link_to @transaction.buyer.username, user_url(@transaction.buyer) %> for the following items:</h3><br/>
-
+  <h3>You have received a purchase request from <%= link_to @transaction.buyer.username, user_url(@transaction.buyer) %> for the following items:</h3>
+  <h3>Transaction number: <%= @transaction.transaction_number %></h3><br/>
+  
   <%= render :partial => "mtg/transactions/teaser" , :locals => {:transaction => @transaction} %> 
 
   <br class="spacer"/>

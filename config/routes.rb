@@ -1,20 +1,23 @@
 MTGBazaar::Application.routes.draw do
 
-  # ACTIVE ADMIN SETUP ------- #
+# ACTIVE ADMIN SETUP ------- #
+
   ActiveAdmin.routes(self)
   
-  # ADMIN USERS -------------- #
+# ADMIN USERS -------------- #
+
   devise_for :admin_users, ActiveAdmin::Devise.config
  
- 
-  # SHOPPING CART ------------- #
+# SHOPPING CART ------------- #
+
   post    "mtg/listings/:id/add_to_cart"      => "carts#add_mtg_cards",              :as => 'add_to_cart_mtg_listing'      
   delete  "mtg/listings/:id/remove_from_cart" => "carts#remove_mtg_cards",          :as => 'remove_from_cart_mtg_listing'
   post    "mtg/listings/:id/update_quantity"  => "carts#update_quantity_mtg_cards", :as => 'update_quantity_in_cart_mtg_cards'  
   get     'users/cart'                        => 'users#show_cart',                 :as => 'show_cart'
   post    'users/cart/checkout'               => 'carts#checkout',                  :as => 'cart_checkout'
   
-  # TRANSACTIONS -------------- #
+# TRANSACTIONS -------------- #
+
   get   'users/transactions'              => 'users#transactions_index',                              :as => 'user_transactions_index'
   get   'transactions/:id/confirm'        => 'mtg/transactions#seller_sale_confirmation',             :as => 'seller_sale_confirmation'    
   get   'transactions/:id/reject'         => 'mtg/transactions#seller_sale_rejection',                :as => 'seller_sale_rejection'
@@ -26,7 +29,12 @@ MTGBazaar::Application.routes.draw do
   get   'transactions/:id/delivery'       => 'mtg/transactions#buyer_delivery_confirmation',          :as => 'buyer_delivery_confirmation'
   put   'transactions/:id/delivery'       => 'mtg/transactions#create_buyer_delivery_confirmation',   :as => 'create_buyer_delivery_confirmation'  
   
-  # MTG ----------------------- #
+  # transaction issues
+  get   'transactions/:id/issue'          => 'mtg/transaction_issues#new',                            :as => 'new_mtg_transaction_issue'
+  post  'transactions/:id/issue'          => 'mtg/transaction_issues#create',                         :as => 'create_mtg_transaction_issue'  
+  
+# MTG ----------------------- #
+
   namespace :mtg do
     resources :listings, :except => [:index, :show ]    
     resources :cards, :only => [:index, :show] do # don't allow users to create/destroy mtg cards by only allowing index and show routes
@@ -37,7 +45,8 @@ MTGBazaar::Application.routes.draw do
     end
   end
   
-  # USERS -------------------- #
+# USERS -------------------- #
+
   # resources :users must be declared after devise_for because earlier declarations take precedence 
   # see http://stackoverflow.com/questions/5051487/combining-devise-with-resources-users-in-rails
   
@@ -57,7 +66,8 @@ MTGBazaar::Application.routes.draw do
   
   resources :accounts
   
-  # MISC ROUTES -------------- #
+# MISC ROUTES -------------- #
+
   root :to => "home#index"
   match 'about'           => 'home#about'
   match 'terms'           => 'home#terms_of_service'
@@ -67,9 +77,7 @@ MTGBazaar::Application.routes.draw do
   match 'help'            => 'home#help'
   match 'test_hash_redirect' => 'home#birthday'
   
-  
-  
-  # RAILS COMMENTS ----------- #
+# RAILS STANDARD COMMENTS ----------- #
   
   #match "*a" => redirect('/') # send all random routes to home
    

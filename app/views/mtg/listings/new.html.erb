@@ -20,11 +20,6 @@
                                 :input_html => { :value => "#{@listing.card.set.name}" },
                                 :disabled => true,                                
                                 :required => 'false' %>
-                                
-    <%= f.input :quantity,      :label => "Quantity for sale",
-                                :as => :integer,
-                                :selected => Mtg::Listing.active.duplicate_listing_count(@listing),
-                                :required => 'true' %>
 
     <%= f.input :condition,     :label => "Condition",
                                 :as => :select,
@@ -32,6 +27,11 @@
                                 :default => "NM",
                                 :input_html => { :class => "chzn-select chzn-nosearch" },
                                 :required => 'true' %>
+                                
+    <%= f.input :quantity,      :label => "Quantity for sale",
+                                :as => :string,
+                                :input_html => { :style => "width:50px;" },
+                                :required => 'true' %>                                
                                                                 
     <%= f.input :price_options, :label => "Asking Price",
                                 :as => :radio,

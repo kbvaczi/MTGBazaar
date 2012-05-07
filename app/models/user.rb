@@ -1,12 +1,15 @@
 class User < ActiveRecord::Base
+# ---------------- MODEL SETUP ----------------
+  
   # database relationships
   has_one  :account, :dependent => :destroy
   has_one  :cart
   has_many :mtg_listings,       :class_name => "Mtg::Listing",              :foreign_key => "seller_id"
   has_many :mtg_purchases,      :class_name => "Mtg::Transaction",          :foreign_key => "buyer_id"
-  has_many :mtg_purchase_items, :class_name => "Mtg::TransactionItem",    :foreign_key => "buyer_id"  
+  has_many :mtg_purchase_items, :class_name => "Mtg::TransactionItem",      :foreign_key => "buyer_id"  
   has_many :mtg_sales,          :class_name => "Mtg::Transaction",          :foreign_key => "seller_id"
-  has_many :mtg_sale_items,     :class_name => "Mtg::TransactionItem",    :foreign_key => "seller_id"
+  has_many :mtg_sale_items,     :class_name => "Mtg::TransactionItem",      :foreign_key => "seller_id"
+  has_many :mtg_problems,       :class_name => "Mtg::TransactionIssue",     :foreign_key => "author_id"
 
   # Include default devise modules. Others available are:
   #:token_authenticatable, :encryptable, :confirmable, :lockable, :rememberable, :timeoutable, and :omniauthable
@@ -22,17 +25,24 @@ class User < ActiveRecord::Base
   attr_accessor :age, :terms
   cattr_accessor :current_user
   
-  # validates that age and terms have been checked on user sign-up only
-  validates :age, :terms, :inclusion => {:in => [["","1"]]}, :on => :create
-  
   # allow form for accounts nested inside user signup/edit forms
   accepts_nested_attributes_for :account
   
+  # override default route to add username in route.
+  def to_param
+    "#{id}-#{username}".parameterize 
+  end
+
+# ---------------- VALIDATIONS ----------------      
+  
+  # validates that age and terms have been checked on user sign-up only
+  validates :age, :terms, :inclusion => {:in => [["","1"]]}, :on => :create
+  
   # validations
-  validates_presence_of :username, :email
+  validates_presence_of   :username, :email
   
   # multiple users cannot have the same username
-  validates_uniqueness_of :username, :email
+  validates_uniqueness_of :username, :email, :case_sensitive => false
   
   # username must be between 3 and 15 characters and can only have letters, numbers, dash, period, or underscore (no other special characters)
   validates             :username,  :length => { :minimum => 3, :maximum   => 15 },
@@ -41,10 +51,7 @@ class User < ActiveRecord::Base
   # validates account model when user model is saved
   validates_associated :account
   
-  # override default route to add username in route.
-  def to_param
-    "#{id}-#{username}".parameterize 
-  end
+# ---------------- MEMBER METHODS -------------
 
   # build an account for this user object if it does not already have one
   def with_account
