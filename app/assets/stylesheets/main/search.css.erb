@@ -1,5 +1,7 @@
 .search-text {
-  width: 94%;
+  width: 134px;
+  background: #fff url(<%= asset_path('chosen-sprite.png')%>) no-repeat 100% -24px;
+  padding-right:20px !important;
 }
 .search-select {
   width: 100%;
@@ -12,13 +14,14 @@
   margin:0;  
 }
 .search-color-icon {
+  padding-left:4px;
   width: 22px;
   height: 22px;
 }
-.search-color-icon-last {
-  width: 22px;
-  height: 22px;
-  margin: 0px 0 0 0;
+.search-options-icon {
+  padding-left:4px;  
+  width: 25px;
+  height: 25px;
 }
 .search-divider {
   border-bottom: 1px solid #eee;
@@ -31,10 +34,10 @@
 }
 #search_name_suggestions {
   display: none;
-  width:160px;
+  width: 160px;
   position: absolute;
   background: #ddd;
-  z-index:5;
+  z-index: 5;
 }
 #search_form{
   position:relative;

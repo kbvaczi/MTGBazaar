@@ -11,6 +11,7 @@
 //= require mtg_search    
 //= require jquery-ui
 //= require jquery.ui.autocomplete.html.js
+//= require autocomplete-rails
 //= require jquery-cookie
 
 //= require autocomplete-rails

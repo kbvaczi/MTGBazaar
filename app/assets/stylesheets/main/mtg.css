@@ -145,4 +145,16 @@
 .cart_item_teaser_remove {
   width:10%;
 }
+
+#search_toggle {
+  width:100%;
+  list-style: none;
+}
+#search_toggle li {
+  width:49%;
+  float: left;
+  display: inline;
+  text-align: center;
+  border-left: 1px solid #DDD ;
+}
   

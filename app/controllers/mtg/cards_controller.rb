@@ -63,18 +63,24 @@ class Mtg::CardsController < ApplicationController
     query << ["card_type LIKE ?", "#{params[:type]}"] if params[:type].present?
     query << ["card_subtype LIKE ?", "%#{params[:subtype]}%"] if params[:subtype].present?
     query << ["artist LIKE ?", "#{params[:artist]}"] if params[:artist].present?
-    query << SmartTuple.new(" AND ").add_each(params[:abilities]) {|v| ["mtg_cards.description LIKE ?", "%#{v}%"]} if params[:abilities].present? 
-        
-    if params[:seller_id].present?
-      query << ["mtg_listings.seller_id LIKE ? AND mtg_listings.quantity_available > 0", "#{params[:seller_id]}"]
-      @mtg_cards = Mtg::Card.includes(:set, :listings).where(query.compile).order("mtg_cards.name").page(params[:page]).per(20)
-    else
-      @mtg_cards = Mtg::Card.includes(:set, :listings).where(query.compile).order("mtg_cards.name").page(params[:page]).per(20)
+    query << SmartTuple.new(" AND ").add_each(params[:abilities]) {|v| ["mtg_cards.description LIKE ?", "%#{v}%"]} if params[:abilities].present?
+ 
+    # options filters
+    if params[:options].present?     
+      query << ["mtg_listings.foil LIKE ?", true] if params[:options].include?("f")
+      query << ["mtg_listings.misprint LIKE ?", true] if params[:options].include?("m")
+      query << ["mtg_listings.signed LIKE ?", true] if params[:options].include?("s")      
+      query << ["mtg_listings.altart LIKE ?", true] if params[:options].include?("a")            
     end
+
+    # seller filter
+    query << ["mtg_listings.seller_id LIKE ? AND mtg_listings.quantity_available > 0", "#{params[:seller_id]}"] if params[:seller_id].present?
+
+    @mtg_cards = Mtg::Card.includes(:set, :listings).where(query.compile).order("mtg_cards.name").page(params[:page]).per(20)
     
     # Don't show only 1 card in search results... go directly to that card's show page if there is only one.
     if @mtg_cards.length == 1
-      redirect_to mtg_card_path(@mtg_cards[0])
+      redirect_to mtg_card_path(@mtg_cards.first)
     end
   end
   

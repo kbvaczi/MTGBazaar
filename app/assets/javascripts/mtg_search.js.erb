@@ -137,6 +137,18 @@ $(document).ready(function() {
   $("#abilities").change(function() {  
     $.cookie('search_abilities', $("#abilities").val(), { expires: 1, path: '/' });
   });  
+  $("#search-foil").change(function() {  
+    $('#search-foil').is(':checked') ? $.cookie('search_foil', true, { expires: 1, path: '/' }) : $.cookie('search_foil', "", { expires: 1, path: '/' });
+  });
+  $("#search-signed").change(function() {  
+    $('#search-signed').is(':checked') ? $.cookie('search_signed', true, { expires: 1, path: '/' }) : $.cookie('search_signed',"", { expires: 1, path: '/' });
+  });  
+  $("#search-altart").change(function() {  
+    $('#search-altart').is(':checked') ? $.cookie('search_altart', true, { expires: 1, path: '/' }) : $.cookie('search_altart',"", { expires: 1, path: '/' });
+  });  
+  $("#search-miscut").change(function() {  
+    $('#search-miscut').is(':checked') ? $.cookie('search_miscut', true, { expires: 1, path: '/' }) : $.cookie('search_miscut',"", { expires: 1, path: '/' });
+  });  
 
   
   //UPDATE SEARCH FORM ON PAGE LOAD BASED ON COOKIES --------------------------------------------------------------------

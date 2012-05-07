@@ -1,12 +1,12 @@
 <%= form_tag search_mtg_cards_path , :method => "put", :id => "search-form" do %>   
-
-  <h1><%= text_field_tag "name", params[:name], {:class => "search-text ui-autocomplete-input" , :placeholder => "Search cards..." , "data-autocomplete" => autocomplete_name_mtg_cards_path }%></h1>
-
-
-
+  
   <%# autocomplete_mtg_card_name_mtg_cards_path%>
-  <div class="" style="margin:15px;">
+  <div class="ma">
 
+    <div class="mt-m">
+      <%= text_field_tag "name", params[:name], {:class => "search-text ui-autocomplete-input" , :placeholder => "Search card names..." , "data-autocomplete" => autocomplete_name_mtg_cards_path }%>
+    </div>
+    <br class="spacer"/>
     
     <div class="search-divider">Advanced Search:</div>
 
@@ -46,27 +46,27 @@
           <td align="center">
             <%= image_tag "mtg/mana_symbols/mana_w.jpg" , :class => "search-color-icon" %>
             <br/>
-            <%= check_box_tag "white", "W", params[:white], :class => "search-color-check" %>                        
+            <%= check_box_tag "white", "W", cookies[:search_white] == "true", :class => "search-color-check" %>                        
           </td>
           <td align="center">
             <%= image_tag "mtg/mana_symbols/mana_u.jpg" , :class => "search-color-icon" %>
             <br/>
-            <%= check_box_tag "blue", "U", params[:blue], :class => "search-color-check" %>
+            <%= check_box_tag "blue", "U", cookies[:search_blue] == "true", :class => "search-color-check" %>
           </td>
           <td align="center">
             <%= image_tag "mtg/mana_symbols/mana_b.jpg" , :class => "search-color-icon" %>
             <br/>
-            <%= check_box_tag "black", "B", params[:black], :class => "search-color-check" %>
+            <%= check_box_tag "black", "B", cookies[:search_black] == "true", :class => "search-color-check" %>
           </td>
           <td align="center">
             <%= image_tag "mtg/mana_symbols/mana_r.jpg" , :class => "search-color-icon" %>
             <br/>
-            <%= check_box_tag "red", "R", params[:red], :class => "search-color-check" %>            
+            <%= check_box_tag "red", "R", cookies[:search_red] == "true", :class => "search-color-check" %>            
           </td>
           <td align="center">
             <%= image_tag "mtg/mana_symbols/mana_g.jpg" , :class => "search-color-icon" %>
             <br/>
-            <%= check_box_tag "green", "G", params[:green], :class => "search-color-check" %>            
+            <%= check_box_tag "green", "G", cookies[:search_green] == "true", :class => "search-color-check" %>            
           </td>                                
         </tr>
       </table>
@@ -75,7 +75,35 @@
     <div class="mt-m search-abilities">
       <%#= label_tag "Abilities:" %>
       <%= select_tag "abilities" , options_for_select(Mtg::CardsHelper::ABILITY_LIST, :selected => params[:abilities]), { :multiple => true, :class => "search-select-multi chzn-select", :style => "", "data-placeholder" => "Abilities..."} %>                        
-    </div>    
+    </div>  
+    
+    <div class="mt-s search-options">
+      <%#= label_tag "Color:" %>
+      <table width="100%" cellspacing='0'>
+        <tr>
+          <td align="center">
+            <%= image_tag "https://s3.amazonaws.com/mtgbazaar/images/mtg/options/foil.png" , :title => "Show only foil cards", :class => "search-options-icon" %>
+            <br/>
+            <%= check_box_tag "options[]", "f", cookies[:search_foil] == "true", :class => "search-options-check", :id => "search-foil" %>                        
+          </td>
+          <td align="center">
+            <%= image_tag "https://s3.amazonaws.com/mtgbazaar/images/mtg/options/signed.png", :title => "Show only signed cards", :class => "search-options-icon" %>
+            <br/>
+            <%= check_box_tag "options[]", "s", cookies[:search_signed] == "true", :class => "search-options-check", :id => "search-signed" %>            
+          </td>          
+          <td align="center">
+            <%= image_tag "https://s3.amazonaws.com/mtgbazaar/images/mtg/options/alt.png", :title => "Show only alt art cards", :class => "search-options-icon" %>
+            <br/>
+            <%= check_box_tag "options[]", "a", cookies[:search_altart] == "true", :class => "search-options-check", :id => "search-altart" %>
+          </td>          
+          <td align="center">
+            <%= image_tag "https://s3.amazonaws.com/mtgbazaar/images/mtg/options/miscut.png", :title => "Show only misprinted cards", :class => "search-options-icon" %>
+            <br/>
+            <%= check_box_tag "options[]", "m", cookies[:search_miscut] == "true", :class => "search-options-check", :id => "search-miscut" %>
+          </td>
+        </tr>
+      </table>
+    </div>  
 
     <div class="mt-m search-divider">Filter by Seller:</div>
     <div class="mt-m search-seller">
