@@ -79,7 +79,7 @@
 .mtg_listing_teaser, .cart_item_teaser {
   display:table;
   width:100%;
-  padding: 5px;
+  padding: 0 5px 5px 5px;
   -moz-border-radius: 7px;
   -webkit-border-radius: 7px;
   border-radius: 7px;  

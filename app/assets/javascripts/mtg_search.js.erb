@@ -1,8 +1,27 @@
 $(document).ready(function() {
 
-  //CLEAR ALL BUTTON----------------------------------------------------------------------------------
+  //CLEAR ALL BUTTONS----------------------------------------------------------------------------------
   //--  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --
   $("#clear-filters").click(function() {  
+    //clear cookies
+    $.cookie('search_seller', '', { expires: 1, path: '/' });     
+    $.cookie('search_seller_id', '', { expires: 1, path: '/' });
+    $.cookie('search_foil', '', { expires: 1, path: '/' });
+    $.cookie('search_signed','', { expires: 1, path: '/' });
+    $.cookie('search_altart','', { expires: 1, path: '/' });
+    $.cookie('search_miscut','', { expires: 1, path: '/' });
+    // clear vanilla inputs
+    $("#filters-form").find("select").val(''); 
+    $("#filters-form").find("input").removeAttr('checked'); 
+    $("#filters-form").find("input[type='text']").val(''); //clear text boxes, but unfortunately also clears multiselect placeholder
+    $("#filters-form").find("input[type='search']").val(''); //clear search boxes
+    // clear chzn boxes associated with vanilla inputs
+    $("#filters-form").find(".search-choice-close").remove();
+    $("#filters-form").find("select").trigger("liszt:updated");
+    $("#filters-form").find('.chzn-single').addClass('chzn-default');
+  });
+  
+  $("#clear-search").click(function() {  
     //clear cookies
     $.cookie('search_name', '', { expires: 1, path: '/' });
     $.cookie('search_set', '', { expires: 1, path: '/' });    
@@ -17,8 +36,6 @@ $(document).ready(function() {
     $.cookie('search_red', '', { expires: 1, path: '/' });  
     $.cookie('search_green', '', { expires: 1, path: '/' });
     $.cookie('search_abilities', '', { expires: 1, path: '/' });    
-    $.cookie('search_seller', '', { expires: 1, path: '/' });     
-    $.cookie('search_seller_id', '', { expires: 1, path: '/' });
     // clear vanilla inputs
     $("#search-form").find("select").val(''); 
     $("#search-form").find("input").removeAttr('checked'); 
@@ -27,53 +44,8 @@ $(document).ready(function() {
     // clear chzn boxes associated with vanilla inputs
     $("#search-form").find(".search-choice-close").remove();
     $("#search-form").find("select").trigger("liszt:updated");
-    $('.chzn-single').addClass('chzn-default');
+    $("#search-form").find('.chzn-single').addClass('chzn-default');
   });
-  
-  //INDIVIDUAL CLEAR BUTTONS--------------------------------------------------------------------------
-  //--  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --
-  //clear set
-  $("#set_clear").click(function() { 
-    $("#search-form").find(".search-set").find("select").val(''); // clear select box
-    $('#search-form').find(".search-set").find(".chzn-container a span").each( function() { 
-        $(this).text($(this).parent().parent().parent().find("select option:first").text());
-    }); // clear chsn single select box
-    $.cookie('search_set', '', { expires: 1, path: '/' });        
-  });  
-  //clear type
-  $("#type_clear").click(function() { 
-    $("#search-form").find(".search-type").find("select").val(''); // clear select box
-    $('#search-form').find(".search-type").find(".chzn-container a span").each( function() { 
-        $(this).text($(this).parent().parent().parent().find("select option:first").text());
-    }); // clear chsn single select box
-    $.cookie('search_type', '', { expires: 1, path: '/' });    
-  });  
-  //clear subtype
-  $("#subtype_clear").click(function() { 
-    $("#search-form").find(".search-subtype").find("select").val(''); // clear select box
-    $('#search-form').find(".search-subtype").find(".chzn-container a span").each( function() { 
-        $(this).text($(this).parent().parent().parent().find("select option:first").text());
-    }); // clear chsn single select box
-    $.cookie('search_subtype', '', { expires: 1, path: '/' });    
-  });  
-  //clear subtype
-  $("#rarity_clear").click(function() { 
-    $("#search-form").find(".search-rarity").find("select").val(''); // clear select box
-    $('#search-form').find(".search-rarity").find(".chzn-container a span").each( function() { 
-        $(this).text($(this).parent().parent().parent().find("select option:first").text());
-    }); // clear chsn single select box
-    $.cookie('search_rarity', '', { expires: 1, path: '/' });    
-  });  
-  //clear artist
-  $("#artist_clear").click(function() { 
-    $("#search-form").find(".search-artist").find("select").val(''); // clear select box
-    $('#search-form').find(".search-artist").find(".chzn-container a span").each( function() { 
-        $(this).text($(this).parent().parent().parent().find("select option:first").text());
-    }); // clear chsn single select box
-    $.cookie('search_artist', '', { expires: 1, path: '/' });    
-  });  
-
-
 
   //AUTOCOMPLETE FIELDS HANDLERS----------------------------------------------------------------------
   //AUTOCOMPLETE FIELDS HANDLERS----------------------------------------------------------------------  
@@ -202,5 +174,8 @@ $(document).ready(function() {
   $.cookie('search_red')   ? $('#red').attr("checked", true)   : $('#red').removeAttr("checked");  
   $.cookie('search_green') ? $('#green').attr("checked", true) : $('#green').removeAttr("checked");          
 
-
+  $.cookie('search_signed') ? $('#search-signed').attr("checked", true) : $('#search-signed').removeAttr("checked");  
+  $.cookie('search_miscut') ? $('#search-miscut').attr("checked", true) : $('#search-miscut').removeAttr("checked");  
+  $.cookie('search_altart') ? $('#search-altart').attr("checked", true) : $('#search-altart').removeAttr("checked");    
+  $.cookie('search_foil') ? $('#search-foil').attr("checked", true) : $('#search-foil').removeAttr("checked");      
 });

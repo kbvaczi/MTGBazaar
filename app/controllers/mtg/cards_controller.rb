@@ -20,10 +20,20 @@ class Mtg::CardsController < ApplicationController
   # GET /mtg/cards/:id
   def show
     set_back_path
-    @mtg_card = Mtg::Card.includes(:set, :listings).find(params[:id])
-    @mtg_card_back = Mtg::Card.joins(:set).where("card_number LIKE ? AND mtg_sets.code LIKE ?", "%03d" % @mtg_card.card_number.to_i.to_s + "b", @mtg_card.set.code).first if @mtg_card.dual_sided_card?
-    @card_variants = Mtg::Card.joins(:set).where("mtg_cards.name LIKE ?", @mtg_card.name)    
-    @listings = @mtg_card.listings.available
+    #@mtg_card = Mtg::Card.includes(:set, :listings).find(params[:id])
+    
+    @mtg_card = Mtg::Card.includes(:set, :listings).where(:id => params[:id].to_i).first
+    @mtg_card_back = Mtg::Card.where("mtg_cards.card_number LIKE ?", "%03d" % @mtg_card.card_number.to_i.to_s + "b").first if @mtg_card.dual_sided_card?
+    @card_variants = Mtg::Card.includes(:set).where("mtg_cards.name LIKE ?", @mtg_card.name)    
+
+    query = SmartTuple.new(" AND ")
+    query << ["mtg_listings.foil LIKE ?", true] if cookies[:search_foil].present?
+    query << ["mtg_listings.misprint LIKE ?", true] if cookies[:search_miscut].present?
+    query << ["mtg_listings.signed LIKE ?", true] if cookies[:search_signed].present?
+    query << ["mtg_listings.altart LIKE ?", true] if cookies[:search_altart].present?
+    query << ["mtg_listings.seller_id LIKE ?", cookies[:search_seller_id]] if cookies[:search_seller_id].present?    
+    @listings = @mtg_card.listings.available.where(query.compile)
+    
     case params[:sort_by]
       when "price"
         @listings = @listings.order(:price)
@@ -66,15 +76,13 @@ class Mtg::CardsController < ApplicationController
     query << SmartTuple.new(" AND ").add_each(params[:abilities]) {|v| ["mtg_cards.description LIKE ?", "%#{v}%"]} if params[:abilities].present?
  
     # options filters
-    if params[:options].present?     
-      query << ["mtg_listings.foil LIKE ?", true] if params[:options].include?("f")
-      query << ["mtg_listings.misprint LIKE ?", true] if params[:options].include?("m")
-      query << ["mtg_listings.signed LIKE ?", true] if params[:options].include?("s")      
-      query << ["mtg_listings.altart LIKE ?", true] if params[:options].include?("a")            
-    end
+    query << ["mtg_listings.foil LIKE ?", true] if cookies[:search_foil].present?
+    query << ["mtg_listings.misprint LIKE ?", true] if cookies[:search_miscut].present?
+    query << ["mtg_listings.signed LIKE ?", true] if cookies[:search_signed].present?
+    query << ["mtg_listings.altart LIKE ?", true] if cookies[:search_altart].present?
 
     # seller filter
-    query << ["mtg_listings.seller_id LIKE ? AND mtg_listings.quantity_available > 0", "#{params[:seller_id]}"] if params[:seller_id].present?
+    query << ["mtg_listings.seller_id LIKE ? AND mtg_listings.quantity_available > 0", "#{cookies[:search_seller_id]}"] if cookies[:search_seller_id].present?
 
     @mtg_cards = Mtg::Card.includes(:set, :listings).where(query.compile).order("mtg_cards.name").page(params[:page]).per(20)
     

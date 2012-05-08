@@ -1,4 +1,4 @@
-<%= form_tag search_mtg_cards_path , :method => "put", :id => "search-form" do %>   
+<%= form_tag search_mtg_cards_path , :method => "get", :id => "search-form" do %>   
   
   <%# autocomplete_mtg_card_name_mtg_cards_path%>
   <div class="mt ml mr">
@@ -74,7 +74,7 @@
       <%= select_tag "abilities" , options_for_select(Mtg::CardsHelper::ABILITY_LIST, :selected => params[:abilities]), { :multiple => true, :class => "search-select-multi chzn-select", :style => "", "data-placeholder" => "Abilities..."} %>                        
     </div>  
  
-    <div id="clear-filters">
+    <div id="clear-search" class="clear_button">
       Clear All
     </div>
     <div class="group" style="padding-bottom:10px;">

@@ -4,13 +4,13 @@
 
   <!-- Heading -->
   <div class="mtg_listing_teaser">
-    <div class="mtg_listing_teaser_seller"> <%= link_to "Seller", mtg_card_path(@mtg_card, :sort_by => "seller") %> (feedback) </div>
-    <div class="mtg_listing_teaser_language"> <%= link_to "Lang", mtg_card_path(@mtg_card, :sort_by => "language") %> </div>  
-    <div class="mtg_listing_teaser_condition"> <%= link_to "Cond", mtg_card_path(@mtg_card, :sort_by => "condition") %> </div>      
-    <div class="mtg_listing_teaser_options"> Options </div>
-    <div class="mtg_listing_teaser_price"> <%= link_to "Price", mtg_card_path(@mtg_card, :sort_by => "price") %> </div> 
-    <div class="mtg_listing_teaser_availability"> Quantity </div>     
-    <div class="mtg_listing_teaser_buy"> Add to Cart </div>  
+    <div class="mtg_listing_teaser_seller"> <u><%= link_to "Seller", mtg_card_path(@mtg_card, :sort_by => "seller") %> (feedback) </u></div>
+    <div class="mtg_listing_teaser_language"> <u><%= link_to "Lang", mtg_card_path(@mtg_card, :sort_by => "language") %> </u></div>  
+    <div class="mtg_listing_teaser_condition"> <u><%= link_to "Cond", mtg_card_path(@mtg_card, :sort_by => "condition") %> </u></div>      
+    <div class="mtg_listing_teaser_options"> <u>Options</u> </div>
+    <div class="mtg_listing_teaser_price"> <u><%= link_to "Price", mtg_card_path(@mtg_card, :sort_by => "price") %> </u></div> 
+    <div class="mtg_listing_teaser_availability"> <u>Quantity</u> </div>     
+    <div class="mtg_listing_teaser_buy"> <u>Add to Cart</u> </div>  
   </div>
   
   <!-- listings -->
