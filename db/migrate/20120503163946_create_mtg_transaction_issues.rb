@@ -1,4 +1,4 @@
-class  CreateMtgTransactionIssues < ActiveRecord::Migration
+class CreateMtgTransactionIssues < ActiveRecord::Migration
   def up
     create_table :mtg_transaction_issues do |t|
       #foreign keys
