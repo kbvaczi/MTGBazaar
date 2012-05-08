@@ -1,0 +1,43 @@
+
+
+
+<div class="mt search-seller group">
+  <%= text_field_tag "seller", cookies[:search_seller], {:class => "search-text ui-autocomplete-input mb-m" , :placeholder => "Filter by seller..." , "data-autocomplete" => autocomplete_name_users_path }%>
+  <%= text_field_tag "seller_id", cookies[:search_seller_id], :style => "display:none;" %>
+
+</div>
+<div class="mb search-options">
+  <%#= label_tag "Color:" %>
+  <table width="100%" cellspacing='0'>
+    <tr>
+      <td align="center">
+        <%= image_tag "https://s3.amazonaws.com/mtgbazaar/images/mtg/options/foil.png" , :title => "Show only foil cards", :class => "search-options-icon" %>
+        <br/>
+        <%= check_box_tag "options[]", "f", cookies[:search_foil] == "true", :class => "search-options-check", :id => "search-foil" %>                        
+      </td>
+      <td align="center">
+        <%= image_tag "https://s3.amazonaws.com/mtgbazaar/images/mtg/options/signed.png", :title => "Show only signed cards", :class => "search-options-icon" %>
+        <br/>
+        <%= check_box_tag "options[]", "s", cookies[:search_signed] == "true", :class => "search-options-check", :id => "search-signed" %>            
+      </td>          
+      <td align="center">
+        <%= image_tag "https://s3.amazonaws.com/mtgbazaar/images/mtg/options/alt.png", :title => "Show only alt art cards", :class => "search-options-icon" %>
+        <br/>
+        <%= check_box_tag "options[]", "a", cookies[:search_altart] == "true", :class => "search-options-check", :id => "search-altart" %>
+      </td>          
+      <td align="center">
+        <%= image_tag "https://s3.amazonaws.com/mtgbazaar/images/mtg/options/miscut.png", :title => "Show only misprinted cards", :class => "search-options-icon" %>
+        <br/>
+        <%= check_box_tag "options[]", "m", cookies[:search_miscut] == "true", :class => "search-options-check", :id => "search-miscut" %>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div id="PageRefresh" class="button mb-s center">Apply Changes</div>
+
+<script type="text/javascript">
+	$('#PageRefresh').click(function() {
+    location.reload();
+  });
+</script>

@@ -48,7 +48,10 @@
       <div id="main" class="group">        
         <%= render :partial => 'shared/user_login' %>
         <br class="spacer"/>                
-        <%= render :partial => 'shared/left_bar' %>              
+        <div class="left">
+          <%= render :partial => 'shared/left_bar' %>
+          <%= render :partial => 'shared/left_bar2' %>                 
+        </div>
         <div id="center_bar">
             <%= yield %>
         </div>        
