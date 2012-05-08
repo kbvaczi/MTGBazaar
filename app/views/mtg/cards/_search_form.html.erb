@@ -73,7 +73,7 @@
       <%#= label_tag "Abilities:" %>
       <%= select_tag "abilities" , options_for_select(Mtg::CardsHelper::ABILITY_LIST, :selected => params[:abilities]), { :multiple => true, :class => "search-select-multi chzn-select", :style => "", "data-placeholder" => "Abilities..."} %>                        
     </div>  
-          
+ 
     <div id="clear-filters">
       Clear All
     </div>
