@@ -1,17 +1,50 @@
-<%= render :partial => "users/manage_account_header" %>
+<% title("My Sales") %>
+
+<h1>My Sales</h1>
+
 <div class="ma">
   <div class="group">
     <ul class="tabs center">
-        <li> <%= link_to "Confirmation Needed (#{current_user.mtg_sales.where(:status => "pending").count})", account_sales_path(:status => "pending")%> </li>
-        <li> <%= link_to "Ready to Deliver (#{current_user.mtg_sales.where(:status => "confirmed").count})", account_sales_path(:status => "confirmed") %> </li>      
-        <li> <%= link_to "Complete (#{current_user.mtg_sales.where(:status => "delivered").count})", account_sales_path(:status => "delivered") %> </li>
+        <li> <%= link_to "All (#{current_user.mtg_sales.count})", account_sales_path %> </li>
+        <li> <%= link_to "Pending (#{current_user.mtg_sales.where(:status => "pending").count})", account_sales_path(:status => "pending")%> </li>
+        <li> <%= link_to "Confirmed (#{current_user.mtg_sales.where(:status => "confirmed").count})", account_sales_path(:status => "confirmed") %> </li>      
+        <li> <%= link_to "Shipped (#{current_user.mtg_sales.where(:status => "shipped").count})", account_sales_path(:status => "shipped") %> </li>
+        <li> <%= link_to "Delivered (#{current_user.mtg_sales.where(:status => "delivered").count})", account_sales_path(:status => "delivered") %> </li>        
     </ul>
   </div>
-  <h2><%="#{pluralize(@sales.count, "Sale", "Sales")}"%></h2>
+  
+<h2><%= pluralize @sales.total_count, "#{params[:status].capitalize if params[:status].present?} Sale", "#{params[:status].capitalize if params[:status].present?} Sales" %></h2>
+
+ <div class="transaction_teaser">
+    <div class="transaction_teaser_date">
+      <u>Date</u>
+    </div>
+    <div class="transaction_teaser_transaction_number">      
+      <u>Number</u>
+    </div>
+    <div class="transaction_teaser_username">
+      <u>Buyer</u>
+    </div>
+    <div class="transaction_teaser_status">
+      <u>Status</u>
+    </div>      
+    <div class="transaction_teaser_item_count">
+      <u>Items</u>
+    </div>
+    <div class="transaction_teaser_total_value">
+      <u>Value</u>
+    </div>      
+    <div class="transaction_teaser_actions">
+
+    </div>
+  </div>
+  
   <% @sales.each do |t| %>
-    
-    <%= render :partial => "mtg/transactions/teaser" , :locals => {:transaction => t} %>
-    <%= render :partial => "mtg/transactions/options" , :locals => {:transaction => t} %>          
-      
+    <%= render :partial => "mtg/transactions/teaser" , :locals => {:transaction => t} %>      
   <% end %>
+  
+  <div class="paginator">
+    <%= paginate @sales, :method => :get %>
+  </div>
+  
 </div>

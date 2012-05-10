@@ -20,8 +20,18 @@ class Mtg::Transaction < ActiveRecord::Base
   end
   
   # returns the total value of a transaction
-  def total_value
+  def subtotal_value
     Mtg::TransactionItem.by_id(item_ids).sum("mtg_transaction_items.price * mtg_transaction_items.quantity").to_f / 100
+  end
+  
+  # TODO: code shipping cost method for transactions
+  # returns the total value of a transaction
+  def shipping_cost
+    Mtg::TransactionItem.by_id(item_ids).sum("mtg_transaction_items.price * mtg_transaction_items.quantity").to_f / 100
+  end
+  
+  def total_value
+    shipping_cost + subtotal_value
   end
   
   # check whether seller has confirmed this transaction or not

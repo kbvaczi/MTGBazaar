@@ -1,0 +1,50 @@
+<% title("My Purchases") %>
+
+<h1>My Purchases</h1>
+
+<div class="ma">
+  <div class="group">
+    <ul class="tabs center">
+        <li> <%= link_to "All (#{current_user.mtg_purchases.count})", account_purchases_path %> </li>
+        <li> <%= link_to "Pending (#{current_user.mtg_purchases.where(:status => "pending").count})", account_purchases_path(:status => "pending")%> </li>
+        <li> <%= link_to "Confirmed (#{current_user.mtg_purchases.where(:status => "confirmed").count})", account_purchases_path(:status => "confirmed") %> </li>      
+        <li> <%= link_to "Shipped (#{current_user.mtg_purchases.where(:status => "shipped").count})", account_purchases_path(:status => "shipped") %> </li>
+        <li> <%= link_to "Delivered (#{current_user.mtg_purchases.where(:status => "delivered").count})", account_purchases_path(:status => "delivered") %> </li>        
+    </ul>
+  </div>
+  
+<h2><%= pluralize @sales.total_count, "#{params[:status].capitalize if params[:status].present?} Purchase", "#{params[:status].capitalize if params[:status].present?} Purchases" %></h2>
+
+ <div class="transaction_teaser">
+    <div class="transaction_teaser_date">
+      <u>Date</u>
+    </div>
+    <div class="transaction_teaser_transaction_number">      
+      <u>Number</u>
+    </div>
+    <div class="transaction_teaser_username">
+      <u>Seller</u>
+    </div>
+    <div class="transaction_teaser_status">
+      <u>Status</u>
+    </div>      
+    <div class="transaction_teaser_item_count">
+      <u>Items</u>
+    </div>
+    <div class="transaction_teaser_total_value">
+      <u>Value</u>
+    </div>      
+    <div class="transaction_teaser_actions">
+
+    </div>
+  </div>
+  
+  <% @sales.each do |t| %>
+    <%= render :partial => "mtg/transactions/teaser" , :locals => {:transaction => t} %>      
+  <% end %>
+  
+  <div class="paginator">
+    <%= paginate @sales, :method => :get %>
+  </div>
+  
+</div>

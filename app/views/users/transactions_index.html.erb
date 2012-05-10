@@ -2,15 +2,11 @@
 <div class="ma">
   <h2><%="#{pluralize(current_user.pending_transactions.count,"Pending Transaction","Pending Transactions")}"%></h2>
   <% current_user.mtg_purchases.each do |t| %>
-    <div class="left"> Purchase from <%= t.seller.username %> on <%= t.created_at.strftime("%d-%b-%y") %></div>
-    <div class="right"> Status: Waiting on seller approval</div>
     <br class="spacer"/>
     <br class="spacer"/>
     
     <%= render :partial => "mtg/transactions/teaser" , :locals => {:transaction => t} %> 
 
-    <br class="spacer"/>
-    <div class="right"> Total Value: <%= number_to_currency(t.total_value) %></div>
     <br class="spacer"/>
     <br class="spacer"/>        
   <% end %>

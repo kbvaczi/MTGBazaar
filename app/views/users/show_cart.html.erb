@@ -38,17 +38,20 @@
           </div>          
           <div class="cart_item_teaser_options">
             <% if reservation.listing.foil %>
-              F
+              <%= listing_option_foil_icon %>
             <% end %>
             <% if reservation.listing.misprint %>
-              M
+              <%= listing_option_misprint_icon %>
             <% end %>
             <% if reservation.listing.signed %>
-              S
+              <%= listing_option_signed_icon %>
             <% end %>
             <% if reservation.listing.altart %>
-              A
+              <%= listing_option_altart_icon %>
             <% end %>    
+            <% if reservation.listing.description != "" %>
+              <%= listing_option_description_icon(reservation.listing) %>
+            <% end %>
           </div>
           <div class="cart_item_teaser_price">
             <%= number_to_currency(reservation.listing.price) %>

@@ -56,7 +56,10 @@ MTGBazaar::Application.routes.draw do
   get 'users/withdraw' => 'users#new_account_withdraw', :as => 'new_account_withdraw'
   post 'users/withdraw' => 'users#create_account_withdraw', :as => 'create_account_withdraw'
   get 'users/account' => 'users#show_account_info', :as => 'show_account_info'
-  get 'users/account/sales' => 'users#account_sales', :as => 'account_sales'  
+  get 'users/account/sales' => 'users#account_sales', :as => 'account_sales'
+  post 'users/account/sales' => 'users#account_sales', :as => 'account_sales'   # for pagination
+  get 'users/account/purchases' => 'users#account_purchases', :as => 'account_purchases'
+  post 'users/account/purchases' => 'users#account_purchases', :as => 'account_purchases'   # for pagination  
   
   devise_for :users, :controllers => { :registrations => 'users/registrations' , :sessions => 'users/sessions' }
   resources :users, :only => [:index, :show], :controllers => { :users => "users/users"} do

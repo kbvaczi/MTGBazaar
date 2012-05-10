@@ -1,0 +1,28 @@
+<div style="display:inline-block;padding:5px 0 5px 0;">
+  <div style="position:relative;width:120px;font-size:10px;color:#333;overflow:none;">
+    <div style="text-align:center;vertical-align:top;min-height:2em;"> <%= item.card.formatted_name %></div>
+    <div style="text-align:center;">
+      <div style="display:inline-block;float:left;width:15px;min-height:20px;"></div>
+      <%= link_to image_tag(item.card.thumbnail_image_path, :height => "110px", :width => "80px"), mtg_card_url(item.card) %>
+      <div style="display:inline-block;float:right;width:15px;min-height:20px;">
+        <% if item.foil %>
+          <%= image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/foil.png", :title => "Foil", :style => "float:right;height:20px;vertical-align:bottom;")   %><br/>
+        <% end %>
+        <% if item.misprint %>
+          <%= image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/miscut.png", :title => "Misprint", :style => "float:right;height:20px;vertical-align:bottom;") %><br/>
+        <% end %>
+        <% if item.signed %>
+          <%= image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/signed.png", :title => "Signed by artist", :style => "float:right;height:20px;vertical-align:bottom;") %><br/>
+        <% end %>
+        <% if item.altart %>
+          <%= image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/alt.png", :title => "Alternate art", :style => "float:right;height:20px;vertical-align:bottom;") %><br/>
+        <% end %>    
+        <% if item.description != "" %>
+          <%= image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/description.png", :title => "Description: #{item.description}", :style => "float:right;height:20px;vertical-align:bottom;") %><br/>
+        <% end %>        
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center;">Price: <%= number_to_currency(item.price.dollars) %></div>
+  <div style="text-align:center;">Quantity: <%= item.quantity %> </div>
+</div>

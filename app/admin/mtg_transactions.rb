@@ -42,8 +42,8 @@ ActiveAdmin.register Mtg::Transaction do
     column "Items", :sortable => false do |transaction|
        link_to transaction.items.sum(:quantity), admin_mtg_listings_path("q[transaction_id_eq]" => transaction.id)
     end
-    column :total_value, :sortable => false do |transaction|
-      number_to_currency(transaction.total_value)
+    column :subtotal_value, :sortable => false do |transaction|
+      number_to_currency(transaction.subtotal_value)
     end
     column "Status", :sortable => :status do |transaction|
       transaction.status

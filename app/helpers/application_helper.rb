@@ -1,5 +1,5 @@
 module ApplicationHelper
-  
+
   def captcha_verified?
     return true if session[:captcha]
     return false

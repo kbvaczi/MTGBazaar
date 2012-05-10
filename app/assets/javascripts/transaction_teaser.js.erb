@@ -1,0 +1,12 @@
+$(document).ready(function() {
+
+  $(".transaction_teaser_actions_icon").click(function() {
+    $(".transaction_teaser_actions_list").hide();
+    $(this).parent().find(".transaction_teaser_actions_list").show();
+  });
+  
+  $(".transaction_teaser_actions").mouseleave(function() {
+    $(this).find(".transaction_teaser_actions_list").hide();
+  });
+  
+});

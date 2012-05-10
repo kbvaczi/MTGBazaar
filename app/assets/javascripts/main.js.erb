@@ -1,0 +1,11 @@
+$(document).ready(function() {
+
+  $("#navbar ul li.navbar_drop a").mouseover(function() {
+    $(this).parent().find(".navbar_drop_child").show(50);
+  });
+  
+  $("#navbar ul li.navbar_drop").mouseleave(function() {
+    $(this).find(".navbar_drop_child").hide(80);
+  });
+  
+});

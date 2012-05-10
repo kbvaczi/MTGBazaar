@@ -1,19 +1,20 @@
-<%= render :partial => "users/manage_account_header" %>
+<% title "Make a Withdraw" %>
+<h1>Make a Withdraw</h1>
 <div class= "ma">
-  <h2>Make a Withdraw</h2>
   <%= simple_form_for @withdraw, :url => new_account_withdraw_path do |f| %>
     <br class="spacer"/>
     <br class="spacer"/>
     <div class="inputs">
-      <%= f.input :balance,       :label => "Amount to Withdraw",
-                                  :as => :select,
-                                  :required => 'true' , 
-                                  :collection => list_deposit_options , 
-                                  :include_blank => false , 
-                                  :input_html => { :class => 'chzn-select' } %>    
+      <%= f.input :balance,           :label => "Amount to Withdraw",
+                                      :as => :select,
+                                      :required => 'true' , 
+                                      :collection => list_deposit_options , 
+                                      :include_blank => false , 
+                                      :input_html => { :class => 'chzn-select' } %>    
+                                  
+      <%= f.input :current_password,  :required => "true", 
+                                      :hint => "enter current password to confirm withdraw"%>                                  
     </div>
-    <br class="spacer"/>
-    <%= f.input :current_password, :required => "true", :hint => "enter current password to confirm withdraw"%>
     <br class="spacer"/>
     <br class="spacer"/>  
     <div class="center">

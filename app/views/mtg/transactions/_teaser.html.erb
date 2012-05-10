@@ -1,46 +1,55 @@
 <%# displays items in a given transaction %>
 <%# LOCALS: transaction = current transaction %>
 <div>
-  <div class="left"> Sale to <%= transaction.buyer.username %> on <%= transaction.created_at.strftime("%d-%b %Y") %></div>
-  <div class="right"> Status: </div>
-  <br class="spacer"/>
-  <br class="spacer"/>
-  <% transaction.items.each do |item| %>
-  <div style="clear:both;display:block;">
-    <div style="position:relative;display:inline-block;float:left;width:160px;height:140px;font-size:10px;color:#333;overflow:none;">
-      <p> <%= item.card.formatted_name %></p>
-      <div style="float:left">
-        <%= link_to image_tag(item.card.thumbnail_image_path, :height => "117px", :width => "85px"), mtg_card_url(item.card) %>
-        <br class="spacer"/>
-        <%= "#{number_to_currency(item.price.dollars)} x #{item.quantity}"%>  
-        <br class="spacer"/>  
+  
+   <div class="transaction_teaser <%= cycle("even", "odd") %>">
+      <div class="transaction_teaser_date">
+        <%= transaction.created_at.strftime("%d-%b %Y") %>
       </div>
-      <div style="margin-left:5px;float:left;">
-        <%= display_set_symbol(item.card.set) %>
-        <br/>
-        <%= item.formatted_condition %>
-        <br/>
-        <%= item.language %>
-        <br/>        
-        <% if item.foil? %>
-          <%= "Foil" %>        
-          <br/>        
+      <div class="transaction_teaser_transaction_number">      
+        <%= transaction.transaction_number %>
+      </div>
+      <div class="transaction_teaser_username">
+        <% if current_user.id == transaction.buyer_id %>
+           <%= transaction.seller.username %>
+        <% else %>
+           <%= transaction.buyer.username %>
         <% end %>
-        <% if item.signed? %>
-          <%= "Signed" %>        
-          <br/>        
-        <% end %>  
-        <% if item.misprint? %>
-          <%= "Irregularity" %>        
-          <br/>        
-        <% end %>              
-      </div>     
+      </div>
+      <div class="transaction_teaser_status">
+        <%= transaction.status %>
+      </div>      
+      <div class="transaction_teaser_item_count">
+        <%= transaction.items.to_a.sum(&:quantity) %>
+      </div>
+      <div class="transaction_teaser_total_value">
+        <%= number_to_currency(transaction.total_value) %>
+      </div>      
+      <div class="transaction_teaser_actions">
+        <div class="transaction_teaser_actions_icon">
+          Options
+        </div>
+        <div class="transaction_teaser_actions_list">
+          <ul>
+            <li> <%= link_to "View items", seller_sale_confirmation_path(transaction) %> </li>
+            <% if current_user.id == transaction.seller_id && transaction.status == "pending" %>
+              <li> <%= link_to "Confirm this sale", seller_sale_confirmation_path(transaction) %> </li>
+            <% end %>
+            <% if current_user.id == transaction.seller_id && transaction.status == "pending" %>
+              <li> <%= link_to "Reject this sale", seller_sale_rejection_path(transaction) %> </li>
+            <% end %>
+            <% if current_user.id == transaction.seller_id && transaction.status == "confirmed" %>
+              <li> <%= link_to "Confirm shipment", seller_shipment_confirmation_path(transaction)  %> </li>
+            <% end %>
+            <% if current_user.id == transaction.buyer_id && transaction.status == "shipped"%>
+              <li> <%= link_to "Finalize purchase", buyer_delivery_confirmation_path(transaction)  %> </li>
+            <% end %>        
+            <% if transaction.status != "delivered" %>
+              <li> <%= link_to "Report a Problem", new_mtg_transaction_issue_path(transaction) %> </li>
+            <% end %>  
+          </ul>
+        </div>
+      </div>
     </div>
-  </div>    
-  <% end %>
-  <br class="spacer"/>  
-  <br class="spacer"/>
-  <div class="right"> Total Value: <%= number_to_currency(transaction.total_value) %></div>
-  <br class="spacer"/>
+    
 </div>
-<br style="clear:both;">

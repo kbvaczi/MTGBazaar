@@ -1,11 +1,9 @@
 class UsersController < ApplicationController
 
-  #autocomplete :user, :username
   before_filter :authenticate_user!, :except => [:new, :create, :show, :autocomplete_name]
-
+  
   def index
     @users = User.all
-
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @users }
@@ -16,7 +14,6 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     @user = User.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @user }
@@ -96,8 +93,20 @@ class UsersController < ApplicationController
   end
   
   def account_sales
-    @sales = current_user.mtg_sales.where(:status => params[:status]).order("created_at")
+    if params[:status].present?
+      @sales = current_user.mtg_sales.where(:status => params[:status]).order("created_at DESC").page(params[:page]).per(15)
+    else
+      @sales = current_user.mtg_sales.order("created_at DESC").page(params[:page]).per(15)
+    end
   end
+  
+  def account_purchases
+    if params[:status].present?
+      @sales = current_user.mtg_purchases.where(:status => params[:status]).order("created_at DESC").page(params[:page]).per(15)
+    else
+      @sales = current_user.mtg_purchases.order("created_at DESC").page(params[:page]).per(15)
+    end
+  end  
   
   # autocomplete name handler for filtering cards by seller
   def autocomplete_name

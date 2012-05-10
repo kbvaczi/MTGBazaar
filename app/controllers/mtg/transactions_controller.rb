@@ -1,6 +1,8 @@
 class Mtg::TransactionsController < ApplicationController
   
   before_filter :authenticate_user! # must be logged in to access any of these pages
+  
+
 
   def seller_sale_confirmation
     @transaction = Mtg::Transaction.where(:seller_id => current_user.id, :id => params[:id]).first
@@ -28,7 +30,7 @@ class Mtg::TransactionsController < ApplicationController
     return if not verify_rejection_privileges?(@transaction) # this transaction exists, current user is seller, and transaction hasn't been previously confirmed or rejected already    
     if @transaction.mark_as_seller_rejected!(params[:mtg_transaction][:rejection_reason], params[:mtg_transaction][:rejection_message])
       ApplicationMailer.send_buyer_sale_rejection(@transaction).deliver # notify buyer that the sale has been confirmed
-      @transaction.buyer.account.balance_credit!(@transaction.total_value) # credit buyer's account
+      @transaction.buyer.account.balance_credit!(@transaction.subtotal_value) # credit buyer's account
       @transaction.reject_items! # mark items as rejected move listings back to available
       redirect_to back_path, :notice => "You rejected this sale..."
     else
@@ -65,7 +67,7 @@ class Mtg::TransactionsController < ApplicationController
                                       :seller_delivered_at => Time.now,
                                       :buyer_delivery_confirmation => params[:mtg_transaction][:buyer_delivery_confirmation],
                                       :status => "delivered")
-      current_user.account.balance_credit!(@transaction.total_value)  # credit sellers account
+      @transaction.seller.account.balance_credit!(@transaction.subtotal_value)  # credit sellers account
       redirect_to back_path, :notice => "Your delivery confirmation was sent..."
     else
       flash[:error] = "There were one or more errors while trying to process your request..."
