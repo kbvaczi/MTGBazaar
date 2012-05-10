@@ -21,12 +21,10 @@
         <br/>
         <div class="mt-s"> <div class="left">My Active Transactions:</div>  <div class="right"><%= current_user.active_transactions.count %></div>  </div>
         <br/>
-
+		<br/>
         <div class="mt"><div class="left">Seller Status:</div><div class="right">active</div></div>
         <br/>
         <div class="mt-s"><div class="left">My Active Listings:</div><div class="right"><%= current_user.mtg_listings.active.count %></div></div>
-        <br/>      
-        <%= link_to "Manage Account", show_account_info_path, :class => "left mt-s"%>
       </div>
     </div>
   <% end %>  

@@ -72,13 +72,14 @@ MTGBazaar::Application.routes.draw do
 # MISC ROUTES -------------- #
 
   root :to => "home#index"
-  match 'about'           => 'home#about'
-  match 'terms'           => 'home#terms_of_service'
-  match 'privacy'         => 'home#privacy'
-  match 'contact'         => 'contact#index'
-  match 'contact_create'  => 'contact#create'
-  match 'help'            => 'home#help'
-  match 'test_hash_redirect' => 'home#birthday'
+  match 'about'               => 'home#about'
+  match 'terms'               => 'home#terms_of_service'
+  match 'privacy'             => 'home#privacy'
+  match 'contact'             => 'contact#index'
+  match 'contact_create'      => 'contact#create'
+  match 'help'                => 'home#help'
+  match 'faq'                 => 'home#faq'
+  match 'feedback'            => 'home#feedback'
   
 # RAILS STANDARD COMMENTS ----------- #
   
