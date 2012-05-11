@@ -1,7 +1,6 @@
 <%# displays items in a given transaction %>
 <%# LOCALS: transaction = current transaction %>
 <div>
-  
    <div class="transaction_teaser <%= cycle("even", "odd") %>">
       <div class="transaction_teaser_date">
         <%= transaction.created_at.strftime("%d-%b %Y") %>
@@ -31,8 +30,8 @@
         </div>
         <div class="transaction_teaser_actions_list">
           <ul>
-            <li> <%= link_to "View items", show_mtg_transaction_path(transaction) %> </li>
-            <% if current_user.id == transaction.seller_id && transaction.status == "pending" %>
+            <li> <%= link_to "Details", show_mtg_transaction_path(transaction) %> </li>
+            <% if @current_user.id == transaction.seller_id && transaction.status == "pending" %>
               <li> <%= link_to "Confirm this sale", seller_sale_confirmation_path(transaction) %> </li>
             <% end %>
             <% if current_user.id == transaction.seller_id && transaction.status == "pending" %>
@@ -45,7 +44,7 @@
               <li> <%= link_to "Finalize purchase", buyer_delivery_confirmation_path(transaction)  %> </li>
             <% end %>        
             <% if transaction.status != "delivered" %>
-              <li> <%= link_to "Report a Problem", new_mtg_transaction_issue_path(transaction) %> </li>
+              <li> <%= link_to "Submit a ticket", new_mtg_transaction_issue_path(transaction) %> </li>
             <% end %>  
           </ul>
         </div>

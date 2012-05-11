@@ -158,12 +158,17 @@ module Mtg::CardsHelper
   end
 
   # displays set symbol for a given set code
-  def display_set_symbol(set)
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/set_symbols/#{set.code}.jpg", :title => "#{set.name}", :style => "height:15px;vertical-align:bottom;padding-bottom:5px;")         
+  def display_set_symbol(set, options = {})
+    if options[:width].present?
+      dimension = "width:#{options[:width]}"
+    else
+      dimension = "height:#{options[:height] || "15px"}"
+    end
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/set_symbols/#{set.code}.jpg", :title => "#{set.name}", :style => "#{dimension};vertical-align:bottom;padding-bottom:5px;")         
   end
   
   # displays set symbol for a given set code
-  def display_flag_symbol(listing)
+  def display_flag_symbol(listing, options = {})
     case listing.language
       when "EN"
         language = "English"
@@ -186,6 +191,7 @@ module Mtg::CardsHelper
       when "IT"
         language = "Italian"                
     end
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/flags/#{language.downcase}.png", :title => "#{language}", :style => "height:20px;vertical-align:bottom;")         
+    height = options[:height] || "20px"
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/flags/#{language.downcase}.png", :title => "#{language}", :style => "height:#{height};vertical-align:bottom;")         
   end  
 end

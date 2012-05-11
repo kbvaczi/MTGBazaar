@@ -3,8 +3,8 @@ class Mtg::TransactionsController < ApplicationController
   before_filter :authenticate_user! # must be logged in to access any of these pages
   
   def show
-    @transaction = Mtg::Transaction.includes(:items).find(params[:id])
-    @items = @transaction.items.page(params[:page]).per(2)
+    @transaction = Mtg::Transaction.includes(:items => {:card => :set}).find(params[:id])
+    @items = @transaction.items.includes(:card => :set).order("mtg_cards.name").page(params[:page]).per(16)
   end
 
   def seller_sale_confirmation

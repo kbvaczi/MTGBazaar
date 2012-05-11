@@ -64,7 +64,7 @@ class CartsController < ApplicationController
       end
       current_user.account.balance_debit!(current_cart.total_price)  # take money out of user's balance
       current_cart.update_cache! # empty the shopping cart
-      redirect_to back_path, :notice => "Your purchase request has been submitted."
+      redirect_to root_path, :notice => "Your purchase request has been submitted."
     else
       set_back_path # set back path so that user is returned to cart after depositing
       flash[:error] = "Insufficient Balance... Please deposit funds." 

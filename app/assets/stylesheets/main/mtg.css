@@ -79,7 +79,8 @@
 .mtg_listing_teaser, .cart_item_teaser {
   display:table;
   width:100%;
-  padding: 0 5px 5px 5px;
+  padding: 5px;
+  margin-bottom:5px;
   -moz-border-radius: 7px;
   -webkit-border-radius: 7px;
   border-radius: 7px;  
@@ -134,7 +135,7 @@
   width:8%;
 }
 .cart_item_teaser_options {
-  width:11%;
+  width:12%;
 }
 .cart_item_teaser_price {
   width:10%;
