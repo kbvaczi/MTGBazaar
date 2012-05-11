@@ -2,7 +2,10 @@ class Mtg::TransactionsController < ApplicationController
   
   before_filter :authenticate_user! # must be logged in to access any of these pages
   
-
+  def show
+    @transaction = Mtg::Transaction.includes(:items).find(params[:id])
+    @items = @transaction.items.page(params[:page]).per(2)
+  end
 
   def seller_sale_confirmation
     @transaction = Mtg::Transaction.where(:seller_id => current_user.id, :id => params[:id]).first

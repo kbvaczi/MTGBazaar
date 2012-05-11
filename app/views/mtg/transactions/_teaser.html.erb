@@ -31,7 +31,7 @@
         </div>
         <div class="transaction_teaser_actions_list">
           <ul>
-            <li> <%= link_to "View items", seller_sale_confirmation_path(transaction) %> </li>
+            <li> <%= link_to "View items", show_mtg_transaction_path(transaction) %> </li>
             <% if current_user.id == transaction.seller_id && transaction.status == "pending" %>
               <li> <%= link_to "Confirm this sale", seller_sale_confirmation_path(transaction) %> </li>
             <% end %>

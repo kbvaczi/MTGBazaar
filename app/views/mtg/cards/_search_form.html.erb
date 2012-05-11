@@ -19,8 +19,8 @@
 
     <div class="mt-s search-subtype">
       <%#= label_tag "Subtype:" %>
-      <%= select_tag "subtype", options_for_select(card_subtype_list, :selected => params[:subtype]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Subtype...", :class => "search-select chzn-select"} %>            
-      <%#= render :partial => "mtg/cards/search_subtype_select" %>      
+      <%#= select_tag "subtype", options_for_select(card_subtype_list, :selected => params[:subtype]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Subtype...", :class => "search-select chzn-select"} %>            
+      <%= render :partial => "mtg/cards/search_subtype_select" %>      
     </div>          
     
     <div class="mt-s">
@@ -32,8 +32,8 @@
     
     <div class="mt-s search-artist">
       <%#= label_tag "Artist:" %>
-      <%= select_tag "artist" , options_for_select(artist_list, :selected => params[:artist]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Artist...", :class => "search-select chzn-select"} %>                        
-      <%#= render :partial => "mtg/cards/search_artist_select" %>
+      <%#= select_tag "artist" , options_for_select(artist_list, :selected => params[:artist]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Artist...", :class => "search-select chzn-select"} %>                        
+      <%= render :partial => "mtg/cards/search_artist_select" %>
     </div>
     
     <div class="mt-m search-color">

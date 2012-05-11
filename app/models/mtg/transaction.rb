@@ -34,6 +34,10 @@ class Mtg::Transaction < ActiveRecord::Base
     shipping_cost + subtotal_value
   end
   
+  def item_count
+    items.to_a.sum(&:quantity)
+  end
+  
   # check whether seller has confirmed this transaction or not
   def seller_confirmed?
     return self.seller_confirmed_at != nil

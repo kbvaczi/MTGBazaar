@@ -1,0 +1,23 @@
+<% title "#{@transaction.transaction_number}" %>
+
+<h1>Transaction <%= @transaction.transaction_number %></h1>
+
+<div class="ma">
+  
+  <h2>Status: <%= @transaction.status.capitalize %> </h2>
+  <%= "Confirmed on: #{@transaction.seller_confirmed_at.strftime("%d-%b-%Y")}" if @transaction.seller_confirmed_at.present? %> <br/>
+  <%= "Rejected on: #{@transaction.seller_rejected_at.strftime("%d-%b-%Y")}" if @transaction.seller_rejected_at.present? %> <br/>
+  <%= "Shipped on: #{@transaction.seller_shipped_at.strftime("%d-%b-%Y")}" if @transaction.seller_shipped_at.present? %>  <br/>
+  <%= "Delivered on: #{@transaction.seller_delivered_at.strftime("%d-%b-%Y")}" if @transaction.seller_delivered_at.present? %> <br/>
+  <%= "Total Value: #{ number_to_currency(@transaction.total_value) }" %>
+
+  <h2> <%= pluralize @transaction.item_count, "Item", "Items" %> </h2>
+  <div class="paginator">
+    <%= paginate @items, :theme => :simple, :collection => @items %>
+  </div>
+  <%= render :partial => "mtg/transaction_items/teaser", :collection => @items, :as => "item" %>  
+  <div class="paginator">
+    <%= paginate @items, :theme => :simple, :remote => true, :collection => @items %>
+  </div>
+  
+</div>
