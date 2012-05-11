@@ -207,7 +207,7 @@ select[disabled] {
   float: right;
   display: inline;
   text-align: center;
-  border-left: 1px solid #DDD ;
+  border-left: 1px solid #DDD;
 }
 #navbar ul li a {
   padding: 0 20px;
@@ -229,11 +229,10 @@ select[disabled] {
 #navbar ul li.navbar_drop {
   position:relative;
 }
-/*#navbar ul li.navbar_drop a {
-  padding-right:27px;
-  background: url(<%= asset_path('chosen-sprite.png') %>) no-repeat 70px 6px;
-  background-size:80%;
-}*/
+#navbar ul li.navbar_drop a {
+  position:relative;
+  z-index: 1010;
+}
 #navbar ul li.navbar_drop a:hover, #navbar ul li.navbar_drop a:focus, #navbar ul li.navbar_drop a:active  {
   background-color: #BEC1C4;
   text-decoration: none;
@@ -261,7 +260,6 @@ select[disabled] {
   min-width: 150px;
 }
 #navbar ul li.navbar_drop div.navbar_drop_child ul li {
-
   white-space: nowrap;
   display:block;
   width:100%;

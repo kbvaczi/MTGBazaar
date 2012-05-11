@@ -10,39 +10,41 @@ MTGBazaar::Application.routes.draw do
  
 # SHOPPING CART ------------- #
 
-  post    "mtg/listings/:id/add_to_cart"      => "carts#add_mtg_cards",              :as => 'add_to_cart_mtg_listing'      
+  post    "mtg/listings/:id/add_to_cart"      => "carts#add_mtg_cards",             :as => 'add_to_cart_mtg_listing'      
   delete  "mtg/listings/:id/remove_from_cart" => "carts#remove_mtg_cards",          :as => 'remove_from_cart_mtg_listing'
   post    "mtg/listings/:id/update_quantity"  => "carts#update_quantity_mtg_cards", :as => 'update_quantity_in_cart_mtg_cards'  
-  get     'users/cart'                        => 'users#show_cart',                 :as => 'show_cart'
-  post    'users/cart/checkout'               => 'carts#checkout',                  :as => 'cart_checkout'
-  
-# TRANSACTIONS -------------- #
-
-  get   'users/transactions'              => 'users#transactions_index',                              :as => 'user_transactions_index'
-  get   'transactions/:id/confirm'        => 'mtg/transactions#seller_sale_confirmation',             :as => 'seller_sale_confirmation'    
-  get   'transactions/:id/reject'         => 'mtg/transactions#seller_sale_rejection',                :as => 'seller_sale_rejection'
-  put   'transactions/:id/reject'         => 'mtg/transactions#create_seller_sale_rejection',         :as => 'create_seller_sale_rejection'  
-  get   'transactions/:id/buyer_feedback' => 'mtg/transactions#buyer_sale_feedback',                  :as => 'buyer_sale_feedback'
-  put   'transactions/:id/buyer_feedback' => 'mtg/transactions#create_buyer_sale_feedback',           :as => 'create_buyer_sale_feedback'  
-  get   'transactions/:id/shipment'       => 'mtg/transactions#seller_shipment_confirmation',         :as => 'seller_shipment_confirmation'
-  put   'transactions/:id/shipment'       => 'mtg/transactions#create_seller_shipment_confirmation',  :as => 'create_seller_shipment_confirmation'
-  get   'transactions/:id/delivery'       => 'mtg/transactions#buyer_delivery_confirmation',          :as => 'buyer_delivery_confirmation'
-  put   'transactions/:id/delivery'       => 'mtg/transactions#create_buyer_delivery_confirmation',   :as => 'create_buyer_delivery_confirmation'  
-  
-  # transaction issues
-  get   'transactions/:id/issue'          => 'mtg/transaction_issues#new',                            :as => 'new_mtg_transaction_issue'
-  post  'transactions/:id/issue'          => 'mtg/transaction_issues#create',                         :as => 'create_mtg_transaction_issue'  
+  get     'mtg/cart'                          => 'users#show_cart',                 :as => 'show_cart'
+  post    'mtg/checkout'                      => 'carts#checkout',                  :as => 'cart_checkout'
   
 # MTG ----------------------- #
 
   namespace :mtg do
-    resources :listings, :except => [:index, :show ]    
+    
+    # transactions
+    get   'transactions/:id'                => 'mtg/transactions#show',                                 :as => 'show_mtg_transaction'
+    get   'transactions/:id/confirm'        => 'mtg/transactions#seller_sale_confirmation',             :as => 'seller_sale_confirmation'    
+    get   'transactions/:id/reject'         => 'mtg/transactions#seller_sale_rejection',                :as => 'seller_sale_rejection'
+    put   'transactions/:id/reject'         => 'mtg/transactions#create_seller_sale_rejection',         :as => 'create_seller_sale_rejection'  
+    get   'transactions/:id/buyer_feedback' => 'mtg/transactions#buyer_sale_feedback',                  :as => 'buyer_sale_feedback'
+    put   'transactions/:id/buyer_feedback' => 'mtg/transactions#create_buyer_sale_feedback',           :as => 'create_buyer_sale_feedback'  
+    get   'transactions/:id/shipment'       => 'mtg/transactions#seller_shipment_confirmation',         :as => 'seller_shipment_confirmation'
+    put   'transactions/:id/shipment'       => 'mtg/transactions#create_seller_shipment_confirmation',  :as => 'create_seller_shipment_confirmation'
+    get   'transactions/:id/delivery'       => 'mtg/transactions#buyer_delivery_confirmation',          :as => 'buyer_delivery_confirmation'
+    put   'transactions/:id/delivery'       => 'mtg/transactions#create_buyer_delivery_confirmation',   :as => 'create_buyer_delivery_confirmation'  
+
+    # transaction issues
+    get   'transactions/:id/issue'          => 'mtg/transaction_issues#new',                            :as => 'new_mtg_transaction_issue'
+    post  'transactions/:id/issue'          => 'mtg/transaction_issues#create',                         :as => 'create_mtg_transaction_issue'
+  
+    resources :listings, :except => [:index, :show ] 
+       
     resources :cards, :only => [:index, :show] do # don't allow users to create/destroy mtg cards by only allowing index and show routes
       get  "autocomplete_name", :on => :collection
       get  "search", :as => 'search', :on => :collection  # can't figure out how to send autocorrect click link via post so we need get too for now
       post "search", :as => 'search', :on => :collection
       put  "search", :as => 'search', :on => :collection            
     end
+    
   end
   
 # USERS -------------------- #

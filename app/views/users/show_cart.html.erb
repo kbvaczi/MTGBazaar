@@ -1,13 +1,12 @@
-<%= render :partial => "users/manage_account_header" %>
+<%= title "Shopping Cart"%>
+<h1><%="Your Cart (#{pluralize(current_cart.item_count,"item","items")})"%></h1>
 <div class="ma">
-  <h2><%="Your Cart (#{pluralize(current_cart.item_count,"item","items")})"%></h2>
-  
   <%# Do this if the user's cart is not empty %>
   <% if current_cart.item_count > 0 %>
     <%# organize items in cart by seller %>
     <% current_cart.seller_ids.each do |s_id| %>
       <% seller_items = @reservations.where("mtg_listings.seller_id" => s_id) %>
-      <h3><%= "#{seller_items.sum(:quantity)} Items from #{User.where(:id => s_id).pluck(:username).first}" %></h3>
+      <h2><%= "#{seller_items.sum(:quantity)} Items from #{User.where(:id => s_id).pluck(:username).first}" %></h2>
         <%# show the items under this seller %>
       <!-- Heading -->
       <div class="cart_item_teaser">
@@ -78,9 +77,9 @@
       <%= "Subtotal: #{number_to_currency(current_cart.total_price)}" %>
     </div>
     <br class="spacer"/>
-    <div class="center">
-      <%= button_to "Check Out", cart_checkout_path, :method => :post %>
-    </div>
+    <br class="spacer"/>    
+    <br class="spacer"/>        
+    <%= button_to "Check Out", cart_checkout_path, :method => :post , :class => "center"%>
 
     <%# do this if there are no items in the user's cart%>
     <% else %>
