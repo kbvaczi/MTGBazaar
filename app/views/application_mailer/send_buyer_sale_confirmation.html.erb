@@ -3,7 +3,7 @@
   <h3>Your purchase request from <%= link_to @transaction.seller.username, user_url(@transaction.seller) %> for the following items has been confirmed.</h3>
   <h3>Transaction number: <%= @transaction.transaction_number %></h3><br/>
 
-  <%= render :partial => "mtg/transactions/teaser" , :locals => {:transaction => @transaction} %> 
+  <%= render :partial => "mtg/transaction_items/teaser" , :collection => @transaction.items, :as => "item"  %> 
 
   <br class="spacer"/>
   <p>

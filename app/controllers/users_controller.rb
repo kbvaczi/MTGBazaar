@@ -13,6 +13,7 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    set_back_path    
     @user = User.find(params[:id])
     respond_to do |format|
       format.html # show.html.erb
@@ -36,6 +37,7 @@ class UsersController < ApplicationController
   end
   
   def new_account_deposit
+    set_back_path
     if params[:account_balance_transfer].present?
       @deposit = AccountBalanceTransfer.new(params[:account_balance_transfer]) 
     else
@@ -60,6 +62,7 @@ class UsersController < ApplicationController
   end
 
   def new_account_withdraw
+    set_back_path
     if params[:account_balance_transfer].present?
       @withdraw = AccountBalanceTransfer.new(params[:account_balance_transfer]) 
     else
@@ -93,6 +96,7 @@ class UsersController < ApplicationController
   end
   
   def account_sales
+    set_back_path
     if params[:status].present?
       @sales = current_user.mtg_sales.where(:status => params[:status]).order("created_at DESC").page(params[:page]).per(15)
     else
@@ -101,6 +105,7 @@ class UsersController < ApplicationController
   end
   
   def account_purchases
+    set_back_path    
     if params[:status].present?
       @sales = current_user.mtg_purchases.where(:status => params[:status]).order("created_at DESC").page(params[:page]).per(15)
     else

@@ -11,15 +11,15 @@ class Mtg::TransactionsController < ApplicationController
     @transaction = Mtg::Transaction.where(:seller_id => current_user.id, :id => params[:id]).first
     if not @transaction.present?
       flash[:error] = "There was a problem trying to process your request."
-      redirect_to back_path
+      redirect_to account_sales_path
     elsif not @transaction.seller_confirmed? # this transaction hasn't been previously confirmed by seller
       @transaction.mark_as_seller_confirmed! # this transaction is now confirmed by seller
       ApplicationMailer.send_seller_shipping_information(@transaction).deliver # send sale notification email to seller
       ApplicationMailer.send_buyer_sale_confirmation(@transaction).deliver # notify buyer that the sale has been confirmed      
-      redirect_to back_path, :notice => "Sale successfully confirmed! Shipping information will be delivered to you shortly."
+      redirect_to account_sales_path, :notice => "Sale successfully confirmed! Shipping information will be delivered to you shortly."
     else # this sale has already been confirmed
       flash[:error] = "You have already confirmed this sale."
-      redirect_to back_path
+      redirect_to account_sales_path
     end
   end
   
@@ -35,7 +35,7 @@ class Mtg::TransactionsController < ApplicationController
       ApplicationMailer.send_buyer_sale_rejection(@transaction).deliver # notify buyer that the sale has been confirmed
       @transaction.buyer.account.balance_credit!(@transaction.subtotal_value) # credit buyer's account
       @transaction.reject_items! # mark items as rejected move listings back to available
-      redirect_to back_path, :notice => "You rejected this sale..."
+      redirect_to account_sales_path, :notice => "You rejected this sale..."
     else
       flash[:error] = "There were one or more errors while trying to process your request..."
       render 'seller_sale_rejection'
@@ -52,7 +52,7 @@ class Mtg::TransactionsController < ApplicationController
     return if not verify_shipment_privileges?(@transaction)    
     if @transaction.mark_as_seller_shipped!(params[:mtg_transaction][:seller_tracking_number])
       ApplicationMailer.send_buyer_shipment_confirmation(@transaction).deliver # notify buyer that the sale has been confirmed 
-      redirect_to back_path, :notice => "You have confirmed shipment of this sale..."
+      redirect_to account_sales_path, :notice => "You have confirmed shipment of this sale..."
     else
       flash[:error] = "There were one or more errors while trying to process your request..."
       render 'seller_shipment_confirmation'
@@ -71,7 +71,7 @@ class Mtg::TransactionsController < ApplicationController
                                       :buyer_delivery_confirmation => params[:mtg_transaction][:buyer_delivery_confirmation],
                                       :status => "delivered")
       @transaction.seller.account.balance_credit!(@transaction.subtotal_value)  # credit sellers account
-      redirect_to back_path, :notice => "Your delivery confirmation was sent..."
+      redirect_to account_purchases_path, :notice => "Your delivery confirmation was sent..."
     else
       flash[:error] = "There were one or more errors while trying to process your request..."
       render 'buyer_delivery_confirmation'
@@ -88,7 +88,7 @@ class Mtg::TransactionsController < ApplicationController
     return if not verify_feedback_privileges?(@transaction) # this transaction hasn't been previously reviewed and is valid
     if @transaction.update_attributes(:seller_rating => params[:mtg_transaction][:seller_rating], 
                                       :buyer_feedback => params[:mtg_transaction][:buyer_feedback])
-      redirect_to back_path, :notice => "Your feedback was sent..."
+      redirect_to account_purchases_path, :notice => "Your feedback was sent..."
     else
       flash[:error] = "There were one or more errors while trying to process your request..."
       render 'buyer_sale_feedback'

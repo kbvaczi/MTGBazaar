@@ -4,7 +4,6 @@ class ApplicationMailer < ActionMailer::Base
   
   default :from => "\"MTGBazaar Notifications\" <admin@mtgbazaar.com>"
 
-
   def send_buyer_checkout_confirmation(transaction) #recipient is a User object, transaction is an Mtg::Transaction object
     @transaction = transaction
     @recipient = transaction.buyer

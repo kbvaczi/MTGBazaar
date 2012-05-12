@@ -40,7 +40,7 @@
   </div>
   
   <% @sales.each do |t| %>
-    <%= render :partial => "mtg/transactions/teaser" , :locals => {:transaction => t} %>      
+    <%= render :partial => "mtg/transactions/teaser" , :locals => { :transaction => t } %>      
   <% end %>
   
   <div class="paginator">
