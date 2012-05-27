@@ -1,0 +1,44 @@
+<% title "Confirm Sale"%>
+
+<h1>Confirm Sale</h1>
+<div class="ma">
+
+  <div id="acceptance">
+    <%= simple_form_for @transaction, :url => create_seller_sale_confirmation_path, :method => :put do |f| %>
+      <br class="spacer" />
+
+      <div class="inputs">        
+        
+        <%= f.label "Transaction Number"%>
+        <div class="input">
+          <p><%= link_to @transaction.transaction_number, show_mtg_transaction_path(@transaction) %> </p>          
+        </div>
+        <%= f.label "Buyer"%>
+        <div class="input">
+          <p><%= @transaction.buyer.username %> </p>
+        </div>        
+        
+        <%= f.input :response_message,    :label => "Optional Message",
+                                          :as => :text,
+                                          :hint => "Private message to the buyer",
+                                          :required => false,
+                                          :input_html => {:max_length => '255'} %>
+
+      </div>
+      <br class="spacer"/>
+      <div class="center" style="margin:0 50px 0 50px;">
+        <p>
+          Note: By confirming this sale you acknowledge that the items described in this sale request accurately represent items in your possession ready to ship to seller.
+        </p>                                          
+      </div>
+
+      <br class="spacer"/>    
+      <br class="spacer"/>
+  
+      <div class="center">
+        <%= f.button :submit, "Confirm Sale", :class => "center" %>
+      </div>
+    <% end %>
+  </div>
+  
+</div>

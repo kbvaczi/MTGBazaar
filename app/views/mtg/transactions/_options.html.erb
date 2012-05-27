@@ -2,8 +2,9 @@
 <%# LOCALS: transaction = current transaction %>
 
 <div style="padding:10px 10px 20px 0;">
-  <%= link_to "View items", seller_sale_confirmation_path(transaction), :class => "button ma-s" %>
-  <%= link_to "Confirm this sale", seller_sale_confirmation_path(transaction), :class => "button ma-s" if current_user == transaction.seller && transaction.status == "pending" %>
+  <%= link_to "View items", create_seller_sale_confirmation_path(transaction), :class => "button ma-s" %>
+  <%= link_to "Respond to buyer", seller_sale_response_path(transaction), :class => "button ma-s" if current_user == transaction.seller && transaction.status == "pending" %>
+  <%= link_to "Confirm this sale", create_seller_sale_confirmation_path(transaction), :class => "button ma-s" if current_user == transaction.seller && transaction.status == "pending" %>  
   <%= link_to "Reject this sale", seller_sale_rejection_path(transaction), :class => "button ma-s" if current_user == transaction.seller && transaction.status == "pending" %>
   <%= link_to "Confirm shipment", seller_shipment_confirmation_path(transaction), :class => "button ma-s" if current_user == transaction.seller && transaction.status == "confirmed" %>
   <%= link_to "Finalize purchase", buyer_delivery_confirmation_path(transaction), :class => "button ma-s"  if current_user == transaction.buyer && transaction.status == "shipped" %>  

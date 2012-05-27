@@ -230,7 +230,7 @@ ActiveRecord::Schema.define(:version => 20120503163946) do
     t.datetime "seller_confirmed_at"
     t.datetime "seller_rejected_at"
     t.string   "rejection_reason",            :default => ""
-    t.string   "rejection_message",           :default => ""
+    t.string   "response_message",            :default => ""
     t.datetime "seller_shipped_at"
     t.string   "seller_tracking_number",      :default => ""
     t.datetime "seller_delivered_at"

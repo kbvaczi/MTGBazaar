@@ -8,10 +8,10 @@
 
   <br class="spacer"/>
 
-  <% if not @transaction.rejection_message.empty? %>
+  <% if not @transaction.response_message.empty? %>
     <h3>Seller's Message:</h3>
     <p>
-      <%= @transaction.rejection_message %>
+      <%= @transaction.response_message %>
     </p>
     <br class="spacer"/>
   <% end %>

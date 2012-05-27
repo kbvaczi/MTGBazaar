@@ -59,8 +59,8 @@ class Mtg::Transaction < ActiveRecord::Base
   end
   
   # seller has rejected this transaction
-  def mark_as_seller_rejected!(rejection_reason, rejection_message = nil)
-    self.update_attributes(:seller_rejected_at => Time.now, :status => "rejected", :rejection_reason => rejection_reason, :rejection_message => rejection_message)
+  def mark_as_seller_rejected!(rejection_reason, response_message = nil)
+    self.update_attributes(:seller_rejected_at => Time.now, :status => "rejected", :rejection_reason => rejection_reason, :response_message => response_message)
   end  
 
   # reverse seller confirming transaction

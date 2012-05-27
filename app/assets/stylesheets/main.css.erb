@@ -14,7 +14,7 @@ html, body {
   background-color: #eee;
   font-family: "Trebuchet MS", "Helvetica Neue", "Arial", sans-serif;
   font-size: 12px;
-  color: #666;
+  color: #555;
   height: 100%;
   line-height: 140%;
   background-image:url(<%=image_path('background-gradient.png')%>);
@@ -31,8 +31,7 @@ h1 {
   overflow: hidden;
   border-bottom: 2px solid #eee;
   height:30px;
-  
-  text-shadow: 0 1px 0px #EEE;
+  text-shadow: 0px 1px white;
   border-top-right-radius: 10px;
   -moz-border-radius-topright: 10px;
   -webkit-border-top-right-radius: 10px;
@@ -52,11 +51,10 @@ h1 {
 
 }
 h2 {
-  width:auto;
-  text-indent: 10px;
   font-size: 14px;
-  line-height: 1.8;
-  margin: 15px 0 25px 0;
+  line-height: 2;
+  margin: 15px -5px 25px -5px;
+  padding:0 10px;
   text-shadow: 0 1px 0px #EEE;
   display:block;
   border-bottom: 1px solid #eee;
@@ -68,7 +66,6 @@ h2 {
   background: -ms-linear-gradient(45deg,  #f9f9f9 0%,#ffffff 100%); /* IE10+ */
   background: linear-gradient(45deg,  #f9f9f9 0%,#ffffff 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9f9', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px;

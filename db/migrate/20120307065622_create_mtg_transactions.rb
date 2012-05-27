@@ -10,7 +10,7 @@ class CreateMtgTransactions < ActiveRecord::Migration
       
       t.datetime  :seller_rejected_at
       t.string    :rejection_reason,              :default => ""
-      t.string    :rejection_message,             :default => ""
+      t.string    :response_message,             :default => ""
       
       t.datetime  :seller_shipped_at
       t.string    :seller_tracking_number,        :default => ""
