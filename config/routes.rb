@@ -13,6 +13,7 @@ MTGBazaar::Application.routes.draw do
   post    "mtg/listings/:id/add_to_cart"      => "carts#add_mtg_cards",             :as => 'add_to_cart_mtg_listing'      
   delete  "mtg/listings/:id/remove_from_cart" => "carts#remove_mtg_cards",          :as => 'remove_from_cart_mtg_listing'
   post    "mtg/listings/:id/update_quantity"  => "carts#update_quantity_mtg_cards", :as => 'update_quantity_in_cart_mtg_cards'  
+
   get     'mtg/cart'                          => 'users#show_cart',                 :as => 'show_cart'
   post    'mtg/checkout'                      => 'carts#checkout',                  :as => 'cart_checkout'
   
@@ -20,6 +21,10 @@ MTGBazaar::Application.routes.draw do
   
 # MTG ----------------------- #
 
+  # listings
+  
+  put     "mtg/listings/:id/set_active"       => "mtg/listings#set_active",         :as => 'mtg_listing_set_active'  
+  put     "mtg/listings/:id/set_inactive"     => "mtg/listings#set_inactive",       :as => 'mtg_listing_set_inactive'  
 
   # transactions
   get   'transactions/:id'                => 'mtg/transactions#show',                                 :as => 'show_mtg_transaction'

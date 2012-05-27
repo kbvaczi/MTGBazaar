@@ -24,11 +24,11 @@
       <div class="transaction_teaser_total_value">
         <%= number_to_currency(transaction.total_value) %>
       </div>      
-      <div class="transaction_teaser_actions">
-        <div class="transaction_teaser_actions_icon">
+      <div class="teaser_row_actions">
+        <div class="teaser_row_actions_icon">
           Options
         </div>
-        <div class="transaction_teaser_actions_list">
+        <div class="teaser_row_actions_list">
           <ul>
             <li> <%= link_to "Details", show_mtg_transaction_path(transaction) %> </li>
             <% if @current_user.id == transaction.seller_id && transaction.status == "pending" %>

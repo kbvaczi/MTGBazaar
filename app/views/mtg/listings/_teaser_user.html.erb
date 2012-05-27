@@ -1,0 +1,51 @@
+<div class="teaser_row <%= cycle("even", "odd") %>">  
+  <div style="width:25%;text-align:left;">
+    <%= display_name(listing.card.name) %>
+  </div>
+  <div style="width:8%">
+    <%= display_set_symbol(listing.card.set) %>
+  </div>  
+  <div style="width:10%">
+    <%= number_to_currency(listing.price) %>
+  </div>  
+  <div style="width:8%">
+    <%= display_condition(listing.condition) %>
+  </div>
+  <div style="width:9%">
+    <%= display_flag_symbol(listing) %>
+  </div>
+  <div style="width:15%">
+    <% if listing.foil %>
+      <%= listing_option_foil_icon %>
+    <% end %>
+    <% if listing.misprint %>
+      <%= listing_option_misprint_icon %>
+    <% end %>
+    <% if listing.signed %>
+      <%= listing_option_signed_icon %>
+    <% end %>
+    <% if listing.altart %>
+      <%= listing_option_altart_icon %>
+    <% end %>    
+    <% if listing.description != "" %>
+      <%= listing_option_description_icon(listing) %>
+    <% end %>
+  </div>
+  <div style="width:10%">  
+    <%= listing.quantity %>
+  </div>  
+  <div class="teaser_row_actions">
+    <div class="teaser_row_actions_icon">
+      Options
+    </div>
+    <div class="teaser_row_actions_list" style="display:none">
+      <ul>
+        <li> <%= link_to "Edit", edit_mtg_listing_path(listing)%> </li>
+        <li> <%= link_to "Set as Active", mtg_listing_set_active_path(listing), :method => :put if not listing.active %> </li>  
+        <li> <%= link_to "Set as Inactive", mtg_listing_set_inactive_path(listing), :method => :put if listing.active %> </li>          
+        <li> <%= link_to "Remove", mtg_listing_path(listing), :method => :delete , :confirm => "Are you sure you want to permanently delete this listing?"%> </li>
+      </ul>
+    </div>
+  </div>
+  
+</div>     

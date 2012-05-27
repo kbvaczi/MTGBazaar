@@ -1,70 +1,50 @@
 <h1>My Listings</h1>
 <div class="ma">
-  <h2><%="#{@active_listings.count} Active Listings"%></h2>
   
-  <%# Do this if the user has listings %>
-  <% if @active_listings.count > 0 %>
+  <div class="group">
+    <ul class="tabs center">
+        <li> <%= link_to "All (#{current_user.mtg_listings.count})", user_current_listings_path %> </li>
+        <li> <%= link_to "Active (#{current_user.mtg_listings.active.count})", user_current_listings_path(:status => "active")%> </li>
+        <li> <%= link_to "Inactive (#{current_user.mtg_listings.inactive.count})", user_current_listings_path(:status => "inactive") %> </li>      
+    </ul>
+  </div>
   
-    <% @active_listings.each do |listing| %>
-      <table style="width:100%; font-size:80%;">
-        <tr style="text-align:center;">
-          <th>Name</th>
-          <th>Set</th>
-          <th>Price</th>
-          <th>Cond.</th>
-          <th>Lang.</th>
-          <th>Options</th>
-          <th>Quantity</th>
-          <th>Remove</th>              
-        </tr>
-        <tr style="text-align:center;">
-          <td>
-            <%= display_name(listing.card.name)%>
-          </td>
-          <td>
-            <%= display_set_symbol(listing.card.set)%>
-          </td>
-          <td>
-            <%= number_to_currency(listing.price)%>
-          </td>          
-          <td>
-            <%= listing.condition %>
-          </td>
-          <td>
-            <%= display_flag_symbol(listing) %>
-          </td>          
-          <td>
-            <% if listing.foil %>
-              <div class ="left"> Foil </div><div class="right"> X </div><br/>
-            <% end %>
-            <% if listing.misprint %>
-              <div class ="left"> Misprint </div><div class="right"> X </div><br/>
-            <% end %>
-            <% if listing.signed %>
-              <div class ="left"> Signed </div><div class="right"> X </div><br/>
-            <% end %>
-            <% if listing.altart %>
-              <div class ="left"> Alt. Art </div><div class="right"> X </div><br/>
-            <% end %>
-          </td>
-          <td>
-            <%= listing.quantity %> &nbsp; &nbsp;
-          </td>
-          <td>
-            <%= link_to "edit", edit_mtg_listing_path(listing)%>
-          </td>
-          <td>|</td>
-          <td>
-            <%= link_to "remove", mtg_listing_path(listing), :method => :delete , :confirm => "Are you sure you want to permanently delete this listing?"%>
-          </td>
-        <tr/>
-      </table>          
-    <% end %>
+  <h2><%="#{@listings.count} #{(params[:status] || "").capitalize} Listings"%></h2>
 
-  <% else %>
-  
-    <div class="center"><%= "You currently have no listings.  Add listings by searching for cards and clicking \"Sell this card\"" %></div>
+  <div class="teaser_row">
+    <div style="width:25%;text-align:left;">
+      <u>Card Name</u>
+    </div>
+    <div style="width:8%">  
+      <u>Set</u>
+    </div>
+    <div style="width:10%">
+      <u>Price</u>
+    </div>
+    <div style="width:8%">
+      <u>Cond</u>
+    </div>    
+    <div style="width:9%">
+      <u>Lang</u>
+    </div>      
+    <div style="width:15%">
+      <u>Options</u>
+    </div>
+    <div style="width:10%">
+      <u>Quantity</u>
+    </div>      
+    <div class="teaser_row_actions">
+    </div>
+  </div>
+
+  <%= render :partial => "mtg/listings/teaser_user" , :collection => @listings, :as => "listing" %>      
+
+  <div class="paginator">
+    <%= paginate @listings, :method => :get %>
+  </div>
     
-  <% end %>  
-  
+  <br class="spacer"/>
+  <br class="spacer"/>
+  <p>Note: Only active listings will be visible to be purchased.  While you are in vacation mode, all your listings invisible regardless if they are set to active or not.</p>  
+    
 </div>

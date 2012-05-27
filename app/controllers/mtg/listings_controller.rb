@@ -64,6 +64,22 @@ class Mtg::ListingsController < ApplicationController
       format.html { redirect_to :back , :notice => "Listing Deleted!"}
     end
   end
+  
+  def set_active
+    listing = Mtg::Listing.find(params[:id]).mark_as_active!
+    respond_to do |format|
+      format.html { redirect_to :back , :notice => "Listing set as active!"}
+    end
+  end
+  
+  def set_inactive
+    listing = Mtg::Listing.find(params[:id]).mark_as_inactive!
+    respond_to do |format|
+      format.html { redirect_to :back , :notice => "Listing set as inactive!"}
+    end
+  end
+  
+  # CONTROLLER FUNCTIONS
     
   def verify_owner?
     @listing = Mtg::Listing.find(params[:id])

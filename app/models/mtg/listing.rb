@@ -39,6 +39,10 @@ class Mtg::Listing < ActiveRecord::Base
     self.cart_id == nil and self.active == true and self.sold_at == nil and self.transaction_id == nil and self.rejected_at == nil and self.quantity_available > 0
   end
   
+  def active?
+    self.active == true
+  end
+  
   # used for searching for available listings... Mtg::Listing.available will return all available listings
   def self.available
     where(:cart_id => nil, :active => true, :sold_at => nil, :transaction_id => nil, :rejected_at => nil).where("quantity_available > 0")
@@ -78,6 +82,14 @@ class Mtg::Listing < ActiveRecord::Base
     self.update_attribute(:rejected_at, Time.now)
     self.update_attribute(:active, false)    
   end  
+  
+  def mark_as_active!
+    self.update_attribute(:active, true)    
+  end
+  
+  def mark_as_inactive!
+    self.update_attribute(:active, false)    
+  end
   
   # returns listings that are in a shopping cart
   def self.reserved

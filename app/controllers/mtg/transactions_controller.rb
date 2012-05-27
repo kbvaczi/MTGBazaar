@@ -9,10 +9,7 @@ class Mtg::TransactionsController < ApplicationController
   
   def seller_sale_confirmation
     @transaction = Mtg::Transaction.where(:seller_id => current_user.id, :id => params[:id]).first
-    if not @transaction.present? or @transaction.status != "pending" # this transaction belongs to user and hasn't been previously confirmed or rejected by seller
-      flash[:error] = "There was a problem trying to process your request."
-      redirect_to account_sales_path
-    end
+    return if not verify_response_privileges?(@transaction) # this transaction exists, current user is seller, and transaction hasn't been previously confirmed or rejected already
   end
 
   def create_seller_sale_confirmation
@@ -33,7 +30,7 @@ class Mtg::TransactionsController < ApplicationController
   
   def seller_sale_rejection
     @transaction = Mtg::Transaction.where(:seller_id => current_user.id, :id => params[:id]).first
-    return if not verify_rejection_privileges?(@transaction) # this transaction exists, current user is seller, and transaction hasn't been previously confirmed or rejected already
+    return if not verify_response_privileges?(@transaction) # this transaction exists, current user is seller, and transaction hasn't been previously confirmed or rejected already
   end
   
   def create_seller_sale_rejection
@@ -105,18 +102,18 @@ class Mtg::TransactionsController < ApplicationController
 
   private 
   
-  def verify_rejection_privileges?(transaction)
+  def verify_response_privileges?(transaction)
     if not transaction.present? # user inputted invalid transaction_id
       flash[:error] = "There was a problem trying to process your request..."
-      redirect_to back_path
+      redirect_to account_sales_path
       return false
     elsif transaction.seller_confirmed? # this transaction has already been confirmed
-      flash[:error] = "You have already confirmed this sale. You cannot reject sale at this point in time..."
-      redirect_to back_path
+      flash[:error] = "You have already confirmed this sale..."
+      redirect_to account_sales_path
       return false
     elsif transaction.seller_rejected? # this transaction hasn't been previously confirmed by seller
       flash[:error] = "This sale was already rejected..."
-      redirect_to back_path
+      redirect_to account_sales_path
       return false       
     end
     return true

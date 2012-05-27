@@ -23,8 +23,16 @@ class UsersController < ApplicationController
   
   def display_current_listings
     set_back_path
-    @active_listings = current_user.mtg_listings.active
-    @inactive_listings = current_user.mtg_listings.inactive    
+    @active_listings = current_user.mtg_listings.active.page(params[:page]).per(15)
+
+    set_back_path
+    if params[:status] == "active"
+      @listings = current_user.mtg_listings.includes(:card => :set).where(:active => true).order("mtg_cards.name ASC").page(params[:page]).per(15)
+    elsif params[:status] == "inactive"
+      @listings = current_user.mtg_listings.includes(:card => :set).where(:active => false).order("mtg_cards.name ASC").page(params[:page]).per(15)      
+    else
+      @listings = current_user.mtg_listings.includes(:card => :set).order("mtg_cards.name ASC").page(params[:page]).per(15)
+    end
   end
   
   def account_info 
