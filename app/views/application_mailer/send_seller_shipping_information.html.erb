@@ -7,7 +7,8 @@
   <h3>Please package the following cards:</h3>
   <br class="spacer"/>
 
-  <%= render :partial => "mtg/transactions/teaser" , :locals => {:transaction => @transaction} %> 
+  <br/>
+  <%= render :partial => "mtg/transaction_items/teaser" , :collection => @transaction.items, :as => "item"   %>
 
   <h3>Ship cards to the following address:</h3>
   <p>MTGBazaar buyer <%= @transaction.buyer.username %></p>
