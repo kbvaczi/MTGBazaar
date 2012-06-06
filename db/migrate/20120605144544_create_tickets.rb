@@ -17,7 +17,7 @@ class CreateTickets < ActiveRecord::Migration
                                                                 # "other"             - some other reason not covered under FAQ
       t.string    :description,          :default => ""
       t.string    :status,               :default => "new"      # "new" , "under review", "resolved"
-      t.boolean   :strike,               :default => "false"    # does this ticket constitute a strike against the offender?
+      t.boolean   :strike,               :default => false      # does this ticket constitute a strike against the offender?
       t.timestamps
     end
 
