@@ -6,18 +6,14 @@ class Mtg::Transaction < ActiveRecord::Base
   belongs_to :seller,   :class_name => "User"
   belongs_to :buyer,    :class_name => "User"
   has_many   :items,    :class_name => "Mtg::TransactionItem" , :foreign_key => "transaction_id"
-  has_many   :issues,   :class_name => "Mtg::TransactionIssue", :foreign_key => "transaction_id"
 
+  after_create :set_transaction_number
+  
 # ---------------- VALIDATIONS ----------------      
 
 
 
-# ---------------- MEMBER METHODS -------------
-
-  # creates a unique transaction number based on transaction ID
-  def transaction_number
-    "MTG-#{(self.id + 10000).to_s(36).rjust(6,"0").upcase}"
-  end
+# ---------------- PUBLIC MEMBER METHODS -------------
   
   # returns the total value of a transaction
   def subtotal_value
@@ -83,6 +79,11 @@ class Mtg::Transaction < ActiveRecord::Base
     self.update_attributes(:status => "final")
   end  
   
+  # buyer has canceled this sale
+  def mark_as_cancelled!(reason)
+    self.update_attributes(:status => "cancelled", :cancellation_reason => reason)
+  end
+  
   # creates a dummy copy of listings to be saved with rejected transaction (for tracking purposes) then frees all originals so they can be purchased again
   def reject_items!
     self.items.each do |i|
@@ -127,6 +128,15 @@ class Mtg::Transaction < ActiveRecord::Base
     else # there is no duplicate listing, create a new one from item
       listing.save
     end
+  end
+
+# ---------------- PRIVATE MEMBER METHODS -------------  
+  private
+    
+  # creates a unique transaction number based on transaction ID
+  def set_transaction_number
+    self.transaction_number = "MTG-#{(self.id + 10000).to_s(36).rjust(7,"0").upcase}"
+    self.save
   end
   
 end

@@ -1,0 +1,68 @@
+<h1>My Ticket History</h1>
+<div class="ma">
+  
+  <div class="group">
+    <ul class="tabs center">
+        <li> <%= link_to "All (#{current_user.tickets.count})", tickets_path %> </li>
+        <li> <%= link_to "New (#{current_user.tickets.where(:status => "new").count})", tickets_path(:status => "new")%> </li>
+        <li> <%= link_to "Under Review (#{current_user.tickets.where(:status => "under review").count})", tickets_path(:status => "under review") %> </li>      
+        <li> <%= link_to "Resolved (#{current_user.tickets.where(:status => "resolved").count})", tickets_path(:status => "resolved") %> </li>              
+    </ul>
+  </div>
+  
+  <h2><%="#{@tickets.count} #{(params[:status] || "").capitalize} Tickets"%></h2>
+  
+  <%# header Row %>
+  <div class="teaser_row">
+    <div style="width:20%;text-align:left;">
+      <u>Date Submitted</u>
+    </div>
+    <div style="width:20%">
+      <u>Status</u>
+    </div>
+    <div style="width:20%">  
+      <u>Problem</u>
+    </div>
+    <div style="width:10%">
+      <u>Responses</u>
+    </div>    
+    <div style="width:20%">
+      <u>Last Updated</u>
+    </div>    
+    <div class="teaser_row_actions">
+    </div>
+  </div>
+
+  <%# Data Rows %>
+  <% @tickets.each do |ticket| %>
+    <div class="teaser_row <%= cycle("odd","even")%>">
+      <div style="width:20%;text-align:left;">
+        <%= time_string(ticket.created_at) %>
+      </div>
+      <div style="width:20%">
+        <%= ticket.status.capitalize %>
+      </div>
+      <div style="width:20%">  
+        <%= ticket.problem.capitalize %>
+      </div>
+
+      <div style="width:10%">
+        <%#TODO: count responses %>
+        <u>Responses</u>
+      </div>      
+      <div style="width:20%">
+        <%= time_string(ticket.updated_at) %>
+      </div>    
+      <div class="teaser_row_actions">
+      </div>
+    </div>
+  <% end %>
+  
+  <div class="paginator">
+    <%= paginate @tickets, :method => :get %>
+  </div>
+    
+  <br class="spacer"/>
+  <br class="spacer"/>
+    
+</div>

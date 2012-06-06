@@ -35,10 +35,10 @@ class Mtg::TransactionsController < ApplicationController
   
   def create_seller_sale_rejection
     @transaction = Mtg::Transaction.where(:seller_id => current_user.id, :id => params[:id]).first
-    return if not verify_rejection_privileges?(@transaction) # this transaction exists, current user is seller, and transaction hasn't been previously confirmed or rejected already    
+    return if not verify_response_privileges?(@transaction) # this transaction exists, current user is seller, and transaction hasn't been previously confirmed or rejected already    
     if @transaction.mark_as_seller_rejected!(params[:mtg_transaction][:rejection_reason], params[:mtg_transaction][:response_message])
       ApplicationMailer.send_buyer_sale_rejection(@transaction).deliver # notify buyer that the sale has been confirmed
-      @transaction.buyer.account.balance_credit!(@transaction.subtotal_value) # credit buyer's account
+      @transaction.buyer.account.balance_credit!(@transaction.total_value) # credit buyer's account
       @transaction.reject_items! # mark items as rejected move listings back to available
       redirect_to account_sales_path, :notice => "You rejected this sale..."
     else
@@ -47,6 +47,55 @@ class Mtg::TransactionsController < ApplicationController
     end
   end
     
+##### ---------- BUYER SALE CANCELLATION ------------- #####
+##### ---------- BUYER SALE CANCELLATION ------------- #####
+    
+  def buyer_sale_cancellation
+    @transaction = Mtg::Transaction.where(:buyer_id => current_user.id, :id => params[:id]).first
+    if not @transaction.present? 
+      flash[:error] = "You do not have permission to perform this action"
+      redirect_to back_path
+    end
+  end
+  
+  def create_buyer_sale_cancellation
+    @transaction = Mtg::Transaction.where(:buyer_id => current_user.id, :id => params[:id]).first
+    return false if not buyer_sale_cancellation_validations
+    if @transaction.mark_as_cancelled!(params[:mtg_transaction][:cancellation_reason]) # mark status on transaction as cancelled and set cancellation reason
+      ApplicationMailer.send_seller_cancellation_notice(@transaction).deliver # notify seller their transaction was cancelled
+      @transaction.buyer.account.balance_credit!(@transaction.total_value) # credit buyer's account
+      @transaction.reject_items! # mark items as rejected move listings back to available
+      redirect_to account_sales_path, :notice => "You cancelled this sale..."
+    else
+      flash[:error] = "There were one or more errors while trying to process your request..."
+      render 'buyer_sale_cancellation'
+    end
+  end
+  
+  def buyer_sale_cancellation_validations
+    days_to_cancel = MTGBazaar::Application::DAYS_UNTIL_BUYER_CAN_CANCEL_UNCONFIRMED_ORDER
+    if (params[:mtg_transaction].present? and params[:mtg_transaction][:cancellation_reason] == "confirmation") and (@transaction.status == "pending")
+      if (@transaction.created_at < days_to_cancel.days.ago)
+        return true # validation passes
+      else
+        flash[:error] = "You must wait #{days_to_cancel} days after order creation to perform this action"
+        redirect_to back_path
+        return false # validation fails
+      end
+    elsif not @transaction.present? 
+      flash[:error] = "You do not have permission to perform this action"
+      redirect_to back_path
+      return false # validation fails
+    else
+      flash[:error] = "There was a problem with your request"
+      redirect_to back_path
+      return false # validation fails
+    end
+  end
+      
+##### ------ SELLER SHIPMENT CONFIRMATION ----- #####    
+##### ------ SELLER SHIPMENT CONFIRMATION ----- #####    
+
   def seller_shipment_confirmation
     @transaction = Mtg::Transaction.where(:seller_id => current_user.id, :id => params[:id]).first
     return if not verify_shipment_privileges?(@transaction)

@@ -6,6 +6,9 @@ class AdminUser < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me
+
+  # allow models to access current_admin_user variable using AdminUser.current_admin_user
+  cattr_accessor :current_admin_user
   
   # send password request email once added in admin panel
   after_create { |admin| admin.send_reset_password_instructions }

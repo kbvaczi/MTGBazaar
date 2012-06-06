@@ -1,0 +1,37 @@
+<%= simple_form_for @ticket, :url => tickets_path, :method => :post do |f| %>
+
+  <div class="inputs">
+    <br class="spacer"/>  
+
+    <%= f.input :problem,                   :label => "Problem",
+                                            :as => :select,
+                                            :collection => [["Report profanity or inappropriate content",  "profanity"],
+                                                            ["Report harassment by another user",          "harassment"],
+                                                            ["Report missing or delinquent package",       "shipping"],
+                                                            ["Report other problem not covered under FAQ", "other"]],
+                                            :input_html => { :class => "chzn-select" },
+                                            :required => true %>
+                            
+    <%= f.input :transaction_number,        :label => "Transaction Number",
+                                            :as => :string,
+                                            :hint => "only for issues regarding specific transactions",
+                                            :required => false %>
+                                            
+    <%= f.input :offender,                  :label => "Offending User",
+                                            :as => :string,
+                                            :hint => "only for issues regarding specific user",
+                                            :required => false %>                                            
+
+    <%= f.input :description,               :label => "Description",
+                                            :as => :text,
+                                            :required => true %>      
+                                
+  </div>
+
+  <p style="margin:40px;"> Note: Please include as much detail as possible to help facilitate a speedy resolution.  Include URLs to specific content if applicable. </p>
+  
+  <div class="center">
+    <%= f.button :submit, "Submit", :class => "center" %>
+  </div>
+  
+<% end %>

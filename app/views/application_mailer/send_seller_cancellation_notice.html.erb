@@ -1,0 +1,19 @@
+<div style="width:550px;">
+  <h2>Cancellation Notice</h2>
+  <h3> Your sale to <%= @transaction.buyer.username %> was cancelled </h3>
+  <h3> Transaction Number: <%= link_to @transaction.transaction_number, show_mtg_transaction_url(@transaction) %> </h3>
+    
+  <br class="spacer"/>
+  <p>
+    <b>What Now?</b>
+    <ul>
+      <li> Unfortunately, your profile will now show that you have one more cancelled sale </li>
+      <li> The items from this sale will be added back to the listings so you can attempt to sell them again </li>
+      <li> Too many cancellations on your profile may discourage buyers from purchasing your items, so try to avoid future cancellations by confirming and shipping items on time </li>
+    </ul>
+  </p>
+  <br class="spacer"/>
+  <br class="spacer"/>
+  <p>Cheers!</p>
+  <%= image_tag "logo.png" %>
+</div>

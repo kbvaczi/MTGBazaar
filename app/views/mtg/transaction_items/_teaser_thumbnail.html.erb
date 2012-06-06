@@ -1,0 +1,33 @@
+<div style="display:inline-block;padding:5px;margin:2px;border:1px solid #eee;border-radius:8px;">
+  <div style="position:relative;width:111px;font-size:10px;color:#333;overflow:hidden;">
+    <div style="text-align:center;height:2.9em;vertical-align:middle;padding:0 5px;word-wrap:break-word;"> <%= item.card.formatted_name %> </div>
+    <div style="text-align:center;">
+      <div style="display:inline-block;float:left;width:15px;min-height:20px;">
+        <%= display_set_symbol item.card.set, :width => "15px" %>        
+        <%= display_flag_symbol item, :height => "15px" %>
+      </div>
+      <div style="display:inline-block;height:100px;width:70px">
+        <%= link_to image_tag(item.card.thumbnail_image_path, :height => "100px", :width => "70px"), mtg_card_url(item.card) %>
+      </div>
+      <div style="display:inline-block;float:right;width:15px;min-height:20px;">
+        <% if item.foil %>
+          <%= image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/foil.png", :title => "Foil", :style => "float:right;height:15px;vertical-align:bottom;")   %><br/>
+        <% end %>
+        <% if item.misprint %>
+          <%= image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/miscut.png", :title => "Misprint", :style => "float:right;height:15px;vertical-align:bottom;") %><br/>
+        <% end %>
+        <% if item.signed %>
+          <%= image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/signed.png", :title => "Signed by artist", :style => "float:right;height:15px;vertical-align:bottom;") %><br/>
+        <% end %>
+        <% if item.altart %>
+          <%= image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/alt.png", :title => "Alternate art", :style => "float:right;height:15px;vertical-align:bottom;") %><br/>
+        <% end %>    
+        <% if item.description != "" %>
+          <%= image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/description.png", :title => "Description: #{item.description}", :style => "float:right;height:15px;vertical-align:bottom;") %><br/>
+        <% end %>        
+      </div>
+    </div>
+  </div>
+  <div class="left" style="padding-left:5px;"><%= number_to_currency(item.price.dollars) %></div>
+  <div class="right" style="padding-right:5px;">x <%= item.quantity %> </div>
+</div>

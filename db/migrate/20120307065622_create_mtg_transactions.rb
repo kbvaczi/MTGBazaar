@@ -5,12 +5,14 @@ class CreateMtgTransactions < ActiveRecord::Migration
       t.integer   :buyer_id
       t.integer   :seller_id
 
+      t.string    :transaction_number
+      
       t.datetime  :buyer_confirmed_at
       t.datetime  :seller_confirmed_at
       
       t.datetime  :seller_rejected_at
       t.string    :rejection_reason,              :default => ""
-      t.string    :response_message,             :default => ""
+      t.string    :response_message,              :default => ""
       
       t.datetime  :seller_shipped_at
       t.string    :seller_tracking_number,        :default => ""
@@ -21,6 +23,9 @@ class CreateMtgTransactions < ActiveRecord::Migration
       t.string    :buyer_feedback,                :default => "P"         #Positive "P", Negative "N"
       t.string    :buyer_feedback_text,           :default => ""
 
+      t.datetime  :buyer_cancelled_at
+      t.string    :cancellation_reason,           :default => ""
+      
       t.string    :status,                        :default => "pending"                              # final, rejected?
 
       t.timestamps
@@ -30,6 +35,7 @@ class CreateMtgTransactions < ActiveRecord::Migration
     add_index :mtg_transactions, :buyer_id
     add_index :mtg_transactions, :seller_id
     add_index :mtg_transactions, :status 
+    add_index :mtg_transactions, :transaction_number
 
   end
 

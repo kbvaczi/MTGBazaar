@@ -48,6 +48,17 @@ ActiveAdmin.register Mtg::Set do
     column :updated_at    
     column :active
   end
+  
+  # ------ FILTERS FOR INDEX ------- #
+  begin   
+    filter :name
+    filter :code
+    filter :block, :as => :select, :input_html => {:class => "chzn-select"}  
+    filter :release_date
+    filter :updated_at
+    filter :created_at
+    filter :active
+  end
 
   # ------ CONTROLLER ACTIONS ------- #
   # note: collection_actions work on collections, member_acations work on individual  

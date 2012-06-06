@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120503163946) do
+ActiveRecord::Schema.define(:version => 20120605144544) do
 
   create_table "account_balance_transfers", :force => true do |t|
     t.integer  "account_id"
@@ -186,19 +186,6 @@ ActiveRecord::Schema.define(:version => 20120503163946) do
   add_index "mtg_sets", ["name"], :name => "index_mtg_sets_on_name"
   add_index "mtg_sets", ["release_date"], :name => "index_mtg_sets_on_release_date"
 
-  create_table "mtg_transaction_issues", :force => true do |t|
-    t.integer  "transaction_id"
-    t.integer  "author_id"
-    t.string   "problem",        :default => ""
-    t.string   "description",    :default => ""
-    t.string   "status",         :default => "new"
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
-  end
-
-  add_index "mtg_transaction_issues", ["author_id"], :name => "index_mtg_transaction_issues_on_author_id"
-  add_index "mtg_transaction_issues", ["transaction_id"], :name => "index_mtg_transaction_issues_on_transaction_id"
-
   create_table "mtg_transaction_items", :force => true do |t|
     t.integer  "card_id"
     t.integer  "seller_id"
@@ -226,6 +213,7 @@ ActiveRecord::Schema.define(:version => 20120503163946) do
   create_table "mtg_transactions", :force => true do |t|
     t.integer  "buyer_id"
     t.integer  "seller_id"
+    t.string   "transaction_number"
     t.datetime "buyer_confirmed_at"
     t.datetime "seller_confirmed_at"
     t.datetime "seller_rejected_at"
@@ -237,6 +225,8 @@ ActiveRecord::Schema.define(:version => 20120503163946) do
     t.boolean  "buyer_delivery_confirmation"
     t.string   "buyer_feedback",              :default => "P"
     t.string   "buyer_feedback_text",         :default => ""
+    t.datetime "buyer_cancelled_at"
+    t.string   "cancellation_reason",         :default => ""
     t.string   "status",                      :default => "pending"
     t.datetime "created_at",                                         :null => false
     t.datetime "updated_at",                                         :null => false
@@ -245,6 +235,7 @@ ActiveRecord::Schema.define(:version => 20120503163946) do
   add_index "mtg_transactions", ["buyer_id"], :name => "index_mtg_transactions_on_buyer_id"
   add_index "mtg_transactions", ["seller_id"], :name => "index_mtg_transactions_on_seller_id"
   add_index "mtg_transactions", ["status"], :name => "index_mtg_transactions_on_status"
+  add_index "mtg_transactions", ["transaction_number"], :name => "index_mtg_transactions_on_transaction_number"
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
@@ -255,6 +246,26 @@ ActiveRecord::Schema.define(:version => 20120503163946) do
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
+  create_table "tickets", :force => true do |t|
+    t.integer  "transaction_id"
+    t.string   "transaction_type"
+    t.integer  "author_id"
+    t.string   "author_type"
+    t.integer  "offender_id"
+    t.string   "problem",          :default => ""
+    t.string   "description",      :default => ""
+    t.string   "status",           :default => "new"
+    t.boolean  "strike",           :default => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
+  end
+
+  add_index "tickets", ["author_id"], :name => "index_tickets_on_author_id"
+  add_index "tickets", ["author_type"], :name => "index_tickets_on_author_type"
+  add_index "tickets", ["offender_id"], :name => "index_tickets_on_offender_id"
+  add_index "tickets", ["transaction_id"], :name => "index_tickets_on_transaction_id"
+  add_index "tickets", ["transaction_type"], :name => "index_tickets_on_transaction_type"
 
   create_table "transactions", :force => true do |t|
     t.integer  "test1_id"

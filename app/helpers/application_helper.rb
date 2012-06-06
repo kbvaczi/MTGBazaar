@@ -17,4 +17,7 @@ module ApplicationHelper
     return session[:return_to]
   end
   
+  def time_string(time)
+    time.strftime("%d-%b %Y") 
+  end
 end

@@ -32,19 +32,19 @@
           <ul>
             <li> <%= link_to "Details", show_mtg_transaction_path(transaction) %> </li>
             <% if @current_user.id == transaction.seller_id && transaction.status == "pending" %>
-              <li> <%= link_to "Confirm this sale", seller_sale_confirmation_path(transaction) %> </li>
+              <li> <%= link_to "Confirm Sale", seller_sale_confirmation_path(transaction) %> </li>
             <% end %>
             <% if current_user.id == transaction.seller_id && transaction.status == "pending" %>
-              <li> <%= link_to "Reject this sale", seller_sale_rejection_path(transaction) %> </li>
+              <li> <%= link_to "Reject Sale", seller_sale_rejection_path(transaction) %> </li>
             <% end %>
             <% if current_user.id == transaction.seller_id && transaction.status == "confirmed" %>
-              <li> <%= link_to "Confirm shipment", seller_shipment_confirmation_path(transaction)  %> </li>
+              <li> <%= link_to "Confirm Shipment", seller_shipment_confirmation_path(transaction)  %> </li>
             <% end %>
             <% if current_user.id == transaction.buyer_id && transaction.status == "shipped"%>
-              <li> <%= link_to "Finalize purchase", buyer_delivery_confirmation_path(transaction)  %> </li>
+              <li> <%= link_to "Complete Purchase", buyer_delivery_confirmation_path(transaction)  %> </li>
             <% end %>        
             <% if transaction.status != "delivered" %>
-              <li> <%= link_to "Submit a ticket", new_mtg_transaction_issue_path(transaction) %> </li>
+              <li> <%= link_to "Cancel Sale", mtg_transaction_buyer_sale_cancellation_path(transaction) %> </li>
             <% end %>  
           </ul>
         </div>

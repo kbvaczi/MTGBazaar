@@ -1,11 +1,10 @@
 
-  <% unless user_signed_in? %><%# user is not logged in %>
+  <% unless user_signed_in? %> <%# user is not logged in %>
     <%= link_to "", new_user_registration_path, :id => "right_bar", :style => "background-image: url(https://s3.amazonaws.com/mtgbazaar/images/joinus.jpg);" %>
-    <%#= link_to image_tag("https://s3.amazonaws.com/mtgbazaar/images/joinus.jpg", :title => "Join MTGBazaar", :style => "height:210px;width:230px;"), new_user_registration_path%>
   <% else %>
     <div id="right_bar">
       <h1>
-        <div style="padding-top:3px;">
+        <div>
           <table width="100%">
             <tr>
               <td align="left"><%= "#{current_user.username}" %></td>

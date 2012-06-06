@@ -17,7 +17,9 @@ MTGBazaar::Application.routes.draw do
   get     'mtg/cart'                          => 'users#show_cart',                 :as => 'show_cart'
   post    'mtg/checkout'                      => 'carts#checkout',                  :as => 'cart_checkout'
   
-  
+# TICKETS ------------------- #
+
+  resources :tickets, :only => [:index, :show, :new, :create] 
   
 # MTG ----------------------- #
 
@@ -26,12 +28,20 @@ MTGBazaar::Application.routes.draw do
   put     "mtg/listings/:id/set_active"       => "mtg/listings#set_active",         :as => 'mtg_listing_set_active'  
   put     "mtg/listings/:id/set_inactive"     => "mtg/listings#set_inactive",       :as => 'mtg_listing_set_inactive'  
 
+  # transaction issues (this needs to go above transactions sections for index to work)
+#  get   'transactions/issues'             => 'mtg/transaction_issues#index',                          :as => 'transaction_issues_index'  
+#  get   'transactions/:id/issue'          => 'mtg/transaction_issues#new',                            :as => 'new_mtg_transaction_issue'
+#  post  'transactions/:id/issue'          => 'mtg/transaction_issues#create',                         :as => 'create_mtg_transaction_issue'
+
+
   # transactions
   get   'transactions/:id'                => 'mtg/transactions#show',                                 :as => 'show_mtg_transaction'
   get   'transactions/:id/confirm'        => 'mtg/transactions#seller_sale_confirmation',             :as => 'seller_sale_confirmation'      
   put   'transactions/:id/confirm'        => 'mtg/transactions#create_seller_sale_confirmation',      :as => 'create_seller_sale_confirmation'    
   get   'transactions/:id/reject'         => 'mtg/transactions#seller_sale_rejection',                :as => 'seller_sale_rejection'
   put   'transactions/:id/reject'         => 'mtg/transactions#create_seller_sale_rejection',         :as => 'create_seller_sale_rejection'  
+  get   'transactions/:id/cancel'         => 'mtg/transactions#buyer_sale_cancellation',              :as => 'mtg_transaction_buyer_sale_cancellation'  
+  put   'transactions/:id/cancel'         => 'mtg/transactions#create_buyer_sale_cancellation',       :as => 'mtg_transaction_create_buyer_sale_cancellation'    
   get   'transactions/:id/buyer_feedback' => 'mtg/transactions#buyer_sale_feedback',                  :as => 'buyer_sale_feedback'
   put   'transactions/:id/buyer_feedback' => 'mtg/transactions#create_buyer_sale_feedback',           :as => 'create_buyer_sale_feedback'  
   get   'transactions/:id/shipment'       => 'mtg/transactions#seller_shipment_confirmation',         :as => 'seller_shipment_confirmation'
@@ -39,9 +49,7 @@ MTGBazaar::Application.routes.draw do
   get   'transactions/:id/delivery'       => 'mtg/transactions#buyer_delivery_confirmation',          :as => 'buyer_delivery_confirmation'
   put   'transactions/:id/delivery'       => 'mtg/transactions#create_buyer_delivery_confirmation',   :as => 'create_buyer_delivery_confirmation'  
 
-  # transaction issues
-  get   'transactions/:id/issue'          => 'mtg/transaction_issues#new',                            :as => 'new_mtg_transaction_issue'
-  post  'transactions/:id/issue'          => 'mtg/transaction_issues#create',                         :as => 'create_mtg_transaction_issue'
+
 
 
   namespace :mtg do

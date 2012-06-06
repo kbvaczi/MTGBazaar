@@ -11,24 +11,20 @@ ActiveAdmin.register Mtg::Transaction do
   scope :pending do |transaction|
     transaction.where(:status => "pending")
   end
-
   scope :confirmed do |transaction|
     transaction.where(:status => "confirmed")
   end  
   scope :shipped do |transaction|
     transaction.where(:status => "shipped")
   end
-  scope :delivered do |transaction|
-    transaction.where(:status => "delivered")
-  end
   scope :final do |transaction|
-    transaction.where(:status => "final")
-  end
-  scope :problem do |transaction|
-    transaction.where(:status => "problem")
+    transaction.where(:status => "completed")
   end
   scope :rejected do |transaction|
     transaction.where(:status => "rejected")
+  end  
+  scope :rejected do |transaction|
+    transaction.where(:status => "cancelled")
   end  
   
   # ------ INDEX PAGE CUSTOMIZATIONS ------ #
@@ -37,10 +33,11 @@ ActiveAdmin.register Mtg::Transaction do
     column :id, :sortable => :id do |t|
       link_to t.id, admin_mtg_transaction_path(t)
     end
+    column "Number", :transaction_number
     column :buyer
     column :seller
     column "Items", :sortable => false do |transaction|
-       link_to transaction.items.sum(:quantity), admin_mtg_listings_path("q[transaction_id_eq]" => transaction.id)
+       link_to transaction.items.sum(:quantity), admin_mtg_transaction_items_path("q[transaction_id_eq]" => transaction.id)
     end
     column :subtotal_value, :sortable => false do |transaction|
       number_to_currency(transaction.subtotal_value)
@@ -54,7 +51,6 @@ ActiveAdmin.register Mtg::Transaction do
     column :seller_confirmed_at    
     column :seller_shipped_at
     column :seller_delivered_at    
-    column :seller_rating
     column :buyer_feedback  
     column :created_at
     column :updated_at    
@@ -70,11 +66,9 @@ ActiveAdmin.register Mtg::Transaction do
   filter :seller_confirmed_at    
   filter :seller_shipped_at
   filter :seller_delivered_at    
-  filter :seller_rating, :as => :select, :collection => ["1","2","3","4","5"], :input_html => {:class => "chzn-select"}      
   filter :buyer_feedback
   filter :created_at
   filter :updated_at
   filter :sold_at  
-
 
 end

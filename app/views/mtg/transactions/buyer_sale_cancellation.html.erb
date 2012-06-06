@@ -1,0 +1,40 @@
+<% title "Cancel Order"%>
+
+<h1> Cancel Order </h1>
+
+<%= simple_form_for @transaction, :url => mtg_transaction_create_buyer_sale_cancellation_path, :method => :put do |f| %>
+
+  <div class="inputs">
+    <br class="spacer"/>
+      
+    <div class="input">
+      <%= f.label "Transaction Number" %>
+      <p> <%= link_to @transaction.transaction_number, show_mtg_transaction_path(@transaction) %> </p>
+    </div>
+    <div class="input">
+      <% if current_user.id == @transaction.buyer_id %>
+        <%= f.label "Seller" %>
+        <p><%= link_to @transaction.seller.username, user_path(@transaction.seller) %></p>
+      <% else %>
+        <%= f.label "Buyer" %>
+        <p><%= @transaction.buyer.username %></p>
+      <% end %>
+    </div>
+                            
+    <%= f.input :cancellation_reason,       :label => "Reason",
+                                            :as => :select,
+                                            :collection => [["Purchase still pending, 3 days passed since order", "confirmation"], 
+                                                            ["Purchase not shipped, 7 days passed since confirmation", "shipment"]],
+                                            :input_html => { :class => "chzn-select" },
+                                            :required => true %>
+                                
+  </div>
+
+  <br class="spacer"/>
+  <br class="spacer"/>  
+  
+  <div class="center">
+    <%= f.button :submit, "Submit", :class => "center" %>
+  </div>
+  
+<% end %>

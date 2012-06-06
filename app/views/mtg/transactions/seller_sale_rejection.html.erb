@@ -13,7 +13,7 @@
   <div class="inputs">
     <%= f.input :rejection_reason,    :label => "Reason for Rejection",
                                       :as => :select,
-                                      :collection => [["Card(s) no longer available","availability"], ["Poor buyer reputation","reputation"], ["Other","other"]],
+                                      :collection => [["I no longer have these items", "availability"], ["I do not have time to ship items", "time"], ["Other", "other"]],
                                       :include_blank => false ,
                                       :input_html => {:class => 'chzn-select'},
                                       :required => true %>
