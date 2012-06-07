@@ -1,0 +1,37 @@
+<% title "Ticket Details" %>
+
+<h1>Ticket Details</h1>
+<div class="ma">
+  
+  <h2>Overview</h2>
+  <div class="ma">
+    <h3>Status:</h3>
+    <p><%= @ticket.status %></p>
+    <% if @ticket.offender_id.present? %>
+      <h3>Offender:</h3>
+      <p><%= @ticket.offender.username %></p>
+    <% end %>
+    <% if @ticket.transaction.present? %>
+      <h3>Transaction:</h3>
+      <p><%= @ticket.transaction.transaction_number %></p>
+    <% end %>
+    <h3>Description:</h3>
+    <p><%= @ticket.description %></p>
+  </div>
+
+  <h2><%= pluralize @ticket.updates.count, "Update", "Updates" %></h2>
+  <% @ticket.updates.each do |ticket_update| %>
+  <div class="ma">
+    <h3> <%= ticket_update.author.username if ticket_update.author.class == "User"  %> on <%= time_string(ticket_update.created_at) %>:</h3>
+    <p> <%= ticket_update.description %> </p>
+    <% if ticket_update.complete_ticket? %>    
+      <p> This ticket was closed </p>
+    <% end %>
+  </div>
+  <% end %>
+
+  
+  <h2>Post a new update</h2>
+  <%= render :partial => "form_update" %>
+  
+</div>

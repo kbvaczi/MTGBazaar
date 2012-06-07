@@ -1,0 +1,14 @@
+<%= simple_form_for @ticket_update, :url => ticket_update_path(@ticket), :method => :post do |f| %>
+
+  <div class="inputs">
+    <%= f.input :description,               :label => "Description",
+                                            :as => :text,
+                                            :required => true %>                                      
+  </div>
+  
+  <br class="spacer"/>
+  <div class="center">
+    <%= f.button :submit, "Submit", :class => "center" %>
+  </div>
+  
+<% end %>

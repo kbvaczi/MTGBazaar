@@ -5,10 +5,11 @@
 
     <%= f.input :problem,                   :label => "Problem",
                                             :as => :select,
-                                            :collection => [["Report profanity or inappropriate content",  "profanity"],
-                                                            ["Report harassment by another user",          "harassment"],
-                                                            ["Report missing or delinquent package",       "shipping"],
-                                                            ["Report other problem not covered under FAQ", "other"]],
+                                            :collection => [["Profanity or inappropriate content",  "profanity"],
+                                                            ["Harassment by another user",          "harassment"],
+                                                            ["Missing or delinquent package",       "shipping"],
+                                                            ["Buyer won't complete transaction",    "delivery confirmation"],                                                            
+                                                            ["Other problem not covered under FAQ", "other"]],
                                             :input_html => { :class => "chzn-select" },
                                             :required => true %>
                             
@@ -17,7 +18,7 @@
                                             :hint => "only for issues regarding specific transactions",
                                             :required => false %>
                                             
-    <%= f.input :offender,                  :label => "Offending User",
+    <%= f.input :offender_username,         :label => "Offending User",
                                             :as => :string,
                                             :hint => "only for issues regarding specific user",
                                             :required => false %>                                            

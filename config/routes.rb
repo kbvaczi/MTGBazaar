@@ -20,6 +20,7 @@ MTGBazaar::Application.routes.draw do
 # TICKETS ------------------- #
 
   resources :tickets, :only => [:index, :show, :new, :create] 
+  post    "tickets/:id/update"                => "tickets#create_update",            :as => 'ticket_update'
   
 # MTG ----------------------- #
 
