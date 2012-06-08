@@ -135,7 +135,7 @@ class Mtg::Transaction < ActiveRecord::Base
     
   # creates a unique transaction number based on transaction ID
   def set_transaction_number
-    self.transaction_number = "MTG-#{(self.id + 10000).to_s(36).rjust(7,"0").upcase}"
+    self.transaction_number = "MTG-#{(self.id + 282382).to_s(36).rjust(6,"0").upcase}"
     self.save
   end
   

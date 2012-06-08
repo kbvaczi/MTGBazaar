@@ -6,7 +6,8 @@ class Ticket < ActiveRecord::Base
   has_many    :updates,       :class_name  => "TicketUpdate"
   
   validate :verify_transaction_number, :verify_offender_username, :normal_users_cannot_set_strikes
-  validates_presence_of :description, :problem, :author_id, :author_type, :transaction_id, :transaction_type
+  validates_presence_of :description, :problem, :author_id, :author_type
+  after_create :set_ticket_number
   
   # these class variables are accessible to be changed by user when creating a new ticket
   attr_accessible :problem, :offender_username, :transaction_number, :description
@@ -64,4 +65,9 @@ class Ticket < ActiveRecord::Base
     end
   end
   
+  # creates a unique ticket number based on ID
+  def set_ticket_number
+    self.ticket_number = "TKT-#{(self.id + 51235).to_s(36).rjust(5,"0").upcase}"
+    self.save
+  end
 end

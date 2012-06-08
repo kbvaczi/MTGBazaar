@@ -3,12 +3,14 @@
   <div class="inputs">
     <%= f.input :description,               :label => "Description",
                                             :as => :text,
-                                            :required => true %>                                      
+                                            :required => true, 
+                                            :hint => "500 Characters Maximum",
+                                            :input_html => {:maxlength => "500"} %>                                      
   </div>
   
   <br class="spacer"/>
   <div class="center">
-    <%= f.button :submit, "Submit", :class => "center" %>
+    <%= f.button :submit, "Submit", :class => "center"%>
   </div>
   
 <% end %>

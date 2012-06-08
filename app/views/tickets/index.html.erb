@@ -15,7 +15,7 @@
   <%# header Row %>
   <div class="teaser_row">
     <div style="width:15%;text-align:left;">
-      <u>Submitted</u>
+      <u>Number</u>
     </div>
     <div style="width:15%">
       <u>Status</u>
@@ -26,11 +26,11 @@
     <div style="width:10%">
       <u>Updates</u>
     </div>    
-    <div style="width:20%">
+    <div style="width:25%">
       <u>Last Updated</u>
     </div>    
     <%# width: 15 percent %>
-    <div class="teaser_row_actions">
+    <div style="width:10%">
     </div>
   </div>
 
@@ -39,7 +39,7 @@
   
     <div class="teaser_row <%= cycle("odd","even")%>">
       <div style="width:15%;text-align:left;">
-        <%= time_string(ticket.created_at) %>
+        <%= ticket.ticket_number %>
       </div>
       <div style="width:15%">
         <%= ticket.status.capitalize %>
@@ -50,10 +50,10 @@
       <div style="width:10%">
         <%= ticket.updates.count %>
       </div>
-      <div style="width:20%">
+      <div style="width:25%">
         <%= time_string(ticket.updated_at) %>
       </div> 
-      <div class="teaser_row_actions">
+      <div style="width:10%">
         <%= link_to "Details", ticket_path(ticket) %>
       </div>
     </div>

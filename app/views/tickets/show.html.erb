@@ -5,14 +5,16 @@
   
   <h2>Overview</h2>
   <div class="ma">
-    <h3>Status:</h3>
+    <h3>Number</h3>
+    <p><%= @ticket.ticket_number %></p>
+    <h3>Status</h3>
     <p><%= @ticket.status %></p>
     <% if @ticket.offender_id.present? %>
-      <h3>Offender:</h3>
+      <h3>Offender</h3>
       <p><%= @ticket.offender.username %></p>
     <% end %>
     <% if @ticket.transaction.present? %>
-      <h3>Transaction:</h3>
+      <h3>Transaction</h3>
       <p><%= @ticket.transaction.transaction_number %></p>
     <% end %>
     <h3>Description:</h3>

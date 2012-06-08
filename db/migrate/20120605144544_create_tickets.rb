@@ -15,7 +15,8 @@ class CreateTickets < ActiveRecord::Migration
                                                                 # "harassment"        - offender is harassing another user
                                                                 # "shipping"          - shipment has not arrived
                                                                 # "other"             - some other reason not covered under FAQ
-      t.string    :description,          :default => ""
+      t.text      :description,          :default => ""
+      t.string    :ticket_number,        :default => ""
       t.string    :status,               :default => "new"      # "new" , "under review", "resolved"
       t.boolean   :strike,               :default => false      # does this ticket constitute a strike against the offender?
       t.timestamps

@@ -20,7 +20,7 @@ class TicketsController < ApplicationController
     if @ticket.save
       redirect_to tickets_path, :notice => "Your ticket was created and will be reviewed shortly"
     else
-      flash[:error] = "There were one or more problems with your request"
+      flash[:error] = "There were one or more problems with your request #{@ticket.errors.full_messages}"
       render "new"
     end
   end
@@ -28,9 +28,9 @@ class TicketsController < ApplicationController
   # list tickets authored by current logged in user
   def index
     if params[:status].present?
-      @tickets = Ticket.includes(:updates).where(:author_id => current_user.id, :status => params[:status]).order("created_at DESC").page(params[:page]).per(20) # gather current user's tickets and order them chronologically
+      @tickets = Ticket.includes(:updates).where(:author_id => current_user.id, :author_type => "User", :status => params[:status]).order("created_at DESC").page(params[:page]).per(20) # gather current user's tickets and order them chronologically
     else
-      @tickets = Ticket.includes(:updates).where(:author_id => current_user.id).order("created_at DESC").page(params[:page]).per(20) 
+      @tickets = Ticket.includes(:updates).where(:author_id => current_user.id, :author_type => "User").order("created_at DESC").page(params[:page]).per(20) 
     end
   end
   

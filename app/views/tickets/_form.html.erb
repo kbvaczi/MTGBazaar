@@ -25,7 +25,9 @@
 
     <%= f.input :description,               :label => "Description",
                                             :as => :text,
-                                            :required => true %>      
+                                            :required => true,
+                                            :hint => "500 Characters Maximum",
+                                            :input_html => {:maxlength => "500"} %>      
                                 
   </div>
 

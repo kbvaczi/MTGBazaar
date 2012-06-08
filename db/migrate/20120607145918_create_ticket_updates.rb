@@ -9,7 +9,7 @@ class CreateTicketUpdates < ActiveRecord::Migration
       t.string    :author_type                                  # "User" or "AdminUser"
 
       # class variables  
-      t.string    :description,          :default => ""
+      t.text      :description,          :default => ""
       t.boolean   :complete_ticket,      :default => false      # does this ticket update close the parent ticket?
       t.timestamps      
     end

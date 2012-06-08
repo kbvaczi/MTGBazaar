@@ -251,7 +251,7 @@ ActiveRecord::Schema.define(:version => 20120607145918) do
     t.integer  "ticket_id"
     t.integer  "author_id"
     t.string   "author_type"
-    t.string   "description",     :default => ""
+    t.text     "description",     :default => ""
     t.boolean  "complete_ticket", :default => false
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
@@ -268,7 +268,8 @@ ActiveRecord::Schema.define(:version => 20120607145918) do
     t.string   "author_type"
     t.integer  "offender_id"
     t.string   "problem",          :default => ""
-    t.string   "description",      :default => ""
+    t.text     "description",      :default => ""
+    t.string   "ticket_number",    :default => ""
     t.string   "status",           :default => "new"
     t.boolean  "strike",           :default => false
     t.datetime "created_at",                          :null => false
