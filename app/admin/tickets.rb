@@ -27,14 +27,20 @@ ActiveAdmin.register Ticket do
       column :number, :sortable => :ticket_number do |ticket|
         link_to ticket.ticket_number, admin_ticket_path(ticket)
       end
-      column :status
+      column :status, :sortable => :status do |ticket|
+        status_tag "Complete", :ok if ticket.status == "complete"
+        status_tag "Under Review", :warning if ticket.status == "under review"
+        status_tag "New!", :error if ticket.status == "new"
+      end
       column :author, :sortable => false 
       column :problem
       column :offender, :sortable => false 
       column :updates,  :sortable => false do |ticket|
         ticket.updates.count
       end
-      column :strike
+      column :strike, :sortable => :strike do |ticket|
+        "true" if ticket.strike
+      end
       column :created_at
       column :updated_at
     end
@@ -48,6 +54,44 @@ ActiveAdmin.register Ticket do
   filter :strike, :as => :select, :collection => ["",false,true], :input_html => {:class => "chzn-select"}    
   filter :created_at
   filter :updated_at
+
+  ##### ----- Custom Show Screen ----- #####
+  show do |ticket|
+    attributes_table do
+      row :author
+      row :problem
+      row :offender
+      row :strike
+      row :description
+      row :status do
+        if ticket.status == "complete" 
+          status_tag "Complete", :ok 
+        elsif ticket.status == "under review"
+          status_tag "Under Review", :warning
+        else
+          status_tag "New!", :error if ticket.status == "new"
+        end
+      end
+      row :created_at
+      row :updated_at
+    end
+    panel "Updates (#{ticket.updates.count})" do
+      ticket.updates.each do |update|
+        attributes_table_for update do
+          row :author
+          row :created_at
+          row :description
+          row :complete_ticket do 
+            "This update closes the ticket" 
+          end if update.complete_ticket 
+          row :strike do 
+            "This update indicates a strike will be applied to the offender"             
+          end if update.strike
+        end
+      end
+    end
+    active_admin_comments
+  end
 
   # ------ FORM FOR CREATING NEW TICKET ------- #  
   form do |f|

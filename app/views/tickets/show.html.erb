@@ -24,7 +24,14 @@
   <h2><%= pluralize @ticket.updates.count, "Update", "Updates" %></h2>
   <% @ticket.updates.each do |ticket_update| %>
   <div class="ma">
-    <h3> <%= ticket_update.author.username if ticket_update.author.class == "User"  %> on <%= time_string(ticket_update.created_at) %>:</h3>
+    <h3>
+    <% if ticket_update.author.class.name == "User" %>
+      <%= ticket_update.author.username %>
+    <% else %>
+      <%= "Admin" %>
+    <% end %>
+    on <%= time_string(ticket_update.created_at) %>:
+    </h3>
     <p> <%= ticket_update.description %> </p>
     <% if ticket_update.complete_ticket? %>    
       <p> This ticket was closed </p>

@@ -10,13 +10,8 @@ class TicketsController < ApplicationController
   # ticket is created based on submitted information
   def create 
     @ticket = Ticket.new(params[:ticket])
-    if admin_user_signed_in?
-      @ticket.author = current_admin_user # set author as current admin if logged in...
-    else
-      @ticket.author = current_user # if no admin is logged in, set to current user...
-    end
+    @ticket.author = current_user # if no admin is logged in, set to current user...
     User.current_user = current_user # set current User.current_user to be used in model validations
-    AdminUser.current_admin_user = current_admin_user # set current admin user
     if @ticket.save
       redirect_to tickets_path, :notice => "Your ticket was created and will be reviewed shortly"
     else
@@ -52,13 +47,8 @@ class TicketsController < ApplicationController
     @ticket = Ticket.where(:author_id => current_user.id, :author_type => "User", :id => params[:id]).first
     @ticket_update = TicketUpdate.new(params[:ticket_update]) 
     @ticket_update.ticket_id = @ticket.id
-    if admin_user_signed_in?
-      @ticket_update.author = current_admin_user # set author as current admin if logged in...
-    else
-      @ticket_update.author = current_user # if no admin is logged in, set to current user...
-    end
+    @ticket_update.author = current_user # if no admin is logged in, set to current user...
     User.current_user = current_user # set current User.current_user to be used in model validations
-    AdminUser.current_admin_user = current_admin_user # set current admin user
     if @ticket_update.save
       redirect_to ticket_path(@ticket), :notice => "Ticket updated"
     else
