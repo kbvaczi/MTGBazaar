@@ -5,11 +5,7 @@
 
     <%= f.input :problem,                   :label => "Problem",
                                             :as => :select,
-                                            :collection => [["Profanity or inappropriate content",  "profanity"],
-                                                            ["Harassment by another user",          "harassment"],
-                                                            ["Missing or delinquent package",       "shipping"],
-                                                            ["Buyer won't complete transaction",    "delivery confirmation"],                                                            
-                                                            ["Other problem not covered under FAQ", "other"]],
+                                            :collection => MTGBazaar::Application::TICKET_PROBLEM_OPTIONS,
                                             :input_html => { :class => "chzn-select" },
                                             :required => true %>
                             

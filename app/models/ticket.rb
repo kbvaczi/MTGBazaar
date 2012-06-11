@@ -61,7 +61,7 @@ class Ticket < ActiveRecord::Base
   # prevents normal users from setting strikes against other users.  only admins can determine strikes
   def normal_users_cannot_set_strikes
     if not AdminUser.current_admin_user.present? # user is not an admin
-      errors.add(:strikes, "error-strikes") if self.strike? # return an error if user somehow entered a strike
+      errors.add(:strike, "Tickets authored by users cannot assign strikes") if self.strike? # return an error if user somehow entered a strike
     end
   end
   
