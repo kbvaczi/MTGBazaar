@@ -63,6 +63,9 @@ ActiveAdmin.register Ticket do
       row :problem
       row :offender
       row :strike
+      row :transaction do 
+        link_to ticket.transaction.transaction_number, admin_mtg_transaction_path(ticket.transaction)
+      end
       row :description
       row :status do
         if ticket.status == "complete" 
@@ -124,6 +127,8 @@ ActiveAdmin.register Ticket do
                         :input_html => {:class => "chzn-select", :style => "min-width:250px;"}
       f.input :strike,  :label => "Mark a strike against this user?", 
                         :as => :boolean
+      f.input :transaction_number, :as => :string,
+                                   :value => (ticket.transaction.transaction_number rescue "")
       f.input :description, :input_html => {:rows => 5, :cols => 20, :maxlength => 500}
     end
     f.buttons
@@ -163,6 +168,10 @@ ActiveAdmin.register Ticket do
       if (params[:ticket] and params[:ticket][:offender_id].present?)
         @ticket.offender_username = User.find(params[:ticket][:offender_id]).username
         @ticket.offender_id = params[:ticket][:offender_id]
+      end
+      if (params[:ticket] and params[:ticket][:transaction_number].present?)
+        @ticket.transaction_number = params[:ticket][:transaction_number]
+        @ticket.transaction = Mtg::Transaction.where("transaction_number LIKE ?", params[:ticket][:transaction_number]).first
       end
       @ticket.strike = params[:ticket][:strike]
       @ticket.description = params[:ticket][:description]
