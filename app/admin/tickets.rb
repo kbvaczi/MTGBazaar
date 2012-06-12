@@ -64,7 +64,7 @@ ActiveAdmin.register Ticket do
       row :offender
       row :strike
       row :transaction do 
-        link_to ticket.transaction.transaction_number, admin_mtg_transaction_path(ticket.transaction)
+        link_to ticket.transaction.transaction_number, admin_mtg_transaction_path(ticket.transaction) if ticket.transaction.present?
       end
       row :description
       row :status do
