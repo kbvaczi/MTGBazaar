@@ -6,10 +6,10 @@ ActiveAdmin.register Ticket do
    
   # ------ SCOPES ------- #
   begin
-    scope :all, :default => true do |tickets|
+    scope :all do |tickets|
       tickets
     end  
-    scope :new do |tickets|
+    scope :new, :default => true do |tickets|
       tickets.where(:status => "new")
     end
     scope "Under Review" do |tickets|
@@ -56,7 +56,8 @@ ActiveAdmin.register Ticket do
   filter :updated_at
 
   ##### ----- Custom Show Screen ----- #####
-  show do |ticket|
+  show :title => "Ticket Details" do |ticket|
+    h2 "Ticket #{ticket.ticket_number}"
     attributes_table do
       row :author
       row :problem
@@ -76,7 +77,7 @@ ActiveAdmin.register Ticket do
       row :updated_at
     end
     panel "Updates (#{ticket.updates.count})" do
-      ticket.updates.each do |update|
+      ticket.updates.each do |update| # List all the existing updates
         attributes_table_for update do
           row :author
           row :created_at
@@ -88,30 +89,72 @@ ActiveAdmin.register Ticket do
             "This update indicates a strike will be applied to the offender"             
           end if update.strike
         end
+      end # existing updates
+      panel "New Update" do
+        render :partial => "admin/tickets/form_update"
       end
     end
+
+    
     active_admin_comments
   end
 
-  # ------ FORM FOR CREATING NEW TICKET ------- #  
+  # ------ FORM FOR CREATING/EDITING TICKETS ------- #  
   form do |f|
     f.inputs "Details" do
-      f.input :author, :as => :select, :collection => User.pluck(:username), :hint => "Select an author to write a ticket on behalf of a user", :input_html => {:class => "chzn-select"}
-      f.input :problem, :as => :select, :collection => MTGBazaar::Application::TICKET_PROBLEM_OPTIONS, :input_html => {:class => "chzn-select"}
-      f.input :offender, :as => :select, :hint => "only fill this out if ticket pertains to a specific user and not a transaction", :input_html => {:class => "chzn-select"}
-      f.input :strike, :label => "Mark a strike against this user?", :as => :boolean
-      f.input :description
-      f.input :status, :as => :radio, :collection => ["new","under review","complete"]
+      if ticket.author.class.name != "AdminUser"
+        f.input :author,  :as => :select, 
+                          :collection => User.all.collect {|u| [u.username, u.id]},
+                          :hint => "Select an author to write a ticket on behalf of a user",
+                          :input_html => {:class => "chzn-select", :style => "min-width:250px;"}
+      else
+        f.input :author,  :as => :select, 
+                          :collection => AdminUser.all.collect {|u| [u.email, u.id]},
+                          :hint => "An admin created this ticket",
+                          :input_html => {:class => "chzn-select", :style => "min-width:250px;"}
+        
+      end
+      f.input :status,  :as => :radio, 
+                        :collection => ["new","under review","complete"]
+      f.input :problem, :as => :select, 
+                        :collection => MTGBazaar::Application::TICKET_PROBLEM_OPTIONS, 
+                        :input_html => {:class => "chzn-select", :style => "min-width:250px;"}
+      f.input :offender,:as => :select, 
+                        :hint => "only fill this out if ticket pertains to a specific user and not a transaction", 
+                        :input_html => {:class => "chzn-select", :style => "min-width:250px;"}
+      f.input :strike,  :label => "Mark a strike against this user?", 
+                        :as => :boolean
+      f.input :description, :input_html => {:rows => 5, :cols => 20, :maxlength => 500}
     end
     f.buttons
   end
   
+  # ----- NEW MEMBER ACTIONS ----- # 
+  member_action :add_update, :method => :post do
+    @ticket = Ticket.find(params[:id])
+    @update = TicketUpdate.new
+    @update.ticket = @ticket
+    @update.author = current_admin_user
+    AdminUser.current_admin_user = current_admin_user #set AdminUser.current_admin_user so model can see it
+    @update.description = params[:ticket_update][:description]
+    @update.complete_ticket = params[:ticket_update][:complete_ticket]
+    @update.strike = params[:ticket_update][:strike]
+    if @update.save
+      flash[:notice] = "Update Created"
+      redirect_to admin_ticket_path(@ticket)
+    else
+      flash[:error] = "There were errors trying to add ticket update #{@update.errors.full_messages}"
+      redirect_to admin_ticket_path(@ticket)
+    end
+  end
+  
+  # ----- OVERRIDE CONTROLLER METHODS ----- #
   controller do
-    # This code is evaluated within the controller class
+    # admin create ticket
     def create
       @ticket = Ticket.new()
       if (params[:ticket] and params[:ticket][:author_id].present?)
-        @ticket.author = User.where(:username => params[:ticket][:author_id]).first 
+        @ticket.author = User.find(params[:ticket][:author_id])
       else
         @ticket.author = current_admin_user
         AdminUser.current_admin_user = current_admin_user
@@ -124,6 +167,7 @@ ActiveAdmin.register Ticket do
       @ticket.strike = params[:ticket][:strike]
       @ticket.description = params[:ticket][:description]
       @ticket.status = params[:ticket][:status]
+      AdminUser.current_admin_user = current_admin_user #set AdminUser.current_admin_user so model can see it
       if @ticket.save
         redirect_to admin_tickets_path
       else
@@ -131,14 +175,13 @@ ActiveAdmin.register Ticket do
         render "new"
       end
     end
-
+    
+    # admin update ticket
     def update
       @ticket = Ticket.find(params[:id])
       if (params[:ticket] and params[:ticket][:author_id].present?)
-        @ticket.author = User.where(:username => params[:ticket][:author_id]).first 
-      else
-        @ticket.author = current_admin_user
-        AdminUser.current_admin_user = current_admin_user
+        @ticket.author = User.find(params[:ticket][:author_id]) if @ticket.author.class.name == "User"
+        @ticket.author = AdminUser.find(params[:ticket][:author_id]) if @ticket.author.class.name == "AdminUser"
       end
       @ticket.problem = params[:ticket][:problem]
       if (params[:ticket] and params[:ticket][:offender_id].present?)
@@ -148,6 +191,7 @@ ActiveAdmin.register Ticket do
       @ticket.strike = params[:ticket][:strike]
       @ticket.description = params[:ticket][:description]
       @ticket.status = params[:ticket][:status]
+      AdminUser.current_admin_user = current_admin_user #set AdminUser.current_admin_user so model can see it      
       if @ticket.save
         redirect_to admin_tickets_path
       else
@@ -155,6 +199,7 @@ ActiveAdmin.register Ticket do
         render "edit"
       end
     end
+    
   end
       
 end

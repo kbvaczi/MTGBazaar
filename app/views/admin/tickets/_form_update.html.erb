@@ -1,0 +1,15 @@
+<% update = TicketUpdate.new(params[:ticket_update]) %>
+<%= semantic_form_for update, :url => add_update_admin_ticket_path(ticket), :method => :post do |f| %>
+  <%= f.inputs do %>
+    <%= f.input :description,               :label => "Description",
+                                            :as => :text,
+                                            :required => true, 
+                                            :hint => "500 Characters Maximum",
+                                            :input_html => {:rows => 5, :cols => 20, :maxlength => 500} %>
+    <%= f.input :complete_ticket,           :label => "Close this ticket after update" %>
+    <%= f.input :strike,                    :as => :boolean,
+                                            :label => "Mark a strike against the offender" %>    
+    <%= f.action :submit, :label => "Add Update"%>
+  <% end %>
+
+<% end %>
