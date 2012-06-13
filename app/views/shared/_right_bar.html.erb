@@ -4,13 +4,11 @@
   <% else %>
     <div id="right_bar">
       <h1>
-        <div>
-          <table width="100%">
-            <tr>
-              <td align="left"><%= "#{current_user.username}" %></td>
-              <td align="right"><%= number_to_currency(current_user.account.balance.dollars) %></td>
-            </tr>
-          </table>
+        <div class="left">
+         <%= "#{current_user.username}" %>   
+        </div>
+		<div class="right">
+        <%= number_to_currency(current_user.account.balance.dollars) %>
         </div>
       </h1>
       <div class="ma">
