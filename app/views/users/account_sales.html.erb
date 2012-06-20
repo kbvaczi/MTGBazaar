@@ -5,11 +5,11 @@
 <div class="ma">
   <div class="group">
     <ul class="tabs center">
-        <li> <%= link_to "All (#{current_user.mtg_sales.count})", account_sales_path %> </li>
-        <li> <%= link_to "Pending (#{current_user.mtg_sales.where(:status => "pending").count})", account_sales_path(:status => "pending")%> </li>
-        <li> <%= link_to "Confirmed (#{current_user.mtg_sales.where(:status => "confirmed").count})", account_sales_path(:status => "confirmed") %> </li>      
-        <li> <%= link_to "Shipped (#{current_user.mtg_sales.where(:status => "shipped").count})", account_sales_path(:status => "shipped") %> </li>
-        <li> <%= link_to "Delivered (#{current_user.mtg_sales.where(:status => "delivered").count})", account_sales_path(:status => "delivered") %> </li>        
+        <li <%= "class=\'selected\'" if request.fullpath ==  account_sales_path %>> <%= link_to "All (#{current_user.mtg_purchases.count})", account_sales_path %> </li>
+        <li <%= "class=\'selected\'" if params[:status] == "pending" %>> <%= link_to "Pending (#{current_user.mtg_purchases.where(:status => "pending").count})", account_sales_path(:status => "pending")%> </li>
+        <li <%= "class=\'selected\'" if params[:status] == "confirmed" %>> <%= link_to "Confirmed (#{current_user.mtg_purchases.where(:status => "confirmed").count})", account_sales_path(:status => "confirmed") %> </li>      
+        <li <%= "class=\'selected\'" if params[:status] == "shipped" %>> <%= link_to "Shipped (#{current_user.mtg_purchases.where(:status => "shipped").count})", account_sales_path(:status => "shipped") %> </li>
+        <li <%= "class=\'selected\'" if params[:status] == "delivered" %>> <%= link_to "Delivered (#{current_user.mtg_purchases.where(:status => "delivered").count})", account_sales_path(:status => "delivered") %> </li>        
     </ul>
   </div>
   

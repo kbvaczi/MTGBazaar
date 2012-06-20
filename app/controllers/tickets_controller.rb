@@ -23,7 +23,11 @@ class TicketsController < ApplicationController
   # list tickets authored by current logged in user
   def index
     if params[:status].present?
-      @tickets = Ticket.includes(:updates).where(:author_id => current_user.id, :author_type => "User", :status => params[:status]).order("created_at DESC").page(params[:page]).per(20) # gather current user's tickets and order them chronologically
+      if params[:status] == "active"
+        @tickets = Ticket.includes(:updates).where(:author_id => current_user.id, :author_type => "User").active.order("created_at DESC").page(params[:page]).per(20) # gather current user's tickets and order them chronologically
+      else
+        @tickets = Ticket.includes(:updates).where(:author_id => current_user.id, :author_type => "User", :status => "new").order("created_at DESC").page(params[:page]).per(20) # gather current user's tickets and order them chronologically
+      end
     else
       @tickets = Ticket.includes(:updates).where(:author_id => current_user.id, :author_type => "User").order("created_at DESC").page(params[:page]).per(20) 
     end

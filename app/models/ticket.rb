@@ -71,4 +71,8 @@ class Ticket < ActiveRecord::Base
     self.ticket_number = "TKT-#{(self.id + 51235).to_s(36).rjust(5,"0").upcase}"
     self.save
   end
+  
+  def self.active
+    where("status LIKE ? OR status LIKE ?", "new", "under review")
+  end
 end

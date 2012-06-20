@@ -3,10 +3,9 @@
   
   <div class="group">
     <ul class="tabs center">
-        <li> <%= link_to "All (#{current_user.tickets.count})", tickets_path %> </li>
-        <li> <%= link_to "New (#{current_user.tickets.where(:status => "new").count})", tickets_path(:status => "new")%> </li>
-        <li> <%= link_to "Under Review (#{current_user.tickets.where(:status => "under review").count})", tickets_path(:status => "under review") %> </li>      
-        <li> <%= link_to "Resolved (#{current_user.tickets.where(:status => "resolved").count})", tickets_path(:status => "resolved") %> </li>              
+        <li <%= "class=\'selected\'" if request.fullpath == tickets_path %>> <%= link_to "All (#{current_user.tickets.count})", tickets_path %> </li>
+        <li <%= "class=\'selected\'" if request.fullpath == tickets_path(:status => "active") %>> <%= link_to "Active (#{current_user.tickets.active.count})", tickets_path(:status => "active") %> </li>      
+        <li <%= "class=\'selected\'" if request.fullpath == tickets_path(:status => "resolved") %>> <%= link_to "Resolved (#{current_user.tickets.where(:status => "resolved").count})", tickets_path(:status => "resolved") %> </li>              
     </ul>
   </div>
   
