@@ -17,13 +17,13 @@ class Mtg::Transaction < ActiveRecord::Base
   
   # returns the total value of a transaction
   def subtotal_value
-    Mtg::TransactionItem.by_id(item_ids).sum("mtg_transaction_items.price * mtg_transaction_items.quantity").to_f / 100
+    Mtg::TransactionItem.by_id(item_ids).sum("mtg_transaction_items.price * mtg_transaction_items.quantity_available").to_f / 100
   end
   
   # TODO: code shipping cost method for transactions
   # returns the total value of a transaction
   def shipping_cost
-    Mtg::TransactionItem.by_id(item_ids).sum("mtg_transaction_items.price * mtg_transaction_items.quantity").to_f / 100
+    Mtg::TransactionItem.by_id(item_ids).sum("mtg_transaction_items.price * mtg_transaction_items.quantity_available").to_f / 100
   end
   
   def total_value
@@ -31,7 +31,7 @@ class Mtg::Transaction < ActiveRecord::Base
   end
   
   def item_count
-    items.to_a.sum(&:quantity)
+    items.to_a.sum(&:quantity_available)
   end
   
   # check whether seller has confirmed this transaction or not
@@ -93,7 +93,8 @@ class Mtg::Transaction < ActiveRecord::Base
   end
   
   def create_item_from_reservation(reservation)
-    item = Mtg::TransactionItem.new( :quantity => reservation.quantity,
+    item = Mtg::TransactionItem.new( :quantity_requested => reservation.quantity,
+                                     :quantity_available => reservation.quantity,
                                      :price => reservation.listing.price,
                                      :condition => reservation.listing.condition,
                                      :language => reservation.listing.language,
@@ -110,7 +111,7 @@ class Mtg::Transaction < ActiveRecord::Base
   end
   
   def create_listing_from_item(item)
-    listing = Mtg::Listing.new(      :quantity => item.quantity,
+    listing = Mtg::Listing.new(      :quantity => item.quantity_available,
                                      :price => item.price,
                                      :condition => item.condition,
                                      :language => item.language,
@@ -123,8 +124,8 @@ class Mtg::Transaction < ActiveRecord::Base
     listing.seller_id = self.seller_id
     duplicate = Mtg::Listing.duplicate_listings_of(listing).first
     if duplicate.present? # there is already a duplicate listing, just update quantity of cards
-      duplicate.update_attributes(  :quantity => duplicate.quantity + item.quantity, 
-                                    :quantity_available => duplicate.quantity_available + item.quantity )
+      duplicate.update_attributes(  :quantity => duplicate.quantity + item.quantity_available, 
+                                    :quantity_available => duplicate.quantity_available + item.quantity_available )
     else # there is no duplicate listing, create a new one from item
       listing.save
     end

@@ -122,7 +122,6 @@ class Mtg::TransactionsController < ApplicationController
     if @transaction.update_attributes(:buyer_feedback => params[:mtg_transaction][:buyer_feedback], 
                                       :buyer_feedback_text => params[:mtg_transaction][:buyer_feedback_text],
                                       :seller_delivered_at => Time.now,
-                                      :buyer_delivery_confirmation => params[:mtg_transaction][:buyer_delivery_confirmation],
                                       :status => "delivered")
       @transaction.seller.account.balance_credit!(@transaction.subtotal_value)  # credit sellers account
       redirect_to account_purchases_path, :notice => "Your delivery confirmation was sent..."

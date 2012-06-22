@@ -14,13 +14,13 @@ class Mtg::TransactionItem < ActiveRecord::Base
                 :converter => Proc.new { |value| value.respond_to?(:to_money) ? value.to_money : Money.empty }  
   
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :set, :quantity, :price, :condition, :language, :description, :altart, :misprint, :foil, :signed
+  attr_accessible :name, :set, :quantity_available, :quantity_requested, :price, :condition, :language, :description, :altart, :misprint, :foil, :signed
 
   # not-in-model field for current password confirmation
   attr_accessor :name, :set
   
   # validations
-  validates_presence_of :price, :condition, :language, :quantity
+  validates_presence_of :price, :condition, :language, :quantity_available, :quantity_requested
 
   # mark this listing as rejected which permenantly removes it from user view
   def mark_as_rejected!

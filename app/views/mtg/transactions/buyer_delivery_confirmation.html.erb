@@ -8,7 +8,7 @@
   <br class="spacer" />  
   
   <div class="inputs">
-    <%= f.input :buyer_delivery_confirmation,   :label => "Confirm Delivery",
+    <%#= f.input :buyer_delivery_confirmation,   :label => "Confirm Delivery",
                                                 :as => :select,
                                                 :collection => [["All items received as expected", true], ["There is a problem with the order", false]],
                                                 :include_blank => false,
@@ -31,7 +31,7 @@
 
     <%= f.input :buyer_feedback,      :label => "Seller Feedback",
                                       :as => :select,
-                                      :collection => [["+ Postive","+"],["- Negative","-"]],
+                                      :collection => [["Postive","1"], ["Negative","-1"], ["Neutral","0"]],
                                       :default => "+",
                                       :include_blank => false,
                                       :hint => "Do you recommend this seller?",                                      

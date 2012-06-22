@@ -19,7 +19,7 @@
         <%= transaction.status %>
       </div>      
       <div class="transaction_teaser_item_count">
-        <%= transaction.items.to_a.sum(&:quantity) %>
+        <%= transaction.items.to_a.sum(&:quantity_available) %>
       </div>
       <div class="transaction_teaser_total_value">
         <%= number_to_currency(transaction.total_value) %>
