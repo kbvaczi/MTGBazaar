@@ -17,13 +17,13 @@ class Mtg::Transaction < ActiveRecord::Base
   
   # returns the total value of a transaction
   def subtotal_value
-    Mtg::TransactionItem.by_id(item_ids).sum("mtg_transaction_items.price * mtg_transaction_items.quantity_available").to_f / 100
+    Mtg::TransactionItem.by_id(item_ids).sum("mtg_transaction_items.price * mtg_transaction_items.quantity_requested").to_f / 100
   end
   
   # TODO: code shipping cost method for transactions
   # returns the total value of a transaction
   def shipping_cost
-    Mtg::TransactionItem.by_id(item_ids).sum("mtg_transaction_items.price * mtg_transaction_items.quantity_available").to_f / 100
+    0
   end
   
   def total_value
@@ -53,6 +53,12 @@ class Mtg::Transaction < ActiveRecord::Base
   def mark_as_seller_confirmed!
     self.update_attributes(:seller_confirmed_at => Time.now, :status => "confirmed")
   end
+
+  # buyer confirms seller's modifications to sale
+  def mark_as_buyer_confirmed_with_modifications!
+    self.update_attributes(:buyer_confirmed_at => Time.now, :status => "confirmed") # record buyer's confirmation time
+    self.items.each { |item| item.update_attributes(:quantity_requested => item.quantity_available) if item.quantity_available != item.quantity_requested } # update item quantities in the transaction
+  end  
   
   # seller has rejected this transaction
   def mark_as_seller_rejected!(rejection_reason, response_message = nil)

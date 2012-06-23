@@ -1,0 +1,68 @@
+<% title "#{@transaction.transaction_number}" %>
+
+<h1>Review Buyer's Modifications | <%= @transaction.transaction_number %></h1>
+
+<div class="ma">
+  
+  <%= form_tag create_buyer_sale_modification_review_path(@transaction), :method => :put do %>
+
+    <% @transaction.items.each do |item| %>
+      <div style="display:table; width:100%; padding:10px; margin-bottom:5px; -moz-border-radius: 7px; -webkit-border-radius: 7px; border-radius: 7px; <%= cycle("background-color: rgb(250,250,250);", "") %>">  
+  
+        <div style="width:25%; text-align:left; vertical-align:middle; display:table-cell;">
+          <%= display_name(item.card.name) %>
+        </div>
+  
+        <div style="width:10%; vertical-align:middle; display:table-cell; text-align:center;">
+          <%= display_set_symbol(item.card.set) %>
+        </div>  
+  
+        <div style="width:10%; vertical-align:middle; display:table-cell; text-align:center;">
+          <%= number_to_currency(item.price) %>
+        </div>  
+  
+        <div style="width:10%; vertical-align:middle; display:table-cell; text-align:center;">
+          <%= display_condition(item.condition) %>
+        </div>
+  
+        <div style="width:10%; vertical-align:middle; display:table-cell; text-align:center;">
+          <%= display_flag_symbol(item) %>
+        </div>
+  
+        <div style="width:15%; vertical-align:middle; display:table-cell; text-align:center;">
+          <% if item.foil %>
+            <%= listing_option_foil_icon %>
+          <% end %>
+          <% if item.misprint %>
+            <%= listing_option_misprint_icon %>
+          <% end %>
+          <% if item.signed %>
+            <%= listing_option_signed_icon %>
+          <% end %>
+          <% if item.altart %>
+            <%= listing_option_altart_icon %>
+          <% end %>    
+          <% if item.description != "" %>
+            <%= listing_option_description_icon(item) %>
+          <% end %>
+        </div>
+  
+        <div style="width:10%; vertical-align:middle; display:table-cell; text-align:center;">  
+          <%= item.quantity_requested %>
+        </div>  
+        <div style="width:10%; vertical-align:middle; display:table-cell; text-align:center;">  
+          <%= item.quantity_available %>          
+        </div>      
+  
+      </div>     
+    <% end %>
+
+    <br class="spacer"/>
+    <%= submit_tag "Accept Changes", :class => "center" %>
+    <br class="spacer"/>
+    <br class="spacer"/>          
+    <%= submit_tag "Reject Changes", :class => "center" %>
+  
+  <% end %>
+
+</div>

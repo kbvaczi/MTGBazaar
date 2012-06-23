@@ -9,7 +9,7 @@ class Mtg::TransactionsController < ApplicationController
   
   def seller_sale_confirmation
     @transaction = Mtg::Transaction.where(:seller_id => current_user.id, :id => params[:id]).first
-    return if not verify_response_privileges?(@transaction) # this transaction exists, current user is seller, and transaction hasn't been previously confirmed or rejected already
+    return if not verify_seller_response_privileges?(@transaction) # this transaction exists, current user is seller, and transaction hasn't been previously confirmed or rejected already
   end
 
   def create_seller_sale_confirmation
@@ -28,23 +28,111 @@ class Mtg::TransactionsController < ApplicationController
     end
   end
   
+##### ---------- SELLER SALE REJECTION ------------- #####
+##### ---------- SELLER SALE REJECTION ------------- #####  
+  
   def seller_sale_rejection
     @transaction = Mtg::Transaction.where(:seller_id => current_user.id, :id => params[:id]).first
-    return if not verify_response_privileges?(@transaction) # this transaction exists, current user is seller, and transaction hasn't been previously confirmed or rejected already
+    return if not verify_seller_response_privileges?(@transaction) # this transaction exists, current user is seller, and transaction hasn't been previously confirmed or rejected already
   end
   
   def create_seller_sale_rejection
     @transaction = Mtg::Transaction.where(:seller_id => current_user.id, :id => params[:id]).first
-    return if not verify_response_privileges?(@transaction) # this transaction exists, current user is seller, and transaction hasn't been previously confirmed or rejected already    
+    return if not verify_seller_response_privileges?(@transaction) # this transaction exists, current user is seller, and transaction hasn't been previously confirmed or rejected already    
     if @transaction.mark_as_seller_rejected!(params[:mtg_transaction][:rejection_reason], params[:mtg_transaction][:response_message])
       ApplicationMailer.send_buyer_sale_rejection(@transaction).deliver # notify buyer that the sale has been confirmed
       @transaction.buyer.account.balance_credit!(@transaction.total_value) # credit buyer's account
       @transaction.reject_items! # mark items as rejected move listings back to available
-      redirect_to account_sales_path, :notice => "You rejected this sale..."
+      redirect_to account_sales_path, :notice => "Your sale was rejected."
     else
       flash[:error] = "There were one or more errors while trying to process your request..."
       render 'seller_sale_rejection'
     end
+  end
+  
+##### ---------- SELLER SALE MODIFICATION ------------- #####
+##### ---------- SELLER SALE MODIFICATION ------------- #####  
+
+  def seller_sale_modification
+    @transaction = Mtg::Transaction.where(:seller_id => current_user.id, :id => params[:id]).first
+    return if not verify_seller_response_privileges?(@transaction) # this transaction exists, current user is seller, and transaction hasn't been previously confirmed or rejected already
+  end
+
+  def create_seller_sale_modification
+    @transaction = Mtg::Transaction.where(:seller_id => current_user.id, :id => params[:id]).first
+    return if not verify_seller_response_privileges?(@transaction) # this transaction exists, current user is seller, and transaction hasn't been previously confirmed or rejected already    
+    quantity_updated = false # have any quantities been updated?
+    @transaction.items.each do |item|
+      if params["quantity_available_#{item.id}"].present? && params["quantity_available_#{item.id}"].to_i != item.quantity_available #seller has changed this quantity
+        if not verify_update_quantity?(item)
+          render "seller_sale_modification"
+          return
+        end
+        item.update_attributes(:quantity_available => params["quantity_available_#{item.id}"].to_i)   # update quantity available
+        quantity_updated = true # quantities have been updated
+      end
+    end
+    if quantity_updated # have quantities been updated? 
+      #TODO: notify buyer by email that their purchase has been modified
+      @transaction.update_attributes(:buyer_confirmed_at => nil, :seller_confirmed_at => Time.now)  # seller has confirmed sale as modified, buyer must now reconfirm sale        
+    end
+      redirect_to account_sales_path, :notice => "Your sale was modified. Buyer must now accept changes."
+    return
+  end  
+  
+  def verify_update_quantity?(item)
+    if params["quantity_available_#{item.id}"].to_i < 0 
+      flash[:error] = "you cannot have negative item(s) available"
+      return false
+    end
+    if params["quantity_available_#{item.id}"].to_i > item.quantity_requested
+      flash[:error] = "you cannot make the buyer take more cards than originally requested"
+      return false
+    end
+    return true
+  end
+
+##### ---------- BUYER SALE MODIFICATION REVEIW ------------- #####
+##### ---------- BUYER SALE MODIFICATION REVIEW ------------- #####
+
+  def buyer_sale_modification_review
+    @transaction = Mtg::Transaction.where(:buyer_id => current_user.id, :id => params[:id]).first
+    return if not verify_buyer_review_privileges?(@transaction) 
+  end
+  
+  def create_buyer_sale_modification_review
+    @transaction = Mtg::Transaction.where(:buyer_id => current_user.id, :id => params[:id]).first
+    return if not verify_buyer_review_privileges?(@transaction)
+    if params[:commit] == "Reject Changes"
+      if @transaction.mark_as_cancelled!("modification") # mark status on transaction as cancelled and set cancellation reason
+        ApplicationMailer.send_seller_cancellation_notice(@transaction).deliver # notify seller their transaction was cancelled
+        @transaction.buyer.account.balance_credit!(@transaction.total_value) # credit buyer's account
+        @transaction.reject_items! # mark items as rejected move listings back to available
+        flash[:notice] = "You rejected the buyer's modifications.  Sale #{@transaction.transaction_number} was cancelled."            
+      else
+        flash[:error] = "There were one or more errors while trying to process your request..."
+      end
+      redirect_to back_path
+    elsif params[:commit] == "Accept Changes"
+      @transaction.mark_as_buyer_confirmed_with_modifications!
+      redirect_to back_path, :notice => "You accepted the buyer's modifications"      
+    end
+
+    return
+  end
+    
+  def verify_buyer_review_privileges?(transaction)
+    if not transaction.present? # user inputted invalid transaction_id
+      flash[:error] = "There was a problem trying to process your request..."
+      redirect_to back_path
+      return false
+    end
+    if not transaction.seller_confirmed_at.present? or transaction.buyer_confirmed_at.present?
+      flash[:error] = "you cannot modify this sale at this time"
+      redirect_to back_path
+      return false
+    end
+    return true
   end
     
 ##### ---------- BUYER SALE CANCELLATION ------------- #####
@@ -113,6 +201,9 @@ class Mtg::TransactionsController < ApplicationController
     end
   end    
     
+    
+##### ------ BUYER DELIVERY CONFIRMATION ----- #####    
+
   def buyer_delivery_confirmation
     @transaction = Mtg::Transaction.where(:buyer_id => current_user.id, :id => params[:id]).first
   end
@@ -130,6 +221,8 @@ class Mtg::TransactionsController < ApplicationController
       render 'buyer_delivery_confirmation'
     end    
   end  
+
+##### ------ BUYER SALE FEEDBACK ----- #####    
   
   def buyer_sale_feedback
     @transaction = Mtg::Transaction.where(:buyer_id => current_user.id, :id => params[:id]).first
@@ -148,9 +241,11 @@ class Mtg::TransactionsController < ApplicationController
     end
   end
 
+##### ------ PRIVATE CLASS METHODS ----- #####    
+
   private 
   
-  def verify_response_privileges?(transaction)
+  def verify_seller_response_privileges?(transaction)
     if not transaction.present? # user inputted invalid transaction_id
       flash[:error] = "There was a problem trying to process your request..."
       redirect_to account_sales_path

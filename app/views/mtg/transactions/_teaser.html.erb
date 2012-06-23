@@ -31,11 +31,13 @@
         <div class="teaser_row_actions_list">
           <ul>
             <li> <%= link_to "Details", show_mtg_transaction_path(transaction) %> </li>
-            <% if @current_user.id == transaction.seller_id && transaction.status == "pending" %>
+            <% if current_user.id == transaction.seller_id && transaction.status == "pending" && transaction.seller_confirmed_at == nil %>
               <li> <%= link_to "Confirm Sale", seller_sale_confirmation_path(transaction) %> </li>
-            <% end %>
-            <% if current_user.id == transaction.seller_id && transaction.status == "pending" %>
               <li> <%= link_to "Reject Sale", seller_sale_rejection_path(transaction) %> </li>
+              <li> <%= link_to "Modify Sale", seller_sale_modification_path(transaction) %> </li>                            
+            <% end %>
+            <% if current_user.id == transaction.buyer_id && transaction.status == "pending" && transaction.seller_confirmed_at.present? %>
+              <li> <%= link_to "Review Seller's Modifications", buyer_sale_modification_review_path(transaction)  %> </li>
             <% end %>
             <% if current_user.id == transaction.seller_id && transaction.status == "confirmed" %>
               <li> <%= link_to "Confirm Shipment", seller_shipment_confirmation_path(transaction)  %> </li>

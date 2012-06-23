@@ -8,7 +8,8 @@
   <div><%= "Buyer: #{@transaction.buyer.username}" %></div>  
   <div class="mb-s"><%= "Seller: #{@transaction.seller.username}" %></div>    
   <div class="mb-s"><%= "Status: #{@transaction.status.capitalize}" %></div>
-  <div><%= "Confirmed on: #{@transaction.seller_confirmed_at.strftime("%d-%b-%Y")}" if @transaction.seller_confirmed_at.present? %> </div>
+  <div><%= "Buyer Confirmed on: #{@transaction.buyer_confirmed_at.strftime("%d-%b-%Y")}" if @transaction.buyer_confirmed_at.present? %> </div>
+  <div><%= "Seller Confirmed on: #{@transaction.seller_confirmed_at.strftime("%d-%b-%Y")}" if @transaction.seller_confirmed_at.present? %> </div>  
   <div><%= "Rejected on: #{@transaction.seller_rejected_at.strftime("%d-%b-%Y")}" if @transaction.seller_rejected_at.present? %> </div>
   <div><%= "Shipped on: #{@transaction.seller_shipped_at.strftime("%d-%b-%Y")}" if @transaction.seller_shipped_at.present? %>  </div>
   <div class="mb-s"><%= "Delivered on: #{@transaction.seller_delivered_at.strftime("%d-%b-%Y")}" if @transaction.seller_delivered_at.present? %> </div>
