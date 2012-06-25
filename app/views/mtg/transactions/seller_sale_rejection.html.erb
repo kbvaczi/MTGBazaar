@@ -5,7 +5,7 @@
 <%= simple_form_for @transaction, :url => create_seller_sale_rejection_path, :method => :put do |f| %>
   <br class="spacer" />
   <p>
-    Note: It is not recommended to reject a sale unless you have a good reason to do so.  Too many rejected sales can reflect poorly on a seller's profile.
+    Note: It is not recommended to reject a sale unless you have a good reason to do so.  Too many rejected sales can reflect poorly on a seller's profile.  If you are missing a few items from a sale, it is recommended that you <%= link_to "propose modifications", seller_sale_modification_path(@transaction) %> to the sale instead if rejecting it. 
   </p>
   <br class="spacer" />
   <br class="spacer" />  

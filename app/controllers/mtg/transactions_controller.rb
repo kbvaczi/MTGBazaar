@@ -74,7 +74,7 @@ class Mtg::TransactionsController < ApplicationController
     end
     if quantity_updated # have quantities been updated? 
       #TODO: notify buyer by email that their purchase has been modified
-      @transaction.update_attributes(:buyer_confirmed_at => nil, :seller_confirmed_at => Time.now)  # seller has confirmed sale as modified, buyer must now reconfirm sale        
+      @transaction.update_attributes(:buyer_confirmed_at => nil, :seller_confirmed_at => Time.now, :response_message => params[:response_message] )  # seller has confirmed sale as modified, buyer must now reconfirm sale        
     end
       redirect_to account_sales_path, :notice => "Your sale was modified. Buyer must now accept changes."
     return
@@ -97,11 +97,13 @@ class Mtg::TransactionsController < ApplicationController
 
   def buyer_sale_modification_review
     @transaction = Mtg::Transaction.where(:buyer_id => current_user.id, :id => params[:id]).first
+    @items = @transaction.items.includes(:card).order("mtg_cards.name ASC")
+    @items_modified = @items.where("quantity_available <> quantity_requested")
     return if not verify_buyer_review_privileges?(@transaction) 
   end
   
   def create_buyer_sale_modification_review
-    @transaction = Mtg::Transaction.where(:buyer_id => current_user.id, :id => params[:id]).first
+    @transaction = Mtg::Transaction.includes(:items).where(:buyer_id => current_user.id, :id => params[:id]).first
     return if not verify_buyer_review_privileges?(@transaction)
     if params[:commit] == "Reject Changes"
       if @transaction.mark_as_cancelled!("modification") # mark status on transaction as cancelled and set cancellation reason
@@ -117,7 +119,6 @@ class Mtg::TransactionsController < ApplicationController
       @transaction.mark_as_buyer_confirmed_with_modifications!
       redirect_to back_path, :notice => "You accepted the buyer's modifications"      
     end
-
     return
   end
     

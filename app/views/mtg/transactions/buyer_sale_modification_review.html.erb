@@ -4,9 +4,25 @@
 
 <div class="ma">
   
+  <div class="group">
+    <ul class="tabs center">
+        <li <%= "class=\'selected\'" if not params[:status].present? %>> <%= link_to "All Items (#{@items.count})", buyer_sale_modification_review_path(@transaction) %> </li>
+        <li <%= "class=\'selected\'" if params[:status] == "modified" %>> <%= link_to "Modified Items (#{@items_modified.count})", buyer_sale_modification_review_path(@transaction, :status => "modified")%> </li>
+    </ul>
+  </div>
+  <h2>Seller's Response Message</h2>
+  <div class="ma">
+    <%= @transaction.response_message %>
+  </div>
   <%= form_tag create_buyer_sale_modification_review_path(@transaction), :method => :put do %>
-
-    <% @transaction.items.each do |item| %>
+    <% if params[:status] == "modified"
+         items = @items_modified
+       else
+         items = @items
+       end
+    %>
+    <h2>Updated Sale Items</h2>
+    <% items.each do |item| %>
       <div style="display:table; width:100%; padding:10px; margin-bottom:5px; -moz-border-radius: 7px; -webkit-border-radius: 7px; border-radius: 7px; <%= cycle("background-color: rgb(250,250,250);", "") %>">  
   
         <div style="width:25%; text-align:left; vertical-align:middle; display:table-cell;">

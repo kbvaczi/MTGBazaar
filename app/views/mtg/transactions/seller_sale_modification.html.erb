@@ -3,7 +3,7 @@
 <h1>Modify Sale <%= @transaction.transaction_number %></h1>
 
 <div class="ma">
-  
+  <h2>Sale Items</h2>
   <%= form_tag create_seller_sale_modification_path(@transaction), :method => :put do %>
 
     <% @transaction.items.each do |item| %>
@@ -51,14 +51,23 @@
           <%= item.quantity_requested %>
         </div>  
         <div style="width:10%; vertical-align:middle; display:table-cell; text-align:center;">  
-          <%= text_field_tag "quantity_available_#{item.id}", 1, :id => nil, :value => item.quantity_available, :style => "width:30px;text-align:center;"%>
+          <%= text_field_tag "quantity_available_#{item.id}", 1, :id => nil, :value => params["quantity_available_#{item.id}"] || item.quantity_available, :style => "width:30px;text-align:center;"%>
         </div>      
   
       </div>     
     <% end %>
-
+      <h2>Confirmation</h2>
+    <div class="simple_form">
+      <div class="inputs">
+        <div class="input">
+           <%= label_tag "Response Message"%>
+           <%= text_area_tag :response_message, "", :rows => 5, :cols => 45, :maxlength => 255 %>
+        </div>                                          
+      </div>
+    </div>
+    
     <br class="spacer"/>
-    <%= submit_tag "Update", :class => "center" %>
+    <%= submit_tag "Propose Modifications", :class => "center" %>
     
   <% end %>
 

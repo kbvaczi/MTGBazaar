@@ -51,7 +51,7 @@ $(document).ready(function() {
   //AUTOCOMPLETE FIELDS HANDLERS----------------------------------------------------------------------  
   $('#name').bind('railsAutocomplete.select', function(event, data){
     $.cookie('search_name', $("#name").val(), { expires: 1, path: '/' });
-    window.location.href = location.protocol + '//' + location.host + "/mtg/cards/search?name=" + $("#name").val();
+    window.location.href = location.protocol + '//' + location.host + "/mtg/cards/search?name=" + $("#name").val() + "&search_type=actual";
   });
   
   // don't allow users to freely write text box

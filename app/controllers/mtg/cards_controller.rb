@@ -62,7 +62,8 @@ class Mtg::CardsController < ApplicationController
     query = SmartTuple.new(" AND ")
     query << ["mtg_cards.active LIKE ?", true]
     query << ["mtg_sets.active LIKE ?", true] 
-    query << ["mtg_cards.name LIKE ?", "%#{params[:name]}%"] if params[:name].present?
+    query << ["mtg_cards.name LIKE ?", "%#{params[:name]}%"] if params[:name].present? 
+    query << ["mtg_cards.name LIKE ?", "#{params[:name]}"] if params[:search_type].present?
     query << ["mtg_sets.code LIKE ?", "#{params[:set]}"] if params[:set].present?
     query << ["mana_color LIKE ?", "%#{params[:white]}%"] if params[:white].present?
     query << ["mana_color LIKE ?", "%#{params[:black]}%"] if params[:black].present?    
@@ -84,7 +85,7 @@ class Mtg::CardsController < ApplicationController
     # seller filter
     query << ["mtg_listings.seller_id LIKE ? AND mtg_listings.quantity_available > 0", "#{cookies[:search_seller_id]}"] if cookies[:search_seller_id].present?
 
-    @mtg_cards = Mtg::Card.includes(:set, :listings).where(query.compile).order("mtg_cards.name").page(params[:page]).per(20)
+    @mtg_cards = Mtg::Card.includes(:set, :listings).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(20)
     
     # Don't show only 1 card in search results... go directly to that card's show page if there is only one.
     if @mtg_cards.length == 1
