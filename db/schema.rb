@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120621091832) do
+ActiveRecord::Schema.define(:version => 20120628113648) do
 
   create_table "account_balance_transfers", :force => true do |t|
     t.integer  "account_id"
@@ -153,6 +153,7 @@ ActiveRecord::Schema.define(:version => 20120621091832) do
     t.datetime "rejected_at"
     t.datetime "created_at",                            :null => false
     t.datetime "updated_at",                            :null => false
+    t.string   "scan"
   end
 
   add_index "mtg_listings", ["card_id"], :name => "index_mtg_listings_on_card_id"
@@ -175,7 +176,7 @@ ActiveRecord::Schema.define(:version => 20120621091832) do
     t.integer  "block_id"
     t.string   "name",         :default => "",           :null => false
     t.string   "code",         :default => "",           :null => false
-    t.date     "release_date", :default => '2012-03-14'
+    t.date     "release_date", :default => '2012-06-12'
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.boolean  "active",       :default => false,        :null => false
@@ -283,16 +284,10 @@ ActiveRecord::Schema.define(:version => 20120621091832) do
   add_index "tickets", ["transaction_id"], :name => "index_tickets_on_transaction_id"
   add_index "tickets", ["transaction_type"], :name => "index_tickets_on_transaction_type"
 
-  create_table "transactions", :force => true do |t|
-    t.integer  "test1_id"
-    t.integer  "test2_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "users", :force => true do |t|
-    t.string   "email",                  :default => "", :null => false
-    t.string   "encrypted_password",     :default => "", :null => false
+    t.string   "email",                  :default => "",    :null => false
+    t.string   "encrypted_password",     :default => "",    :null => false
+    t.string   "username",                                  :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -301,6 +296,7 @@ ActiveRecord::Schema.define(:version => 20120621091832) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.boolean  "banned",                 :default => false
     t.string   "password_salt"
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
@@ -310,11 +306,9 @@ ActiveRecord::Schema.define(:version => 20120621091832) do
     t.string   "unlock_token"
     t.datetime "locked_at"
     t.string   "authentication_token"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
     t.integer  "user_level",             :default => 0
-    t.string   "username"
-    t.boolean  "banned"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
@@ -322,5 +316,6 @@ ActiveRecord::Schema.define(:version => 20120621091832) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
+  add_index "users", ["username"], :name => "index_users_on_username", :unique => true
 
 end

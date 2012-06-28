@@ -6,6 +6,7 @@ class Mtg::Listing < ActiveRecord::Base
   belongs_to :transaction,  :class_name => "Mtg::Transaction"
   has_many   :reservations, :class_name => "Mtg::Reservation"
   has_many   :carts,        :through => :reservations
+  mount_uploader :scan, MtgScanUploader
   
   # Implement Money gem for price column
   composed_of   :price,
@@ -16,7 +17,7 @@ class Mtg::Listing < ActiveRecord::Base
   
   # Setup accessible (or protected) attributes for your model
   attr_accessible :name, :set, :quantity, :price, :condition, :language, :description, :altart,
-                  :misprint, :foil, :signed, :price_options, :quantity_available
+                  :misprint, :foil, :signed, :price_options, :quantity_available, :scan
 
   # not-in-model field for current password confirmation
   attr_accessor :name, :set, :price_options
@@ -24,6 +25,7 @@ class Mtg::Listing < ActiveRecord::Base
   # validations
   validates_presence_of :price, :condition, :language, :quantity
   validates :quantity, :numericality => {:greater_than => 0, :less_than => 10000}
+  #validates :scan, :file_size => {:maximum => 5.0.megabytes.to_i}
 
   
   before_create do      # all cards are available when created
@@ -143,7 +145,7 @@ class Mtg::Listing < ActiveRecord::Base
   # returns true if other_listing is a duplicate listing to this listing otherwise returns false
   def duplicate_listing?(other_listing)
     return true if self.seller_id == other_listing.seller_id && 
-                   self.card_id == other_listing.card_id && 
+                   self.card_id == other_listing.card_id &&                    
                    self.price == other_listing.price &&
                    self.condition == other_listing.condition &&
                    self.language == other_listing.language &&

@@ -2,7 +2,7 @@
 
 <h1>Create a listing</h1>
 
-<%= simple_form_for @listing, :url => mtg_listings_path, :method => :post do |f| %>
+<%= simple_form_for @listing, :html => {:multipart => true}, :url => mtg_listings_path, :method => :post do |f| %>
 
 
   <div class="inputs">
@@ -52,7 +52,10 @@
                                 :default => "EN",
                                 :input_html => { :class => "chzn-select chzn-nosearch" },
                                 :required => false %>    
-                                
+   	<%= f.input :scan,     		:label => "Optional Scan",
+								:as => :file %>
+							                                                          
+
     <%= f.input :description,   :label => "Optional Description",
                                 :as => :string %>
                                 
@@ -68,7 +71,7 @@
                                 :default => false %>
 
     <%= f.input :altart,        :label => "Contains alternate art",
-                                :default => false %>                                
+                                :default => false %>    
 
   </div>
   <br class="spacer"/>
