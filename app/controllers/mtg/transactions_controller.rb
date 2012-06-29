@@ -217,6 +217,8 @@ class Mtg::TransactionsController < ApplicationController
                                       :status => "delivered")
       @transaction.seller.account.balance_credit!(@transaction.subtotal_value)  # credit sellers account
       redirect_to account_purchases_path, :notice => "Your delivery confirmation was sent..."
+      @transaction.buyer.update_buyer_statistics!
+      @transaction.seller.update_seller_statistics!
     else
       flash[:error] = "There were one or more errors while trying to process your request..."
       render 'buyer_delivery_confirmation'

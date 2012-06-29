@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120621091832) do
+ActiveRecord::Schema.define(:version => 20120628180529) do
 
   create_table "account_balance_transfers", :force => true do |t|
     t.integer  "account_id"
@@ -289,6 +289,23 @@ ActiveRecord::Schema.define(:version => 20120621091832) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "user_statistics", :force => true do |t|
+    t.integer "user_id"
+    t.integer "number_purchases",        :default => 0
+    t.integer "number_sales",            :default => 0
+    t.integer "number_sales_rejected",   :default => 0
+    t.integer "number_sales_cancelled",  :default => 0
+    t.float   "average_confirm_time"
+    t.float   "average_ship_time"
+    t.integer "positive_feedback_count", :default => 0
+    t.integer "negative_feedback_count", :default => 0
+    t.integer "neutral_feedback_count",  :default => 0
+    t.text    "ip_log",                  :default => ""
+    t.integer "number_strikes",          :default => 0
+  end
+
+  add_index "user_statistics", ["user_id"], :name => "index_user_statistics_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
