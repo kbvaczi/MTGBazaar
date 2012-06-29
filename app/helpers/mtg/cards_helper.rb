@@ -207,8 +207,8 @@ module Mtg::CardsHelper
     image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/miscut.png", :title => "Misprint", :style => "float:left;height:20px;vertical-align:bottom;")         
   end
 
-  def listing_option_scan_icon
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/scan.png", :title => "Click to view scan", :style => "float:left;height:20px;vertical-align:bottom;")         
+  def listing_option_scan_icon(listing)
+    link_to image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/scan.png", :title => "Click to view scan", :style => "float:left;height:20px;vertical-align:bottom;"), listing.scan_url, :target => "_blank"         
   end      
 
   def listing_option_signed_icon

@@ -6,6 +6,7 @@ class Mtg::Listing < ActiveRecord::Base
   belongs_to :transaction,  :class_name => "Mtg::Transaction"
   has_many   :reservations, :class_name => "Mtg::Reservation"
   has_many   :carts,        :through => :reservations
+  mount_uploader :scan, MtgScanUploader
   
   # Implement Money gem for price column
   composed_of   :price,
@@ -16,7 +17,7 @@ class Mtg::Listing < ActiveRecord::Base
   
   # Setup accessible (or protected) attributes for your model
   attr_accessible :name, :set, :quantity, :price, :condition, :language, :description, :altart,
-                  :misprint, :foil, :signed, :price_options, :quantity_available
+                  :misprint, :foil, :signed, :price_options, :quantity_available, :scan
 
   # not-in-model field for current password confirmation
   attr_accessor :name, :set, :price_options
@@ -24,7 +25,12 @@ class Mtg::Listing < ActiveRecord::Base
   # validations
   validates_presence_of :price, :condition, :language, :quantity
   validates :quantity, :numericality => {:greater_than => 0, :less_than => 10000}
+  validates :price, :numericality => {:greater_than => 0, :less_than => 1000000}  
+  validate  :validate_scan_size, :if => "scan?"  
 
+  def validate_scan_size
+    errors[:scan] << "Max file size is 5MB" if scan.size > 5.megabytes
+  end
   
   before_create do      # all cards are available when created
     self.quantity_available = self.quantity
@@ -143,7 +149,7 @@ class Mtg::Listing < ActiveRecord::Base
   # returns true if other_listing is a duplicate listing to this listing otherwise returns false
   def duplicate_listing?(other_listing)
     return true if self.seller_id == other_listing.seller_id && 
-                   self.card_id == other_listing.card_id && 
+                   self.card_id == other_listing.card_id &&                    
                    self.price == other_listing.price &&
                    self.condition == other_listing.condition &&
                    self.language == other_listing.language &&
@@ -151,24 +157,31 @@ class Mtg::Listing < ActiveRecord::Base
                    self.misprint == other_listing.misprint &&
                    self.altart == other_listing.altart &&                   
                    self.signed == other_listing.signed &&
-                   self.description == other_listing.description
+                   self.description == other_listing.description &&
+                   (not self.scan.present?) &&
+                   (not other_listing.scan.present?)
     return false
   end
   
   # returns true if other_listing is a duplicate listing to this listing otherwise returns false
   def self.duplicate_listings_of(listing, include_self = true)
-    results = where(:seller_id => listing.seller_id,
-              :card_id => listing.card_id)
-              .where(:price => listing.price,
-              :condition => listing.condition,
-              :language => listing.language,
-              :foil => listing.foil,
-              :misprint => listing.misprint,
-              :altart => listing.altart,
-              :signed => listing.signed,
-              :description => listing.description)
-    results = results.where("id <> ?", listing.id) unless include_self
-    results # return results
+    unless listing.scan.present? # if listing has a scan, by definition it is unique and has no duplicates
+      results = where(:seller_id => listing.seller_id,
+                :card_id => listing.card_id)
+                .where(:price => listing.price,
+                :condition => listing.condition,
+                :language => listing.language,
+                :foil => listing.foil,
+                :misprint => listing.misprint,
+                :altart => listing.altart,
+                :signed => listing.signed,
+                :description => listing.description,
+                :scan => "")
+      results = results.where("id <> ?", listing.id) unless include_self
+      results # return results
+    else
+      return [] # this listing had a scan, it has no duplicates
+    end
   end
   
   # returns the number of listings that are a duplicate of this listing in a subset if specified or in the entire database if subset not specified

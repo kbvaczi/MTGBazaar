@@ -17,17 +17,17 @@ class Mtg::ListingsController < ApplicationController
     if params[:mtg_listing] && params[:mtg_listing][:price_options] != "other"  # handle price options
       params[:mtg_listing][:price] = params[:mtg_listing][:price_options]
     end 
-    listing = Mtg::Listing.new(params[:mtg_listing])
-    listing.card_id = card.id
-    listing.seller_id = current_user.id
-    duplicate_listings = Mtg::Listing.duplicate_listings_of(listing)
+    @listing = Mtg::Listing.new(params[:mtg_listing])
+    @listing.card_id = card.id
+    @listing.seller_id = current_user.id
+    duplicate_listings = Mtg::Listing.duplicate_listings_of(@listing)
     if duplicate_listings.count > 0 # there is already an identical listing, just add quantity to existing listing
       duplicate_listing = duplicate_listings.first
       duplicate_listing.increment(:quantity_available, params[:mtg_listing][:quantity].to_i)
       duplicate_listing.increment(:quantity, params[:mtg_listing][:quantity].to_i)      
       duplicate_listing.save!
       redirect_to back_path, :notice => " #{help.pluralize(params[:mtg_listing][:quantity], "Listing", "Listings")} Created..."
-    elsif listing.save
+    elsif @listing.save
       redirect_to back_path, :notice => " #{help.pluralize(params[:mtg_listing][:quantity], "Listing", "Listings")} Created... Good Luck!"
     else
       flash[:error] = "There were one or more errors while trying to process your request"

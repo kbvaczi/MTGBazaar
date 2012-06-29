@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120628180529) do
+ActiveRecord::Schema.define(:version => 20120629122214) do
 
   create_table "account_balance_transfers", :force => true do |t|
     t.integer  "account_id"
@@ -153,6 +153,7 @@ ActiveRecord::Schema.define(:version => 20120628180529) do
     t.datetime "rejected_at"
     t.datetime "created_at",                            :null => false
     t.datetime "updated_at",                            :null => false
+    t.string   "scan",               :default => ""
   end
 
   add_index "mtg_listings", ["card_id"], :name => "index_mtg_listings_on_card_id"
