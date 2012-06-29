@@ -52,8 +52,10 @@
                                 :default => "EN",
                                 :input_html => { :class => "chzn-select chzn-nosearch" },
                                 :required => false %>    
-   	<%= f.input :scan,     		:label => "Optional Scan",
-								:as => :file %>
+
+   	<%= f.input :scan,     		  :label => "Optional Scan",
+								                :as => :file,
+								                :input_html => {:value => params[:mtg_listing][:scan]} %>
 							                                                          
 
     <%= f.input :description,   :label => "Optional Description",
