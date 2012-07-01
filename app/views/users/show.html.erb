@@ -1,24 +1,64 @@
 <% title @user.username %>
 
-<h1><div class="left">Seller Profile:</div><div class="right"><%= @user.username %></div></h1>
+<h1><%= @user.username %></h1>
 <div class="ml mr">
-  <h2>Seller Statistics</h2>
-  <div class="ma">
-    <%= 'Seller: ' + @user.username %>
-    <div><%= @user.created_at.strftime("Member Since: %B %d, %Y") %></div>
-    <div><%= "number of sales: " + @user.account.number_sales.to_s %></div>
-    <div><%= "Average wait before shipping: " + @user.account.number_sales.to_s %></div>
-  </div>
 
-  <h2>Location Information</h2>
+  <h2>Location</h2>
   <div class="ma">
-    <div><%= 'Country: ' + capitalize_first_word(@user.account.country) %></div>
+    <div><%= 'Country: ' + @user.account.country %></div>
     <div><%= 'Shipping from: ' + capitalize_first_word(@user.account.city.capitalize) + ", " + capitalize_first_word(@user.account.state.capitalize) %></div>
   </div>
 
-  <h2>Seller Feedback</h2>
+  <h2>Statistics</h2>
   <div class="ma">
-    <div><%= 'Average rating: ' + @user.account.average_rating.round(1).to_s + ' out of 5.0'%></div>
-    <%# add recent feedback%>
+    <div><%= "Approval Rating: " + @user.statistics.display_approval_percent.to_s + "%" %></div>    
+    <div><%= @user.created_at.strftime("Member Since: %B %Y") %></div>
+    <div><%= "number of purchases: " + @user.statistics.number_purchases.to_s %></div>    
+    <div><%= "number of sales: " + @user.statistics.number_sales.to_s %></div>
+    <div><%= "Average time to confirm sale: " + @user.statistics.average_confirm_time.to_s + " days" %></div>
+    <div><%= "Average time to ship sale: " + @user.statistics.average_ship_time.to_s + " days" %></div>
+
+  </div>
+
+  <h2>Feedback</h2>
+  <div class="ma">
+
+    <div class="teaser_row">
+      <div style="width:15%">
+        <u>Date</u>
+      </div>
+      <div style="width:30%">  
+        <u>Buyer</u>
+      </div>
+      <div style="width:15%">
+        <u>Rating</u>
+      </div>
+      <div style="width:40%">
+        <u>Feedback</u>
+      </div>    
+    </div>
+
+    <% @sales.each do |s| %>
+      <div class="teaser_row">
+        <div style="width:15%">
+          <%= display_time(s.created_at)%>
+        </div>
+        <div style="width:30%">  
+          <%= link_to s.buyer.username, user_path(s.buyer) %>
+        </div>
+        <div style="width:15%">
+          <%= s.display_feedback %>
+        </div>
+        <div style="width:40%">
+          <%= s.buyer_feedback_text %>
+        </div>    
+      </div>
+    <% end %>
+    
+    <br class="spacer">
+    <div class="paginator">
+      <%= paginate @sales %>
+    </div>
+
   </div>
 </div>

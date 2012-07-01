@@ -85,13 +85,14 @@ MTGBazaar::Application.routes.draw do
   post 'users/account/sales' => 'users#account_sales', :as => 'account_sales'   # for pagination
   get 'users/account/purchases' => 'users#account_purchases', :as => 'account_purchases'
   post 'users/account/purchases' => 'users#account_purchases', :as => 'account_purchases'   # for pagination  
-  
+
   devise_for :users, :controllers => { :registrations => 'users/registrations' , :sessions => 'users/sessions' }
   resources :users, :only => [:index, :show], :controllers => { :users => "users/users"} do
-    get  "autocomplete_name", :on => :collection
+    get "autocomplete_name", :on => :collection
     get :autocomplete_user_username, :on => :collection
   end
-  
+  match 'users/:id/(:page)', :controller => 'users', :action => 'show'  #TODO: hack to get pagination to work in user show page... relook at this later
+
   resources :accounts
   
 # MISC ROUTES -------------- #

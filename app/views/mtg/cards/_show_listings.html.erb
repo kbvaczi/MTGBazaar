@@ -4,11 +4,11 @@
 
   <!-- Heading -->
   <div class="mtg_listing_teaser">
-    <div class="mtg_listing_teaser_seller"> <u><%= link_to "Seller", mtg_card_path(@mtg_card, :sort_by => "seller") %> (feedback) </u></div>
-    <div class="mtg_listing_teaser_language"> <u><%= link_to "Lang", mtg_card_path(@mtg_card, :sort_by => "language") %> </u></div>  
-    <div class="mtg_listing_teaser_condition"> <u><%= link_to "Cond", mtg_card_path(@mtg_card, :sort_by => "condition") %> </u></div>      
+    <div class="mtg_listing_teaser_seller"> <u>Seller</u></div>
+    <div class="mtg_listing_teaser_language"> <u>Lang</u></div>  
+    <div class="mtg_listing_teaser_condition"> <u>Cond</u></div>      
     <div class="mtg_listing_teaser_options"> <u>Options</u> </div>
-    <div class="mtg_listing_teaser_price"> <u><%= link_to "Price", mtg_card_path(@mtg_card, :sort_by => "price") %> </u></div> 
+    <div class="mtg_listing_teaser_price"> <u>Price</u></div> 
     <div class="mtg_listing_teaser_availability"> <u>Quantity</u> </div>     
     <div class="mtg_listing_teaser_buy"> <u>Add to Cart</u> </div>  
   </div>
@@ -17,7 +17,8 @@
   <% @listings.each do |listing| %>      
     <div class="mtg_listing_teaser <%= cycle("even", "odd") %>">
       <div class="mtg_listing_teaser_seller">
-        <%= "#{listing.seller.username} (#{listing.seller.account.number_sales})" %>
+        <%=  link_to "#{listing.seller.username}", user_path(listing.seller) %>
+        <%= "(#{listing.seller.statistics.number_sales}, #{listing.seller.statistics.display_approval_percent}%)" %>
       </div>
       <div class="mtg_listing_teaser_language">
         <%= display_flag_symbol(listing) %>

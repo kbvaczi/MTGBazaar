@@ -50,7 +50,7 @@
         <%= ticket.updates.count %>
       </div>
       <div style="width:25%">
-        <%= time_string(ticket.updated_at) %>
+        <%= display_time(ticket.updated_at) %>
       </div> 
       <div style="width:10%">
         <%= link_to "Details", ticket_path(ticket) %>
