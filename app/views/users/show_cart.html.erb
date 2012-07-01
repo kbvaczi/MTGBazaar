@@ -51,6 +51,9 @@
             <% if reservation.listing.description != "" %>
               <%= listing_option_description_icon(reservation.listing) %>
             <% end %>
+        		<% if reservation.listing.scan.present? %>
+              <%= listing_option_scan_icon(reservation.listing) %>
+            <% end %>            
           </div>
           <div class="cart_item_teaser_price">
             <%= number_to_currency(reservation.listing.price) %>
