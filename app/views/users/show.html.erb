@@ -39,7 +39,7 @@
     </div>
 
     <% @sales.each do |s| %>
-      <div class="teaser_row">
+      <div class="teaser_row <%= cycle("odd","even") %>">
         <div style="width:15%">
           <%= display_time(s.created_at)%>
         </div>
@@ -49,7 +49,7 @@
         <div style="width:15%">
           <%= s.display_feedback %>
         </div>
-        <div style="width:40%">
+        <div style="width:40%;text-align:justify;">
           <%= s.buyer_feedback_text %>
         </div>    
       </div>
