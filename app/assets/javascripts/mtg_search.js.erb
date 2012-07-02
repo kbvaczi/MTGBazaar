@@ -2,25 +2,7 @@ $(document).ready(function() {
 
   //CLEAR ALL BUTTONS----------------------------------------------------------------------------------
   //--  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --
-  $("#clear-filters").click(function() {  
-    //clear cookies
-    $.cookie('search_seller', '', { expires: 1, path: '/' });     
-    $.cookie('search_seller_id', '', { expires: 1, path: '/' });
-    $.cookie('search_foil', '', { expires: 1, path: '/' });
-    $.cookie('search_signed','', { expires: 1, path: '/' });
-    $.cookie('search_altart','', { expires: 1, path: '/' });
-    $.cookie('search_miscut','', { expires: 1, path: '/' });
-    // clear vanilla inputs
-    $("#filters-form").find("select").val(''); 
-    $("#filters-form").find("input").removeAttr('checked'); 
-    $("#filters-form").find("input[type='text']").val(''); //clear text boxes, but unfortunately also clears multiselect placeholder
-    $("#filters-form").find("input[type='search']").val(''); //clear search boxes
-    // clear chzn boxes associated with vanilla inputs
-    $("#filters-form").find(".search-choice-close").remove();
-    $("#filters-form").find("select").trigger("liszt:updated");
-    $("#filters-form").find('.chzn-single').addClass('chzn-default');
-  });
-  
+
   $("#clear-search").click(function() {  
     //clear cookies
     $.cookie('search_name', '', { expires: 1, path: '/' });
@@ -35,7 +17,15 @@ $(document).ready(function() {
     $.cookie('search_black', '', { expires: 1, path: '/' });
     $.cookie('search_red', '', { expires: 1, path: '/' });  
     $.cookie('search_green', '', { expires: 1, path: '/' });
-    $.cookie('search_abilities', '', { expires: 1, path: '/' });    
+    $.cookie('search_abilities', '', { expires: 1, path: '/' });  
+	$.cookie('search_seller', '', { expires: 1, path: '/' });     
+    $.cookie('search_seller_id', '', { expires: 1, path: '/' });
+    $.cookie('search_foil', '', { expires: 1, path: '/' });
+    $.cookie('search_signed','', { expires: 1, path: '/' });
+    $.cookie('search_altart','', { expires: 1, path: '/' });
+    $.cookie('search_miscut','', { expires: 1, path: '/' });
+    $.cookie('search_language','', { expires: 1, path: '/' });
+  
     // clear vanilla inputs
     $("#search-form").find("select").val(''); 
     $("#search-form").find("input").removeAttr('checked'); 
@@ -122,6 +112,9 @@ $(document).ready(function() {
   $("#search-miscut").change(function() {  
     $('#search-miscut').is(':checked') ? $.cookie('search_miscut', true, { expires: 1, path: '/' }) : $.cookie('search_miscut',"", { expires: 1, path: '/' });
   });  
+  $("#language").change(function() {  
+	$.cookie('search_language', $("#language").val(), { expires: 1, path: '/' });
+  });
 
 
   
@@ -155,6 +148,11 @@ $(document).ready(function() {
 
   $("#seller").val($.cookie('search_seller'));
   $("#seller_id").val($.cookie('search_seller_id'));    
+
+  $("#language").val($.cookie('search_language'));
+  $("#language_chzn a span").text( $("#language option:selected").text() );
+  $("#language_chzn .chzn-drop .chzn-results li:contains($.cookie('search_language'))").addClass("result-selected");  
+ 
 
   var valArr = ($.cookie('search_abilities') || "").split(',');  // || "" cookie because it throws an error when cookie is null
     i = 0, size = valArr.length;
