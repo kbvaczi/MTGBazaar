@@ -44,15 +44,16 @@ class Mtg::ListingsController < ApplicationController
   end  
   
   def update
-    listing = Mtg::Listing.find(params[:id])
+    @listing = Mtg::Listing.find(params[:id])
     # handle pricing select options to determine how to update price
     if params[:mtg_listing] && params[:mtg_listing][:price_options] != "other"
       params[:mtg_listing][:price] = params[:mtg_listing][:price_options]
     end    
     # handle updating listings before creating/destroying just in case there is a problem with update
-    unless listing.update_attributes(params[:mtg_listing])
+    unless @listing.update_attributes(params[:mtg_listing])
       flash[:error] = "There were one or more errors while trying to process your request"
-      render 'edit'      
+      render 'edit'
+      return
     end
     redirect_to back_path, :notice => "Listing Updated!"
     return # don't show a view

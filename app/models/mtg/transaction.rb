@@ -34,6 +34,18 @@ class Mtg::Transaction < ActiveRecord::Base
     items.to_a.sum(&:quantity_available)
   end
   
+  def display_feedback
+    case self.buyer_feedback
+      when "1"
+        "Positive"
+      when "-1"
+        "Negative"
+      when "0"
+        "Neutral"
+    end
+    
+  end
+  
   # check whether seller has confirmed this transaction or not
   def seller_confirmed?
     return self.seller_confirmed_at != nil

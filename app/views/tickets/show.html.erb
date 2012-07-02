@@ -30,7 +30,7 @@
     <% else %>
       <%= "Admin" %>
     <% end %>
-    on <%= time_string(ticket_update.created_at) %>:
+    on <%= display_time(ticket_update.created_at) %>:
     </h3>
     <p> <%= ticket_update.description %> </p>
     <% if ticket_update.complete_ticket? %>    

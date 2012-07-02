@@ -24,12 +24,13 @@ class Mtg::Listing < ActiveRecord::Base
   
   # validations
   validates_presence_of :price, :condition, :language, :quantity
-  validates :quantity, :numericality => {:greater_than => 0, :less_than => 10000}
-  validates :price, :numericality => {:greater_than => 0, :less_than => 1000000}  
-  validate  :validate_scan_size, :if => "scan?"  
+  validates :quantity, :numericality => {:greater_than => 0, :less_than => 10000}  #quantity must be between 0 and 10000
+  validates :price, :numericality => {:greater_than => 0, :less_than => 1000000}   #price must be between $0 and $10,000.00
+  validate  :validate_scan, :if => "scan?"  
 
-  def validate_scan_size
+  def validate_scan
     errors[:scan] << "Max file size is 5MB" if scan.size > 5.megabytes
+    errors[:quantity] << "Max quantity is 1 when attaching scan" if quantity > 1
   end
   
   before_create do      # all cards are available when created

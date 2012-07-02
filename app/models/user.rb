@@ -62,13 +62,22 @@ class User < ActiveRecord::Base
     self
   end
   
-  def pending_transactions
-    Mtg::Transaction.where(:buyer_id => id, :seller_confirmed_at => nil)
+  def pending_purchases
+    Mtg::Transaction.where(:buyer_id => id, :status => "pending")
   end
   
-  def active_transactions
-    Mtg::Transaction.where(:buyer_id => id).where("seller_confirmed_at IS NOT NULL")
+  def active_purchases
+    Mtg::Transaction.where(:buyer_id => id).where("status <> \'delivered\' AND status <> \'cancelled\' AND status <> \'rejected\'")
   end  
+  
+  def pending_sales
+    Mtg::Transaction.where(:seller_id => id, :status => "pending")
+  end
+  
+  def active_sales
+    Mtg::Transaction.where(:seller_id => id).where("status <> \'delivered\' AND status <> \'cancelled\' AND status <> \'rejected\'")
+  end
+  
   
 
 end

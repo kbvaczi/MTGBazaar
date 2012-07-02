@@ -14,7 +14,8 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     set_back_path    
-    @user = User.find(params[:id])
+    @user = User.includes(:statistics, :account).find(params[:id])
+    @sales = @user.mtg_sales.where(:status => "delivered").order("created_at DESC").page(params[:page]).per(10)
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @user }

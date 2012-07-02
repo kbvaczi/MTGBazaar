@@ -154,7 +154,7 @@ class Mtg::TransactionsController < ApplicationController
       ApplicationMailer.send_seller_cancellation_notice(@transaction).deliver # notify seller their transaction was cancelled
       @transaction.buyer.account.balance_credit!(@transaction.total_value) # credit buyer's account
       @transaction.reject_items! # mark items as rejected move listings back to available
-      redirect_to account_sales_path, :notice => "You cancelled this sale..."
+      redirect_to account_purchases_path, :notice => "You cancelled this sale..."
     else
       flash[:error] = "There were one or more errors while trying to process your request..."
       render 'buyer_sale_cancellation'
@@ -217,8 +217,8 @@ class Mtg::TransactionsController < ApplicationController
                                       :status => "delivered")
       @transaction.seller.account.balance_credit!(@transaction.subtotal_value)  # credit sellers account
       redirect_to account_purchases_path, :notice => "Your delivery confirmation was sent..."
-      @transaction.buyer.update_buyer_statistics!
-      @transaction.seller.update_seller_statistics!
+      @transaction.buyer.statistics.update_buyer_statistics!
+      @transaction.seller.statistics.update_seller_statistics!
     else
       flash[:error] = "There were one or more errors while trying to process your request..."
       render 'buyer_delivery_confirmation'
