@@ -77,13 +77,13 @@ class Mtg::CardsController < ApplicationController
     query << SmartTuple.new(" AND ").add_each(params[:abilities]) {|v| ["mtg_cards.description LIKE ?", "%#{v}%"]} if params[:abilities].present?
     
     # language filters
-    query << ["mtg_listings.language LIKE ?", cookies[:search_language]] if cookies[:search_language].present?
+    query << ["mtg_listings.language LIKE ? AND mtg_listings.quantity_available > 0", cookies[:search_language]] if cookies[:search_language].present?
     
     # options filters
-    query << ["mtg_listings.foil LIKE ?", true] if cookies[:search_foil].present?
-    query << ["mtg_listings.misprint LIKE ?", true] if cookies[:search_miscut].present?
-    query << ["mtg_listings.signed LIKE ?", true] if cookies[:search_signed].present?
-    query << ["mtg_listings.altart LIKE ?", true] if cookies[:search_altart].present?
+    query << ["mtg_listings.foil LIKE ? AND mtg_listings.quantity_available > 0", true] if cookies[:search_foil].present?
+    query << ["mtg_listings.misprint LIKE ? AND mtg_listings.quantity_available > 0", true] if cookies[:search_miscut].present?
+    query << ["mtg_listings.signed LIKE ? AND mtg_listings.quantity_available > 0", true] if cookies[:search_signed].present?
+    query << ["mtg_listings.altart LIKE ? AND mtg_listings.quantity_available > 0", true] if cookies[:search_altart].present?
 
     # seller filter
     query << ["mtg_listings.seller_id LIKE ? AND mtg_listings.quantity_available > 0", "#{cookies[:search_seller_id]}"] if cookies[:search_seller_id].present?
