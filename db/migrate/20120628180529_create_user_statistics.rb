@@ -17,7 +17,7 @@ class CreateUserStatistics < ActiveRecord::Migration
       t.integer   :negative_feedback_count,   :default => 0      
       t.integer   :neutral_feedback_count,    :default => 0            
       
-      t.text      :ip_log,                    :default => "[]"        # list of previous login IPs      
+      t.text      :ip_log                                          # list of previous login IPs      
       t.integer   :number_strikes,            :default => 0
       
       t.timestamps

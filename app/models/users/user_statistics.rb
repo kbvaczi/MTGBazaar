@@ -21,6 +21,12 @@ class UserStatistics < ActiveRecord::Base
   # ------------ Model Methods ------------ #
   # --------------------------------------- #
   
+  before_create :set_ip_log
+  
+  def set_ip_log
+    self.ip_log = "[]"
+  end
+  
   def update_seller_statistics!
     sales = self.user.mtg_sales
 

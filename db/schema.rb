@@ -302,10 +302,10 @@ ActiveRecord::Schema.define(:version => 20120629122214) do
     t.integer  "positive_feedback_count", :default => 0
     t.integer  "negative_feedback_count", :default => 0
     t.integer  "neutral_feedback_count",  :default => 0
-    t.text     "ip_log",                  :default => "[]"
+    t.text     "ip_log"
     t.integer  "number_strikes",          :default => 0
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
   end
 
   add_index "user_statistics", ["user_id"], :name => "index_user_statistics_on_user_id"
