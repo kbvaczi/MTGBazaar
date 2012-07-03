@@ -27,8 +27,10 @@ protected
   
   # devise redirect after sign out
   def after_sign_out_path_for(resource)
-    current_cart.empty! # empty cart
-    current_cart.destroy # kill this user's cart
+    if current_cart.present? 
+      current_cart.empty! # empty cart
+      current_cart.destroy # kill this user's cart
+    end
     super
   end
   

@@ -29,11 +29,24 @@ class User < ActiveRecord::Base
   cattr_accessor :current_user
   
   # allow form for accounts nested inside user signup/edit forms
-  accepts_nested_attributes_for :account
+  accepts_nested_attributes_for :account, :statistics
+  
+  after_create :create_statistics
+
+  def create_statistics
+    self.statistics = UserStatistics.create
+  end
   
   # override default route to add username in route.
   def to_param
     "#{id}-#{username}".parameterize 
+  end
+  
+  # create an IP log under user statistics
+  Warden::Manager.after_authentication do |record, auth, opts|
+    if record.class.to_s == "User" and record.statistics.updated_at < 1.minutes.ago
+      record.statistics.update_attribute(:ip_log, eval(record.statistics.ip_log).push([record.current_sign_in_at.to_s, record.current_sign_in_ip]).last(20).to_s )
+    end
   end
 
 # ---------------- VALIDATIONS ----------------      
@@ -52,13 +65,13 @@ class User < ActiveRecord::Base
                                     :format => { :with => /\A[-_\w\d]+\z/, :message => "no special characters please"}
 
   # validates account model when user model is saved
-  validates_associated :account
+  validates_associated :account, :statistics
   
 # ---------------- MEMBER METHODS -------------
 
   # build an account for this user object if it does not already have one
   def with_account
-    self.build_account if !self.account
+    self.build_account if !self.account  
     self
   end
   

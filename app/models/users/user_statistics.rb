@@ -11,6 +11,12 @@ class UserStatistics < ActiveRecord::Base
   # ------------ Validations -------------- #
   # --------------------------------------- #
 
+  validates_presence_of :number_sales_rejected, :number_sales, :number_sales_cancelled, :positive_feedback_count, :neutral_feedback_count,
+                        :negative_feedback_count
+  
+  validates :number_sales_rejected, :number_sales, :number_sales_cancelled, :positive_feedback_count, :neutral_feedback_count, :negative_feedback_count,
+            :numericality => {:only_integer => true, :greater_than_or_equal_to => 0, :less_than => 1000000}
+  
   # --------------------------------------- #
   # ------------ Model Methods ------------ #
   # --------------------------------------- #
@@ -43,7 +49,27 @@ class UserStatistics < ActiveRecord::Base
   end
   
   def display_approval_percent
-    ( ( ( self.positive_feedback_count + self.neutral_feedback_count ).to_f / self.number_sales.to_f ) * 100 ).round(0) rescue 0 # handle divide by 0 error
+    if self.number_sales > 0
+      "#{( ( ( self.positive_feedback_count + self.neutral_feedback_count ).to_f / self.number_sales.to_f ) * 100 ).round(0) rescue 0}%" # handle divide by 0 error
+    else
+      "Insufficient Data"
+    end
+  end
+  
+  def display_average_confirm_time
+    if self.average_confirm_time.present?
+      self.average_confirm_time.to_s + "days"
+    else
+      "Insufficient Data"
+    end
+  end
+  
+  def display_average_ship_time
+    if self.average_ship_time.present?
+      self.average_ship_time.to_s + "days"
+    else
+      "Insufficient Data"
+    end
   end
   
 end

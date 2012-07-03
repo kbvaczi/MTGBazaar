@@ -11,12 +11,12 @@
 
   <h2>Statistics</h2>
   <div class="ma">
-    <div><%= "Approval Rating: " + @user.statistics.display_approval_percent.to_s + "%" %></div>    
+    <div><%= "Approval Rating: " + @user.statistics.display_approval_percent %></div>    
     <div><%= @user.created_at.strftime("Member Since: %B %Y") %></div>
     <div><%= "number of purchases: " + @user.statistics.number_purchases.to_s %></div>    
     <div><%= "number of sales: " + @user.statistics.number_sales.to_s %></div>
-    <div><%= "Average time to confirm sale: " + @user.statistics.average_confirm_time.to_s + " days" %></div>
-    <div><%= "Average time to ship sale: " + @user.statistics.average_ship_time.to_s + " days" %></div>
+    <div><%= "Average time to confirm sale: " + @user.statistics.display_average_confirm_time %></div>
+    <div><%= "Average time to ship sale: " + @user.statistics.display_average_ship_time %></div>
 
   </div>
 
