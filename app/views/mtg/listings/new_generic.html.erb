@@ -1,0 +1,24 @@
+<% title "Sell a Card"%>
+<h1>Sell a Card</h1>
+
+<%= simple_form_for @listing, :html => {:multipart => true} do |f| %>
+  <div class="inputs">
+    <br class="spacer"/>
+    <br class="spacer"/>  
+
+                          
+    <%= f.input :name,          :label => "Card",
+                                :input_html => { :class => "search-text ui-autocomplete-input" , :placeholder => "Name..." , "data-autocomplete" => autocomplete_name_mtg_cards_path },
+                                :required => true %>
+
+    
+
+  </div>
+  <br class="spacer"/>
+  <br class="spacer"/>  
+  <div class="center">
+    <%= f.button :submit, "Create Listing", :class => "center" %>
+  </div>
+  <br class="spacer"/>
+
+<% end %>
