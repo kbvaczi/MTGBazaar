@@ -1,5 +1,11 @@
 class UserStatistics < ActiveRecord::Base
+  # --------------------------------------- #
+  # ------------ Configuration ------------ #
+  # --------------------------------------- #
+
   self.table_name = 'user_statistics'  
+  
+  before_create :set_ip_log
   
   # --------------------------------------- #
   # ------------ Database Relationships --- #
@@ -21,8 +27,7 @@ class UserStatistics < ActiveRecord::Base
   # ------------ Model Methods ------------ #
   # --------------------------------------- #
   
-  before_create :set_ip_log
-  
+  # text types cannot have default values in mysql so we must manually set ip_log before creation
   def set_ip_log
     self.ip_log = "[]"
   end

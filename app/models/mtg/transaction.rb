@@ -148,6 +148,10 @@ class Mtg::Transaction < ActiveRecord::Base
       listing.save
     end
   end
+  
+  def update_card_statistics!
+    self.items.includes({:card => :statistics}).each {|i| i.card.statistics.update!}
+  end
 
 # ---------------- PRIVATE MEMBER METHODS -------------  
   private

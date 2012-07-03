@@ -5,9 +5,17 @@ class Mtg::Card < ActiveRecord::Base
   include ActionView::Helpers::NumberHelper  # needed for number_to_currency  
 
   belongs_to  :set,                         :class_name => "Mtg::Set"
+  has_one     :statistics,                  :class_name => "Mtg::CardStatistics",   :foreign_key => "card_id"
   has_one     :block,     :through => :set, :class_name => "Mtg::Block",            :foreign_key => "block_id"
   has_many    :listings,                    :class_name => "Mtg::Listing",          :foreign_key => "card_id"
   has_many    :sales,                       :class_name => "Mtg::TransactionItem",  :foreign_key => "card_id"  
+
+  after_create :create_card_statistics
+  
+  # every new card gets a statistics model
+  def create_card_statistics
+    self.statistics = Mtg::CardStatistics.create
+  end
   
   # override default route to add username in route.
   def to_param

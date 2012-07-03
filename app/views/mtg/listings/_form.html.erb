@@ -30,9 +30,9 @@
                                                               
     <%= f.input :price_options, :label => "Asking Price",
                                 :as => :radio,
-                                :collection => [["Low (#{@listing.card.listing_price_low})".html_safe,      @listing.card.listing_price_low], 
-                                                ["Average (#{@listing.card.listing_price_med})".html_safe,  @listing.card.listing_price_med], 
-                                                ["High (#{@listing.card.listing_price_high})".html_safe,    @listing.card.listing_price_high],
+                                :collection => [["Low ($#{@listing.card.statistics.price_low})".html_safe,      @listing.card.statistics.price_low], 
+                                                ["Average ($#{@listing.card.statistics.price_med})".html_safe,  @listing.card.statistics.price_med], 
+                                                ["High ($#{@listing.card.statistics.price_high})".html_safe,    @listing.card.statistics.price_high],
                                                 ["Other $ #{text_field_tag "mtg_listing[price]", "",:style => "width:50px;"}".html_safe, "other"]],
                                 :checked => @listing.card.listing_price_med,                                                                                                
                                 :required => 'true' %>
