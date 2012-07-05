@@ -13,6 +13,8 @@ $(document).ready(function() {
                 } else {
                     $("#AcknowledgeCheckBox").attr("disabled", true);
                 }
+
             });
-        
+
 });
+
