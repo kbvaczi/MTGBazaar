@@ -53,12 +53,34 @@
   <br class = "spacer"/>
   <br class = "spacer"/>  
   
+<h2>Please Read Through to Accept the Terms and Conditions</h2>
+<div class ="AcknowledgeBorderDiv center" style="height:145px;width:440px;overflow-x:hidden; overflow-y:scroll;">
+	<div class="AcknowledgeOuterDiv center" style="height:145px;width:440px;overflow-x:hidden; overflow-y:scroll;">
+	      <div class="AcknowledgeInnerDiv">
+		
+		<%
+		output = ""
+		text=File.open('public/terms.txt').read
+		text.gsub!(/\r\n?/, "<br/>")
+		text.each_line do |line|
+			output = output + line
+		end %>
+		<%= output.html_safe %>
+		
+	      </div>
 
-	<div class="AcknowledgeOuterDiv center" style="height:100px;width:400px;overflow:scroll;">
-    <div class="AcknowledgeInnerDiv">Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...Terms of Service...
-    </div>
 	</div>
-	
+</div>
+
+<br class = "spacer"/>
+
+  <%# Check boxes for age and agree-to-terms %>
+  <%= f.input :age,           :label => '',
+                              :as => :check_boxes ,
+                              :required => 'true' ,
+                              :collection => [["I am over the age of 18 years",1]],
+                              :input_html => { :checked => "#{'checked' if  params[:user][:age][1] rescue false }" } %>
+
   <%= f.input :terms,         :label => '',
                               :as => :check_boxes ,
                               :required => 'true' ,
