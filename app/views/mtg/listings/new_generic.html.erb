@@ -6,19 +6,80 @@
     <br class="spacer"/>
     <br class="spacer"/>  
 
-                          
-    <%= f.input :name,          :label => "Card",
-                                :input_html => { :class => "search-text ui-autocomplete-input" , :placeholder => "Name..." , "data-autocomplete" => autocomplete_name_mtg_cards_path },
-                                :required => true %>
-
+    <div id="New_Generic_Name_Block">                      
+      <%= f.input :name,          :label => "Card Name",
+                                  :input_html => { :class => "ui-autocomplete-input" , :placeholder => "Name..." , "data-autocomplete" => autocomplete_name_mtg_cards_path },
+                                  :required => true %>
+    </div>
+    <div id="New_Generic_Set_Block" style="display:none;">        
+      <%= f.input :set,           :label => "Set",
+                                  :disabled => true,
+                                  :as => :select,                                  
+                                  :required => true,
+                                  :collection => condition_list,
+                                  :input_html => {:class => "chzn-select", "data-placeholder" => "Select a set..." } %>
+    </div>
     
+    <div id="New_Generic_Info_Block" style="display:none;">                      
+      <%= f.input :condition,     :label => "Condition",
+                                  :as => :select,
+                                  :collection => condition_list,
+                                  :default => "NM",
+                                  :input_html => { :class => "chzn-select chzn-nosearch" },
+                                  :required => 'true' %>
 
+      <%= f.input :quantity,      :label => "Quantity for sale",
+                                  :as => :string,
+                                  :input_html => { :style => "width:50px;" },
+                                  :required => 'true' %>                                
+
+      <%= f.input :price_options, :label => "Asking Price",
+                                  :as => :select,
+                                  :input_html => { :class => "chzn-select chzn-nosearch" },                                  
+                                  :required => 'true' %>
+
+      <div id="New_Generic_Custom_Pricing" style="display:none;"> 
+        <%= f.input :price,         :label => "Custom Pricing",
+                                    :as => :string,   
+                                    :required => true %>                                  
+      </div>
+
+      <%= f.input :language,      :label => "Language",
+                                  :as => :select,
+                                  :collection => language_list,
+                                  :default => "EN",
+                                  :input_html => { :class => "chzn-select chzn-nosearch" },
+                                  :required => false %>    
+
+      <%= f.input :scan,     		  :label => "Upload Scan",
+                                  :as => :file %>
+
+      <%= f.input :description,   :label => "Description",
+                                  :hint => "Optional",
+                                  :as => :string %>
+
+      <%= f.label "Options" %>
+
+      <%= f.input :foil,          :label => "Foil stamped",
+                                  :default => false %>                                     
+
+      <%= f.input :signed,        :label => "Signed by the artist",
+                                  :default => false %> 
+
+      <%= f.input :misprint,      :label => "Misprinted",
+                                  :default => false %>
+
+      <%= f.input :altart,        :label => "Contains alternate art",
+                                  :default => false %>    
+
+      
+      <br class="spacer"/>
+      <br class="spacer"/>  
+        <%= f.button :submit, "Create Listing", :class => "center" %>
+      <br class="spacer"/>
+    </div>
   </div>
-  <br class="spacer"/>
-  <br class="spacer"/>  
-  <div class="center">
-    <%= f.button :submit, "Create Listing", :class => "center" %>
-  </div>
-  <br class="spacer"/>
+
+
 
 <% end %>

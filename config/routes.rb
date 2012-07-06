@@ -59,7 +59,12 @@ MTGBazaar::Application.routes.draw do
 
   namespace :mtg do
     
-    resources :listings, :except => [:index, :show ] 
+    resources :listings, :except => [:index, :show ] do
+      get "new_generic", :as => "new_generic", :on => :collection
+      get "new_generic_pricing", :as => "new_generic_pricing", :on => :collection                  
+      get "new_generic_set", :as => "new_generic_set", :on => :collection      
+
+    end
        
     resources :cards, :only => [:index, :show] do # don't allow users to create/destroy mtg cards by only allowing index and show routes
       get  "autocomplete_name", :on => :collection

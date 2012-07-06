@@ -1,0 +1,9 @@
+<% 
+  sets = Mtg::Sets.includes(:card).where("mtg_cards.name LIKE #{name} AND mtg_sets.active IS #{true} AND mtg_cards.active IS #{true}")
+
+%>
+
+<%= f.input :set,           :label => "Set",
+                            :input_html => { :value => "#{listing.card.set.name}" },
+                            :disabled => true,                                
+                            :required => 'false' %>

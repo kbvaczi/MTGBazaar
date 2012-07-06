@@ -22,10 +22,10 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   # :account_attributes allows nested model support for account while editing form for user
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :account_attributes, :age, :terms
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :account_attributes, :terms
   
   # not-in-model fields for age and agree-to-terms fields in sign-up
-  attr_accessor :age, :terms
+  attr_accessor :terms
   cattr_accessor :current_user
   
   # allow form for accounts nested inside user signup/edit forms
@@ -52,7 +52,7 @@ class User < ActiveRecord::Base
 # ---------------- VALIDATIONS ----------------      
   
   # validates that age and terms have been checked on user sign-up only
-  validates :age, :terms, :inclusion => {:in => [["","1"]]}, :on => :create
+  validates :terms, :inclusion => {:in => [["","1"]]}, :on => :create
   
   # validations
   validates_presence_of   :username, :email

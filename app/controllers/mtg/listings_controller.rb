@@ -1,11 +1,13 @@
 class Mtg::ListingsController < ApplicationController
   
   before_filter :authenticate_user! # must be logged in to make or edit listings
-  before_filter :verify_owner?, :except => [:new, :create]  # prevent a user from editing another user's listings
+  before_filter :verify_owner?, :except => [:new, :create, :new_generic, :new_generic_set, :new_generic_pricing]  # prevent a user from editing another user's listings
   before_filter :verify_not_in_cart?, :only => [:edit, :update, :destroy]  # don't allow users to change listings when they're in someone's cart or when they're in a transaction.
   
+  include ActionView::Helpers::NumberHelper  # needed for number_to_currency  
+    
   def new
-    session[:return_to] = request.referer #set backlink
+    set_back_path
     @listing = Mtg::Card.find(params[:card_id]).listings.build(params[:mtg_listing]) 
     respond_to do |format|
       format.html
@@ -13,7 +15,7 @@ class Mtg::ListingsController < ApplicationController
   end
   
   def create
-    card = Mtg::Card.find(params[:card_id])
+    card = Mtg::Card.find(params[:card_id]) rescue Mtg::Card.includes(:set).where("mtg_cards.name LIKE ? AND mtg_sets.code LIKE ?", '#{params[:mtg_listing][:name]}', '#{params[:mtg_listing][:set]}').first
     if params[:mtg_listing] && params[:mtg_listing][:price_options] != "other"  # handle price options
       params[:mtg_listing][:price] = params[:mtg_listing][:price_options]
     end 
@@ -79,6 +81,33 @@ class Mtg::ListingsController < ApplicationController
       format.html { redirect_to :back , :notice => "Listing set as inactive!"}
     end
   end
+  
+  # NEW GENERIC IMPORT FUNCTIONS
+  
+  def new_generic
+    set_back_path
+    @listing = Mtg::Listing.new
+    respond_to do |format|
+      format.html
+    end
+  end
+  
+  # updates sets select box based on name of card entered in new generic
+  def new_generic_set
+    @sets = Mtg::Set.includes(:cards).where(:active => true).where("mtg_cards.name LIKE ?", "#{params[:name]}").order("release_date DESC").to_a
+    respond_to do |format|
+      format.json { render :json => @sets.collect(&:name).zip(@sets.collect(&:code)).to_json }
+    end
+  end
+  
+  # updates cost info based on card selection
+  def new_generic_pricing
+    @card = Mtg::Card.includes(:set, :statistics).where(:active => true).where("mtg_cards.name LIKE ? AND mtg_sets.code LIKE ?", "#{params[:name]}", "#{params[:set]}").first
+    respond_to do |format|
+      format.json { render :json => [["Low (#{number_to_currency @card.statistics.price_low.dollars})", @card.statistics.price_low.dollars], ["Average (#{number_to_currency @card.statistics.price_med.dollars})", @card.statistics.price_med.dollars], ["High (#{number_to_currency @card.statistics.price_high.dollars})", @card.statistics.price_high.dollars], ["Other", "other"]].to_json }
+    end
+  end  
+  
   
   # CONTROLLER FUNCTIONS
     

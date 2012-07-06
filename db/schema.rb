@@ -188,7 +188,7 @@ ActiveRecord::Schema.define(:version => 20120703124809) do
     t.integer  "block_id"
     t.string   "name",         :default => "",           :null => false
     t.string   "code",         :default => "",           :null => false
-    t.date     "release_date", :default => '2012-03-14'
+    t.date     "release_date", :default => '2012-07-05'
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.boolean  "active",       :default => false,        :null => false
@@ -323,8 +323,9 @@ ActiveRecord::Schema.define(:version => 20120703124809) do
   add_index "user_statistics", ["user_id"], :name => "index_user_statistics_on_user_id"
 
   create_table "users", :force => true do |t|
-    t.string   "email",                  :default => "", :null => false
-    t.string   "encrypted_password",     :default => "", :null => false
+    t.string   "email",                  :default => "",    :null => false
+    t.string   "encrypted_password",     :default => "",    :null => false
+    t.string   "username",                                  :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -333,6 +334,7 @@ ActiveRecord::Schema.define(:version => 20120703124809) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.boolean  "banned",                 :default => false
     t.string   "password_salt"
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
@@ -342,11 +344,9 @@ ActiveRecord::Schema.define(:version => 20120703124809) do
     t.string   "unlock_token"
     t.datetime "locked_at"
     t.string   "authentication_token"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
     t.integer  "user_level",             :default => 0
-    t.string   "username"
-    t.boolean  "banned"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
@@ -354,5 +354,6 @@ ActiveRecord::Schema.define(:version => 20120703124809) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
+  add_index "users", ["username"], :name => "index_users_on_username", :unique => true
 
 end

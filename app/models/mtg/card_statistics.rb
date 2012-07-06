@@ -49,7 +49,7 @@ class Mtg::CardStatistics < ActiveRecord::Base
 
   def update!
     #get the latest 10 "normal" completed sales
-    latest_sold_items = Mtg::TransactionItem.includes(:transaction).where(:card_id => self.card_id, :foil => false, :altart => false, :misprint => false, :signed => false).where("mtg_transactions.status LIKE \'delivered\'").order("created_at DESC").limit(10)
+    latest_sold_items = Mtg::TransactionItem.includes(:transaction).where(:card_id => self.card_id, :foil => false, :altart => false, :misprint => false, :signed => false).where("mtg_transactions.status LIKE ?", "delivered").order("created_at DESC").limit(10)
     if latest_sold_items.present?
       min = latest_sold_items.minimum("price").to_f / 100
       avg = latest_sold_items.average("price").to_f / 100
