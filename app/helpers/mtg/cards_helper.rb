@@ -115,7 +115,7 @@ module Mtg::CardsHelper
   
   # defines an array containing all conditions for select boxes
   def condition_list
-    Array.new([["Near mint", "1"], ["Excellent", "2"], ["Fine", "3"], ["Good","4"]])
+    Array.new([["Near Mint", "1"], ["Slightly Played", "2"], ["Moderately Played", "3"]])
   end
   
   def display_condition(string)
@@ -123,11 +123,9 @@ module Mtg::CardsHelper
        when /1/ 
          return "NM"
        when /2/ 
-         return "EX"
+         return "SP"
        when /3/ 
-         return "FN"
-       when /4/ 
-         return "GD"
+         return "MP"
        else return "Unknown"
      end
    end

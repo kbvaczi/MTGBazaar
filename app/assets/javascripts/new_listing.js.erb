@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-  $('#mtg_listing_name').bind('railsAutocomplete.select', function(event, data){
+  $('#New_Generic_Name_Block div #mtg_listing_name').bind('railsAutocomplete.select', function(event, data){
     $.get('/mtg/listings/new_generic_set.json?name=' + $('#mtg_listing_name').val(), function(data) {
       $("#New_Generic_Info_Block").hide();
       $("#New_Generic_Set_Block").show();
@@ -15,7 +15,7 @@ $(document).ready(function() {
     });      
   });
   
-  $("#mtg_listing_set").chosen().change( function() {
+  $("#New_Generic_Set_Block #mtg_listing_set").chosen().change( function() {
     $.get('/mtg/listings/new_generic_pricing.json?name=' + $('#mtg_listing_name').val() + '&set=' + $('#mtg_listing_set').chosen().val(), function(data) {
       $("#New_Generic_Info_Block").show();             
       var selection_array = data;
@@ -30,11 +30,11 @@ $(document).ready(function() {
   });
   
   $("#mtg_listing_price_options").chosen().change( function() {
-    $("#New_Generic_Custom_Pricing").hide();    
+    $("#Custom_Pricing_Block").hide();    
     if ($(this).val() == "other") {
-      $("#New_Generic_Custom_Pricing").show();
+      $("#Custom_Pricing_Block").show();
     }
-  });    
+  });
 });
 
 

@@ -25,7 +25,7 @@ class Mtg::Listing < ActiveRecord::Base
   # validations
   validates_presence_of :price, :condition, :language, :quantity
   validates :quantity, :numericality => {:greater_than => 0, :less_than => 10000}  #quantity must be between 0 and 10000
-  validates :price, :numericality => {:greater_than => 0, :less_than => 1000000}   #price must be between $0 and $10,000.00
+  validates :price, :numericality => {:greater_than => 0, :less_than => 1000000, :message => "Must be between $0.01 and $10,000"}   #price must be between $0 and $10,000.00
   validate  :validate_scan, :if => "scan?"  
 
   def validate_scan

@@ -62,7 +62,8 @@ MTGBazaar::Application.routes.draw do
     resources :listings, :except => [:index, :show ] do
       get "new_generic", :as => "new_generic", :on => :collection
       get "new_generic_pricing", :as => "new_generic_pricing", :on => :collection                  
-      get "new_generic_set", :as => "new_generic_set", :on => :collection      
+      get "new_generic_set", :as => "new_generic_set", :on => :collection  
+      post "create_generic", :as => "create_generic", :on => :collection    
 
     end
        

@@ -1,13 +1,12 @@
 class Mtg::ListingsController < ApplicationController
   
   before_filter :authenticate_user! # must be logged in to make or edit listings
-  before_filter :verify_owner?, :except => [:new, :create, :new_generic, :new_generic_set, :new_generic_pricing]  # prevent a user from editing another user's listings
+  before_filter :verify_owner?, :except => [:new, :create, :new_generic, :new_generic_set, :new_generic_pricing, :create_generic]  # prevent a user from editing another user's listings
   before_filter :verify_not_in_cart?, :only => [:edit, :update, :destroy]  # don't allow users to change listings when they're in someone's cart or when they're in a transaction.
   
   include ActionView::Helpers::NumberHelper  # needed for number_to_currency  
     
   def new
-    set_back_path
     @listing = Mtg::Card.find(params[:card_id]).listings.build(params[:mtg_listing]) 
     respond_to do |format|
       format.html
@@ -15,7 +14,7 @@ class Mtg::ListingsController < ApplicationController
   end
   
   def create
-    card = Mtg::Card.find(params[:card_id]) rescue Mtg::Card.includes(:set).where("mtg_cards.name LIKE ? AND mtg_sets.code LIKE ?", '#{params[:mtg_listing][:name]}', '#{params[:mtg_listing][:set]}').first
+    card = Mtg::Card.find(params[:card_id])
     if params[:mtg_listing] && params[:mtg_listing][:price_options] != "other"  # handle price options
       params[:mtg_listing][:price] = params[:mtg_listing][:price_options]
     end 
@@ -86,7 +85,11 @@ class Mtg::ListingsController < ApplicationController
   
   def new_generic
     set_back_path
-    @listing = Mtg::Listing.new
+    @listing = Mtg::Listing.new(params[:mtg_listing])
+    if params[:mtg_listing] && params[:mtg_listing][:set]
+      @sets = Mtg::Set.includes(:cards).where(:active => true).where("mtg_cards.name LIKE ?", "#{params[:mtg_listing][:name]}").order("release_date DESC").to_a
+      @card = Mtg::Card.includes(:set, :statistics).where(:active => true).where("mtg_cards.name LIKE ? AND mtg_sets.code LIKE ?", "#{params[:mtg_listing][:name]}", "#{params[:set]}").first      
+    end
     respond_to do |format|
       format.html
     end
@@ -106,7 +109,31 @@ class Mtg::ListingsController < ApplicationController
     respond_to do |format|
       format.json { render :json => [["Low (#{number_to_currency @card.statistics.price_low.dollars})", @card.statistics.price_low.dollars], ["Average (#{number_to_currency @card.statistics.price_med.dollars})", @card.statistics.price_med.dollars], ["High (#{number_to_currency @card.statistics.price_high.dollars})", @card.statistics.price_high.dollars], ["Other", "other"]].to_json }
     end
-  end  
+  end
+  
+  def create_generic
+    @card = Mtg::Card.includes(:set, :statistics).where(:active => true).where("mtg_cards.name LIKE ? AND mtg_sets.code LIKE ?", "#{params[:mtg_listing][:name]}", "#{params[:mtg_listing][:set]}").first
+    @sets = Mtg::Set.includes(:cards).where(:active => true).where("mtg_cards.name LIKE ?", params[:mtg_listing][:name]).order("release_date DESC").to_a    
+    if params[:mtg_listing] && params[:mtg_listing][:price_options] != "other"  # handle price options
+      params[:mtg_listing][:price] = params[:mtg_listing][:price_options]
+    end 
+    @listing = Mtg::Listing.new(params[:mtg_listing])
+    @listing.card_id = @card.id
+    @listing.seller_id = current_user.id
+    duplicate_listings = Mtg::Listing.duplicate_listings_of(@listing)
+    if duplicate_listings.count > 0 # there is already an identical listing, just add quantity to existing listing
+      duplicate_listing = duplicate_listings.first
+      duplicate_listing.increment(:quantity_available, params[:mtg_listing][:quantity].to_i)
+      duplicate_listing.increment(:quantity, params[:mtg_listing][:quantity].to_i)      
+      duplicate_listing.save!
+      redirect_to back_path, :notice => " #{help.pluralize(params[:mtg_listing][:quantity], "Listing", "Listings")} Created... Sell More Cards?"
+    elsif @listing.save
+      redirect_to back_path, :notice => " #{help.pluralize(params[:mtg_listing][:quantity], "Listing", "Listings")} Created... Sell More Cards?"
+    else
+      flash[:error] = "There were one or more errors while trying to process your request"
+      render 'new_generic'
+    end      
+  end
   
   
   # CONTROLLER FUNCTIONS

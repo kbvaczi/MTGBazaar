@@ -35,7 +35,8 @@ class MtgScanUploader < CarrierWave::Uploader::Base
   # def scale(width, height)
   #   # do something
   # end
-  process :resize_to_limit => [500, 500] 
+  process :resize_to_limit => [500, 500]
+  process :convert => 'jpg' 
   # Create different versions of your uploaded files:
      #version :thumb do
      #process :resize_to_limit => [170, 240]
@@ -50,7 +51,7 @@ class MtgScanUploader < CarrierWave::Uploader::Base
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.
    def filename
-     "T#{Time.current.to_i}_#{original_filename}" if original_filename
+     "#{Time.current.to_i}.jpg"
    end
 
 end

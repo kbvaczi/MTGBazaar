@@ -1,9 +1,8 @@
 <% title "Sell a Card"%>
 <h1>Sell a Card</h1>
 
-<%= simple_form_for @listing, :html => {:multipart => true} do |f| %>
+<%= simple_form_for @listing, :url => create_generic_mtg_listings_path, :method => :post, :html => {:multipart => true} do |f| %>
   <div class="inputs">
-    <br class="spacer"/>
     <br class="spacer"/>  
 
     <div id="New_Generic_Name_Block">                      
@@ -11,16 +10,23 @@
                                   :input_html => { :class => "ui-autocomplete-input" , :placeholder => "Name..." , "data-autocomplete" => autocomplete_name_mtg_cards_path },
                                   :required => true %>
     </div>
-    <div id="New_Generic_Set_Block" style="display:none;">        
-      <%= f.input :set,           :label => "Set",
-                                  :disabled => true,
-                                  :as => :select,                                  
-                                  :required => true,
-                                  :collection => condition_list,
-                                  :input_html => {:class => "chzn-select", "data-placeholder" => "Select a set..." } %>
-    </div>
-    
-    <div id="New_Generic_Info_Block" style="display:none;">                      
+    <% if not (params[:mtg_listing] && params[:mtg_listing][:set].present?) %>
+      <div id="New_Generic_Set_Block" style="display:none;">        
+        <%= f.input :set,           :label => "Set",
+                                    :as => :select,                                  
+                                    :required => true,
+                                    :input_html => {:class => "chzn-select", "data-placeholder" => "Select a set..." } %>
+      </div>
+    <% else %>
+      <div id="New_Generic_Set_Block">        
+        <%= f.input :set,           :label => "Set",
+                                    :as => :select,                                  
+                                    :required => true,
+                                    :collection => @sets.collect(&:name).zip(@sets.collect(&:code)),
+                                    :input_html => {:class => "chzn-select", "data-placeholder" => "Select a set..." } %>
+      </div>    
+    <% end %>
+    <div id="New_Generic_Info_Block" <%= "style=\'display:none;\'" if not params[:mtg_listing].present? %>>                      
       <%= f.input :condition,     :label => "Condition",
                                   :as => :select,
                                   :collection => condition_list,
@@ -35,12 +41,17 @@
 
       <%= f.input :price_options, :label => "Asking Price",
                                   :as => :select,
+                                  :collection =>  params[:mtg_listing].present? ? [["Low (#{number_to_currency @card.statistics.price_low.dollars})", @card.statistics.price_low.dollars],
+                                                  ["Average (#{number_to_currency @card.statistics.price_med.dollars})", @card.statistics.price_med.dollars], 
+                                                  ["High (#{number_to_currency @card.statistics.price_high.dollars})", @card.statistics.price_high.dollars], 
+                                                  ["Other", "other"]] : [],
                                   :input_html => { :class => "chzn-select chzn-nosearch" },                                  
                                   :required => 'true' %>
 
-      <div id="New_Generic_Custom_Pricing" style="display:none;"> 
+      <div id="Custom_Pricing_Block" <%= "style=\'display:none;\'" unless (params[:mtg_listing] && params[:mtg_listing][:price_options] == "other") %>> 
         <%= f.input :price,         :label => "Custom Pricing",
-                                    :as => :string,   
+                                    :as => :string,
+                                    :input_html => {:value => params[:mtg_listing].present? ? params[:mtg_listing][:price] : "$1.00"},
                                     :required => true %>                                  
       </div>
 
@@ -77,6 +88,7 @@
       <br class="spacer"/>  
         <%= f.button :submit, "Create Listing", :class => "center" %>
       <br class="spacer"/>
+      <br class="spacer"/>      
     </div>
   </div>
 
