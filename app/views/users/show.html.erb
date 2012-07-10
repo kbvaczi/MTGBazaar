@@ -1,64 +1,178 @@
 <% title @user.username %>
 
 <h1><%= @user.username %></h1>
-<div class="ml mr">
-
-  <h2>Location</h2>
-  <div class="ma">
-    <div><%= 'Country: ' + @user.account.country %></div>
-    <div><%= 'Shipping from: ' + capitalize_first_word(@user.account.city.capitalize) + ", " + capitalize_first_word(@user.account.state.capitalize) %></div>
+<div class="ma">
+  
+  <div class="group">
+    <ul class="tabs center">
+        <li <%= "class=\'selected\'" if not params[:section].present? %>> <%= link_to "Profile", user_path(@user) %> </li>
+        <li <%= "class=\'selected\'" if params[:section] == "feedback" %>> <%= link_to "Feedback", user_path(@user, :section => "feedback") %> </li>        
+        <li <%= "class=\'selected\'" if params[:section] == "mtg_cards" %>> <%= link_to "MTG Cards", user_path(@user, :section => "mtg_cards") %> </li>        
+    </ul>
   </div>
+  
+  <%# PROFILE SECTION %>
+  <% if not params[:section].present? %>
 
-  <h2>Statistics</h2>
-  <div class="ma">
-    <div><%= "Approval Rating: " + @user.statistics.display_approval_percent %></div>    
-    <div><%= @user.created_at.strftime("Member Since: %B %Y") %></div>
-    <div><%= "number of purchases: " + @user.statistics.number_purchases.to_s %></div>    
-    <div><%= "number of sales: " + @user.statistics.number_sales.to_s %></div>
-    <div><%= "Average time to confirm sale: " + @user.statistics.display_average_confirm_time %></div>
-    <div><%= "Average time to ship sale: " + @user.statistics.display_average_ship_time %></div>
+    <table class="data">
+      <tr class="header_row">
+        <th colspan=2>Location</th>    
+      </tr>
+      <tr class="odd">
+        <td>Country</td>
+        <td><%= @user.account.country %></td>
+      </tr>
+      <tr class="even">
+        <td>State</td>
+        <td><%= capitalize_first_word(@user.account.state.capitalize) %></td>
+      </tr>
+      <tr class="odd">
+        <td>City</td>
+        <td><%= capitalize_first_word(@user.account.city.capitalize) %></td>
+      </tr>
+    </table>
+    <br class="spacer"/>
+    <table class="data">
 
-  </div>
+      <tr class="header_row">
+        <th colspan=2>Stats</th> 
+      </tr>   
+      <tr class="odd">
+        <td>Approval Rating</td>
+        <td><%= @user.statistics.display_approval_percent %></td>
+      </tr>           
+      <tr class="even">
+        <td>Member Since</td>
+        <td><%= @user.created_at.strftime("%B %Y") %></td>
+      </tr>      
+      <tr class="odd">
+        <td>Number of Purchases</td>
+        <td><%= @user.statistics.number_purchases.to_s %></td>
+      </tr> 
+      <tr class="even">
+        <td>Number of Sales</td>
+        <td><%=  @user.statistics.number_sales.to_s  %></td>
+      </tr> 
+      <tr class="odd">
+        <td>Average time to confirm a sale</td>
+        <td><%= @user.statistics.display_average_confirm_time %></td>
+      </tr>                
+      <tr class="even">
+        <td>Average time to ship a sale</td>
+        <td><%= @user.statistics.display_average_ship_time  %></td>
+      </tr>      
+      
+    </table>
 
-  <h2>Feedback</h2>
-  <div class="ma">
+  <% end %>
 
-    <div class="teaser_row">
-      <div style="width:15%">
-        <u>Date</u>
-      </div>
-      <div style="width:30%">  
-        <u>Buyer</u>
-      </div>
-      <div style="width:15%">
-        <u>Rating</u>
-      </div>
-      <div style="width:40%">
-        <u>Feedback</u>
-      </div>    
-    </div>
+  <%# FEEDBACK SECTION %>
+  <% if params[:section] == "feedback" %>
+    <h2>Feedback</h2>
+    <div class="ma">
 
-    <% @sales.each do |s| %>
-      <div class="teaser_row <%= cycle("odd","even") %>">
+      <div class="teaser_row">
         <div style="width:15%">
-          <%= display_time(s.created_at)%>
+          <u>Date</u>
         </div>
         <div style="width:30%">  
-          <%= link_to s.buyer.username, user_path(s.buyer) %>
+          <u>Buyer</u>
         </div>
         <div style="width:15%">
-          <%= s.display_feedback %>
+          <u>Rating</u>
         </div>
-        <div style="width:40%;text-align:justify;">
-          <%= s.buyer_feedback_text %>
+        <div style="width:40%">
+          <u>Feedback</u>
         </div>    
       </div>
-    <% end %>
-    
-    <br class="spacer">
-    <div class="paginator">
-      <%= paginate @sales %>
-    </div>
 
-  </div>
+      <% @sales.each do |s| %>
+        <div class="teaser_row <%= cycle("odd","even") %>">
+          <div style="width:15%">
+            <%= display_time(s.created_at)%>
+          </div>
+          <div style="width:30%">  
+            <%= link_to s.buyer.username, user_path(s.buyer) %>
+          </div>
+          <div style="width:15%">
+            <%= s.display_feedback %>
+          </div>
+          <div style="width:40%;text-align:justify;">
+            <%= s.buyer_feedback_text %>
+          </div>    
+        </div>
+      <% end %>
+    
+      <br class="spacer">
+      <div class="paginator">
+        <%= paginate @sales %>
+      </div>
+
+    </div>
+  <% end %>
+  
+  
+  <%# MTG_CARDS SECTION %>
+  <% if params[:section] == "mtg_cards" %>
+    <table class="data">
+      <tr class="header_row">
+        <th>Name</th>
+        <th>Set</th>      
+        <th>Lang.</th>
+        <th>Options</th>
+        <th>Price</th>
+        <th>Qty.</td>
+        <th>Purchase</th>
+      </tr>
+      <% @listings.order("mtg_cards.name ASC").each do |listing| %>
+        <tr class=<%= cycle("odd","even") %>>  
+          <td style="text-align:left;"><%= listing.card.name %></td>
+          <td><div><%= display_set_symbol(listing.card.set) %></div></td>          
+          <td><%= display_flag_symbol(listing) %></td>
+          <td>
+            <div style="width:60px;">
+              <% if listing.foil %>
+                <%= listing_option_foil_icon %>
+              <% end %>
+              <% if listing.misprint %>
+                <%= listing_option_misprint_icon %>
+              <% end %>
+              <% if listing.signed %>
+                <%= listing_option_signed_icon %>
+              <% end %>
+              <% if listing.altart %>
+                <%= listing_option_altart_icon %>
+              <% end %>    
+              <% if listing.description != "" %>
+                <%= listing_option_description_icon(listing) %>
+              <% end %>
+          		<% if listing.scan.present? %>
+                <%= listing_option_scan_icon(listing) %>
+              <% end %>
+            <div>     
+          </td>
+          <td style="text-align:right;"><%= number_to_currency(listing.price)%></td>
+          <td><%= listing.quantity_available %></td>
+          <td style="text-align:right;">
+            <div style="width:80px;">
+              <%= form_tag add_to_cart_mtg_listing_path(listing.id), :method => :post do %>
+                <% if listing.quantity > 1 %>
+                  <%= text_field_tag "quantity", 1, :id => nil, :style => "width:30px;text-align:center;"%>            
+                <% else %>
+                  <%= listing.quantity %> &nbsp; &nbsp;
+                  <%= text_field_tag "quantity", 1, :id => nil, :style => "width:30px;text-align:center;display:none;"%>            
+                <% end %>
+                <%= submit_tag "Buy" %>
+              <% end %>
+            </div>
+          </td>         
+        </tr>
+      <% end %>
+    </table>
+    
+    <div class="paginator">
+      <%= paginate @listings, :method => :get %>
+    </div>
+  <% end %>
+  
 </div>

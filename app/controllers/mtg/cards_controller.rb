@@ -61,33 +61,33 @@ class Mtg::CardsController < ApplicationController
     # SEARCH CARDS                
     query = SmartTuple.new(" AND ")
     query << ["mtg_cards.active LIKE ?", true]
-    query << ["mtg_sets.active LIKE ?", true] 
-    query << ["mtg_cards.name LIKE ?", "%#{params[:name]}%"] if params[:name].present? 
-    query << ["mtg_cards.name LIKE ?", "#{params[:name]}"] if params[:search_type].present?
-    query << ["mtg_sets.code LIKE ?", "#{params[:set]}"] if params[:set].present?
-    query << ["mana_color LIKE ?", "%#{params[:white]}%"] if params[:white].present?
-    query << ["mana_color LIKE ?", "%#{params[:black]}%"] if params[:black].present?    
-    query << ["mana_color LIKE ?", "%#{params[:blue]}%"] if params[:blue].present?
-    query << ["mana_color LIKE ?", "%#{params[:red]}%"] if params[:red].present?
-    query << ["mana_color LIKE ?", "%#{params[:green]}%"] if params[:green].present?
-    query << ["rarity LIKE ?", "#{params[:rarity]}"] if params[:rarity].present?
-    query << ["card_type LIKE ?", "#{params[:type]}"] if params[:type].present?
-    query << ["card_subtype LIKE ?", "%#{params[:subtype]}%"] if params[:subtype].present?
-    query << ["artist LIKE ?", "#{params[:artist]}"] if params[:artist].present?
-    query << SmartTuple.new(" AND ").add_each(params[:abilities]) {|v| ["mtg_cards.description LIKE ?", "%#{v}%"]} if params[:abilities].present?
+    query << ["mtg_sets.active LIKE ?", true]
+    if params[:search_type].present? #user clicks on autocomplete name for specific card bypass all filters
+      query << ["mtg_cards.name LIKE ?", "#{params[:name]}"]
+    else
+      query << ["mtg_cards.name LIKE ?", "%#{params[:name]}%"] if params[:name].present? 
+      query << ["mtg_sets.code LIKE ?", "#{params[:set]}"] if params[:set].present?
+      query << ["mana_color LIKE ?", "%#{params[:white]}%"] if params[:white].present?
+      query << ["mana_color LIKE ?", "%#{params[:black]}%"] if params[:black].present?    
+      query << ["mana_color LIKE ?", "%#{params[:blue]}%"] if params[:blue].present?
+      query << ["mana_color LIKE ?", "%#{params[:red]}%"] if params[:red].present?
+      query << ["mana_color LIKE ?", "%#{params[:green]}%"] if params[:green].present?
+      query << ["rarity LIKE ?", "#{params[:rarity]}"] if params[:rarity].present?
+      query << ["card_type LIKE ?", "#{params[:type]}"] if params[:type].present?
+      query << ["card_subtype LIKE ?", "%#{params[:subtype]}%"] if params[:subtype].present?
+      query << ["artist LIKE ?", "#{params[:artist]}"] if params[:artist].present?
+      query << SmartTuple.new(" AND ").add_each(params[:abilities]) {|v| ["mtg_cards.description LIKE ?", "%#{v}%"]} if params[:abilities].present?
+      # language filters
+      query << ["mtg_listings.language LIKE ? AND mtg_listings.quantity_available > 0", cookies[:search_language]] if cookies[:search_language].present?
+      # options filters
+      query << ["mtg_listings.foil LIKE ? AND mtg_listings.quantity_available > 0", true] if cookies[:search_foil].present?
+      query << ["mtg_listings.misprint LIKE ? AND mtg_listings.quantity_available > 0", true] if cookies[:search_miscut].present?
+      query << ["mtg_listings.signed LIKE ? AND mtg_listings.quantity_available > 0", true] if cookies[:search_signed].present?
+      query << ["mtg_listings.altart LIKE ? AND mtg_listings.quantity_available > 0", true] if cookies[:search_altart].present?
+      # seller filter
+      query << ["mtg_listings.seller_id LIKE ? AND mtg_listings.quantity_available > 0", "#{cookies[:search_seller_id]}"] if cookies[:search_seller_id].present?
+    end
     
-    # language filters
-    query << ["mtg_listings.language LIKE ? AND mtg_listings.quantity_available > 0", cookies[:search_language]] if cookies[:search_language].present?
-    
-    # options filters
-    query << ["mtg_listings.foil LIKE ? AND mtg_listings.quantity_available > 0", true] if cookies[:search_foil].present?
-    query << ["mtg_listings.misprint LIKE ? AND mtg_listings.quantity_available > 0", true] if cookies[:search_miscut].present?
-    query << ["mtg_listings.signed LIKE ? AND mtg_listings.quantity_available > 0", true] if cookies[:search_signed].present?
-    query << ["mtg_listings.altart LIKE ? AND mtg_listings.quantity_available > 0", true] if cookies[:search_altart].present?
-
-    # seller filter
-    query << ["mtg_listings.seller_id LIKE ? AND mtg_listings.quantity_available > 0", "#{cookies[:search_seller_id]}"] if cookies[:search_seller_id].present?
-
     @mtg_cards = Mtg::Card.includes(:set, :listings).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(20)
     
     # Don't show only 1 card in search results... go directly to that card's show page if there is only one.

@@ -69,17 +69,17 @@ class UserStatistics < ActiveRecord::Base
   
   def display_average_confirm_time
     if self.average_confirm_time.present?
-      self.average_confirm_time.to_s + "days"
+      self.average_confirm_time.to_s + " days"
     else
-      "Insufficient Data"
+      "No Sales Yet"
     end
   end
   
   def display_average_ship_time
     if self.average_ship_time.present?
-      self.average_ship_time.to_s + "days"
+      self.average_ship_time.to_s + " days"
     else
-      "Insufficient Data"
+      "No Sales Yet"
     end
   end
   

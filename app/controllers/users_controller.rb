@@ -15,7 +15,8 @@ class UsersController < ApplicationController
   def show
     set_back_path    
     @user = User.includes(:statistics, :account).find(params[:id])
-    @sales = @user.mtg_sales.where(:status => "delivered").order("created_at DESC").page(params[:page]).per(10)
+    @listings = @user.mtg_listings.available.includes({:card => :set}).order("#{ params[:sort_by].present? ? params[:sort_by].to_s: "mtg_cards.name" } ASC").page(params[:page]).per(20) if params[:section] == "mtg_cards"
+    @sales = @user.mtg_sales.where(:status => "delivered").order("created_at DESC").page(params[:page]).per(10) if params[:section] == "feedback"
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @user }
@@ -28,11 +29,11 @@ class UsersController < ApplicationController
 
     set_back_path
     if params[:status] == "active"
-      @listings = current_user.mtg_listings.includes(:card => :set).where(:active => true).order("mtg_cards.name ASC").page(params[:page]).per(15)
+      @listings = current_user.mtg_listings.includes(:card => :set).where(:active => true).order("mtg_cards.name ASC").page(params[:page]).per(25)
     elsif params[:status] == "inactive"
-      @listings = current_user.mtg_listings.includes(:card => :set).where(:active => false).order("mtg_cards.name ASC").page(params[:page]).per(15)      
+      @listings = current_user.mtg_listings.includes(:card => :set).where(:active => false).order("mtg_cards.name ASC").page(params[:page]).per(25)      
     else
-      @listings = current_user.mtg_listings.includes(:card => :set).order("mtg_cards.name ASC").page(params[:page]).per(15)
+      @listings = current_user.mtg_listings.includes(:card => :set).order("mtg_cards.name ASC").page(params[:page]).per(25)
     end
   end
   
