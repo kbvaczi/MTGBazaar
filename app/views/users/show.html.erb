@@ -19,7 +19,7 @@
         <th colspan=2>Location</th>    
       </tr>
       <tr class="odd">
-        <td>Country</td>
+        <td  width="50%">Country</td>
         <td><%= @user.account.country %></td>
       </tr>
       <tr class="even">
@@ -38,8 +38,8 @@
         <th colspan=2>Stats</th> 
       </tr>   
       <tr class="odd">
-        <td>Approval Rating</td>
-        <td><%= @user.statistics.display_approval_percent %></td>
+        <td width="50%">Approval Rating</td>
+        <td ><%= @user.statistics.display_approval_percent %></td>
       </tr>           
       <tr class="even">
         <td>Member Since</td>
@@ -68,47 +68,38 @@
 
   <%# FEEDBACK SECTION %>
   <% if params[:section] == "feedback" %>
-    <h2>Feedback</h2>
-    <div class="ma">
-
-      <div class="teaser_row">
-        <div style="width:15%">
-          <u>Date</u>
-        </div>
-        <div style="width:30%">  
-          <u>Buyer</u>
-        </div>
-        <div style="width:15%">
-          <u>Rating</u>
-        </div>
-        <div style="width:40%">
-          <u>Feedback</u>
-        </div>    
-      </div>
-
-      <% @sales.each do |s| %>
-        <div class="teaser_row <%= cycle("odd","even") %>">
-          <div style="width:15%">
-            <%= display_time(s.created_at)%>
-          </div>
-          <div style="width:30%">  
-            <%= link_to s.buyer.username, user_path(s.buyer) %>
-          </div>
-          <div style="width:15%">
-            <%= s.display_feedback %>
-          </div>
-          <div style="width:40%;text-align:justify;">
+	<table class="data">
+    <tr class="header_row">
+      <th>Date</th>
+      <th>Buyer</th>      
+      <th>Rating</th>
+      <th>Feedback</th>
+    </tr>
+	<% @sales.each do |s| %>
+        <tr class=<%= cycle("odd","even") %>> 
+          <td>
+            <div><%= display_time(s.created_at)%></div>
+          </td>
+          <td>  
+            <div><%= link_to s.buyer.username, user_path(s.buyer) %></div>
+          </td>
+          <td>
+            <div><%= s.display_feedback %></div>
+          </td>
+          <td width="225px">
             <%= s.buyer_feedback_text %>
-          </div>    
-        </div>
+          </td>    
+		</tr>
+
       <% end %>
-    
+  </table>
+      
       <br class="spacer">
       <div class="paginator">
         <%= paginate @sales %>
       </div>
 
-    </div>
+  
   <% end %>
   
   
