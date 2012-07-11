@@ -22,7 +22,7 @@
         <%= "#{duplicate_item["listing"].seller.username} (#{duplicate_item["listing"].seller.account.number_sales})" %>
       </div>
       <div class="mtg_listing_teaser_language">
-        <%= display_flag_symbol(duplicate_item["listing"]) %>
+        <%= display_flag_symbol(duplicate_item["listing"].language) %>
       </div>
       <div class="mtg_listing_teaser_condition">
         <%= duplicate_item["listing"].condition %>

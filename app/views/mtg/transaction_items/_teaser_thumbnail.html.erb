@@ -4,7 +4,7 @@
     <div style="text-align:center;">
       <div style="display:inline-block;float:left;width:15px;min-height:20px;">
         <%= display_set_symbol item.card.set, :width => "15px" %>        
-        <%= display_flag_symbol item, :height => "15px" %>
+        <%= display_flag_symbol item.language, :height => "15px" %>
       </div>
       <div style="display:inline-block;height:100px;width:70px">
         <%= link_to image_tag(item.card.thumbnail_image_path, :height => "100px", :width => "70px"), mtg_card_url(item.card) %>

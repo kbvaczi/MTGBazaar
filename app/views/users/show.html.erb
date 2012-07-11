@@ -119,7 +119,7 @@
         <tr class=<%= cycle("odd","even") %>>  
           <td style="text-align:left;"><%= listing.card.name %></td>
           <td><div><%= display_set_symbol(listing.card.set) %></div></td>          
-          <td><%= display_flag_symbol(listing) %></td>
+          <td><%= display_flag_symbol(listing.language) %></td>
           <td>
             <div style="width:60px;">
               <% if listing.foil %>

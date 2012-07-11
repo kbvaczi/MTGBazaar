@@ -154,6 +154,11 @@ module Mtg::CardsHelper
   def language_list
     return [["English","EN"], ["Russian","RU"], ["French","FR"], ["Japanese","JN"], ["Chinese","CN"], ["Korean","KO"], ["German","GN"], ["Portuguese", "PG"], ["Spanish", "SP"], ["Italian", "IT"]]
   end
+  
+  def active_set_list
+    sets = Mtg::Set.where(:active => true).order("release_date DESC").to_a
+    return sets.collect(&:name).zip(sets.collect(&:code))
+  end
 
   # displays set symbol for a given set code
   def display_set_symbol(set, options = {})
@@ -166,8 +171,8 @@ module Mtg::CardsHelper
   end
   
   # displays set symbol for a given set code
-  def display_flag_symbol(listing, options = {})
-    case listing.language
+  def display_flag_symbol(language_code, options = {})
+    case language_code
       when "EN"
         language = "English"
       when "RU"

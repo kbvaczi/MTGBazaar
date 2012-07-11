@@ -1,0 +1,64 @@
+<% title "Prepare Bulk Import"%>
+
+<h1>Step 1: Prepare Bulk Import</h1>
+
+<%= simple_form_for @listing, :url => new_bulk_mtg_listings_path, :method => :get do |f| %>
+  <div class="inputs">
+    <br class="spacer"/>
+    <br class="spacer"/>  
+
+    <%= f.input :set,           :label => "Set",
+                                :as => :select,
+                                :input_html => { :class => "chzn-select" },
+                                :collection => active_set_list,
+                                :default => "",                              
+                                :required => true %>
+
+    <%= f.input :condition,     :label => "Condition",
+                                :as => :select,
+                                :collection => condition_list,
+                                :default => "NM",
+                                :input_html => { :class => "chzn-select chzn-nosearch" },
+                                :required => true %>
+
+    <%= f.input :language,      :label => "Language",
+                                :as => :select,
+                                :collection => language_list,
+                                :default => "EN",
+                                :input_html => { :class => "chzn-select chzn-nosearch" },
+                                :required => true %>
+
+    <%= f.input :price,         :label => "Default Pricing",
+                                :as => :select,
+                                :collection => [["Low", "low"], 
+                                                ["Average", "med"], 
+                                                ["High",  "high"]],
+                                :default => "med",
+                                :input_html => { :class => "chzn-select chzn-nosearch" },                                  
+                                :required => true %>
+                                
+    <br class="spacer"/>        
+                                      
+    <%= f.label "Sort Cards By" %>
+    <div class="input select">                        
+      <%= select_tag "sort", options_for_select(["card name", "card number"]), :class => "chzn-select" %>
+    </div>                                
+
+    <br class="spacer"/>                              
+
+    <%= f.input :foil,          :label => "All cards are foil stamped",
+                                :default => false %>                                     
+
+ 
+
+  </div>
+  <br class="spacer"/>
+  <div style="width:300px" class="center">Note: the options above will be used for importing all the cards in step 2.</div>  
+  <br class="spacer"/>
+  <br class="spacer"/>  
+  <div class="center">
+    <%= f.button :submit, "Proceed to Step 2: Complete Bulk Import", :class => "center" %>
+  </div>
+  <br class="spacer"/>
+
+<% end %>

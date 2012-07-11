@@ -21,7 +21,7 @@
         <%= "(#{listing.seller.statistics.number_sales}, #{listing.seller.statistics.display_approval_percent})" %>
       </div>
       <div class="mtg_listing_teaser_language">
-        <%= display_flag_symbol(listing) %>
+        <%= display_flag_symbol(listing.language) %>
       </div>
       <div class="mtg_listing_teaser_condition">
         <%= display_condition(listing.condition) %>

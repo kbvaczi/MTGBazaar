@@ -3,7 +3,7 @@
     <%= "#{listing.seller.username} (#{listing.seller.account.number_sales})" %>
   </div>
   <div class="mtg_listing_teaser_language">
-    <%= display_flag_symbol(listing) %>
+    <%= display_flag_symbol(listing.language) %>
   </div>
   <div class="mtg_listing_teaser_condition">
     <%= listing.condition %>

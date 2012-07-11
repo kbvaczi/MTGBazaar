@@ -1,7 +1,8 @@
 class Mtg::ListingsController < ApplicationController
   
   before_filter :authenticate_user! # must be logged in to make or edit listings
-  before_filter :verify_owner?, :except => [:new, :create, :new_generic, :new_generic_set, :new_generic_pricing, :create_generic]  # prevent a user from editing another user's listings
+  before_filter :verify_owner?, :except => [:new, :create, :new_generic, :new_generic_set, :new_generic_pricing, :create_generic, 
+                                            :new_bulk_prep, :new_bulk, :create_bulk]  # prevent a user from editing another user's listings
   before_filter :verify_not_in_cart?, :only => [:edit, :update, :destroy]  # don't allow users to change listings when they're in someone's cart or when they're in a transaction.
   
   include ActionView::Helpers::NumberHelper  # needed for number_to_currency  
@@ -135,6 +136,52 @@ class Mtg::ListingsController < ApplicationController
     end      
   end
   
+  def new_bulk_prep
+    @listing = Mtg::Listing.new(params[:mtg_listing])
+  end
+  
+  def new_bulk
+    @set = Mtg::Set.where(:code => params[:mtg_listing][:set]).first
+    if params[:sort] == "card name"
+      @cards = Mtg::Card.joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_listing][:set]).order("name ASC")
+    else
+      @cards = Mtg::Card.joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_listing][:set]).order("card_number ASC")      
+    end
+  end
+  
+  def create_bulk
+    @set = Mtg::Set.where(:code => params[:mtg_listing][:set]).first
+    if params[:sort] == "card name"
+      @cards = Mtg::Card.joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_listing][:set]).order("name ASC")
+    else
+      @cards = Mtg::Card.joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_listing][:set]).order("card_number ASC")      
+    end
+    array_of_listings = Array.new
+    params[:sales].each do |key, value|
+      if value[:quantity].to_i > 0 
+        listing = Mtg::Listing.new(:foil => params[:mtg_listing][:foil], :condition => params[:mtg_listing][:condition], :language => params[:mtg_listing][:language],
+                                   :price => value[:price].to_f, :quantity => value[:quantity].to_i)
+        listing.seller_id = current_user.id
+        listing.card_id = key.to_i
+        # does this listing pass validation
+        if listing.valid? # yes, add to array
+          array_of_listings << listing # munch munch yum yum 
+        else # no, redisplay form and don't do anything
+          flash[:error] = "#{listing.errors.full_messages }there were one or more problems with your request"
+          render 'new_bulk'
+          return
+        end
+      elsif value[:quantity].to_i < 0
+        flash[:error] = "Listings cannot have a negative quantity"
+        render 'new_bulk'
+        return        
+      end
+    end
+    # all listings passed validation
+    array_of_listings.each { |listing| listing.save } # save all the listings
+    redirect_to new_bulk_prep_mtg_listings_path, :notice => "imported #{array_of_listings.count} listing(s) successfully, Bulk Import Again?"
+    return
+  end
   
   # CONTROLLER FUNCTIONS
     

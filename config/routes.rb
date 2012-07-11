@@ -63,7 +63,10 @@ MTGBazaar::Application.routes.draw do
       get "new_generic", :as => "new_generic", :on => :collection
       get "new_generic_pricing", :as => "new_generic_pricing", :on => :collection                  
       get "new_generic_set", :as => "new_generic_set", :on => :collection  
-      post "create_generic", :as => "create_generic", :on => :collection    
+      post "create_generic", :as => "create_generic", :on => :collection   
+      get "new_bulk_prep", :as => "new_bulk_prep", :on => :collection
+      get "new_bulk", :as => "new_bulk", :on => :collection      
+      post "create_bulk", :as => "create_bulk", :on => :collection            
 
     end
        
