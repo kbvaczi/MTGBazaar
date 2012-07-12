@@ -22,6 +22,7 @@ gem "heroku"                                                        # allows app
 gem "rmagick", "~> 2.13.1"                                          # image manipulation (requires install of rmagick software)
 gem "carrierwave", "~> 0.6.2"                                       # image_scan uploader
 gem "fog", "~> 1.3.1"                                               # supports amazon s3
+gem "RedCloth", "~> 4.2.9"                                          # textile language
 
 # -------------
 # STANDARD GEMS
