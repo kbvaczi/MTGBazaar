@@ -13,6 +13,9 @@
     <%= hidden_field_tag 'mtg_listing[condition]', params[:mtg_listing][:condition] %>
     <%= hidden_field_tag 'mtg_listing[foil]', params[:mtg_listing][:foil] %>
     
+    <%# SETTINGS FOR ALL DATA %>
+    <%# SETTINGS FOR ALL DATA %>
+        
     <table class="data">
       <tr class="header_row">
         <th colspan=2>Settings for all listings</th>
@@ -37,6 +40,9 @@
     
     <br class="spacer"/>
     
+    <%# INDIVIDUAL LISTING DATA %>
+    <%# INDIVIDUAL LISTING DATA %>    
+        
     <table class="data">
       <tr class="header_row">
         <th colspan=4>Individual listings</th>
@@ -47,11 +53,19 @@
         <th>Asking Price</th>
         <th>Quantity</th>
       </tr>
+      <% previous_card = Mtg::Card.new(:mana_color => "fake") %>
       <% @cards.each do |card| %>
+        <% if (card.mana_color != previous_card.mana_color) && params[:sort] ==  "color"%>
+          <th colspan=4 class="header_row">
+            <%= display_color(card.mana_color) %>
+          </td>
+          <% previous_card = card %>
+        <% end %>
         <tr class=<%= cycle("odd", "even") %>>
           <td><%= card.card_number.to_i %></td>
           <td><%= link_to card.name, mtg_card_path(card), :target => "_blank", :alt => "click to see card details" %></td>
           <td>
+            <%# DETERMINE DEFAULT VALUE FOR PRICE BOX BASED ON PREVIOUS SELECTION OR PARAMETERS IF REFRESHING FORM %>
             <%
               if params[:sales] && params[:sales]["#{card.id}"]
                 price_selection = params[:sales]["#{card.id}"][:price]
@@ -63,15 +77,19 @@
                 price_selection = card.statistics.price_med
               end                
             %>
-            <%= select_tag "sales[#{card.id}][price]", options_for_select( [["Low ($#{card.statistics.price_low})",     card.statistics.price_low], 
-                                                                   ["Average ($#{card.statistics.price_med})",  card.statistics.price_med], 
-                                                                   ["High ($#{card.statistics.price_high})",    card.statistics.price_high],
-                                                                   ["Other", "other"]], :selected => price_selection ), 
-                                               :class => "chzn-select",
-                                               :style => "width:150px;" %>
+              <%= select_tag "sales[#{card.id}][price]", options_for_select( [["Low ($#{card.statistics.price_low})",     card.statistics.price_low], 
+                                                                     ["Average ($#{card.statistics.price_med})",  card.statistics.price_med], 
+                                                                     ["High ($#{card.statistics.price_high})",    card.statistics.price_high],
+                                                                     ["Other", "other"]], :selected => price_selection ), 
+                                                 :class => "chzn-select bulk_price_options",
+                                                 :style => "width:150px;" %>
+              <br/>           
+              <div style="margin-top:5px;<%= "#{(params[:sales] && params[:sales]["#{card.id}"] && params[:sales]["#{card.id}"][:price] == "other") ? "" : "display:none;"}"%>" class="bulk_price_custom">     
+                Custom Pricing: <%= text_field_tag "sales[#{card.id}][custom_price]", (params[:sales] && params[:sales]["#{card.id}"]) ? params[:sales]["#{card.id}"][:custom_price] : "$#{price_selection}", :style => "width:45px;text-align:center;"%>
+              </div>
           </td>
           <td>
-            <%= text_field_tag "sales[#{card.id}][quantity]", (params[:sales] && params[:sales]["#{card.id}"]) ? params[:sales]["#{card.id}"][:quantity] : 0, :style => "width:30px;" %>
+            <%= text_field_tag "sales[#{card.id}][quantity]", (params[:sales] && params[:sales]["#{card.id}"]) ? params[:sales]["#{card.id}"][:quantity] : 0, :style => "width:30px;text-align:center;" %>
           </td>
         </tr>
       <% end %>

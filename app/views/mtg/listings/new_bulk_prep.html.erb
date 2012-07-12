@@ -41,7 +41,7 @@
                                       
     <%= f.label "Sort Cards By" %>
     <div class="input select">                        
-      <%= select_tag "sort", options_for_select(["card name", "card number"]), :class => "chzn-select" %>
+      <%= select_tag "sort", options_for_select([["Card Name", "name"], ["Card Number", "number"]]), :class => "chzn-select" %>
     </div>                                
 
     <br class="spacer"/>                              

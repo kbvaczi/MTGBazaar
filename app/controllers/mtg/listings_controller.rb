@@ -142,7 +142,7 @@ class Mtg::ListingsController < ApplicationController
   
   def new_bulk
     @set = Mtg::Set.where(:code => params[:mtg_listing][:set]).first
-    if params[:sort] == "card name"
+    if params[:sort] == "name"
       @cards = Mtg::Card.joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_listing][:set]).order("name ASC")
     else
       @cards = Mtg::Card.joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_listing][:set]).order("card_number ASC")      
@@ -150,24 +150,26 @@ class Mtg::ListingsController < ApplicationController
   end
   
   def create_bulk
+    # we have to declare these @ variables just in case we have form errors and have to render the form again... otherwise we get errors when we render the form without these declared
     @set = Mtg::Set.where(:code => params[:mtg_listing][:set]).first
-    if params[:sort] == "card name"
+    if params[:sort] == "name"
       @cards = Mtg::Card.joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_listing][:set]).order("name ASC")
     else
       @cards = Mtg::Card.joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_listing][:set]).order("card_number ASC")      
     end
-    array_of_listings = Array.new
-    params[:sales].each do |key, value|
-      if value[:quantity].to_i > 0 
+    array_of_listings = Array.new # blank array
+    params[:sales].each do |key, value| # iterate through all of our individual listings from the bulk form
+      if value[:quantity].to_i > 0 # we only care if they entered quantity > 0 for a specific card
+        asking_price = (value[:price] == "other") ? value[:custom_price] : value[:price] # set price either from pre-select options or custom price if they have other selected in price options
         listing = Mtg::Listing.new(:foil => params[:mtg_listing][:foil], :condition => params[:mtg_listing][:condition], :language => params[:mtg_listing][:language],
-                                   :price => value[:price].to_f, :quantity => value[:quantity].to_i)
-        listing.seller_id = current_user.id
-        listing.card_id = key.to_i
-        # does this listing pass validation
-        if listing.valid? # yes, add to array
+                                   :price => asking_price, :quantity => value[:quantity].to_i) # create the listing in memory
+        listing.seller_id = current_user.id # assign seller manually since it cannot be mass assigned
+        listing.card_id = key.to_i # assign card manually since it cannot be mass assigned
+        # does this listing pass validation?
+        if listing.valid? # yes, add to array to keep track of for later
           array_of_listings << listing # munch munch yum yum 
         else # no, redisplay form and don't do anything
-          flash[:error] = "#{listing.errors.full_messages }there were one or more problems with your request"
+          flash[:error] = "There were one or more problems with your request"
           render 'new_bulk'
           return
         end
@@ -177,10 +179,10 @@ class Mtg::ListingsController < ApplicationController
         return        
       end
     end
-    # all listings passed validation
+    # all listings passed validation, let's go back through our stored listings in the array and save them to database
     array_of_listings.each { |listing| listing.save } # save all the listings
     redirect_to new_bulk_prep_mtg_listings_path, :notice => "imported #{array_of_listings.count} listing(s) successfully, Bulk Import Again?"
-    return
+    return #don't display a template
   end
   
   # CONTROLLER FUNCTIONS

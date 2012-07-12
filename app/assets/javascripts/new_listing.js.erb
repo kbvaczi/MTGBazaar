@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+/* GENERIC LISTING JAVASCRIPTS */ 
+
   $('#New_Generic_Name_Block div #mtg_listing_name').bind('railsAutocomplete.select', function(event, data){
     $.get('/mtg/listings/new_generic_set.json?name=' + $('#mtg_listing_name').val(), function(data) {
       $("#New_Generic_Info_Block").hide();
@@ -29,12 +31,29 @@ $(document).ready(function() {
     });        
   });
   
+  <%# hide and show custom pricing when user selects other for pricing%>
   $("#mtg_listing_price_options").chosen().change( function() {
     $("#Custom_Pricing_Block").hide();    
     if ($(this).val() == "other") {
       $("#Custom_Pricing_Block").show();
     }
   });
+  
+  
+/* BULK LISTING JAVASCRIPTS */ 
+
+  <%# hide and display custom pricing when user selects other for pricing %>
+  $(".bulk_price_options").chosen().change( function() {
+    if ($(this).val() == "other") {
+      $(this).parent().find('.bulk_price_custom').show();
+    }
+    else {
+      $(this).parent().find('.bulk_price_custom').hide();
+    }
+    
+  
+  });
+  
 });
 
 
