@@ -115,6 +115,7 @@ MTGBazaar::Application.routes.draw do
   match 'help'                => 'home#help'
   match 'faq'                 => 'home#faq'
   match 'feedback'            => 'home#feedback'
+  mount Ckeditor::Engine      => "/ckeditor"
   
 # RAILS STANDARD COMMENTS ----------- #
   

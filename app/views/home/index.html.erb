@@ -3,18 +3,9 @@
 <h1>Welcome</h1>  
 
 <div class="ma">
-<%= raw RedCloth.new("h2. Give RedCloth a try!
+<%= javascript_include_tag "ckeditor/init" %>
+<%= cktext_area_tag("content", "Ckeditor", :input_html => {:cols => 10, :rows => 20}, :toolbar => 'Easy')%>
 
-A *simple* paragraph with
-a line break, some _emphasis_ and a \"link\":http://redcloth.org
-
-
-* an item
-* and another
-
-
-# one
-# two").to_html %>
 
 
 </div>
