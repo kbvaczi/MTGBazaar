@@ -28,7 +28,6 @@ class CreateMtgCards < ActiveRecord::Migration
 
       t.string   :multiverse_id,             :default => "", :null => false
       t.string   :image_path,                :default => "", :null => false
-      t.string   :image_back_path,           :default => "", :null => false
 
       t.timestamps
     end

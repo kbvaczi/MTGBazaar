@@ -26,6 +26,9 @@ ActiveAdmin.register Mtg::Transaction do
   scope :rejected do |transaction|
     transaction.where(:status => "cancelled")
   end  
+  scope :modified do |transaction|
+    transaction.where(:status => "pending", :buyer_confirmed_at => nil)
+  end  
   
   # ------ INDEX PAGE CUSTOMIZATIONS ------ #
   # Customize columns displayed on the index screen in the table
@@ -37,7 +40,7 @@ ActiveAdmin.register Mtg::Transaction do
     column :buyer
     column :seller
     column "Items", :sortable => false do |transaction|
-       link_to transaction.items.sum(:quantity), admin_mtg_transaction_items_path("q[transaction_id_eq]" => transaction.id)
+       link_to transaction.items.sum(:quantity_requested), admin_mtg_transaction_items_path("q[transaction_id_eq]" => transaction.id)
     end
     column :subtotal_value, :sortable => false do |transaction|
       number_to_currency(transaction.subtotal_value)

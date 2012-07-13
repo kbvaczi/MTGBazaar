@@ -7,12 +7,18 @@ ActiveAdmin.register Mtg::TransactionItem do
   config.clear_action_items! #clear standard buttons
   
   # ------ SCOPES (auto sorts) ------ #
-  
+  scope :all, :default => true do |item|
+    item.includes [:transaction]
+  end
+    
   # ------ INDEX PAGE CUSTOMIZATIONS ------ #
   # Customize columns displayed on the index screen in the table
-  index do
+  index :title => "test" do
     column :id, :sortable => :id do |l|
       link_to l.id, admin_mtg_transaction_item_path(l)
+    end
+    column 'Transaction', :sortable => :'transaction.transaction_number'  do |item|
+      link_to item.transaction.transaction_number, admin_mtg_transaction_path(item.transaction)
     end
     column :seller
     column "Card", :sortable => false do |l|
@@ -24,7 +30,7 @@ ActiveAdmin.register Mtg::TransactionItem do
     column "Price", :sortable => :price do |l|
       number_to_currency(l.price.dollars)
     end
-    column :quantity
+    column :quantity_requested
     column :language
     column :condition
     column :misprint
@@ -37,6 +43,7 @@ ActiveAdmin.register Mtg::TransactionItem do
   end
   
   # ------ FILTERS FOR INDEX ------- #
+  filter :transaction_transaction_number, :as => :string#, :collection => Mtg::Transaction.all.map(&:transaction_number), :input_html => {:class => "chzn-select"}   
   filter :seller, :as => :select, :input_html => {:class => "chzn-select"}    
   filter :buyer, :as => :select, :input_html => {:class => "chzn-select"}
   filter :price, :label => "Price (in cents)"

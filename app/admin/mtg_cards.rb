@@ -12,10 +12,10 @@ ActiveAdmin.register Mtg::Card do
      cards.includes [:set, :block]
     end  
     scope :active do |cards|
-      cards.joins(:set).where("mtg_cards.active LIKE ? AND mtg_sets.active LIKE ?", true, true)
+      cards.includes(:set).where("mtg_cards.active LIKE ? AND mtg_sets.active LIKE ?", true, true)
     end
     scope :inactive do |cards|
-      cards.joins(:set).where("mtg_cards.active LIKE ? OR mtg_sets.active LIKE ?", false, false)
+      cards.includes(:set).where("mtg_cards.active LIKE ? OR mtg_sets.active LIKE ?", false, false)
     end  
   end
   
@@ -96,6 +96,47 @@ ActiveAdmin.register Mtg::Card do
 
   end
   
+  
+  # ------ FORM --------------------- #
+  
+  form do |f|
+    f.inputs "Details" do
+      f.input :name
+      f.input :set,           :hint => "Card must go in an existing set.  Create a new set first if necessary.",
+                              :input_html => {:class => "chzn-select"},
+                              :required => true
+      f.input :card_type,     :as => :select,
+                              :collection => card_type_list,
+                              :input_html => {:class => "chzn-select", :style => "width:250px;"},
+                              :hint => "If type not in list, add to card_type_list method under cards helper",
+                              :required => true
+      f.input :card_subtype,  :as => :select,
+                              :collection => card_subtype_list,
+                              :input_html => {:class => "chzn-select", :style => "width:250px;"},
+                              :hint => "If type not in list, add to card_subtype_list method under cards helper",
+                              :required => true
+      f.input :rarity,        :as => :select,
+                              :collection => rarity_list,
+                              :input_html => {:class => "chzn-select", :style => "width:250px;"},
+                              :hint => "If type not in list, add to rarity_list method under cards helper",
+                              :required => true
+      f.input :artist,        :as => :select,
+                              :collection => artist_list,
+                              :input_html => {:class => "chzn-select", :style => "width:250px;"},
+                              :hint => "If type not in list, add to artist_list method under cards helper",
+                              :required => true
+      f.input :description,   :hint => "See symbols file names on S3 for displaying symbols"
+      f.input :mana_string,   :hint => "See symbols file names on S3 for displaying symbols"
+      f.input :mana_color,    :hint => "\'L\' = Land, \'U\' = Blue, \'B\' = Black, \'W\' = White, \'R\' = Red, \'G\' = Green, \'S\' = Scheme, \'C\' = Colorless, \'P\' = Plane, \'A\' = Artifact, \'(H)\' = Hybrid" 
+      f.input :mana_cost,     :as => :number
+      f.input :power,     :as => :number
+      f.input :toughness,     :as => :number
+      f.input :image_path,    :hint => "example: https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/DKA/140a.jpg"
+      f.input :card_number,     :as => :number
+    end
+    f.buttons
+  end
+  
   # ------ CONTROLLER ACTIONS ------- #
   # note: collection_actions work on collections, member_acations work on individual 
   begin
@@ -162,6 +203,7 @@ ActiveAdmin.register Mtg::Card do
      Rails.cache.write("set_data",@set_data)
      Rails.cache.write("card_data",@card_data)          
     end # controller method
+    
     collection_action :import_xml, :method => :post do
       @block_data = Rails.cache.read("block_data")
       @set_data = Rails.cache.read("set_data")
@@ -203,12 +245,14 @@ ActiveAdmin.register Mtg::Card do
       end      
       redirect_to admin_mtg_cards_path, :notice => "XML imported successfully!"              
     end #import_xml method
+    
     member_action :delete_card do
       Mtg::Card.find(params[:id]).destroy
       respond_to do |format|
         format.html { redirect_to admin_mtg_cards_path, :notice => "Card Deleted..."}
       end
     end
+    
     controller do
       before_filter :super_admin_authenticate, :only => :delete_card 
       
