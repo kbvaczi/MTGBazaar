@@ -14,6 +14,8 @@
 //= require autocomplete-rails
 //= require jquery-cookie
 
+//= require ckeditor/init
+
 //= require autocomplete-rails
 
 //= require_tree .

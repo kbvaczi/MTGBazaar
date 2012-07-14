@@ -24,6 +24,7 @@ gem "carrierwave", "~> 0.6.2"                                       # image_scan
 gem "fog", "~> 1.3.1"                                               # supports amazon s3
 #gem "activemerchant", "~> 1.26.0"                                   # integration of PayPal
 gem "ckeditor", "~> 3.7.1"                                          # blog editor
+gem "mini_magick", "~> 3.4"                                         # image manipulation for ckeditor
 
 # -------------
 # STANDARD GEMS

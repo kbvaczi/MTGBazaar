@@ -1,24 +1,10 @@
 <% title "Home" %>
 
-<h1>Welcome</h1>  
-
+<h1>Welcome to MTGBazaar!</h1>
 <div class="ma">
-<%= javascript_include_tag "ckeditor/init" %>
-<%= cktext_area_tag("content", "Ckeditor", :input_html => {:cols => 10, :rows => 20}, :toolbar => 'Easy')%>
-
-
-
-</div>
-
-
-<div class= "content">
-
-  <%= link_to("MTG Cards!", mtg_cards_path)%>
-  <br/>
-  <% Mtg::Set.all.each do |set| %>
-  <%= "#{set.name} - #{set.code}" %>
-  <%= display_set_symbol(set) %>
-  <br/>
+  <% @news_feeds.each do |feed| %>
+    <h2><%= feed.title %></h2>
+    <%= feed.data.html_safe %>
   <% end %>
 </div>
 

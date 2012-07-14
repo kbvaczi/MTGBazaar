@@ -13,6 +13,8 @@ class AdminUser < ActiveRecord::Base
   # send password request email once added in admin panel
   after_create { |admin| admin.send_reset_password_instructions }
 
+  has_many :news_feeds, :class_name => "NewsFeed", :foreign_key => "author_id"
+  
   # password not required on creation.. instead an email will be sent prompting for password creation
   def password_required?
     new_record? ? false : super

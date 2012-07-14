@@ -1,0 +1,30 @@
+<%= semantic_form_for [:admin, @news_feed] do |f| %>
+  
+  <%= f.inputs "Form" do %>
+  
+    <%= f.input :author_id,   :label => "Author",
+                              :as => :select,
+                              :collection => [[current_admin_user.email, current_admin_user.id]],
+                              :selected => current_admin_user.id.to_s,
+                              :disabled => true %>                 
+    <%= f.input :title %>
+
+    <div style="width:510px;padding-left:50px;">
+      <%= f.input :data,        :label => false,
+                                :input_html => {:class => :ckeditor,  
+                                                :toolbar => 'Full', 
+                                                :width => 500, 
+                                                :height => 600,
+                                                :style => "width:600px;"} %>
+    </div>
+
+    <%= f.input :priority,    :as => :select,
+                              :collection => [1,2,3,4,5,6,7,8,9,10],
+                              :selected => 5,
+                              :hint => "lower numbers get higher priority" %>
+                                                
+  <% end %>
+  
+  <%= f.submit %>
+  
+<% end %>
