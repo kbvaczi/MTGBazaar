@@ -1,0 +1,107 @@
+<% title "Condition Guide" %>
+
+<h1>Card Condition Guide</h1>
+
+<div class="ma">
+  <div class="group">
+    <ul class="tabs center">
+        <li <%= "class=\'selected\'" if not params[:section].present? %>> <%= link_to "Near-Mint (NM)"%></li>
+        <li <%= "class=\'selected\'" if params[:section] == "Slightly Played" %>> <%= link_to "Slightly Played (SP)", :section => "Slightly Played" %> </li>        
+        <li <%= "class=\'selected\'" if params[:section] == "Moderately Played" %>> <%= link_to "Moderately Played (MP)", :section => "Moderately Played" %> </li>        
+	</ul>
+  </div>
+
+	<%# Near-Mint %>
+	<% if not params[:section].present? %>
+	
+		<table class="data">
+	    <tr class="header_row">
+	    	<th>Black Bordered</th>
+	      	<th>White Bordered</th>      
+	     	<th>Modern Frame</th>
+	    </tr>
+	
+
+	    <tr class=<%= cycle("odd","even") %>> 
+	    	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/B/163.jpg', :width => "135px", :alt => "Near-Mint (NM)" %> </td>
+	    	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/4E/226.jpg', :width => "135px", :alt => "Slightly Played (SP)" %> </td>
+			<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/M11/149.jpg', :width => "135px", :alt => "Moderately Played (MP)" %> </td>
+	    </tr>
+	
+		<tr class="header_row">
+	        <th colspan=3>Description</th> 
+	    </tr>
+	
+		<tr class=<%= cycle("odd","even") %>> 
+			<td> <div class="ma">This Lightning Bolt is in Near-Mint condition. It is extremely rare to find a perfectly centered card without any printing imperfections.</div> </td>
+	     	<td> <div class="ma">This Reset is in Slightly Played condition. It is extremely rare to find a perfectly centered card without any printing imperfections.</div> </td>
+	  		<td> <div class="ma">This Reset is in Moderately Played condition. It is extremely rare to find a perfectly centered card without any printing imperfections.</div> </td>
+		</tr>
+
+	  </table>
+	
+	<% end %>
+
+	<%# Slightly Played (SP) %>
+	<% if params[:section] == "Slightly Played" %>
+	
+		<table class="data">
+	    <tr class="header_row">
+	      	<th>Black Bordered</th>
+	      	<th>White Bordered</th>      
+	      	<th>Modern Frame</th>
+	    </tr>
+	
+
+	    <tr class=<%= cycle("odd","even") %>> 
+	      	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/B/163.jpg', :width => "135px", :alt => "Near-Mint (NM)" %> </td>
+	      	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/4E/226.jpg', :width => "135px", :alt => "Slightly Played (SP)" %> </td>
+		  	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/M11/149.jpg', :width => "135px", :alt => "Moderately Played (MP)" %> </td>
+	    </tr>
+	
+		<tr class="header_row">
+	        <th colspan=3>Description</th> 
+	    </tr>
+	
+		 <tr class=<%= cycle("odd","even") %>> 
+		      <td> <div class="ma">This Lightning Bolt is in Near-Mint condition. It is extremely rare to find a perfectly centered card without any printing imperfections.</div> </td>
+		      <td> <div class="ma">This Reset is in Slightly Played condition. It is extremely rare to find a perfectly centered card without any printing imperfections.</div> </td>
+			  <td> <div class="ma">This Reset is in Moderately Played condition. It is extremely rare to find a perfectly centered card without any printing imperfections.</div> </td>
+		 </tr>
+
+	  </table>
+	
+	<% end %>
+	
+	<%# Moderately Played (MP) %>
+	<% if params[:section] == "Moderately Played" %>
+	
+		<table class="data">
+	    <tr class="header_row">
+	      	<th>Black Bordered</th>
+	      	<th>White Bordered</th>      
+	      	<th>Modern Frame</th>
+	    </tr>
+	
+
+	    <tr class=<%= cycle("odd","even") %>> 
+	      	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/B/163.jpg', :width => "135px", :alt => "Near-Mint (NM)" %> </td>
+	      	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/4E/226.jpg', :width => "135px", :alt => "Slightly Played (SP)" %> </td>
+		  	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/M11/149.jpg', :width => "135px", :alt => "Moderately Played (MP)" %> </td>
+	    </tr>
+	
+		<tr class="header_row">
+	        <th colspan=3>Description</th> 
+	    </tr>
+	
+		 <tr class=<%= cycle("odd","even") %>> 
+		      <td> <div class="ma">This Lightning Bolt is in Near-Mint condition. It is extremely rare to find a perfectly centered card without any printing imperfections.</div> </td>
+		      <td> <div class="ma">This Reset is in Slightly Played condition. It is extremely rare to find a perfectly centered card without any printing imperfections.</div> </td>
+			  <td> <div class="ma">This Reset is in Moderately Played condition. It is extremely rare to find a perfectly centered card without any printing imperfections.</div> </td>
+		 </tr>
+
+	  </table>
+	
+	<% end %>
+	
+</div>
