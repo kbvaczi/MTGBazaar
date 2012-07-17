@@ -20,4 +20,8 @@ class AdminUser < ActiveRecord::Base
     new_record? ? false : super
   end
   
+  def username
+    self.email.gsub(/@[a-zA-z0-9.]+/,"").capitalize
+  end
+  
 end

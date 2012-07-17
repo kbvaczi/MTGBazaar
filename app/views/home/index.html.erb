@@ -4,7 +4,8 @@
 <div class="ma">
   <% @news_feeds.each do |feed| %>
     <h2><%= feed.title %></h2>
-	<%= feed.author_id %>
+	  <div style="margin-top:-15px;border-bottom:1px solid #eee;"><%= "Posted by: #{feed.author.username} on: #{ display_time(feed.created_at)}" %></div>
+	  <br class="spacer"/>
     <%= feed.data.html_safe %>
   <% end %>
 </div>
