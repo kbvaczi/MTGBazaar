@@ -2,15 +2,16 @@
   <ul class="group">
     
     <% unless user_signed_in? %>
-      <li><%= link_to "Sign up", new_user_registration_path, :class => 'round_right' %></li>
+      
+		<li><%= link_to "Sign up", new_user_registration_path, :class => 'round_right' %></li>
     
 	<% else %>
       
-		<li class="navbar_drop">    
+	<li class="navbar_drop">    
   		<%= link_to "Account", show_account_info_path, :class => 'round_right' %>        
   		<div class="navbar_drop_child">
     		<ul>
-    			<li><%= link_to "Account Summary", show_account_info_path %></li>
+          <li><%= link_to "Account Summary", show_account_info_path %></li>
           <li class="heading"> Setup </li>            
           <li><%= link_to "Edit Account", edit_user_registration_path %></li>
           <li><%= link_to "Make a Deposit", new_account_deposit_path %></li>            
@@ -23,7 +24,19 @@
   		</div>
     </li>
 
+	<li class="navbar_drop">
+		<%= link_to "Sell", mtg_cards_path %>
+		<div class="navbar_drop_child">
+			<ul>
+	    <li><%= link_to "Sell a Card", new_generic_mtg_listings_path %></li>
+	    <li><%= link_to "Bulk Cards Sale",  new_bulk_prep_mtg_listings_path  %></li>
+	    <li class="heading"> Database </li>
+		<li><%= link_to "View Cards", mtg_cards_path %></li>
+
+	</ul>
+
 <% end %>
+
 
 			<li class="navbar_drop">
   			<%= link_to "Support"%>
@@ -45,16 +58,9 @@
 		  </li>
 
  			<li><%= link_to "About", about_path %></li>	
- 			<li class="navbar_drop">
-  			<%= link_to "MTG Cards", mtg_cards_path %>
-  			<div class="navbar_drop_child">
-    			<ul>
-    		    <li><%= link_to "View Cards", mtg_cards_path %></li>
-            <li><%= link_to "Sell a Card", new_generic_mtg_listings_path %></li>
-     		    <li><%= link_to "Bulk Cards Sale",  new_bulk_prep_mtg_listings_path  %></li>                   
-
-    			</ul>
-  			</div>
+ 			
+			<li class="navbar_drop">
+  			<%= link_to "Home", root_path %>
 		  </li>	  
 
   </ul>

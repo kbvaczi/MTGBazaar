@@ -4,17 +4,75 @@
 
   <!-- Heading -->
   <div class="mtg_listing_teaser">
-    <div class="mtg_listing_teaser_seller"> <u>Seller</u></div>
+	
+	<table class="data">
+	 <tr class="header_row">
+	 	<th>Seller (Sales/Feedback)</th>
+	   	<th>Lang.</th>      
+	  	<th>Cond.</th>
+		<th>Options</th>
+		<th>Price</th>
+		<th>Qty.</th>
+		<th>Add to Cart</th>
+	 </tr>
+
+	<!-- <div class="mtg_listing_teaser_seller"> <u>Seller</u></div>
     <div class="mtg_listing_teaser_language"> <u>Lang</u></div>  
     <div class="mtg_listing_teaser_condition"> <u>Cond</u></div>      
     <div class="mtg_listing_teaser_options"> <u>Options</u> </div>
     <div class="mtg_listing_teaser_price"> <u>Price</u></div> 
     <div class="mtg_listing_teaser_availability"> <u>Quantity</u> </div>     
-    <div class="mtg_listing_teaser_buy"> <u>Add to Cart</u> </div>  
-  </div>
-  
+    <div class="mtg_listing_teaser_buy"> <u>Add to Cart</u> </div> --> 
+	
+	<% @listings.each do |listing| %>  
+	
+	
+		<tr class=<%= cycle("odd","even") %>> 
+		
+		<td class="mtg_listing_teaser_seller"><%=  link_to "#{listing.seller.username}", user_path(listing.seller) %>
+	        <%= "(#{listing.seller.statistics.number_sales}, #{listing.seller.statistics.display_approval_percent})" %></td>
+		<td class="mtg_listing_teaser_language"><%= display_flag_symbol(listing.language) %></td>
+		<td class="mtg_listing_teaser_condition"><%= display_condition(listing.condition) %></td>
+		<td class="mtg_listing_teaser_options"><% if listing.foil %>
+          <%= listing_option_foil_icon %>
+        <% end %>
+        <% if listing.misprint %>
+          <%= listing_option_misprint_icon %>
+        <% end %>
+        <% if listing.signed %>
+          <%= listing_option_signed_icon %>
+        <% end %>
+        <% if listing.altart %>
+          <%= listing_option_altart_icon %>
+        <% end %>    
+        <% if listing.description != "" %>
+          <%= listing_option_description_icon(listing) %>
+        <% end %>
+    		<% if listing.scan.present? %>
+          <%= listing_option_scan_icon(listing) %>
+        <% end %></td>
+		<td class="mtg_listing_teaser_price"><%= number_to_currency(listing.price) %></td>
+		<td class="mtg_listing_teaser_availability"><%= listing.quantity_available %></td>
+		<td class="mtg_listing_teaser_buy"><%= form_tag add_to_cart_mtg_listing_path(listing.id), :method => :post do %>
+          <% if listing.quantity > 1 %>
+          <%= text_field_tag "quantity", 1, :id => nil, :style => "width:30px;text-align:center;"%>            
+            <%# SELECT BOX NOT IMPLEMENTED... MAY HAVE 1000+ Cards... pain in the ass with select box %>
+            <%# quantity_array = [] %>
+            <%# duplicate_item["count"].times { |i| quantity_array << "#{i + 1}" } %>
+            <%#= select_tag "quantity", options_for_select( quantity_array, :selected => duplicate_item["count"] ), :id => nil, :class => "chzn-select", :style => "width:55px;"%>
+          <% else %>
+            <%= listing.quantity %> &nbsp; &nbsp;
+            <%= text_field_tag "quantity", 1, :id => nil, :style => "width:30px;text-align:center;display:none;"%>        
+          <% end %>
+          <%= submit_tag "Buy" %>
+        <% end %></td>
+		</tr>
+		<% end %>
+		</table>
+	</div>
+	
   <!-- listings -->
-  <% @listings.each do |listing| %>      
+  <!-- <% @listings.each do |listing| %>      
     <div class="mtg_listing_teaser <%= cycle("even", "odd") %>">
       <div class="mtg_listing_teaser_seller">
         <%=  link_to "#{listing.seller.username}", user_path(listing.seller) %>
@@ -67,8 +125,9 @@
           <%= submit_tag "Buy" %>
         <% end %>
       </div>  
-    </div>
-  <% end %>
+    </div> 
+
+  <% end %> --> 
 
 <% else %>
   <br class="spacer"/>

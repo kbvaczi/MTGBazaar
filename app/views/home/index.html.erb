@@ -4,6 +4,7 @@
 <div class="ma">
   <% @news_feeds.each do |feed| %>
     <h2><%= feed.title %></h2>
+	<%= feed.author_id %>
     <%= feed.data.html_safe %>
   <% end %>
 </div>
