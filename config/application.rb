@@ -53,5 +53,8 @@ module MTGBazaar
     config.assets.initialize_on_precompile = false
     #forcing your application to not access the DB or load models when precompiling your assets.
     
+    #logging for unicorn
+    config.logger = Logger.new(STDOUT)
+    
   end
 end

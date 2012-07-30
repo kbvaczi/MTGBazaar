@@ -39,8 +39,7 @@ gem 'sass-rails',   '~> 3.2.3'                                      # take sass-
 group :production do
   gem "mysql2"                                                      # allows application to use a mysql database  
   gem "newrelic_rpm", "~> 3.3.2"                                    # performance monitoring
-  gem 'thin'                                                       # production webserver... using unicorn instead of thin
-
+  #gem 'thin'                                                       # production webserver... using unicorn instead of thin
 end
 
 group :development, :test do
