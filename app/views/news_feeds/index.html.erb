@@ -1,0 +1,27 @@
+<% title "News" %>
+
+<h1>News</h1>
+<div class ="content">
+
+  <% @news_feeds.each do |feed| %>
+
+    <div class="news_title" style="text-align:left; margin-top; 4px;margin-bottom:4px;"><%= feed.title %></div>
+  	<br/>
+  	<div style="margin-top:-15px;float:left;"><%= "Posted by: #{feed.author.username} on: #{ display_time(feed.created_at)}" %></div>
+  	<br/>
+  	<div style="width:100%;border-bottom-style:solid;border-bottom-color:grey;border-bottom-width: 5px;"></div>
+	
+  	<br class="spacer"/>
+	
+    <%= feed.data.html_safe %>
+
+  	<div class="newsbreak" style="margin-top:15px; margin-bottom:20px;"></div>
+
+    <br/>
+
+  <% end %>
+
+  <%= paginate @news_feeds, :collection => @news_feeds %>
+
+</div>
+
