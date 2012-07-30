@@ -45,6 +45,10 @@ end
 group :development, :test do
   gem 'sqlite3'
   gem 'rails-dev-tweaks', '~> 0.6.1' #improves performance in development environment  
+  
+  gem 'hooves'                      # makes "rails s" work with unicorn
+  require 'hooves/default'          # this is needed for hooves to work (i forgot why)
+  
 end
 
 # Gems used only for assets and not required
@@ -61,8 +65,7 @@ end
 
 # Use unicorn as the web server
 gem 'unicorn'
-#gem 'hooves'
-#require 'hooves/default'
+
 
 # Deploy with Capistrano
 # gem 'capistrano'
