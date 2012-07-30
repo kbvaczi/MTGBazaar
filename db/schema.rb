@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120713234132) do
+ActiveRecord::Schema.define(:version => 20120730185532) do
 
   create_table "account_balance_transfers", :force => true do |t|
     t.integer  "account_id"
@@ -272,8 +272,11 @@ ActiveRecord::Schema.define(:version => 20120713234132) do
     t.string   "title",      :default => ""
     t.text     "data"
     t.integer  "priority",   :default => 10
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.boolean  "active",     :default => true
   end
 
   create_table "sessions", :force => true do |t|

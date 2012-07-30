@@ -5,7 +5,6 @@ class CreateNewsFeeds < ActiveRecord::Migration
 
       t.string    :title,           :default => ""
       t.text      :data
-      t.integer   :priority,        :default => "10"
       
       t.timestamps
     end

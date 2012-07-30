@@ -21,10 +21,10 @@
       CKEDITOR.config.enterMode = CKEDITOR.ENTER_DIV;
     </script>
     
-    <%= f.input :priority,    :as => :select,
-                              :collection => [1,2,3,4,5,6,7,8,9,10],
-                              :selected => 5,
-                              :hint => "lower numbers get higher priority" %>
+    <%= f.input :start_at,       :as => :date, :hint => "post will go live at this time.  Leave blank to make post live immediately" %>
+    <%= f.input :end_at,         :as => :date, :hint => "post will go offline at this time.  Leave blank to make post live indefinitely" %>    
+    <%= f.input :active,         :as => :boolean,
+                                 :default => true %>
                                                 
   <% end %>
   
