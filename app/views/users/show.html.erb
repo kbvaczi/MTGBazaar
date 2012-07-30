@@ -145,7 +145,7 @@
           <td style="text-align:right;"><%= number_to_currency(listing.price)%></td>
           <td><%= listing.quantity_available %></td>
           <td style="text-align:right;">
-            <div style="width:80px;">
+            <div style="width:80px;float:right;">
               <%= form_tag add_to_cart_mtg_listing_path(listing.id), :method => :post do %>
                 <% if listing.quantity > 1 %>
                   <%= text_field_tag "quantity", 1, :id => nil, :style => "width:30px;text-align:center;"%>            

@@ -199,9 +199,9 @@ ActiveAdmin.register Mtg::Card do
         end # if card exists           
       end # for each card      
     
-     Rails.cache.write("block_data",@block_data)
-     Rails.cache.write("set_data",@set_data)
-     Rails.cache.write("card_data",@card_data)          
+     Rails.cache.write("block_data", @block_data, :timeToLive => 1200.seconds) #saves data in cache for 20 minutes
+     Rails.cache.write("set_data", @set_data, :timeToLive => 1200.seconds)#saves data in cache for 20 minutes
+     Rails.cache.write("card_data", @card_data, :timeToLive => 1200.seconds)#saves data in cache for 20 minutes          
     end # controller method
     
     collection_action :import_xml, :method => :post do
