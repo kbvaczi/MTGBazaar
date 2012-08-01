@@ -43,8 +43,7 @@ end
 group :development do
   gem 'sqlite3'
   # gem 'rails-dev-tweaks', '~> 0.6.1' #improves performance in development environment  
-  gem 'hooves'                      # makes "rails s" work with unicorn
-  require 'hooves/default'          # this is needed for hooves to work (i forgot why)
+  gem 'hooves', :require => 'hooves/default'          # unicorn works with "rails s"
 end
 
 # Gems used only for assets and not required
