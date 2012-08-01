@@ -29,8 +29,6 @@ gem 'unicorn'                                                       # custom web
 # STANDARD GEMS
 # -------------
 
-# Bundle edge Rails instead:
-# gem 'rails',     :git => 'git://github.com/rails/rails.git'
 gem 'jquery-rails'                                                  # latest jquery library.  need to include "//= require jquery_ujs" and "//= require jquery" in application.js to be loaded in asset pipeline
 gem 'rails', '3.2.0'
 gem 'json'
@@ -46,9 +44,8 @@ group :development, :test do
   gem 'sqlite3'
   #gem 'rails-dev-tweaks', '~> 0.6.1' #improves performance in development environment  
   
-  gem 'hooves'                      # makes "rails s" work with unicorn
-  require 'hooves/default'          # this is needed for hooves to work (i forgot why)
-  
+  #gem 'hooves'                      # makes "rails s" work with unicorn
+  #require 'hooves/default'          # this is needed for hooves to work (i forgot why)
 end
 
 # Gems used only for assets and not required
