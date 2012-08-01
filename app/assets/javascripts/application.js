@@ -14,10 +14,6 @@
 //= require autocomplete-rails
 //= require jquery-cookie
 
-//= require ckeditor/ckeditor
-//= require ckeditor/init
-//= require_self
-CKEDITOR_BASEPATH = "/assets/ckeditor/";
 
 //= require_tree .
 

@@ -26,7 +26,7 @@ MTGBazaar::Application.configure do
   config.assets.compile = true
   
   # add these files to be pre-compiled... for some reason they are missed?  This is needed to get CKEditor to work for Heroku
-  config.assets.precompile += ['ckeditor/config.js', 'ckeditor/editor.css', 'ckeditor/en.js']
+  config.assets.precompile += ['ckeditor/config.js', 'ckeditor/skins/kama/editor.css', 'ckeditor/lang/en.js']
   
   # Generate digests for assets URLs
   config.assets.digest = true
