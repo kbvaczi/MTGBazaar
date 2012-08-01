@@ -22,7 +22,7 @@ gem "fog", "~> 1.3.1"                                               # supports a
 #gem "activemerchant", "~> 1.26.0"                                  # integration of PayPal
 gem "ckeditor", "~> 3.7.1"                                          # blog editor
 gem "mini_magick", "~> 3.4"                                         # image manipulation for ckeditor
-#gem "girl_friday", "~> 0.9.7"                                       # background processing for unicorn
+#gem "girl_friday", "~> 0.9.7"                                       # background processing for unicorn... disabled due to issues
 gem 'unicorn'                                                       # custom webserver with multi-threaded application capabilities
 
 # -------------
