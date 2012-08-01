@@ -40,10 +40,9 @@ group :production do
   #gem 'thin'                                                       # production webserver... using unicorn instead of thin
 end
 
-group :development, :test do
+group :development do
   gem 'sqlite3'
-  #gem 'rails-dev-tweaks', '~> 0.6.1' #improves performance in development environment  
-  
+  # gem 'rails-dev-tweaks', '~> 0.6.1' #improves performance in development environment  
   gem 'hooves'                      # makes "rails s" work with unicorn
   require 'hooves/default'          # this is needed for hooves to work (i forgot why)
 end
