@@ -59,9 +59,8 @@ class CartsController < ApplicationController
           transaction.create_item_from_reservation(reservation) # create transaction items based on these reservations
           reservation.purchased! # update listing quantity and destroy this reservation
         end
-        CHECKOUT_MAILER_QUEUE.push(:transaction => transaction)
-        #ApplicationMailer.send_seller_sale_notification(transaction).deliver # send sale notification email to seller
-        #ApplicationMailer.send_buyer_checkout_confirmation(transaction).deliver # notify buyer that the sale has been confirmed               
+        ApplicationMailer.send_seller_sale_notification(transaction).deliver # send sale notification email to seller
+        ApplicationMailer.send_buyer_checkout_confirmation(transaction).deliver # notify buyer that the sale has been confirmed               
       end
       current_user.account.balance_debit!(current_cart.total_price)  # take money out of user's balance
       current_cart.update_cache! # empty the shopping cart

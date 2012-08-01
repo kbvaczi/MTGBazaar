@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  
+
   def index
     @news_feeds = NewsFeed.where("active LIKE ?", true)
                           .where("start_at < \'#{Time.now}\' OR start_at IS null")

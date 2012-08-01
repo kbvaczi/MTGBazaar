@@ -56,7 +56,5 @@ module MTGBazaar
     #logging for unicorn
     config.logger = Logger.new(STDOUT)
     
-    config.threadsafe! # enable threadsafe for girl_friday
-    
   end
 end

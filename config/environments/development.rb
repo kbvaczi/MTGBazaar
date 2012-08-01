@@ -24,7 +24,7 @@ MTGBazaar::Application.configure do
     :address              => "smtp.gmail.com",
     :port                 => 587,
     :user_name            => 'admin@mtgbazaar.com',
-    :password             => 'shamiggidybobbyokomoto!',
+    :password             => 'b4z44r2012!',
     :authentication       => 'plain',
     :enable_starttls_auto => true
   }
