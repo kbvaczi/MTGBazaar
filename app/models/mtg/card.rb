@@ -12,15 +12,28 @@ class Mtg::Card < ActiveRecord::Base
 
   after_create :create_card_statistics
   
-  # every new card gets a statistics model
+  # every new card gets a statistics model upon creation
   def create_card_statistics
-    self.statistics = Mtg::CardStatistics.create
+    self.statistics = Mtg::CardStatistics.new
+    #set pricing upon card creation if pricing exists
+    self.statistics.price_low = self.price_low if self.price_low
+    self.statistics.price_med = self.price_med if self.price_med    
+    self.statistics.price_high = self.price_high if self.price_high 
+    self.statistics.save   
   end
+
+  #validates_presence_of :set_id, :name, :card_type, :rarity, :artist, :description, :mana_string, :mana_color, :mana_cost, :image_path, :card_number
+  
+  # allows card objects to take these inputs upon creation, even though they won't be stored under the card model itself.
+  # these will be used to import prices into separate card statistics model
+  attr_accessor :price_low, :price_med, :price_high
   
   # override default route to add username in route.
   def to_param
     "#{id}-#{display_name(name)}".parameterize
   end
+  
+# **************** CLASS METHODS ***************** #
   
   def dual_sided_card?
     return true if card_number.match(/[\d]+[aAbB]/).present?

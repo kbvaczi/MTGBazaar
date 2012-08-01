@@ -193,6 +193,9 @@ ActiveAdmin.register Mtg::Card do
                           :power => c.css("power").text,
                           :toughness => c.css("toughness").text,
                           :multiverse_id => c.css("id").text,
+                          :price_low => c.css("pricing_low").text,                          
+                          :price_med => c.css("pricing_mid").text,                                                    
+                          :price_high => c.css("pricing_high").text,                                                    
                           :image_path => "https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/#{c.css("set").text}/#{format_number(c.css("number").text)}.jpg",
                           :active => true }
           puts "Set: #{c.css("set").text}, Card: #{c.css("id").text}, #{c.css("name").text} created" # notification that card was created
@@ -239,6 +242,9 @@ ActiveAdmin.register Mtg::Card do
                                         :power => c[:power],
                                         :toughness => c[:toughness],
                                         :multiverse_id => c[:multiverse_id],
+                                        :price_low => c[:price_low],                          
+                                        :price_med => c[:price_med],                                                    
+                                        :price_high => c[:price_high],                                        
                                         :image_path => c[:image_path],
                                         :active => active) if Mtg::Card.where(:multiverse_id => c[:multiverse_id]).empty?
         puts "Card: #{c[:name]} created"
