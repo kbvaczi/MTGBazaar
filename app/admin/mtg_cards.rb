@@ -9,13 +9,13 @@ ActiveAdmin.register Mtg::Card do
   # ------ SCOPES ------- #
   begin
     scope :all, :default => true do |cards|
-     cards.includes [:set, :block]
+     cards.includes [:set, :statistics]
     end  
     scope :active do |cards|
-      cards.includes(:set).where("mtg_cards.active LIKE ? AND mtg_sets.active LIKE ?", true, true)
+      cards.includes(:set, :statistics).where("mtg_cards.active LIKE ? AND mtg_sets.active LIKE ?", true, true)
     end
     scope :inactive do |cards|
-      cards.includes(:set).where("mtg_cards.active LIKE ? OR mtg_sets.active LIKE ?", false, false)
+      cards.includes(:set, :statistics).where("mtg_cards.active LIKE ? OR mtg_sets.active LIKE ?", false, false)
     end  
   end
   
@@ -32,7 +32,19 @@ ActiveAdmin.register Mtg::Card do
       #end
       column 'Set', :sortable => :'mtg_sets.name'  do |card|
         link_to card.set.name, admin_mtg_set_path(card.set)
-      end    
+      end
+      column 'Sales', :sortable => :'mtg_card_statistics.number_sales' do |card| 
+        card.statistics.number_sales
+      end
+      column '$-low', :sortable => :'mtg_card_statistics.price_low' do |card|
+        card.statistics.price_low
+      end
+      column '$-med', :sortable => :'mtg_card_statistics.price_med' do |card|
+        card.statistics.price_med
+      end      
+      column '$-high', :sortable => :'mtg_card_statistics.price_high' do |card|
+        card.statistics.price_high
+      end      
       column 'Set active?', :sortable => :'mtg_sets.active'  do |card|
         if card.set.active?
           "yes"

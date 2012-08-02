@@ -53,6 +53,7 @@
       <% end %>
   		<% if listing.scan.present? %>
         <%= listing_option_scan_icon(listing) %>
+        <%= listing_option_scan_overlay(listing) %>
       <% end %>
     </td>
 		<td><%= number_to_currency(listing.price) %></td>

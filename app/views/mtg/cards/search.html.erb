@@ -3,14 +3,11 @@
 <h1>Search Results (<%=pluralize(@mtg_cards.total_count,"card","cards")%>)</h1>
 
 <div class ="content">
-  <div class="paginator">
-    <%= paginate @mtg_cards, :theme => :simple, :remote => true, :collection => @mtg_cards %>
-  </div>
   <div id="search_results">
     <%= render :partial => "teaser", :collection => @mtg_cards, :as => "mtg_card" %>
   </div>
   <div class="paginator">
-    <%= paginate @mtg_cards, :theme => :simple, :remote => true ,:collection => @mtg_cards %>
+    <%= paginate @mtg_cards, :window => 2, :remote => true ,:collection => @mtg_cards %>
   </div>
   
 </div>

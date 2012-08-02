@@ -211,8 +211,13 @@ module Mtg::CardsHelper
   end
 
   def listing_option_scan_icon(listing)
-    link_to image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/scan.png", :title => "Click to view scan", :style => "float:left;height:20px;vertical-align:bottom;"), listing.scan_url, :target => "_blank"         
-  end      
+    #link_to image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/scan.png", :title => "Click to view scan", :style => "float:left;height:20px;vertical-align:bottom;"), listing.scan_url, :target => "_blank"         
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/scan.png", :title => "Click to view scan", :style => "float:left;height:20px;vertical-align:bottom;cursor:pointer;", :class => "overlay_trigger", :rel => "#scan_overlay_#{listing.id}")
+  end
+  
+  def listing_option_scan_overlay(listing)      
+    content_tag(:div, image_tag(listing.scan.url, :title => "Card Scan"), :class => "overlay_window", :id => "scan_overlay_#{listing.id}")    
+  end
 
   def listing_option_signed_icon
     image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/signed.png", :title => "Signed by artist", :style => "float:left;height:20px;vertical-align:bottom;")         

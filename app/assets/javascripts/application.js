@@ -7,6 +7,7 @@
 
 //= require jquery
 //= require jquery_ujs
+//= require jquery_tools
 //= require chosen.jquery
 //= require mtg_search    
 //= require jquery-ui

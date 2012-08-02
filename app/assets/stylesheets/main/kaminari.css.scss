@@ -1,3 +1,5 @@
+/* PAGINATOR BASIC THEME */
+ 
 .pagination_basic{
   width:100%;
   background: rgba(240,240,240,0.4);
@@ -59,7 +61,6 @@
 /* PAGINATION DEFAULT BEHAVIOR */ 
 /* PAGINATION DEFAULT BEHAVIOR */ 
 
-
 /* line 1, ../../../../../../.rvm/gems/ruby-1.9.3-p125@rails32/gems/activeadmin-0.4.3/app/assets/stylesheets/active_admin/components/_pagination.scss */
 .paginated_collection_contents {
   clear: both;
@@ -67,9 +68,9 @@
 
 /* line 5, ../../../../../../.rvm/gems/ruby-1.9.3-p125@rails32/gems/activeadmin-0.4.3/app/assets/stylesheets/active_admin/components/_pagination.scss */
 .pagination {
-  float: right;
   margin: 20px;
-}
+  display:inline-block;
+} 
 /* line 10, ../../../../../../.rvm/gems/ruby-1.9.3-p125@rails32/gems/activeadmin-0.4.3/app/assets/stylesheets/active_admin/components/_pagination.scss */
 .pagination a {
   background: #838a90;
@@ -89,12 +90,11 @@
   border-left-color: #484e53;
   color: #efefef;
   display: inline-block;
+  font-size: 1em;
   font-weight: bold;
-  font-size: 1.0em;
-  font-family: Helvetica, Arial, sans-serif;
   line-height: 12px;
   margin-right: 3px;
-  padding: 7px 16px 6px;
+  padding: 6px 10px 6px;
   text-decoration: none;
   -webkit-font-smoothing: antialiased;
   background: #fdfdfd;
@@ -196,9 +196,7 @@
   border-left-color: #484e53;
   color: #efefef;
   display: inline-block;
-  font-weight: bold;
   font-size: 1em;
-  font-family: Helvetica, Arial, sans-serif;
   line-height: 12px;
   margin-right: 3px;
   padding: 7px 16px 6px;
@@ -234,8 +232,8 @@
   -webkit-border-radius:5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  margin-right: 4px;
-  padding: 2px 5px;
+  margin-right: 2px;
+  padding: 4px 5px;
 }
 
 /* line 25, ../../../../../../.rvm/gems/ruby-1.9.3-p125@rails32/gems/activeadmin-0.4.3/app/assets/stylesheets/active_admin/components/_pagination.scss */
