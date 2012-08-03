@@ -224,7 +224,7 @@ module Mtg::CardsHelper
   end  
   
   def listing_option_description_icon(listing)
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/description.png", :title => "Description: #{listing.description}", :style => "float:left;height:20px;vertical-align:bottom;")         
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/description.png", :title => "Description: #{listing.description}", :class => "tooltip_trigger", :style => "float:left;height:20px;vertical-align:bottom;")         
   end
   
 end

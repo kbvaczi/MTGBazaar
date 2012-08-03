@@ -41,12 +41,6 @@ MTGBazaar::Application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
 
-  # See everything in the log (default is :info)
-   config.log_level = :debug
-
-  # Use a different logger for distributed setups
-  # config.logger = SyslogLogger.new
-
   # Use a different cache store in production
   # config.cache_store = :mem_cache_store
 
@@ -69,4 +63,20 @@ MTGBazaar::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+  
+  # Logging configuration for more verbose logs in heroku as per http://stackoverflow.com/questions/8031007/how-to-increase-heroku-log-drain-verbosity-to-include-all-rails-app-details
+      STDOUT.sync = true
+      logger = Logger.new(STDOUT)
+      logger.level = 0 # Must be numeric here - 0 :debug, 1 :info, 2 :warn, 3 :error, and 4 :fatal
+      # NOTE:   with 0 you're going to get all DB calls, etc.
+
+      Rails.logger = Rails.application.config.logger = logger
+
+      ### NOTE: Be sure to comment out these:
+      #   See everything in the log (default is :info)
+      #   config.log_level = :debug  # Commented out as per Chris' instructions from Heroku
+
+      #   Use a different logger for distributed setups
+      #   config.logger = SyslogLogger.new
+  
 end

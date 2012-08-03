@@ -9,7 +9,7 @@
       <% top_cards.each do |card| %>
         <tr style="margin:2px;padding:0;">
           <td style="margin:1px;padding:0;"> <%= display_set_symbol(card.set) %> </td>
-          <td style="margin:2px;padding:0;vertical-align:top;text-align:left;"> <%= link_to card.name, mtg_card_path(card) %> </td>
+          <td style="margin:2px;padding:0;vertical-align:top;text-align:left;"> <%= link_to display_name(card.name), mtg_card_path(card) %> </td>
         </tr>        
       <% end %>
 
