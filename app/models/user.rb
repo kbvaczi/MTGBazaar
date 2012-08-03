@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   # :account_attributes allows nested model support for account while editing form for user
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :account_attributes, :terms
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :account_attributes, :terms, :age
   
   # not-in-model fields for age and agree-to-terms fields in sign-up
   attr_accessor :terms
