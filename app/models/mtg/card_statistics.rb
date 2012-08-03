@@ -67,9 +67,9 @@ class Mtg::CardStatistics < ActiveRecord::Base
         self.price_high = (1.2 * avg).to_money
       else
         self.price_high = ( (max + max + avg) / 3 ).to_money
-      end
-      self.save 
+      end 
     end
+    self.save
   end
 
 end
