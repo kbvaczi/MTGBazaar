@@ -8,15 +8,32 @@
       
       <%= f.input :balance,       :label => "Amount to deposit",
                                   :as => :string,
-                                  :required => 'true' %>
+                                  :required => 'true'%>
 
 
       <%= f.input :current_password,  :required => "true", 
                                       :hint => "enter current password to confirm deposit"%>
 
     </div>
+    
+    <div id="commission_statement" class="center" style="display:inline-block;white-space:nowrap;">
+      Total charge including Paypal's fee: $0.30
+    </div>
     <br class="spacer"/>
-    <br class="spacer"/>  
+    <br class="spacer"/>    
+    <div id="commission_help" class="overlay_trigger center" rel="#commission_help_overlay" style="display:inline-block;cursor:pointer;color:blue;">
+      What do you mean a fee?!
+    </div>
+    <div id="commission_help_overlay" class="overlay_window" style="width:500px;  ">
+      <%= link_to image_tag("https://www.paypalobjects.com/webstatic/i/ex_ce2/logo/logo_paypal_106x29.png"), "https://www.paypal.com/", :target => "_blank" %> 
+      <br class="spacer"/>
+      <br class="spacer"/>  
+      <p>Paypal provides us with a secure gateway to guarantee to integrity of your dollars.  Unfortunately this service is not free.</p>
+    </div>
+    
+    <br class="spacer"/>
+    <br class="spacer"/>
+    <br class="spacer"/>      
     <div class="center">
       <%= f.button :submit, "Submit", :class => "center"%>
     </div>

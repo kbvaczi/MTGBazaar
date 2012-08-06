@@ -9,7 +9,7 @@
       <% top_cards.each do |card| %>
         <tr style="margin:2px;padding:0;">
           <td style="margin:1px;padding:0;"> <%= display_set_symbol(card.set) %> </td>
-          <td style="margin:1px;padding:0;vertical-align:top;text-align:left;text-overflow: ellipsis;max-width:150px;white-space: nowrap;overflow:hidden;"> <%= link_to card.name, mtg_card_path(card) %> </td>
+          <td style="margin:1px;padding:0;vertical-align:top;text-align:left;text-overflow:ellipsis;max-width:150px;white-space:nowrap;overflow:hidden;"> <%= link_to card.name, mtg_card_path(card) %> </td>
           <td style="margin:1px;padding:0;vertical-align:top;text-align:left;"> <%= number_to_currency(card.statistics.price_low) %> </td>          
         </tr>        
       <% end %>
