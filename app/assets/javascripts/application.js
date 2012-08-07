@@ -14,6 +14,7 @@
 //= require jquery.ui.autocomplete.html.js
 //= require autocomplete-rails
 //= require jquery-cookie
+//= require jquery.maskMoney
 
 
 //= require_tree .

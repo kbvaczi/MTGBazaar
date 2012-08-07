@@ -51,7 +51,7 @@
       <div id="Custom_Pricing_Block" <%= "style=\'display:none;\'" unless (params[:mtg_listing] && params[:mtg_listing][:price_options] == "other") %>> 
         <%= f.input :price,         :label => "Custom Pricing",
                                     :as => :string,
-                                    :input_html => {:value => params[:mtg_listing].present? ? params[:mtg_listing][:price] : "$1.00"},
+                                    :input_html => {:class => "currency_input", :maxlength => 9, :value => params[:mtg_listing].present? ? params[:mtg_listing][:price] : "$ 1.00"},
                                     :required => true %>                                  
       </div>
 

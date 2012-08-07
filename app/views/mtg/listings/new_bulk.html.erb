@@ -85,7 +85,7 @@
                                                  :style => "width:150px;" %>
               <br/>           
               <div style="margin-top:5px;<%= "#{(params[:sales] && params[:sales]["#{card.id}"] && params[:sales]["#{card.id}"][:price] == "other") ? "" : "display:none;"}"%>" class="bulk_price_custom">     
-                Custom Pricing: <%= text_field_tag "sales[#{card.id}][custom_price]", (params[:sales] && params[:sales]["#{card.id}"]) ? params[:sales]["#{card.id}"][:custom_price] : "$#{price_selection}", :style => "width:45px;text-align:center;"%>
+                Custom Pricing: <%= text_field_tag "sales[#{card.id}][custom_price]", (params[:sales] && params[:sales]["#{card.id}"]) ? params[:sales]["#{card.id}"][:custom_price] : "$#{price_selection}", :style => "width:55px;text-align:center;", :class => "currency_input", :maxlength => 9 %>
               </div>
           </td>
           <td>

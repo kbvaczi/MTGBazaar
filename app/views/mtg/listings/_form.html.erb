@@ -55,7 +55,7 @@
     <div id="Custom_Pricing_Block" style="display:none;"> 
       <%= f.input :price,         :label => "Custom Pricing",
                                   :as => :string,
-                                  :input_html => { :value => "$#{@listing.card.statistics.price_med}" },   
+                                  :input_html => { :class => "currency_input", :maxlength => 9, :value => "$ #{@listing.card.statistics.price_med}" },   
                                   :required => true %>                                  
     </div>
 

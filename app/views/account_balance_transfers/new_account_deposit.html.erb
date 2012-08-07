@@ -9,8 +9,9 @@
     <div class="inputs">
       
       <%= f.input :balance,     :label => "Amount to deposit",
-                                  :as => :string,
-                                  :required => 'true' %>
+                                :as => :string,
+                                :input_html => {:class => "currency_input", :maxlength => 9, :value => "$ 0" },
+                                :required => 'true' %>
       <br class="spacer"/>  
           
       <div id="commission_statement" class="center" style="display:inline-block;white-space:nowrap;">
@@ -25,7 +26,13 @@
         <%= link_to image_tag("https://www.paypalobjects.com/webstatic/i/ex_ce2/logo/logo_paypal_106x29.png"), "https://www.paypal.com/", :target => "_blank" %> 
         <br class="spacer"/>
         <br class="spacer"/>  
-        <p>Paypal provides us with a secure gateway to guarantee to integrity of your dollars.  Unfortunately this service is not free.</p>
+        <p>Paypal provides us with a secure gateway to guarantee the integrity of your money.  Unfortunately this service is not free.</p>
+        <br/>
+        <p>Nobody likes fees, but we believe this is the best way to do things.</p>
+        <br/>
+        <p>By passing this fee onto our customers (you), we are able to charge a lower seller transaction fee which pushes down the cost of cards and is beneficial for everybody.</p>
+        <br/>
+        <p>Also, to avoid paying this fee, simply sell some cards on the site to build money in your account.</p>
       </div>
       <br class="spacer"/>
       <br class="spacer"/>      
@@ -40,7 +47,7 @@
     <br class="spacer"/>
     <br class="spacer"/>      
     <div class="center">
-      <%= f.button :submit, "Submit", :class => "center"%>
+      <%= f.button :submit, "Finalize deposit at PayPal", :class => "center"%>
     </div>
   <% end %>
 </div>
