@@ -1,5 +1,7 @@
 class AccountBalanceTransfersController < ApplicationController
 
+  before_filter :authenticate_user!
+  
   def new_account_deposit
     set_back_path
     if params[:account_balance_transfer].present?
