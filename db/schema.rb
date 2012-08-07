@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120806195621) do
+ActiveRecord::Schema.define(:version => 20120807010036) do
 
   create_table "account_balance_transfers", :force => true do |t|
     t.integer  "account_id"
@@ -64,24 +64,8 @@ ActiveRecord::Schema.define(:version => 20120806195621) do
   add_index "active_admin_comments", ["namespace"], :name => "index_active_admin_comments_on_namespace"
   add_index "active_admin_comments", ["resource_type", "resource_id"], :name => "index_admin_notes_on_resource_type_and_resource_id"
 
-  create_table "admin_users", :force => true do |t|
-    t.string   "email",                  :default => "", :null => false
-    t.string   "encrypted_password",     :default => "", :null => false
-    t.string   "nickname",               :default => "", :null => false
-    t.string   "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          :default => 0
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
-  end
-
-  add_index "admin_users", ["email"], :name => "index_admin_users_on_email", :unique => true
-  add_index "admin_users", ["reset_password_token"], :name => "index_admin_users_on_reset_password_token", :unique => true
+# Could not dump table "admin_users" because of following StandardError
+#   Unknown type 'nickname' for column 'string'
 
   create_table "carts", :force => true do |t|
     t.integer  "user_id"
@@ -133,23 +117,24 @@ ActiveRecord::Schema.define(:version => 20120806195621) do
 
   create_table "mtg_cards", :force => true do |t|
     t.integer  "set_id"
-    t.string   "name",          :default => "",   :null => false
-    t.string   "card_type",     :default => "",   :null => false
-    t.string   "card_subtype",  :default => "",   :null => false
-    t.string   "rarity",        :default => "",   :null => false
-    t.string   "artist",        :default => "",   :null => false
-    t.text     "description",   :default => "",   :null => false
-    t.string   "mana_string",   :default => "",   :null => false
-    t.string   "mana_color",    :default => "",   :null => false
-    t.string   "mana_cost",     :default => "",   :null => false
-    t.string   "power",         :default => "",   :null => false
-    t.string   "toughness",     :default => "",   :null => false
-    t.string   "multiverse_id", :default => "",   :null => false
-    t.string   "image_path",    :default => "",   :null => false
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
+    t.string   "name",            :default => "",   :null => false
+    t.string   "card_type",       :default => "",   :null => false
+    t.string   "card_subtype",    :default => "",   :null => false
+    t.string   "rarity",          :default => "",   :null => false
+    t.string   "artist",          :default => "",   :null => false
+    t.text     "description",     :default => "",   :null => false
+    t.string   "mana_string",     :default => "",   :null => false
+    t.string   "mana_color",      :default => "",   :null => false
+    t.string   "mana_cost",       :default => "",   :null => false
+    t.string   "power",           :default => "",   :null => false
+    t.string   "toughness",       :default => "",   :null => false
+    t.string   "multiverse_id",   :default => "",   :null => false
+    t.string   "image_path",      :default => "",   :null => false
+    t.string   "image_back_path", :default => "",   :null => false
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
     t.string   "card_number"
-    t.boolean  "active",        :default => true, :null => false
+    t.boolean  "active",          :default => true, :null => false
   end
 
   add_index "mtg_cards", ["active"], :name => "index_mtg_cards_on_active"
@@ -205,7 +190,7 @@ ActiveRecord::Schema.define(:version => 20120806195621) do
     t.integer  "block_id"
     t.string   "name",         :default => "",           :null => false
     t.string   "code",         :default => "",           :null => false
-    t.date     "release_date", :default => '2012-08-03'
+    t.date     "release_date", :default => '2012-07-05'
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.boolean  "active",       :default => false,        :null => false
@@ -272,6 +257,7 @@ ActiveRecord::Schema.define(:version => 20120806195621) do
     t.integer  "author_id"
     t.string   "title",      :default => ""
     t.text     "data"
+    t.integer  "priority",   :default => 10
     t.datetime "created_at",                   :null => false
     t.datetime "updated_at",                   :null => false
     t.datetime "start_at"
@@ -332,6 +318,13 @@ ActiveRecord::Schema.define(:version => 20120806195621) do
   add_index "tickets", ["offender_id"], :name => "index_tickets_on_offender_id"
   add_index "tickets", ["transaction_id"], :name => "index_tickets_on_transaction_id"
   add_index "tickets", ["transaction_type"], :name => "index_tickets_on_transaction_type"
+
+  create_table "transactions", :force => true do |t|
+    t.integer  "test1_id"
+    t.integer  "test2_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "user_statistics", :force => true do |t|
     t.integer  "user_id"
