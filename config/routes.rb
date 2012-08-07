@@ -85,17 +85,17 @@ MTGBazaar::Application.routes.draw do
 
   # resources :users must be declared after devise_for because earlier declarations take precedence 
   # see http://stackoverflow.com/questions/5051487/combining-devise-with-resources-users-in-rails
-  
-  get 'users/listings' => 'users#display_current_listings', :as => 'user_current_listings'
-  get 'users/deposit' => 'users#new_account_deposit', :as => 'new_account_deposit'
-  post 'users/deposit' => 'users#create_account_deposit', :as => 'create_account_deposit'
-  get 'users/withdraw' => 'users#new_account_withdraw', :as => 'new_account_withdraw'
-  post 'users/withdraw' => 'users#create_account_withdraw', :as => 'create_account_withdraw'
-  get 'users/account' => 'users#show_account_info', :as => 'show_account_info'
-  get 'users/account/sales' => 'users#account_sales', :as => 'account_sales'
-  post 'users/account/sales' => 'users#account_sales', :as => 'account_sales'   # for pagination
-  get 'users/account/purchases' => 'users#account_purchases', :as => 'account_purchases'
-  post 'users/account/purchases' => 'users#account_purchases', :as => 'account_purchases'   # for pagination  
+
+  get 'account' => 'users#show_account_info', :as => 'show_account_info'  
+  get 'account/listings' => 'users#display_current_listings', :as => 'user_current_listings'
+  get 'account/deposit' => 'account_balance_transfers#new_account_deposit', :as => 'new_account_deposit'
+  post 'account/deposit' => 'account_balance_transfers#create_account_deposit', :as => 'create_account_deposit'
+  get 'account/withdraw' => 'account_balance_transfers#new_account_withdraw', :as => 'new_account_withdraw'
+  post 'account/withdraw' => 'account_balance_transfers#create_account_withdraw', :as => 'create_account_withdraw'
+  get 'account/sales' => 'users#account_sales', :as => 'account_sales'
+  post 'account/sales' => 'users#account_sales', :as => 'account_sales'   # for pagination
+  get 'account/purchases' => 'users#account_purchases', :as => 'account_purchases'
+  post 'account/purchases' => 'users#account_purchases', :as => 'account_purchases'   # for pagination  
 
   devise_for :users, :controllers => { :registrations => 'users/registrations' , :sessions => 'users/sessions' }
   resources :users, :only => [:index, :show], :controllers => { :users => "users/users"} do
@@ -105,6 +105,7 @@ MTGBazaar::Application.routes.draw do
   match 'users/:id/(:page)', :controller => 'users', :action => 'show'  #TODO: hack to get pagination to work in user show page... relook at this later
 
   resources :accounts
+  resources :payment_notifications, :only => [:create]
   
 # MISC ROUTES -------------- #
 

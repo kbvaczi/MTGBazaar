@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120730185532) do
+ActiveRecord::Schema.define(:version => 20120806195621) do
 
   create_table "account_balance_transfers", :force => true do |t|
     t.integer  "account_id"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(:version => 20120730185532) do
     t.string   "current_sign_in_ip", :default => "", :null => false
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
+    t.datetime "confirmed_at"
   end
 
   add_index "account_balance_transfers", ["account_id"], :name => "index_account_balance_transfers_on_account_id"
@@ -277,6 +278,15 @@ ActiveRecord::Schema.define(:version => 20120730185532) do
     t.datetime "start_at"
     t.datetime "end_at"
     t.boolean  "active",     :default => true
+  end
+
+  create_table "payment_notifications", :force => true do |t|
+    t.text     "params"
+    t.string   "status"
+    t.string   "transaction_id"
+    t.integer  "account_balance_transfer_id"
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
   end
 
   create_table "sessions", :force => true do |t|

@@ -63,12 +63,7 @@ class ApplicationController < ActionController::Base
       @current_cart
     end
   end
-  
-  # computes paypal commission based on price in dollars
-  def paypal_commission(base_price)
-    # base paypal commission is 2.9% + 30 cents
-    return base_price + base_price.to_f * 0.29 + 0.30
-  end
+
   
   # allows user of helpers in controller
   # USAGE: help.method_name
