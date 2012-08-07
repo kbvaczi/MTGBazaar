@@ -9,21 +9,17 @@
 
       <div class="news_title" style="text-align:left; margin-top; 4px;margin-bottom:4px;"><%= feed.title %></div>
   	<br/>
-  	<div style="margin-top:-15px;float:left;"><%= "Posted by: #{feed.author.username} on: #{ display_time(feed.created_at)}" %></div>
+  	<div style="margin-top:-15px;float:left;"><%= "Posted by: #{feed.author.nickname}" %><br/><%= "#{ display_time(feed.created_at)}" %></div><br/>
   	<br/>
   	<div style="width:100%;border-bottom-style:solid;border-bottom-color:grey;border-bottom-width: 5px;"></div>
 	
   	<br class="spacer"/>
 	
-    <%= feed.data.html_safe %>
-
-  	<div class="newsbreak" style="margin-top:15px; margin-bottom:20px;"></div>
-
+    <div style="min-height:420px;border-bottom-style:solid;border-bottom-color:grey;border-bottom-width: 2px;"><%= feed.data.html_safe %></div>
 
     <% end %>
 
   </div>
 
 </div>
-
 
