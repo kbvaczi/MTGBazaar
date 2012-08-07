@@ -2,6 +2,8 @@ class AccountBalanceTransfersController < ApplicationController
 
   before_filter :authenticate_user!
   
+  include ActionView::Helpers::NumberHelper  # needed for number_to_currency  
+  
   def new_account_deposit
     set_back_path
     if params[:account_balance_transfer].present?
@@ -71,7 +73,7 @@ class AccountBalanceTransfersController < ApplicationController
        :return => root_url,
        :invoice => deposit.id,
        "amount_1" => paypal_commission(deposit.balance.dollars),
-       "item_name_1" => "#{deposit.balance.dollars} deposit to MTGBazaar",
+       "item_name_1" => "#{number_to_currency(deposit.balance.dollars)} deposit for #{current_user.username}",
        :notify_url => payment_notifications_url
      }
 

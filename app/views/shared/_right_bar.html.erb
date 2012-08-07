@@ -2,35 +2,32 @@
   <% unless user_signed_in? %> <%# user is not logged in %>
 
     <div id="right_bar">
-	  <h1>Recent Expansions</h1>
-	  <%
-	    recent_added = Mtg::Set.order('release_date DESC').limit(7)
-	  %>
-	  <div class="mt-s mr-s ml-s">
-	    <table class="data">
-
-	      <% recent_added.each do |set| %>
-	        <tr style="margin:2px;padding:0;">
-	          <td style="margin:1px;padding:0;"> <%= display_set_symbol(set) %> </td>
-	          <td style="margin:1px;padding:0;vertical-align:top;text-align:left;text-overflow: ellipsis;max-width:150px;white-space: nowrap;overflow:hidden;"> <%= link_to set.name, mtg_cards_path(:set => set.code) %> </td>          
-	        </tr>
-	       
-	      <% end %>
-
-	    </table>
-	  </div>
-	</div>
+	    <h1>Recent Expansions</h1>
+	    <% recent_added = Mtg::Set.order('release_date DESC').limit(7) %>
+	    <div class="mt-s mr-s ml-s">
+	      <table class="data">
+	        <% recent_added.each do |set| %>
+	          <tr style="margin:2px;padding:0;">
+	            <td style="margin:1px;padding:0;"> <%= display_set_symbol(set) %> </td>
+	            <td style="margin:1px;padding:0;vertical-align:top;text-align:left;text-overflow: ellipsis;max-width:150px;white-space: nowrap;overflow:hidden;"> <%= link_to set.name, mtg_cards_path(:set => set.code) %> </td>          
+	          </tr>
+	       	<% end %>
+  	    </table>
+  	  </div>
+  	</div>
+  	
   <% else %>
+  
     <div id="right_bar">
       <h1>
         <div class="left">
-         <%= "#{current_user.username}" %>   
+          <%= "#{current_user.username}" %>   
         </div>
-		<div class="right">
-        <%= number_to_currency(current_user.account.balance.dollars) %>
+		    <div class="right">
+          <%= number_to_currency(current_user.account.balance.dollars) %>
         </div>
       </h1>
-      <div class="ma">
+      <div class="ma-m">
         <div class="mt-s"> <div class="left">Cart (<%= current_cart.item_count > 0 ? link_to("#{pluralize(current_cart.item_count,"item","items")}", show_cart_path) : "0 items" %>):</div>  <div class="right"><%= number_to_currency(current_cart.total_price) %></div>  </div>
         <br/>
         <div class="mt-m"> <div class="left">Pending Purchases:</div> <div class="right"><%= current_user.pending_purchases.count %></div>  </div>
@@ -44,8 +41,7 @@
         <div class="mt-m"><div class="left">Active Listings:</div><div class="right"><%= current_user.mtg_listings.active.count %></div></div>
         <br/>        
         <div class=""><div class="left">Seller Status:</div><div class="right">active</div></div>
-
-
       </div>
     </div>
+    
   <% end %>  
