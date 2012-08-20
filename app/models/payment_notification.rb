@@ -8,7 +8,7 @@ class PaymentNotification < ActiveRecord::Base
   private
   
     def confirm_balance_transfer!
-      if self.status == "Completed"
+      if self.status == "Completed" && self.params[:secret] == "b4z44r2012!"
         deposit = self.account_balance_transfer
         unless deposit.confirmed_at #if deposit is already confirmed don't repeat this
           self.account_balance_transfer.update_attribute(:confirmed_at, Time.now) # set balance transfer to confirmed
