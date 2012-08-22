@@ -68,15 +68,15 @@ class AccountBalanceTransfersController < ApplicationController
   # generates a link to follow to paypal for deposits
   def paypal_deposit_url(deposit)
    values = {
-     :business => "seller_1344264004_biz@mtgbazaar.com",
+     :business => "seller_1345565383_biz@mtgbazaar.com",
      :cmd => "_cart",
      :upload => 1,
-     :return => awknowledge_deposit_path,
+     :return => awknowledge_deposit_url,
      :invoice => deposit.id,
      "amount_1" => paypal_commission(deposit.balance.dollars),
      "item_name_1" => "#{number_to_currency(deposit.balance.dollars)} deposit for #{current_user.username}",
      :notify_url => payment_notifications_url(:secret => "b4z44r2012!"),
-     :cert_id => "C42CPWYGBGM2S"
+     :cert_id => "6NXAAY8BWC9HQ"
    }
 
    params = {
@@ -89,8 +89,8 @@ class AccountBalanceTransfersController < ApplicationController
 
   # computes paypal commission based on price in dollars
   def paypal_commission(base_price)
-    # base paypal commission is 2.9% + 30 cents
-    return ( base_price.to_f / ( 1 - 0.029 ) + 0.30 ).round(2)
+    # base paypal commission is 2.9% + 30 cents... we are adding .304 to handle rounding issues.  Paypal always rounds up.
+    return ( base_price.to_f / ( 1 - 0.029 ) + 0.304 ).round(2)
   end
   
   # reads SSL certificates from file
