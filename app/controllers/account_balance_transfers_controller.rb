@@ -65,32 +65,32 @@ class AccountBalanceTransfersController < ApplicationController
    # CONTROLLER METHODS
    protected
    
-   # generates a link to follow to paypal for deposits
-   def paypal_deposit_url(deposit)
-     values = {
-       :business => "seller_1344264004_biz@mtgbazaar.com",
-       :cmd => "_cart",
-       :upload => 1,
-       :return => root_url,
-       :invoice => deposit.id,
-       "amount_1" => paypal_commission(deposit.balance.dollars),
-       "item_name_1" => "#{number_to_currency(deposit.balance.dollars)} deposit for #{current_user.username}",
-       :notify_url => payment_notifications_url(:secret => "b4z44r2012!"),
-       :cert_id => "C42CPWYGBGM2S"
-     }
+  # generates a link to follow to paypal for deposits
+  def paypal_deposit_url(deposit)
+   values = {
+     :business => "seller_1344264004_biz@mtgbazaar.com",
+     :cmd => "_cart",
+     :upload => 1,
+     :return => awknowledge_deposit_path,
+     :invoice => deposit.id,
+     "amount_1" => paypal_commission(deposit.balance.dollars),
+     "item_name_1" => "#{number_to_currency(deposit.balance.dollars)} deposit for #{current_user.username}",
+     :notify_url => payment_notifications_url(:secret => "b4z44r2012!"),
+     :cert_id => "C42CPWYGBGM2S"
+   }
 
-     params = {
-       :cmd => "_s-xclick",
-       :encrypted => encrypt_for_paypal(values)
-     }
+   params = {
+     :cmd => "_s-xclick",
+     :encrypted => encrypt_for_paypal(values)
+   }
 
-     "https://www.sandbox.paypal.com/cgi-bin/webscr?" + params.to_query
-   end
+   "https://www.sandbox.paypal.com/cgi-bin/webscr?" + params.to_query
+  end
 
   # computes paypal commission based on price in dollars
   def paypal_commission(base_price)
     # base paypal commission is 2.9% + 30 cents
-    return (base_price + base_price.to_f / (1 - 0.029) + 0.30).round(2)
+    return ( base_price.to_f / ( 1 - 0.029 ) + 0.30 ).round(2)
   end
   
   # reads SSL certificates from file

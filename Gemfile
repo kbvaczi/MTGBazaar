@@ -19,7 +19,8 @@ gem "heroku"                                                        # allows app
 gem "rmagick", "~> 2.13.1"                                          # image manipulation (requires install of rmagick software)
 gem "carrierwave", "~> 0.6.2"                                       # image_scan uploader
 gem "fog", "~> 1.3.1"                                               # supports amazon s3
-#gem "activemerchant", "~> 1.26.0", :require => 'active_merchant'    # integration of PayPal
+gem "activemerchant", "~> 1.26.0", :require => 'active_merchant'    # integration of PayPal
+gem "active_paypal_adaptive_payment", "~> 0.3.15"                   # Adaptive Payments for ActiveMerchant for withdraws
 gem "ckeditor", "~> 3.7.1"                                          # blog editor
 gem "mini_magick", "~> 3.4"                                         # image manipulation for ckeditor
 #gem "girl_friday", "~> 0.9.7"                                      # background processing for unicorn... disabled due to issues

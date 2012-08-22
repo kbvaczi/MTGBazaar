@@ -88,10 +88,6 @@ MTGBazaar::Application.routes.draw do
 
   get 'account' => 'users#show_account_info', :as => 'show_account_info'  
   get 'account/listings' => 'users#display_current_listings', :as => 'user_current_listings'
-  get 'account/deposit' => 'account_balance_transfers#new_account_deposit', :as => 'new_account_deposit'
-  post 'account/deposit' => 'account_balance_transfers#create_account_deposit', :as => 'create_account_deposit'
-  get 'account/withdraw' => 'account_balance_transfers#new_account_withdraw', :as => 'new_account_withdraw'
-  post 'account/withdraw' => 'account_balance_transfers#create_account_withdraw', :as => 'create_account_withdraw'
   get 'account/sales' => 'users#account_sales', :as => 'account_sales'
   post 'account/sales' => 'users#account_sales', :as => 'account_sales'   # for pagination
   get 'account/purchases' => 'users#account_purchases', :as => 'account_purchases'
@@ -105,7 +101,14 @@ MTGBazaar::Application.routes.draw do
   match 'users/:id/(:page)', :controller => 'users', :action => 'show'  #TODO: hack to get pagination to work in user show page... relook at this later
 
   resources :accounts
+  
+# ACCOUNT BALANCE TRANSFERS
+  get 'account/deposit'   => 'account_balance_transfers#new_account_deposit',     :as => 'new_account_deposit'
+  post 'account/deposit'  => 'account_balance_transfers#create_account_deposit',  :as => 'create_account_deposit'
+  get 'account/withdraw'  => 'account_balance_transfers#new_account_withdraw',    :as => 'new_account_withdraw'
+  post 'account/withdraw' => 'account_balance_transfers#create_account_withdraw', :as => 'create_account_withdraw'
   resources :payment_notifications, :only => [:create]
+  get 'payment_notifications/awknowledge_deposit' => 'payment_notifications#awknowledge_deposit', :as => "awknowledge_deposit"
   
 # MISC ROUTES -------------- #
 

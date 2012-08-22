@@ -7,4 +7,10 @@ class PaymentNotificationsController < ApplicationController
     render :nothing => true
   end
   
+  def awknowledge_deposit
+    flash[:notice] = "Your deposit was successful!"
+    redirect_to :root_path
+    render :nothing => true # don't render a view    
+  end
+  
 end
