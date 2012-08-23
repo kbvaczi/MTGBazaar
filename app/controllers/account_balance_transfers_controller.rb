@@ -22,7 +22,7 @@ class AccountBalanceTransfersController < ApplicationController
       :action_type => "CREATE",
       :return_url => root_url,
       :cancel_url => root_url,
-      :ipn_notification_url => acknowledge_deposit_url,  
+      :ipn_notification_url => payment_notifications_url(:secret => "b4z44r2012!"),  
       :sender_email    => "seller_1345565383_biz@mtgbazaar.com",
       :memo => "Account Withdraw of $10.50",
       :receiver_list => recipients )
