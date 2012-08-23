@@ -7,7 +7,7 @@ class PaymentNotificationsController < ApplicationController
     render :nothing => true
   end
   
-  def awknowledge_deposit
+  def acknowledge_deposit
     redirect_to root_path, :notice => "Your deposit was successful!"
     return
   end

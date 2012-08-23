@@ -61,7 +61,7 @@ ActiveAdmin.register Mtg::Block do
       end
     end
     controller do
-      before_filter :super_admin_authenticate, :only => :delete_card
+      before_filter :super_admin_authenticate, :only => :delete_block
       def super_admin_authenticate
        authenticate_or_request_with_http_basic "This action requires special access" do |username, password|
          username == "superadmin" && password == "superadmin" 

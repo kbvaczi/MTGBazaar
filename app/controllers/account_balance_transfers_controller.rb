@@ -4,6 +4,39 @@ class AccountBalanceTransfersController < ApplicationController
   
   include ActionView::Helpers::NumberHelper  # needed for number_to_currency  
   
+  def test_payment
+    
+    ActiveMerchant::Billing::Base.mode = :test
+    
+    gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(
+      :login => "seller_1345565383_biz_api1.mtgbazaar.com",
+      :password => "QTJ6M8L94ETKL785",
+      :signature => "An5ns1Kso7MWUdW4ErQKJJJ4qi4-AXsCplSrsdFPNjiVUhXnxPrq8Tl-",
+      :appid => "APP-80W284485P519543T" )
+
+    recipients = [ {:email => 'buyer_1344264179_per@mtgbazaar.com',
+                    :invoiceId => AccountBalanceTransfer.last.id,              
+                    :amount => "10.50" } ]
+
+    purchase = gateway.setup_purchase(
+      :action_type => "CREATE",
+      :return_url => root_url,
+      :cancel_url => root_url,
+      :ipn_notification_url => acknowledge_deposit_url,  
+      :sender_email    => "seller_1345565383_biz@mtgbazaar.com",
+      :memo => "Account Withdraw of $10.50",
+      :receiver_list => recipients )
+
+    gateway.execute_payment(purchase)
+
+    respond_to do |format|
+      format.html { render :text => gateway.debug }
+    end
+    
+    return
+    
+  end
+  
   def new_account_deposit
     set_back_path
     if params[:account_balance_transfer].present?
@@ -18,8 +51,10 @@ class AccountBalanceTransfersController < ApplicationController
     params[:account_balance_transfer][:current_password] = 0 if params[:account_balance_transfer][:current_password] == 1
     params[:account_balance_transfer][:current_password] = 1 if current_user.valid_password?(params[:account_balance_transfer][:current_password])
     @deposit = AccountBalanceTransfer.new(params[:account_balance_transfer])
+    @deposit.transfer_type = "deposit"
     @deposit.current_sign_in_ip = request.remote_ip
     @deposit.account_id = current_user.account.id
+    @deposit.approved_at = @deposit.created_at
     if @deposit.save
       redirect_to paypal_deposit_url(@deposit), :method => :post
       #current_user.account.balance_transfers << @deposit #link this deposit to current user's account
@@ -45,17 +80,16 @@ class AccountBalanceTransfersController < ApplicationController
      params[:account_balance_transfer][:current_password] = 0 if params[:account_balance_transfer][:current_password] == 1
      params[:account_balance_transfer][:current_password] = 1 if current_user.valid_password?(params[:account_balance_transfer][:current_password])
      @withdraw = AccountBalanceTransfer.new(params[:account_balance_transfer])
+     @withdraw.transfer_type = "withdraw"      
+     @withdraw.current_sign_in_ip = request.remote_ip #log depositor's IP address     
+     current_user.account.balance_transfers << @withdraw #link this withdraw to current user's account     
      if current_user.account.balance - @withdraw.balance < 0
-       flash[:error] = "Insufficient funds"
+       flash[:error] = "You have insufficient funds in your account"
        render 'new_account_withdraw'
        return
-     end
-     if @withdraw.save
-       @withdraw.update_attribute(:current_sign_in_ip, request.remote_ip) #log depositor's IP address
-       @withdraw.update_attribute(:balance, "#{@withdraw.balance * -1}") #change the balance from a credit to a debit
-       current_user.account.balance_transfers << @withdraw #link this withdraw to current user's account
-       current_user.account.update_attribute(:balance, current_user.account.balance + @withdraw.balance) #subtract withdraw from account
-       redirect_to session[:return_to] || :back, :notice => "Withdraw Sucessful..."
+     elsif @withdraw.save
+       # current_user.account.update_attribute(:balance, current_user.account.balance + @withdraw.balance) #subtract withdraw from account
+       redirect_to session[:return_to] || :back, :notice => "Your withdraw request will be processed shortly..."
      else
        flash[:error] = "There were one or more errors while trying to process your request"
        render 'new_account_withdraw'
@@ -78,12 +112,10 @@ class AccountBalanceTransfersController < ApplicationController
      :notify_url => payment_notifications_url(:secret => "b4z44r2012!"),
      :cert_id => "6NXAAY8BWC9HQ"
    }
-
    params = {
      :cmd => "_s-xclick",
      :encrypted => encrypt_for_paypal(values)
    }
-
    "https://www.sandbox.paypal.com/cgi-bin/webscr?" + params.to_query
   end
 

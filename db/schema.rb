@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120807010036) do
+ActiveRecord::Schema.define(:version => 20120822182540) do
 
   create_table "account_balance_transfers", :force => true do |t|
     t.integer  "account_id"
@@ -20,6 +20,8 @@ ActiveRecord::Schema.define(:version => 20120807010036) do
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
     t.datetime "confirmed_at"
+    t.datetime "approved_at"
+    t.string   "transfer_type"
   end
 
   add_index "account_balance_transfers", ["account_id"], :name => "index_account_balance_transfers_on_account_id"

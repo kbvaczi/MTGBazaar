@@ -5,7 +5,13 @@
     <br class="spacer"/>
     <br class="spacer"/>
     <div class="inputs">
-      <%= f.input :balance,           :label => "Amount to Withdraw",
+      <%= f.input :balance,     :label => "Amount to withdraw",
+                                :as => :string,
+                                :input_html => {:class => "currency_input", :maxlength => 9, :value => "$ 0" },
+                                :required => 'true' %>
+      <br class="spacer"/>
+      
+      <%#= f.input :balance,           :label => "Amount to Withdraw",
                                       :as => :select,
                                       :required => 'true' , 
                                       :collection => list_deposit_options , 

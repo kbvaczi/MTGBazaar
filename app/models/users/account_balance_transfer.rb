@@ -3,11 +3,11 @@ class AccountBalanceTransfer < ActiveRecord::Base
   has_one     :payment_notification
 
   validates_numericality_of :balance
-  validate                  :balance_cannot_be_zero
+  validate                  :balance_greater_than_zero
   validates                 :current_password,    :numericality => { :equal_to => 1, :message => "Your password does not match" }
 
-  def balance_cannot_be_zero
-    errors.add(:balance, "Cannot be zero") if balance == 0
+  def balance_greater_than_zero
+    errors.add(:balance, "Must be greater than zero") if balance <= 0
   end
  
   # Setup accessible (or protected) attributes for your model
@@ -22,5 +22,13 @@ class AccountBalanceTransfer < ActiveRecord::Base
                 :mapping => %w(balance cents),
                 :constructor => Proc.new { |cents| Money.new(cents || 0) },                
                 :converter => Proc.new { |value| value.respond_to?(:to_money) ? value.to_money : Money.empty }
+  
+  def self.withdraws
+    AccountBalanceTransfer.where(:transfer_type => "withdraw")
+  end
+  
+  def self.deposits
+    AccountBalanceTransfer.where(:transfer_type => "deposit")
+  end
   
 end

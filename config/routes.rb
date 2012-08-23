@@ -103,12 +103,18 @@ MTGBazaar::Application.routes.draw do
   resources :accounts
   
 # ACCOUNT BALANCE TRANSFERS
+  
+  #TEST LINE DELETE!!!!!!!!!!!!!
+  get 'test_payment'      => 'account_balance_transfers#test_payment',            :as => 'test_payment'
+  
   get 'account/deposit'   => 'account_balance_transfers#new_account_deposit',     :as => 'new_account_deposit'
   post 'account/deposit'  => 'account_balance_transfers#create_account_deposit',  :as => 'create_account_deposit'
   get 'account/withdraw'  => 'account_balance_transfers#new_account_withdraw',    :as => 'new_account_withdraw'
   post 'account/withdraw' => 'account_balance_transfers#create_account_withdraw', :as => 'create_account_withdraw'
+  
+  # payment notifications
   resources :payment_notifications, :only => [:create]
-  get 'payment_notifications/awknowledge_deposit' => 'payment_notifications#awknowledge_deposit', :as => "awknowledge_deposit"
+  get 'payment_notifications/acknowledge_deposit' => 'payment_notifications#acknowledge_deposit', :as => "acknowledge_deposit"
   
 # MISC ROUTES -------------- #
 
