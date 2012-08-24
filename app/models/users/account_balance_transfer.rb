@@ -1,6 +1,6 @@
 class AccountBalanceTransfer < ActiveRecord::Base
   belongs_to  :account
-  has_one     :payment_notification
+  has_many    :payment_notifications 
 
   validates_numericality_of :balance
   validate                  :balance_greater_than_zero

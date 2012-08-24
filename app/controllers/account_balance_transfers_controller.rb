@@ -96,8 +96,9 @@ class AccountBalanceTransfersController < ApplicationController
      end
    end
    
-   # CONTROLLER METHODS
-   protected
+# CONTROLLER METHODS ------------------------------------------------------------------------ #
+  
+  protected
    
   # generates a link to follow to paypal for deposits
   def paypal_deposit_url(deposit)
@@ -109,7 +110,7 @@ class AccountBalanceTransfersController < ApplicationController
      :invoice => deposit.id,
      "amount_1" => paypal_commission(deposit.balance.dollars),
      "item_name_1" => "#{number_to_currency(deposit.balance.dollars)} deposit for #{current_user.username}",
-     :notify_url => payment_notifications_url(:secret => "b4z44r2012!"),
+     :notify_url => create_deposit_notification_url(:secret => "b4z44r2012!"),
      :cert_id => "6NXAAY8BWC9HQ"
    }
    params = {
@@ -130,7 +131,7 @@ class AccountBalanceTransfersController < ApplicationController
   APP_CERT_PEM = File.read("#{Rails.root}/certs/app_cert.pem")
   APP_KEY_PEM = File.read("#{Rails.root}/certs/app_key.pem")
   
-  # encrypts values for sending securely to paypal
+  # encrypts values for sending deposits securely to paypal
   def encrypt_for_paypal(values)
       signed = OpenSSL::PKCS7::sign(OpenSSL::X509::Certificate.new(APP_CERT_PEM), OpenSSL::PKey::RSA.new(APP_KEY_PEM, ''), values.map { |k, v| "#{k}=#{v}" }.join("\n"), [], OpenSSL::PKCS7::BINARY)
       OpenSSL::PKCS7::encrypt([OpenSSL::X509::Certificate.new(PAYPAL_CERT_PEM)], signed.to_der, OpenSSL::Cipher::Cipher::new("DES3"), OpenSSL::PKCS7::BINARY).to_s.gsub("\n", "")

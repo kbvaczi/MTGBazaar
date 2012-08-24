@@ -113,8 +113,8 @@ MTGBazaar::Application.routes.draw do
   post 'account/withdraw' => 'account_balance_transfers#create_account_withdraw', :as => 'create_account_withdraw'
   
   # payment notifications
-  resources :payment_notifications, :only => [:create]
-  get 'payment_notifications/acknowledge_deposit' => 'payment_notifications#acknowledge_deposit', :as => "acknowledge_deposit"
+  get 'payment_notifications/create_deposit_notification' => 'payment_notifications#create_deposit_notification', :as => 'create_deposit_notification'
+  get 'payment_notifications/acknowledge_deposit'         => 'payment_notifications#acknowledge_deposit',         :as => "acknowledge_deposit"
   
 # MISC ROUTES -------------- #
 
