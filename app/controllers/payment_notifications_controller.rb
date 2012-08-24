@@ -13,7 +13,7 @@ class PaymentNotificationsController < ApplicationController
   end
   
   def create_withdraw_notification
-    PaymentNotification.create!(:params => params, :account_balance_transfer_id => 90, :status => params[:transaction]['0']['.status'], :transaction_id => params[:transaction]['0']['.id_for_sender_txn'] )
+    PaymentNotification.create!(:params => params, :account_balance_transfer_id => params[:transaction]['0']['.invoiceId'], :status => params[:transaction]['0']['.status'], :transaction_id => params[:transaction]['0']['.id_for_sender_txn'] )
     render :nothing => true
   end
   
