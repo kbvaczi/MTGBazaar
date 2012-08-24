@@ -15,14 +15,14 @@ class AccountBalanceTransfersController < ApplicationController
       :appid => "APP-80W284485P519543T" )
 
     recipients = [ {:email => 'buyer_1344264179_per@mtgbazaar.com',
-                    :invoiceId => AccountBalanceTransfer.last.id,              
+                    :invoice_id => "invoice ID Goes Here",#AccountBalanceTransfer.last.id,              
                     :amount => "10.50" } ]
 
     purchase = gateway.setup_purchase(
       :action_type => "CREATE",
       :return_url => root_url,
       :cancel_url => root_url,
-      :ipn_notification_url => payment_notifications_url(:secret => "b4z44r2012!"),  
+      :ipn_notification_url => create_withdraw_notification_url(:secret => "b4z44r2012!"),  
       :sender_email    => "seller_1345565383_biz@mtgbazaar.com",
       :memo => "Account Withdraw of $10.50",
       :receiver_list => recipients )
