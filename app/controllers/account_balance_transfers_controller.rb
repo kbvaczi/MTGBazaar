@@ -8,6 +8,7 @@ class AccountBalanceTransfersController < ApplicationController
     
     test_withdraw = AccountBalanceTransfer.new(:balance => 10.50 )
     test_withdraw.account_id = current_user.id
+    test_withdraw.transfer_type = "withdraw"
     test_withdraw.save
     
     ActiveMerchant::Billing::Base.mode = :test
