@@ -6,6 +6,10 @@ class AccountBalanceTransfersController < ApplicationController
   
   def test_payment
     
+    test_withdraw = AccountBalanceTransfer.new(:balance => 10.50 )
+    test_withdraw.account_id = current_user.id
+    test_withdraw.save
+    
     ActiveMerchant::Billing::Base.mode = :test
     
     gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(
@@ -15,8 +19,8 @@ class AccountBalanceTransfersController < ApplicationController
       :appid => "APP-80W284485P519543T" )
 
     recipients = [ {:email => 'buyer_1344264179_per@mtgbazaar.com',
-                    :invoice_id => "invoice ID Goes Here",#AccountBalanceTransfer.last.id,              
-                    :amount => "10.50" } ]
+                    :invoice_id => test_withdraw.id,
+                    :amount => test_withdraw.balance.dollars } ]
 
     purchase = gateway.setup_purchase(
       :action_type => "CREATE",

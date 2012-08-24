@@ -2,9 +2,10 @@ class AccountBalanceTransfer < ActiveRecord::Base
   belongs_to  :account
   has_many    :payment_notifications 
 
+  validates_presence_of     :account_id
   validates_numericality_of :balance
   validate                  :balance_greater_than_zero
-  validates                 :current_password,    :numericality => { :equal_to => 1, :message => "Your password does not match" }
+  #validates                 :current_password,    :numericality => { :equal_to => 1, :message => "Your password does not match" }
 
   def balance_greater_than_zero
     errors.add(:balance, "Must be greater than zero") if balance <= 0
