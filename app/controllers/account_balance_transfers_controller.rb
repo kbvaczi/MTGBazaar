@@ -129,7 +129,7 @@ class AccountBalanceTransfersController < ApplicationController
      :cmd => "_s-xclick",
      :encrypted => encrypt_for_paypal(values)
    }
-   "https://www.sandbox.paypal.com/cgi-bin/webscr?" + params.to_query
+   "https://www.sandbox.paypal.com/cgi-bin/webscr?" + values.to_query
   end
 
   # computes paypal commission based on price in dollars
