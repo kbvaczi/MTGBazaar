@@ -4,6 +4,11 @@ class AccountBalanceTransfersController < ApplicationController
   
   include ActionView::Helpers::NumberHelper  # needed for number_to_currency  
   
+  def index
+    set_back_path
+    @transfers = current_user.account.balance_transfers.includes(:payment_notifications).order("account_balance_transfers.created_at DESC").page(params[:page]).per(13)
+  end
+  
   def test_payment
     
     test_withdraw = AccountBalanceTransfer.new(:balance => 10.50 )
@@ -78,23 +83,25 @@ class AccountBalanceTransfersController < ApplicationController
      else
        @withdraw = AccountBalanceTransfer.new
      end    
-     session[:return_to] = request.referer
    end
 
    def create_account_withdraw
+     # hack to handle password check since the model validator doesn't have access to devise password check methods...
      params[:account_balance_transfer][:current_password] = 0 if params[:account_balance_transfer][:current_password] == 1
      params[:account_balance_transfer][:current_password] = 1 if current_user.valid_password?(params[:account_balance_transfer][:current_password])
+     
      @withdraw = AccountBalanceTransfer.new(params[:account_balance_transfer])
      @withdraw.transfer_type = "withdraw"      
-     @withdraw.current_sign_in_ip = request.remote_ip #log depositor's IP address     
-     current_user.account.balance_transfers << @withdraw #link this withdraw to current user's account     
+     @withdraw.current_sign_in_ip = request.remote_ip # log user's IP address     
+     current_user.account.balance_transfers << @withdraw # link this withdraw to current user's account     
      if current_user.account.balance - @withdraw.balance < 0
        flash[:error] = "You have insufficient funds in your account"
        render 'new_account_withdraw'
        return
      elsif @withdraw.save
+       # we are not deducting account funds until the withdraw is approved via admin panel
        # current_user.account.update_attribute(:balance, current_user.account.balance + @withdraw.balance) #subtract withdraw from account
-       redirect_to session[:return_to] || :back, :notice => "Your withdraw request will be processed shortly..."
+       redirect_to back_path, :notice => "Your withdraw request will be processed shortly..."
      else
        flash[:error] = "There were one or more errors while trying to process your request"
        render 'new_account_withdraw'

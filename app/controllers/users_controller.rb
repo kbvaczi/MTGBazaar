@@ -27,7 +27,6 @@ class UsersController < ApplicationController
     set_back_path
     @active_listings = current_user.mtg_listings.active.page(params[:page]).per(15)
 
-    set_back_path
     if params[:status] == "active"
       @listings = current_user.mtg_listings.includes(:card => :set).where(:active => true).order("mtg_cards.name ASC").page(params[:page]).per(25)
     elsif params[:status] == "inactive"

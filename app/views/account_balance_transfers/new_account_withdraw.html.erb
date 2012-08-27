@@ -1,5 +1,5 @@
-<% title "Make a Withdraw" %>
-<h1>Make a Withdraw</h1>
+<% title "Request a Withdraw" %>
+<h1>Request a Withdraw</h1>
 <div class= "ma">
   <%= simple_form_for @withdraw, :url => new_account_withdraw_path do |f| %>
     <br class="spacer"/>
@@ -7,24 +7,19 @@
     <div class="inputs">
       <%= f.input :balance,     :label => "Amount to withdraw",
                                 :as => :string,
-                                :input_html => {:class => "currency_input", :maxlength => 9, :value => "$ 0" },
-                                :required => 'true' %>
+                                :input_html => {:class => "currency_input",
+                                                :maxlength => 9,
+                                                :value => "$ 0" },
+                                :required => true %>
       <br class="spacer"/>
-      
-      <%#= f.input :balance,           :label => "Amount to Withdraw",
-                                      :as => :select,
-                                      :required => 'true' , 
-                                      :collection => list_deposit_options , 
-                                      :include_blank => false , 
-                                      :input_html => { :class => 'chzn-select' } %>    
-                                  
-      <%= f.input :current_password,  :required => "true", 
+                                        
+      <%= f.input :current_password,  :required => true, 
                                       :hint => "enter current password to confirm withdraw"%>                                  
     </div>
     <br class="spacer"/>
     <br class="spacer"/>  
     <div class="center">
-      <%= f.button :submit, "Submit", :class => "center"%>
+      <%= f.button :submit, "Submit Request", :class => "center"%>
     </div>
   <% end %>
 </div>

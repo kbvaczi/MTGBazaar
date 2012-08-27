@@ -1,0 +1,42 @@
+<% title 'Account Funding' %>
+
+<h1> Account Funding </h1>
+
+<div class="ma">
+  
+<%= link_to "Make a Deposit", new_account_deposit_path, :class => "button left" %>
+<%= link_to "Request a Withdraw", new_account_withdraw_path, :class => "button right" %>
+
+<br class="spacer"/>  
+<h2>Funding History</h2>
+
+<table class="data">
+ <tr class="header_row">
+ 	<th>Date</th>
+ 	<th>Type</th>      
+	<th>Amount</th>
+	<th>Transaction ID</th>
+	<th>Status</th>
+ </tr>
+ 
+ <% @transfers.each do |transfer| %>
+   <tr class=<%= cycle("even","odd") %>>
+     <td> <%= display_time(transfer.created_at) %> </td>
+     <td> <%= capitalize_first_word(transfer.transfer_type) rescue "" %> </td>
+     <td> <%= number_to_currency(transfer.balance) %> </td>
+     <td> <%= transfer.payment_notifications.first.transaction_id rescue "" %> </td>
+     <% if transfer.confirmed_at != nil %>
+       <td>Completed</td>
+     <% else %>
+       <td>Pending</td>
+     <% end %>
+   </tr>
+ <% end %>
+ 
+</table>
+
+<div class="paginator right">
+  <%= paginate @transfers, :method => :get %>
+</div>
+
+</div>
