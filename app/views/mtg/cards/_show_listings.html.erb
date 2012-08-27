@@ -29,9 +29,9 @@
 	
 		<tr class=<%= cycle("odd","even") %>> 
 		
-		<td style="text-align:left;width:150px;">
-      <%=  link_to "#{listing.seller.username}", user_path(listing.seller) %>
-      <%= "(#{listing.seller.statistics.number_sales}, #{listing.seller.statistics.display_approval_percent})" %>
+		<td style="text-align:left;width:150px;padding-left:10px;">
+      <%=  link_to "#{listing.seller.username}", user_path(listing.seller) %>:</br>
+      <div style="font-weight: bold"><%= "(#{number_with_delimiter(listing.seller.statistics.number_sales, :delimiter => ",")} / #{listing.seller.statistics.display_approval_percent})" %></div>
 	  </td>
 		<td><%= display_flag_symbol(listing.language) %></td>
 		<td><%= display_condition(listing.condition) %></td>
