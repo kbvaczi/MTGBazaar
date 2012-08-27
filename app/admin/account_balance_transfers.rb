@@ -5,12 +5,10 @@ ActiveAdmin.register AccountBalanceTransfer do
   
   # ------ ACTION ITEMS (BUTTONS) ------- #  
   
-  begin
-    config.clear_action_items! #clear standard buttons
-    action_item :only => :show do
-      link_to 'Process Withdraw', approve_withdraw_admin_account_balance_transfer_path(account_balance_transfer), :method => :put if account_balance_transfer.confirmed_at == nil
-    end    
-  end
+  config.clear_action_items! #clear standard buttons
+  action_item :only => :show do
+    link_to 'Process Withdraw', approve_withdraw_admin_account_balance_transfer_path(account_balance_transfer), :method => :put if account_balance_transfer.confirmed_at == nil && account_balance_transfer.transfer_type == "withdraw"
+  end    
 
   # ------ INDEX PAGE CUSTOMIZATIONS ----- #
   
@@ -45,48 +43,49 @@ ActiveAdmin.register AccountBalanceTransfer do
   end
 
   # ------ CONTROLLER ACTIONS ------- #
-   # note: collection_actions work on collections, member_acations work on individual  
-    member_action :approve_withdraw, :method => :put do
-      extend ActionView::Helpers::NumberHelper  # needed for number_to_currency  
-      
-      withdraw = AccountBalanceTransfer.find(params[:id])
-      withdraw.update_attribute(:approved_at, Time.now) if withdraw.approved_at == nil
+  # note: collection_actions work on collections, member_acations work on individual  
+  member_action :approve_withdraw, :method => :put do
+    extend ActionView::Helpers::NumberHelper  # needed for number_to_currency  
+    
+    withdraw = AccountBalanceTransfer.find(params[:id])
+    withdraw.update_attribute(:approved_at, Time.now) if withdraw.approved_at == nil
 
-      ActiveMerchant::Billing::Base.mode = :test
+    ActiveMerchant::Billing::Base.mode = :test
 
-      gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(
-        :login => "seller_1345565383_biz_api1.mtgbazaar.com",
-        :password => "QTJ6M8L94ETKL785",
-        :signature => "An5ns1Kso7MWUdW4ErQKJJJ4qi4-AXsCplSrsdFPNjiVUhXnxPrq8Tl-",
-        :appid => "APP-80W284485P519543T" )
+    gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(
+      :login => "seller_1345565383_biz_api1.mtgbazaar.com",
+      :password => "QTJ6M8L94ETKL785",
+      :signature => "An5ns1Kso7MWUdW4ErQKJJJ4qi4-AXsCplSrsdFPNjiVUhXnxPrq8Tl-",
+      :appid => "APP-80W284485P519543T" )
 
-      recipients = [ {:email => "#{withdraw.account.paypal_username}",
-                      :invoice_id => withdraw.id,
-                      :amount => withdraw.balance.dollars } ]
+    recipients = [ {:email => "#{withdraw.account.paypal_username}",
+                    :invoice_id => withdraw.id,
+                    :amount => withdraw.balance.dollars } ]
 
-      purchase = gateway.setup_purchase(
-        :action_type => "CREATE",
-        :return_url => root_url,
-        :cancel_url => root_url,
-        :ipn_notification_url => create_withdraw_notification_url(:secret => "b4z44r2012!"),  
-        :sender_email    => "seller_1345565383_biz@mtgbazaar.com",
-        :memo => "#{withdraw.account.user.username}: Withdraw of #{number_to_currency(withdraw.balance.dollars)}",
-        :receiver_list => recipients )
+    purchase = gateway.setup_purchase(
+      :action_type => "CREATE",
+      :return_url => root_url,
+      :cancel_url => root_url,
+      :ipn_notification_url => create_withdraw_notification_url(:secret => "b4z44r2012!"),  
+      :sender_email    => "seller_1345565383_biz@mtgbazaar.com",
+      :memo => "#{withdraw.account.user.username}: Withdraw of #{number_to_currency(withdraw.balance.dollars)}",
+      :receiver_list => recipients )
 
-      gateway.execute_payment(purchase)
+    gateway.execute_payment(purchase)
 
-      sleep(10.seconds) # wait for transaction to be processed by paypal
-      
-      if withdraw.confirmed_at != nil
-        flash[:notice] = "Transaction Completed..."
-      else
-        flash[:error]  = "Transaction Error... See Payment Notification for details..."
-      end
-      
-      respond_to do |format|
-        format.html { redirect_to admin_account_balance_transfers_path }
-      end
-      
+    sleep(5.seconds) # wait for transaction to be processed by paypal
+    
+    withdraw = AccountBalanceTransfer.find(params[:id]) #refresh withdraw variable since it may have changed
+    if withdraw.confirmed_at != nil
+      flash[:notice] = "Transaction Completed..."
+    else
+      flash[:error]  = "Potential Transaction Error... See Payment Notification for details..."
     end
+    
+    respond_to do |format|
+      format.html { redirect_to admin_account_balance_transfers_path }
+    end
+    
+  end
   
 end

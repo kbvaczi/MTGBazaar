@@ -9,24 +9,34 @@
     </ul>
   </div>
   <br class="spacer"/>
-  
-  <%= simple_form_for @withdraw, :url => new_account_withdraw_path do |f| %>
-    <div class="inputs">
-      <%= f.input :balance,     :label => "Amount to withdraw",
-                                :as => :string,
-                                :input_html => {:class => "currency_input",
-                                                :maxlength => 9,
-                                                :value => "$ 0" },
-                                :required => true %>
-      <br class="spacer"/>
+  <% unless current_user.account.paypal_username.empty? %>
+    <%= simple_form_for @withdraw, :url => new_account_withdraw_path do |f| %>
+      <div class="inputs">
+        <%= f.input :balance,     :label => "Amount to withdraw",
+                                  :as => :string,
+                                  :input_html => {:class => "currency_input",
+                                                  :maxlength => 9,
+                                                  :value => "$ 0" },
+                                  :required => true %>
+                                
+        <%= f.label "Paypal Email" %>
+        <div class="input text">
+          <p><b><%= current_user.account.paypal_username %></b></p>
+        </div>
+        <br class="spacer"/>
                                         
-      <%= f.input :current_password,  :required => true, 
-                                      :hint => "enter current password to confirm withdraw"%>                                  
-    </div>
+        <%= f.input :current_password,  :required => true, 
+                                        :hint => "enter current password to confirm withdraw"%>                                  
+      </div>
+      <br class="spacer"/>
+      <br class="spacer"/>  
+      <div class="center">
+        <%= f.button :submit, "Submit Request", :class => "center"%>
+      </div>
+    <% end %>    
+  <% else %>
     <br class="spacer"/>
-    <br class="spacer"/>  
-    <div class="center">
-      <%= f.button :submit, "Submit Request", :class => "center"%>
-    </div>
+    <br class="spacer"/>
+    <p style="text-align:center;"><%= link_to "Click here to add your paypal information prior to requesting a withdraw...", edit_user_registration_path %></p>    
   <% end %>
 </div>
