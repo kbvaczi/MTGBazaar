@@ -118,10 +118,10 @@ class AccountBalanceTransfersController < ApplicationController
      :business => "seller_1345565383_biz@mtgbazaar.com",
      :cmd => "_cart",
      :upload => 1,
-     :return => awknowledge_deposit_url,
+     :return => acknowledge_deposit_url,
      :invoice => deposit.id,
      "amount_1" => paypal_commission(deposit.balance.dollars),
-     "item_name_1" => "#{number_to_currency(deposit.balance.dollars)} deposit for #{current_user.username}",
+     "item_name_1" => "#{current_user.username}: #{number_to_currency(deposit.balance.dollars)} deposit",
      :notify_url => create_deposit_notification_url(:secret => "b4z44r2012!"),
      :cert_id => "6NXAAY8BWC9HQ"
    }

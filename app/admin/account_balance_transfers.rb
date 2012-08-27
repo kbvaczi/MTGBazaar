@@ -70,7 +70,7 @@ ActiveAdmin.register AccountBalanceTransfer do
         :cancel_url => root_url,
         :ipn_notification_url => create_withdraw_notification_url(:secret => "b4z44r2012!"),  
         :sender_email    => "seller_1345565383_biz@mtgbazaar.com",
-        :memo => "#{withdraw.account.user.username} - Withdraw of #{number_to_currency(withdraw.balance.dollars)}",
+        :memo => "#{withdraw.account.user.username}: Withdraw of #{number_to_currency(withdraw.balance.dollars)}",
         :receiver_list => recipients )
 
       gateway.execute_payment(purchase)

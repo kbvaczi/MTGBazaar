@@ -104,8 +104,6 @@ MTGBazaar::Application.routes.draw do
   
 # ACCOUNT BALANCE TRANSFERS
   
-  #TEST LINE DELETE!!!!!!!!!!!!!
-  get 'test_payment'      => 'account_balance_transfers#test_payment',            :as => 'test_payment'
   get 'account/funding'   => 'account_balance_transfers#index',                   :as => 'account_funding_index'
   get 'account/deposit'   => 'account_balance_transfers#new_account_deposit',     :as => 'new_account_deposit'
   post 'account/deposit'  => 'account_balance_transfers#create_account_deposit',  :as => 'create_account_deposit'
