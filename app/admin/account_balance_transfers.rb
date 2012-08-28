@@ -54,8 +54,8 @@ ActiveAdmin.register AccountBalanceTransfer do
 
     gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(
       :login => "seller_1345565383_biz_api1.mtgbazaar.com",
-      :password => "QTJ6M8L94ETKL785",
-      :signature => "An5ns1Kso7MWUdW4ErQKJJJ4qi4-AXsCplSrsdFPNjiVUhXnxPrq8Tl-",
+      :password => "7FL9R6VGEJUFPRRC",
+      :signature => "AFcWxV21C7fd0v3bYYYRCpSSRl31APzCuXjYJP4WEZKAx1jkHS4lX331",
       :appid => "APP-80W284485P519543T" )
 
     recipients = [ {:email => "#{withdraw.account.paypal_username}",
