@@ -68,9 +68,6 @@ class AccountBalanceTransfersController < ApplicationController
     @deposit.account_id = current_user.account.id
     @deposit.approved_at = @deposit.created_at
     if @deposit.save
-      puts "TEST!!!"
-      puts create_deposit_notification_url(:secret => "b4z44r2012!")
-      puts "END TEST!!!"
       redirect_to paypal_deposit_url(@deposit), :method => :post
     else
       flash[:error] = "There were one or more errors while trying to process your request"
@@ -125,16 +122,16 @@ class AccountBalanceTransfersController < ApplicationController
      "amount_1" => paypal_commission(deposit.balance.dollars),
      "item_name_1" => "#{current_user.username}: #{number_to_currency(deposit.balance.dollars)} deposit",
      :notify_url => create_deposit_notification_url(:secret => "b4z44r2012!"),
-     :cert_id => "6NXAAY8BWC9HQ"
+     #:cert_id => "6NXAAY8BWC9HQ"
    }
    params = {
      :cmd => "_s-xclick",
      :encrypted => encrypt_for_paypal(values)
    }
-   "https://www.sandbox.paypal.com/cgi-bin/webscr?" + params.to_query
+   "https://www.sandbox.paypal.com/cgi-bin/webscr?" + values.to_query
   end
 
-  # computes paypal commission based on price in dollars
+  # computes total price including paypal commission based on price in dollars
   def paypal_commission(base_price)
     # base paypal commission is 2.9% + 30 cents... we are adding .304 to handle rounding issues.  Paypal always rounds up.
     return ( base_price.to_f / ( 1 - 0.029 ) + 0.304 ).round(2)
