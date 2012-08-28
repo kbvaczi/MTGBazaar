@@ -73,7 +73,7 @@ ActiveAdmin.register AccountBalanceTransfer do
 
     gateway.execute_payment(purchase)
 
-    sleep(5.seconds) # wait for transaction to be processed by paypal
+    sleep(10.seconds) # wait for transaction to be processed by paypal
     
     withdraw = AccountBalanceTransfer.find(params[:id]) #refresh withdraw variable since it may have changed
     if withdraw.confirmed_at != nil

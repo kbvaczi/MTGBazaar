@@ -121,8 +121,8 @@ class AccountBalanceTransfersController < ApplicationController
      :invoice => deposit.id,
      "amount_1" => paypal_commission(deposit.balance.dollars),
      "item_name_1" => "#{current_user.username}: #{number_to_currency(deposit.balance.dollars)} deposit",
-     :cert_id => "6NXAAY8BWC9HQ",
-     :notify_url => create_deposit_notification_url(:secret => "b4z44r2012!")     
+     :cert_id => "6NXAAY8BWC9HQ"#,
+     #:notify_url => create_deposit_notification_url(:secret => "b4z44r2012!")     
    }
    params = {
      :cmd => "_s-xclick",
