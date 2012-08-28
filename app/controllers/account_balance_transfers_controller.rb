@@ -113,7 +113,7 @@ class AccountBalanceTransfersController < ApplicationController
    
   # generates a link to follow to paypal for deposits
   def paypal_deposit_url(deposit)
-   values = {
+=begin   values = {
      :business => "seller_1345565383_biz@mtgbazaar.com",
      :cmd => "_cart",
      :upload => 1,
@@ -121,9 +121,21 @@ class AccountBalanceTransfersController < ApplicationController
      :invoice => deposit.id,
      "amount_1" => paypal_commission(deposit.balance.dollars),
      "item_name_1" => "#{current_user.username}: #{number_to_currency(deposit.balance.dollars)} deposit",
-     :cert_id => "6NXAAY8BWC9HQ"#,
-     #:notify_url => create_deposit_notification_url(:secret => "b4z44r2012!")     
+     :cert_id => "6NXAAY8BWC9HQ",
+     :notify_url => create_deposit_notification_url(:secret => "b4z44r2012!")     
    }
+=end
+  values = {
+    :business => "seller_1345565383_biz@mtgbazaar.com",
+    :cmd => "_xclick",
+    :return => acknowledge_deposit_url,
+    :invoice => deposit.id,
+    :amount => deposit.balance.dollars,
+    :handling => paypal_commission(deposit.balance.dollars),
+    :item_name => "#{current_user.username}: #{number_to_currency(deposit.balance.dollars)} deposit",
+    :cert_id => "6NXAAY8BWC9HQ",
+    :notify_url => create_deposit_notification_url(:secret => "b4z44r2012!")     
+  }
    params = {
      :cmd => "_s-xclick",
      :encrypted => encrypt_for_paypal(values)
@@ -134,7 +146,7 @@ class AccountBalanceTransfersController < ApplicationController
   # computes total price including paypal commission based on price in dollars
   def paypal_commission(base_price)
     # base paypal commission is 2.9% + 30 cents... we are adding .304 to handle rounding issues.  Paypal always rounds up.
-    return ( base_price.to_f / ( 1 - 0.029 ) + 0.304 ).round(2)
+    return ( ( base_price.to_f / ( 1 - 0.029 ) ) + 0.304 - base_price).round(2)
   end
   
   # reads SSL certificates from file
