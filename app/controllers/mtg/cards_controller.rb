@@ -27,15 +27,15 @@ class Mtg::CardsController < ApplicationController
     @card_variants = Mtg::Card.includes(:set).where("mtg_cards.name LIKE ?", @mtg_card.name)    
 
     # CURRENTLY IGNORING FILTERS ON LISTINGS
-    #query = SmartTuple.new(" AND ")
-    #query << ["mtg_listings.foil LIKE ?", true] if cookies[:search_foil].present?
-    #query << ["mtg_listings.misprint LIKE ?", true] if cookies[:search_miscut].present?
-    #query << ["mtg_listings.signed LIKE ?", true] if cookies[:search_signed].present?
-    #query << ["mtg_listings.altart LIKE ?", true] if cookies[:search_altart].present?
-    #query << ["mtg_listings.seller_id LIKE ?", cookies[:search_seller_id]] if cookies[:search_seller_id].present?    
-    #@listings = @mtg_card.listings.available.where(query.compile)
-
-    @listings = @mtg_card.listings.available 
+    query = SmartTuple.new(" AND ")
+    if params[:filter] == "true"
+      query << ["mtg_listings.foil LIKE ?", true] if cookies[:search_foil].present?
+      query << ["mtg_listings.misprint LIKE ?", true] if cookies[:search_miscut].present?
+      query << ["mtg_listings.signed LIKE ?", true] if cookies[:search_signed].present?
+      query << ["mtg_listings.altart LIKE ?", true] if cookies[:search_altart].present?
+      query << ["mtg_listings.seller_id LIKE ?", cookies[:search_seller_id]] if cookies[:search_seller_id].present?    
+    end
+    @listings = @mtg_card.listings.available.where(query.compile)
     
     case params[:sort]
       when /price/
