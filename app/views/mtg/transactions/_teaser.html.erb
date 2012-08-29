@@ -1,32 +1,18 @@
-<%# displays items in a given transaction %>
-<%# LOCALS: transaction = current transaction %>
-<div>
-   <div class="transaction_teaser <%= cycle("even", "odd") %>">
-      <div class="transaction_teaser_date">
-        <%= transaction.created_at.strftime("%d-%b %Y") %>
-      </div>
-      <div class="transaction_teaser_transaction_number">      
-        <%= transaction.transaction_number %>
-      </div>
-      <div class="transaction_teaser_username">
-        <% if current_user.id == transaction.buyer_id %>
+<tr class=<%= cycle("odd","even") %>> 
+	<td><%= transaction.created_at.strftime("%d-%b %Y") %></td>
+    <td><%= transaction.transaction_number %></td>
+   	<td><% if current_user.id == transaction.buyer_id %>
            <%= link_to transaction.seller.username, user_path(transaction.seller) %>
         <% else %>
            <%= link_to transaction.buyer.username, user_path(transaction.buyer) %>
         <% end %>
-      </div>
-      <div class="transaction_teaser_status">
-        <%= transaction.status %>
-      </div>      
-      <div class="transaction_teaser_item_count">
-        <%= transaction.items.to_a.sum(&:quantity_available) %>
-      </div>
-      <div class="transaction_teaser_total_value">
-        <%= number_to_currency(transaction.total_value) %>
-      </div>      
-      <div class="teaser_row_actions">
-        <div class="teaser_row_actions_icon">
-          Options
+      </td>
+  	<td><%= transaction.status %></td>      
+    <td><%= transaction.items.to_a.sum(&:quantity_available) %></td>
+    <td><%= number_to_currency(transaction.total_value) %></td>      
+    <td class="teaser_row_actions center">
+        <div class="teaser_row_actions_icon center">
+          <%= menu_icon %>
         </div>
         <div class="teaser_row_actions_list">
           <ul>
@@ -50,7 +36,5 @@
             <% end %>  
           </ul>
         </div>
-      </div>
-    </div>
-    
-</div>
+      </td>
+

@@ -9,33 +9,36 @@
       <h2><%= "#{seller_items.sum(:quantity)} Items from #{User.where(:id => s_id).pluck(:username).first}" %></h2>
         <%# show the items under this seller %>
       <!-- Heading -->
-      <div class="cart_item_teaser">
-        <div class="cart_item_teaser_name"> Name </div>
-        <div class="cart_item_teaser_set"> Set </div>  
-        <div class="cart_item_teaser_condition"> Cond </div>      
-        <div class="cart_item_teaser_language"> Lang </div>
-        <div class="cart_item_teaser_options"> Options </div> 
-        <div class="cart_item_teaser_price"> Price </div>     
-        <div class="cart_item_teaser_available"> Available </div>                  
-        <div class="cart_item_teaser_quantity"> In cart </div>
-        <div class="cart_item_teaser_remove"> Remove </div>  
-      </div>        
+
+			<table class="data">
+			 <tr class="header_row">
+			 	<th>Name</th>
+			  <th>Set</th>      
+			  <th>Cond.</th>
+				<th>Lang.</th>
+				<th>Options</th>
+				<th>Price</th>
+				<th>Avail.</th>
+				<th>In Cart</th>
+				<th>Remove</th>
+			 </tr>
+			
       <% seller_items.each do |reservation| %>
         <!-- listings -->
-        <div class="cart_item_teaser <%= cycle("even", "odd") %>">
-          <div class="cart_item_teaser_name">
+        <tr class=<%= cycle("odd","even") %>>
+          <td>
             <%= display_name(reservation.card.name)%>
-          </div>
-          <div class="cart_item_teaser_set">
+					</td>
+          <td>
             <%= display_set_symbol(reservation.card.set)%>
-          </div>
-          <div class="cart_item_teaser_condition">
+          </td>
+          <td>
             <%= display_condition(reservation.listing.condition) %>
-          </div>    
-          <div class="cart_item_teaser_language">
+          </td>    
+          <td>
             <%= display_flag_symbol(reservation.listing.language) %>
-          </div>          
-          <div class="cart_item_teaser_options">
+          </td>          
+          <td>
             <% if reservation.listing.foil %>
               <%= listing_option_foil_icon %>
             <% end %>
@@ -54,26 +57,29 @@
         		<% if reservation.listing.scan.present? %>
               <%= listing_option_scan_icon(reservation.listing) %>
             <% end %>            
-          </div>
-          <div class="cart_item_teaser_price">
+          </td>
+          <td>
             <%= number_to_currency(reservation.listing.price) %>
-          </div>
-          <div class="cart_item_teaser_available"> <%= reservation.quantity + reservation.listing.quantity_available %> </div>                            
-          <div class="cart_item_teaser_quantity">
+          </td>
+          <td>
+	 					<%= reservation.quantity + reservation.listing.quantity_available %> 
+					</td>                           
+          <td>
             <%= form_tag update_quantity_in_cart_mtg_cards_path(reservation), :method => :post do %>
               <%= text_field_tag "quantity", 1, :class => "quantity_in_cart", :id => nil, :value => reservation.quantity, :style => "width:30px;text-align:center;"%>
               <%# This form is automatically submitted when changed per cart.js.erb no need for submit tag %>
               <%#= submit_tag "Update" , :style => "display:none;"%>
             <% end %>
-          </div>      
-          <div class="cart_item_teaser_remove">
+          </td>     
+          <td>
             <%= form_tag remove_from_cart_mtg_listing_path(:id => reservation.id, :quantity => reservation.quantity ), :method => :delete do %>
               <%= submit_tag "X" %>
             <% end %>
-          </div>  
-        </div>
+          </td>
+        </tr>
       <% end %>        
     <% end %>
+</table>
 
     <br class="spacer"/>
     <div class="right">

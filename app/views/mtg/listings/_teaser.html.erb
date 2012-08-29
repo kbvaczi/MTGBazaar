@@ -1,31 +1,51 @@
-<div class="mtg_listing_teaser">
-  <div class="mtg_listing_teaser_seller">
-    <%= "#{listing.seller.username} (#{listing.seller.account.number_sales})" %>
-  </div>
-  <div class="mtg_listing_teaser_language">
+<tr class=<%= cycle("odd","even") %>>
+  <td>
+    <%= display_name(listing.card.name) %>
+  </td>
+  <td>
+    <%= display_set_symbol(listing.card.set) %>
+  </td> 
+  <td>
+    <%= number_to_currency(listing.price) %>
+  </td> 
+  <td>
+    <%= display_condition(listing.condition) %>
+  </td>
+  <td>
     <%= display_flag_symbol(listing.language) %>
-  </div>
-  <div class="mtg_listing_teaser_condition">
-    <%= listing.condition %>
-  </div>    
-  <div class="mtg_listing_teaser_options">
+  </td>
+  <td>
     <% if listing.foil %>
-      <div class ="left"> Foil </div><div class="right">X</div><br/>
+      <%= listing_option_foil_icon %>
     <% end %>
     <% if listing.misprint %>
-      <div class ="left"> Misprint </div><div class="right">X</div><br/>
+      <%= listing_option_misprint_icon %>
     <% end %>
     <% if listing.signed %>
-      <div class ="left"> Signed </div><div class="right">X</div><br/>
+      <%= listing_option_signed_icon %>
     <% end %>
     <% if listing.altart %>
-      <div class ="left"> Alt. Art </div><div class="right">X</div><br/>
+      <%= listing_option_altart_icon %>
     <% end %>    
-  </div>
-  <div class="mtg_listing_teaser_price">
-    <%= number_to_currency(listing.price) %>
-  </div>
-  <div class="mtg_listing_teaser_buy">
-    <%= link_to "Add to Cart", add_to_cart_mtg_listing_path(listing.id), :method => :post %>
-  </div>  
-</div>
+    <% if listing.description != "" %>
+      <%= listing_option_description_icon(listing) %>
+    <% end %>
+  </td>
+  <td>
+    <%= listing.quantity %>
+  </td>
+  <td class="teaser_row_actions">
+    <div class="teaser_row_actions_icon center">
+     <%= menu_icon %>
+    </div>
+    <div class="teaser_row_actions_list" style="display:none">
+      <ul>
+        <li> <%= link_to "Edit", edit_mtg_listing_path(listing)%> </li>
+        <li> <%= link_to "Set as Active", mtg_listing_set_active_path(listing), :method => :put if not listing.active %> </li>  
+        <li> <%= link_to "Set as Inactive", mtg_listing_set_inactive_path(listing), :method => :put if listing.active %> </li>          
+        <li> <%= link_to "Remove", mtg_listing_path(listing), :method => :delete , :confirm => "Are you sure you want to permanently delete this listing?"%> </li>
+      </ul>
+    </div>
+  </td>
+  
+</tr>     
