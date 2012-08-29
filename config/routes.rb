@@ -31,12 +31,6 @@ MTGBazaar::Application.routes.draw do
   put     "mtg/listings/:id/set_active"       => "mtg/listings#set_active",         :as => 'mtg_listing_set_active'  
   put     "mtg/listings/:id/set_inactive"     => "mtg/listings#set_inactive",       :as => 'mtg_listing_set_inactive'  
 
-  # transaction issues (this needs to go above transactions sections for index to work)
-#  get   'transactions/issues'             => 'mtg/transaction_issues#index',                          :as => 'transaction_issues_index'  
-#  get   'transactions/:id/issue'          => 'mtg/transaction_issues#new',                            :as => 'new_mtg_transaction_issue'
-#  post  'transactions/:id/issue'          => 'mtg/transaction_issues#create',                         :as => 'create_mtg_transaction_issue'
-
-
   # transactions
   get   'transactions/:id'                => 'mtg/transactions#show',                                 :as => 'show_mtg_transaction'
   get   'transactions/:id/confirm'        => 'mtg/transactions#seller_sale_confirmation',             :as => 'seller_sale_confirmation'      
@@ -55,9 +49,6 @@ MTGBazaar::Application.routes.draw do
   put   'transactions/:id/shipment'       => 'mtg/transactions#create_seller_shipment_confirmation',  :as => 'create_seller_shipment_confirmation'
   get   'transactions/:id/delivery'       => 'mtg/transactions#buyer_delivery_confirmation',          :as => 'buyer_delivery_confirmation'
   put   'transactions/:id/delivery'       => 'mtg/transactions#create_buyer_delivery_confirmation',   :as => 'create_buyer_delivery_confirmation'  
-
-
-
 
   namespace :mtg do
     
@@ -100,7 +91,7 @@ MTGBazaar::Application.routes.draw do
   end
   match 'users/:id/(:page)', :controller => 'users', :action => 'show'  #TODO: hack to get pagination to work in user show page... relook at this later
 
-  resources :accounts
+  #resources :accounts
   
 # ACCOUNT BALANCE TRANSFERS
   
@@ -115,6 +106,11 @@ MTGBazaar::Application.routes.draw do
   post  'payment_notifications/create_withdraw_notification'  => 'payment_notifications#create_withdraw_notification',  :as => 'create_withdraw_notification'  
   get   'payment_notifications/acknowledge_deposit'           => 'payment_notifications#acknowledge_deposit',           :as => "acknowledge_deposit"
   
+# NEWS FEEDS
+
+  resources :news_feeds, :only => [:show, :index], :path => '/news'
+  #match 'news'                => 'news_feeds#index'  
+  
 # MISC ROUTES -------------- #
 
   root :to => "home#index"
@@ -127,7 +123,6 @@ MTGBazaar::Application.routes.draw do
   match 'help'                => 'home#help'
   match 'faq'                 => 'home#faq'
   match 'feedback'            => 'home#feedback'
-  match 'news'                => 'news_feeds#index'
   mount Ckeditor::Engine      => "/ckeditor"
   
 # RAILS STANDARD COMMENTS ----------- #

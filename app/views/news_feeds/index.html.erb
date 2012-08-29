@@ -5,7 +5,7 @@
 
   <% @news_feeds.each do |feed| %>
 
-    <div class="news_title" style="text-align:left; margin-top; 4px;margin-bottom:4px;"><%= feed.title %></div>
+    <div class="news_title" style="text-align:left; margin-top; 4px;margin-bottom:4px;"><%= link_to feed.title, news_feed_path(feed) %></div>
   	<br/>
   	<div style="margin-top:-15px;float:left;"><%= "Posted by: #{feed.author.username} on: #{ display_time(feed.created_at)}" %></div>
   	<br/>
@@ -13,9 +13,9 @@
 	
   	<br class="spacer"/>
 	
-    <%= feed.data.html_safe %>
+    <%#= feed.data.html_safe %>
 
-  	<div class="newsbreak" style="margin-top:15px; margin-bottom:20px;"></div>
+  	<%# <div class="newsbreak" style="margin-top:15px; margin-bottom:20px;"></div> %>
 
     <br/>
 
