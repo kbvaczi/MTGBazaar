@@ -142,6 +142,7 @@
               <% end %>
             <div>     
           </td>
+          <%= listing_option_scan_overlay(listing) %>
           <td style="text-align:right;"><%= number_to_currency(listing.price)%></td>
           <td><%= listing.quantity_available %></td>
           <td style="text-align:right;">
