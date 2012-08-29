@@ -2,12 +2,12 @@ MTGBazaar::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
 
-  # CUSTOM OPTIONS
+  # CUSTOM OPTIONS -------------------------------------------------------------------------------------------------- #
   
   # this is needed for devise to work on heroku
   config.action_mailer.default_url_options = { :host => 'mtgbazaar.herokuapp.com' }
   
-  # STANDARD OPTIONS
+  # STANDARD OPTIONS -------------------------------------------------------------------------------------------------- #
 
   # Code is not reloaded between requests
   config.cache_classes = true
@@ -39,7 +39,7 @@ MTGBazaar::Application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  config.force_ssl = false
 
   # Use a different cache store in production
   # config.cache_store = :mem_cache_store
