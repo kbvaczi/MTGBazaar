@@ -8,45 +8,7 @@ class AccountBalanceTransfersController < ApplicationController
     set_back_path
     @transfers = current_user.account.balance_transfers.includes(:payment_notifications).order("account_balance_transfers.created_at DESC").page(params[:page]).per(13)
   end
-  
-  def test_payment
-    
-    test_withdraw = AccountBalanceTransfer.new(:balance => 10.50 )
-    test_withdraw.account_id = current_user.id
-    test_withdraw.transfer_type = "withdraw"
-    test_withdraw.save
-    
-    ActiveMerchant::Billing::Base.mode = :test
-    
-    gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(
-      :login => "seller_1345565383_biz_api1.mtgbazaar.com",
-      :password => "QTJ6M8L94ETKL785",
-      :signature => "An5ns1Kso7MWUdW4ErQKJJJ4qi4-AXsCplSrsdFPNjiVUhXnxPrq8Tl-",
-      :appid => "APP-80W284485P519543T" )
 
-    recipients = [ {:email => 'buyer_1344264179_per@mtgbazaar.com',
-                    :invoice_id => test_withdraw.id,
-                    :amount => test_withdraw.balance.dollars } ]
-
-    purchase = gateway.setup_purchase(
-      :action_type => "CREATE",
-      :return_url => root_url,
-      :cancel_url => root_url,
-      :ipn_notification_url => create_withdraw_notification_url(:secret => "b4z44r2012!"),  
-      :sender_email    => "seller_1345565383_biz@mtgbazaar.com",
-      :memo => "Account Withdraw of $10.50",
-      :receiver_list => recipients )
-
-    gateway.execute_payment(purchase)
-
-    respond_to do |format|
-      format.html { render :text => gateway.debug }
-    end
-    
-    return
-    
-  end
-  
   def new_account_deposit
     set_back_path
     if params[:account_balance_transfer].present?
@@ -67,9 +29,6 @@ class AccountBalanceTransfersController < ApplicationController
     @deposit.approved_at = @deposit.created_at
     if @deposit.save
       redirect_to paypal_deposit_url(@deposit), :method => :post
-      #current_user.account.balance_transfers << @deposit #link this deposit to current user's account
-      #current_user.account.update_attribute(:balance, current_user.account.balance + @deposit.balance) #add deposit to user's balance
-      #redirect_to session[:return_to] || :back, :notice => "Deposit Sucessful..."
     else
       flash[:error] = "There were one or more errors while trying to process your request"
       render 'new_account_deposit'
@@ -92,8 +51,8 @@ class AccountBalanceTransfersController < ApplicationController
      
      @withdraw = AccountBalanceTransfer.new(params[:account_balance_transfer])
      @withdraw.transfer_type = "withdraw"      
-     @withdraw.current_sign_in_ip = request.remote_ip # log user's IP address     
-     current_user.account.balance_transfers << @withdraw # link this withdraw to current user's account     
+     @withdraw.current_sign_in_ip = request.remote_ip # log user's IP address
+     @withdraw.account_id = current_user.account.id  # link this withdraw to current user's account             
      if current_user.account.balance - @withdraw.balance < 0
        flash[:error] = "You have insufficient funds in your account"
        render 'new_account_withdraw'
@@ -114,17 +73,18 @@ class AccountBalanceTransfersController < ApplicationController
    
   # generates a link to follow to paypal for deposits
   def paypal_deposit_url(deposit)
-   values = {
-     :business => "seller_1345565383_biz@mtgbazaar.com",
-     :cmd => "_cart",
-     :upload => 1,
-     :return => acknowledge_deposit_url,
-     :invoice => deposit.id,
-     "amount_1" => paypal_commission(deposit.balance.dollars),
-     "item_name_1" => "#{current_user.username}: #{number_to_currency(deposit.balance.dollars)} deposit",
-     :notify_url => create_deposit_notification_url(:secret => "b4z44r2012!"),
-     :cert_id => "6NXAAY8BWC9HQ"
-   }
+  values = {
+    :business => "seller_1345565383_biz@mtgbazaar.com", # business account info on paypal
+    :cmd => "_xclick", #acts as a "buy now" button
+    :return => acknowledge_deposit_url, # user is returned here after successful purchase
+    :rm => 1, #return using GET method
+    :invoice => deposit.id, #invoice passthrough variable
+    :amount => paypal_commission(deposit.balance.dollars), #amount to pay
+    :handling => paypal_commission(deposit.balance.dollars), # paypal's commission
+    :item_name => "#{current_user.username}: #{number_to_currency(deposit.balance.dollars)} deposit", 
+    :cert_id => "6NXAAY8BWC9HQ", # encryption certificate ID on paypal's site
+    :notify_url => create_deposit_notification_url(:secret => "b4z44r2012!") # where to send payment notification    
+  }
    params = {
      :cmd => "_s-xclick",
      :encrypted => encrypt_for_paypal(values)
@@ -132,10 +92,10 @@ class AccountBalanceTransfersController < ApplicationController
    "https://www.sandbox.paypal.com/cgi-bin/webscr?" + params.to_query
   end
 
-  # computes paypal commission based on price in dollars
+  # computes total price including paypal commission based on price in dollars
   def paypal_commission(base_price)
     # base paypal commission is 2.9% + 30 cents... we are adding .304 to handle rounding issues.  Paypal always rounds up.
-    return ( base_price.to_f / ( 1 - 0.029 ) + 0.304 ).round(2)
+    return ( ( base_price.to_f / ( 1 - 0.029 ) ) + 0.304 ).round(2)
   end
   
   # reads SSL certificates from file
