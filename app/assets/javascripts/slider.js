@@ -2,8 +2,8 @@ $(document).ready(function(){
 	
 	$('#slider1').bxSlider({
 	    auto: true,
-		pause: 10000,
-		randomStart: true,
+  		pause: 10000,
+  		randomStart: true,
 	  });
 	});
 	
