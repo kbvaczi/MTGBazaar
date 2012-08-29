@@ -11,33 +11,21 @@
   
   <h2><%="#{@listings.count} #{(params[:status] || "").capitalize} Listings"%></h2>
 
-  <div class="teaser_row">
-    <div style="width:25%;text-align:left;">
-      <u>Card Name</u>
-    </div>
-    <div style="width:8%">  
-      <u>Set</u>
-    </div>
-    <div style="width:10%">
-      <u>Price</u>
-    </div>
-    <div style="width:8%">
-      <u>Cond</u>
-    </div>    
-    <div style="width:9%">
-      <u>Lang</u>
-    </div>      
-    <div style="width:15%">
-      <u>Options</u>
-    </div>
-    <div style="width:10%">
-      <u>Quantity</u>
-    </div>      
-    <div class="teaser_row_actions">
-    </div>
-  </div>
+<table class="data">
+	<tr class="header_row">
+		<th>Card Name</th>
+		<th>Set</th>      
+		<th>Price</th>
+		<th>Cond.</th>
+		<th>Lang.</th>
+		<th>Options</th>
+		<th>Qty.</th>
+		<th>Menu</th>
+	</tr>
 
-  <%= render :partial => "mtg/listings/teaser_user" , :collection => @listings, :as => "listing" %>      
+  <%= render :partial => "mtg/listings/teaser" , :collection => @listings, :as => "listing" %>      
+
+</table>
 
   <div class="paginator right">
     <%= paginate @listings, :method => :get %>

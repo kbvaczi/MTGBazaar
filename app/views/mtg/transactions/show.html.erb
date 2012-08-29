@@ -16,9 +16,23 @@
   <div><%= "Total Value: #{ number_to_currency(@transaction.total_value) }" %></div>
 
   <h2> <%= pluralize @transaction.item_count, "Item", "Items" %> </h2>
-  <div class="mb">
-    <%= render :partial => "mtg/transaction_items/teaser", :collection => @items, :as => "item" %>  
-  </div>
+	
+	<table class="data">
+	  <tr class="header_row">
+	  <th>Name</th>
+	  <th>Set</th>      
+	  <th>Price</th>
+		<th>Cond.</th>
+		<th>Lang.</th>
+		<th>Options</th>
+		<th>Qty.</th>
+		
+	</tr>
+	
+  <%= render :partial => "mtg/transaction_items/teaser", :collection => @items, :as => "item" %>  
+  
+	</table>
+
   <div class="left">
     <%= paginate @items, :collection => @items %>
   </div>

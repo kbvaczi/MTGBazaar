@@ -21,3 +21,7 @@ module ApplicationHelper
     time.strftime("%d-%b %Y") 
   end
 end
+
+def menu_icon
+  image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/options.png", :style => "float:left;height:20px;vertical-align:bottom;")         
+end
