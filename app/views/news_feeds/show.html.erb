@@ -1,0 +1,21 @@
+<% title "News" %>
+
+<h1>News</h1>
+<div class ="content">
+
+  <div class="news_title" style="text-align:left; margin-top; 4px;margin-bottom:4px;"><%= @news_feed.title %></div>
+	<br/>
+	<div style="margin-top:-15px;float:left;"><%= "Posted by: #{@news_feed.author.username} on: #{ display_time(@news_feed.created_at)}" %></div>
+	<br/>
+	<div style="width:100%;border-bottom-style:solid;border-bottom-color:grey;border-bottom-width: 5px;"></div>
+
+	<br class="spacer"/>
+
+  <%= @news_feed.data.html_safe %>
+
+	<div class="newsbreak" style="margin-top:15px; margin-bottom:20px;"></div>
+
+  <br/>
+
+</div>
+
