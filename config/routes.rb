@@ -109,7 +109,6 @@ MTGBazaar::Application.routes.draw do
 # NEWS FEEDS
 
   resources :news_feeds, :only => [:show, :index], :path => '/news'
-  #match 'news'                => 'news_feeds#index'  
   
 # MISC ROUTES -------------- #
 
