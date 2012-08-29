@@ -26,8 +26,8 @@ class Account < ActiveRecord::Base
                         :address1, 
                         :zipcode
 
-  # only numbers allowed in the following
-  validates             :zipcode,     :numericality => { :only_integer => true }
+  # matches US zipcodes only
+  validates             :zipcode, :format => { :with => /^\d{5}(-\d{4})?$/, :message => "Please enter a valid zipcode" }
   
   # only letters (or spaces) allowed in the following
   validates             :first_name,

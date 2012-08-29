@@ -39,7 +39,7 @@
 
   <%= render :partial => "mtg/listings/teaser_user" , :collection => @listings, :as => "listing" %>      
 
-  <div class="paginator">
+  <div class="paginator right">
     <%= paginate @listings, :method => :get %>
   </div>
     
