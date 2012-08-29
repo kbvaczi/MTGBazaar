@@ -20,4 +20,23 @@ module ApplicationHelper
   def display_time(time)
     time.strftime("%d-%b %Y") 
   end
+  
+  def sort_table_header(title, value, options = {:remote => false})
+    if params[:sort] && params[:sort].to_s == "#{value}_asc"
+      link_to title, params.merge(:sort => "#{value}_desc"), :remote => options[:remote], :style => "color:#555;"     
+    else
+      link_to title, params.merge(:sort => "#{value}_asc"), :remote => options[:remote], :style => "color:#555;"     
+    end
+     #params[:sort], params[:sort] == '#{value}_asc' ? params.merge(:sort => "#{value}_desc") : params.merge(:sort => "#{value}_asc") rescue params.merge(:sort => "#{value}_asc")
+  end
+    
+  def sort_direction
+    case params[:sort]
+      when /_asc/
+        "ASC"
+      when /_desc/
+        "DESC"
+    end
+  end
+    
 end

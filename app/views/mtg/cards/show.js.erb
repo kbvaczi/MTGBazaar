@@ -1,0 +1,2 @@
+/* UPDATES LISTINGS FOR A GIVEN CARD BASED ON SORT */
+$('#card_listings').html('<%= escape_javascript render :partial => "show_listings", :locals => { :listings => @listings } %>');

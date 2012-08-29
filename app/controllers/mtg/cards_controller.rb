@@ -1,5 +1,7 @@
 class Mtg::CardsController < ApplicationController
   
+  include ApplicationHelper
+  
   # GET /mtg_cards
   def index
     @title = "MTG Cards"
@@ -20,8 +22,6 @@ class Mtg::CardsController < ApplicationController
   # GET /mtg/cards/:id
   def show
     set_back_path
-    #@mtg_card = Mtg::Card.includes(:set, :listings).find(params[:id])
-    
     @mtg_card = Mtg::Card.includes(:set, :listings).where(:id => params[:id].to_i).first
     @mtg_card_back = Mtg::Card.where("mtg_cards.card_number LIKE ?", "%03d" % @mtg_card.card_number.to_i.to_s + "b").first if @mtg_card.dual_sided_card?
     @card_variants = Mtg::Card.includes(:set).where("mtg_cards.name LIKE ?", @mtg_card.name)    
@@ -35,20 +35,35 @@ class Mtg::CardsController < ApplicationController
     #query << ["mtg_listings.seller_id LIKE ?", cookies[:search_seller_id]] if cookies[:search_seller_id].present?    
     #@listings = @mtg_card.listings.available.where(query.compile)
 
-    @listings = @mtg_card.listings.available.order('price ASC')  
+    @listings = @mtg_card.listings.available 
     
-    case params[:sort_by]
-      when "price"
-        @listings = @listings.order(:price)
-      when "condition"
-        @listings = @listings.order(:condition)
-      when "language"
-        @listings = @listings.order(:language)
-      when "seller"
+    case params[:sort]
+      when /price/
+        @listings = @listings.order("price #{sort_direction}")
+      when /condition/
+        @listings = @listings.order("condition #{sort_direction}")
+      when /language/
+        @listings = @listings.order("language #{sort_direction}")
+      when /quantity/
+        @listings = @listings.order("quantity #{sort_direction}")        
+      when /seller/
         @listings.sort { |a,b| a.seller.username <=> b.seller.username }
-      when "seller_rating"
-        @listings.sort { |a,b| a.seller.average_rating <=> b.seller.average_rating }        
+      when /seller_sales/
+        case params[:sort]
+          when /_asc/ 
+            @listings.sort { |a,b| a.seller.number_sales <=> b.seller.number_sales }        
+          when /_desc/
+            @listings.sort { |a,b| b.seller.number_sales <=> a.seller.number_sales }        
+        end
+      when /seller_feedback/
+        case params[:sort]
+          when /_asc/ 
+            @listings.sort { |a,b| a.seller.average_rating <=> b.seller.average_rating }        
+          when /_desc/
+            @listings.sort { |a,b| b.seller.average_rating <=> a.seller.average_rating }        
+        end    
     end
+    
     if not (@mtg_card.active or current_admin_user) # normal users cannot see inactive cards
       redirect_to (:root)
       return false
@@ -56,6 +71,7 @@ class Mtg::CardsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
+      format.js
     end
 
   end

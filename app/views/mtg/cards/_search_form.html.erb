@@ -1,7 +1,7 @@
 <%= form_tag search_mtg_cards_path , :method => "get", :id => "search-form" do %>   
   
   <%# autocomplete_mtg_card_name_mtg_cards_path%>
-  <div class="mt ml mr">
+  <div class="mt ml-m mr-m">
 
     <div class="mt-m">
       <%= text_field_tag "name", params[:name], {:class => "search-text ui-autocomplete-input" , :placeholder => "Name..." , "data-autocomplete" => autocomplete_name_mtg_cards_path }%>
