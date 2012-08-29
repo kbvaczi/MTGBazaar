@@ -1,19 +1,35 @@
-<div id="right_bar3">
-  <h1>Top Cards</h1>
-  <%
-    top_cards = Mtg::Card.includes(:set, :statistics).order('mtg_card_statistics.number_sales DESC').limit(7)
-  %>
-  <div class="mt-s mr-s ml-s">
-    <table class="data">
-      
-      <% top_cards.each do |card| %>
-        <tr style="margin:2px;padding:0;">
-          <td style="margin:1px;padding:0;"> <%= display_set_symbol(card.set) %> </td>
-          <td style="margin:1px;padding:0;vertical-align:top;text-align:left;text-overflow:ellipsis;max-width:150px;white-space:nowrap;overflow:hidden;"> <%= link_to card.name, mtg_card_path(card) %> </td>
-          <td style="margin:1px;padding:0;vertical-align:top;text-align:left;"> <%= number_to_currency(card.statistics.price_low) %> </td>          
-        </tr>        
-      <% end %>
 
-    </table>
-  </div>
+<div id="right_bar3">	
+<div id="slider1">
+	  <div>	<h1>Top Cards</h1>
+		  <% top_cards = Mtg::Card.includes(:set, :statistics).order('mtg_card_statistics.number_sales DESC').limit(7) %>
+		  <div class="mt-s mr-s ml-s">
+		    <table class="data">
+
+		      <% top_cards.each do |card| %>
+		        <tr style="margin:2px;padding:0;">
+		          <td style="margin:1px;padding:0;"> <%= display_set_symbol(card.set) %> </td>
+		          <td style="margin:1px;padding:0;vertical-align:top;text-align:left;text-overflow:ellipsis;max-width:150px;white-space:nowrap;overflow:hidden;"> <%= link_to card.name, mtg_card_path(card) %> </td>
+		          <td style="margin:1px;padding:0;vertical-align:top;text-align:left;"> <%= number_to_currency(card.statistics.price_low) %> </td>          
+		        </tr>        
+		      <% end %>
+
+		    </table>
+		  </div>
+		</div>
+	 <div>	<h1>Recent Expansions</h1>
+	    <% recent_added = Mtg::Set.order('release_date DESC').limit(7) %>
+	    <div class="mt-s mr-s ml-s">
+	      <table class="data">
+	        <% recent_added.each do |set| %>
+	          <tr style="margin:2px;padding:0;">
+	            <td style="margin:1px;padding:0;"> <%= display_set_symbol(set) %> </td>
+	            <td style="margin:1px;padding:0;vertical-align:top;text-align:left;text-overflow: ellipsis;max-width:150px;white-space: nowrap;overflow:hidden;"> <%= link_to set.name, mtg_cards_path(:set => set.code) %> </td>          
+	          </tr>
+	       	<% end %>
+  	    </table>
+  	  </div></div>
+	 
+
+</div>  
 </div>
