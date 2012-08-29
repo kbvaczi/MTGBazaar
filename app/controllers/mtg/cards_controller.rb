@@ -46,8 +46,10 @@ class Mtg::CardsController < ApplicationController
         @listings = @listings.order("language #{sort_direction}")
       when /quantity/
         @listings = @listings.order("quantity #{sort_direction}")        
-      when /seller/
+      when /seller_asc/
         @listings.sort { |a,b| a.seller.username <=> b.seller.username }
+      when /seller_desc/
+        @listings.sort { |a,b| b.seller.username <=> a.seller.username }        
       when /seller_sales/
         case params[:sort]
           when /_asc/ 
