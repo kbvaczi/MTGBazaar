@@ -41,7 +41,7 @@ class Mtg::CardsController < ApplicationController
       when /price/
         @listings = @listings.order("price #{sort_direction}")
       when /condition/
-        @listings = @listings.order("condition #{sort_direction}")
+        @listings = @listings.order("mtg_listings.condition #{sort_direction}")
       when /language/
         @listings = @listings.order("language #{sort_direction}")
       when /quantity/
