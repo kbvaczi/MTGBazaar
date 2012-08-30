@@ -6,7 +6,7 @@ source 'http://rubygems.org'
 
 gem "devise", "~> 2.0.0"                                            # user authentication
 gem "simple_form", "~> 1.5.2"                                       # simplified form creation
-gem "recaptcha", "~> 0.3.4", :require => "recaptcha/rails"          # Bot prevention
+#gem "recaptcha", "~> 0.3.4", :require => "recaptcha/rails"         # Bot prevention, no longer using this due to diffculty
 gem "nokogiri", "~> 1.5.0"                                          # XML/HTML Parser
 gem "activeadmin", "~> 0.4.0"                                       # Administrator Panel
 gem "formtastic", "~> 2.1.1"                                        # for admin panel only
@@ -25,7 +25,8 @@ gem "ckeditor", "~> 3.7.1"                                          # blog edito
 gem "mini_magick", "~> 3.4"                                         # image manipulation for ckeditor
 #gem "girl_friday", "~> 0.9.7"                                      # background processing for unicorn... disabled due to issues
 gem 'unicorn'                                                       # custom webserver with multi-threaded application capabilities
-#gem "active_shipping", "~> 0.9.14"                                  # shipping rates for USPS
+#gem "active_shipping", "~> 0.9.14"                                 # shipping rates for USPS
+gem "honeypot-captcha", "~> 0.0.2"                                  # alternative to capcha without the complexity  
 
 # -------------
 # STANDARD GEMS

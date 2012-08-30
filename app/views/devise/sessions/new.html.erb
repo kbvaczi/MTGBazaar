@@ -2,7 +2,7 @@
 
 <h1>Sign in</h1>
 
-<%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+<%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { :honeypot => true }) do |f| %>
 
   <% flash[:error] = "There were one or more errors while trying to process your request" if !devise_error_messages!.empty? %>
   <%# flash[:error] = devise_error_messages! if !devise_error_messages!.empty? %>

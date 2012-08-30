@@ -21,18 +21,11 @@ class ContactController < ApplicationController
 
   def create
     @contact = Contact.new(params[:contact].merge!({"ip"=>request.remote_ip})) #add IP address
-    if check_humanity
-      if @contact.save
-        redirect_to root_path, :notice => "Thanks for the feedback! Your comments were sent."
-      else
-        render 'show'
-      end
+    if @contact.save
+      redirect_to root_path, :notice => "Thanks for the feedback! Your comments were sent."
     else
-      flash[:error] = "Please re-enter captcha code. Thanks for helping us prevent spam!"
       render 'show'
     end
-
-
   end
   
 end

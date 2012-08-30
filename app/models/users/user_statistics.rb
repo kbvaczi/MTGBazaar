@@ -59,6 +59,10 @@ class UserStatistics < ActiveRecord::Base
     self.save
   end
   
+  def approval_percent
+    ( ( ( self.positive_feedback_count + self.neutral_feedback_count ).to_f / self.number_sales.to_f ) * 100 )
+  end
+  
   def display_approval_percent
     if self.number_sales > 0
       "#{( ( ( self.positive_feedback_count + self.neutral_feedback_count ).to_f / self.number_sales.to_f ) * 100 ).round(0) rescue 0}%" # handle divide by 0 error

@@ -22,7 +22,7 @@ class Mtg::CardsController < ApplicationController
   # GET /mtg/cards/:id
   def show
     set_back_path
-    @mtg_card = Mtg::Card.includes(:set, :listings).where(:id => params[:id].to_i).first
+    @mtg_card = Mtg::Card.includes(:set, :listings => [:seller => :statistics]).where(:id => params[:id].to_i).first
     @mtg_card_back = Mtg::Card.where("mtg_cards.card_number LIKE ?", "%03d" % @mtg_card.card_number.to_i.to_s + "b").first if @mtg_card.dual_sided_card?
     @card_variants = Mtg::Card.includes(:set).where("mtg_cards.name LIKE ?", @mtg_card.name)    
 
@@ -35,7 +35,7 @@ class Mtg::CardsController < ApplicationController
       query << ["mtg_listings.altart LIKE ?", true] if cookies[:search_altart].present?
       query << ["mtg_listings.seller_id LIKE ?", cookies[:search_seller_id]] if cookies[:search_seller_id].present?    
     end
-    @listings = @mtg_card.listings.available.where(query.compile)
+    @listings = @mtg_card.listings.includes(:seller => :statistics).available.where(query.compile)
     
     case params[:sort]
       when /price/
@@ -46,24 +46,17 @@ class Mtg::CardsController < ApplicationController
         @listings = @listings.order("language #{sort_direction}")
       when /quantity/
         @listings = @listings.order("quantity #{sort_direction}")        
-      when /seller_asc/
-        @listings.sort { |a,b| a.seller.username <=> b.seller.username }
-      when /seller_desc/
-        @listings.sort { |a,b| b.seller.username <=> a.seller.username }        
       when /seller_sales/
+        @listings = @listings.order("user_statistics.number_sales #{sort_direction}") 
+      when /seller_feedback/        
         case params[:sort]
           when /_asc/ 
-            @listings.sort { |a,b| a.seller.number_sales <=> b.seller.number_sales }        
+            @listings.sort! { |a,b| a.seller.statistics.display_approval_percent <=> b.seller.statistics.display_approval_percent }        
           when /_desc/
-            @listings.sort { |a,b| b.seller.number_sales <=> a.seller.number_sales }        
-        end
-      when /seller_feedback/
-        case params[:sort]
-          when /_asc/ 
-            @listings.sort { |a,b| a.seller.average_rating <=> b.seller.average_rating }        
-          when /_desc/
-            @listings.sort { |a,b| b.seller.average_rating <=> a.seller.average_rating }        
+            @listings.sort! { |a,b| b.seller.statistics.display_approval_percent <=> a.seller.statistics.display_approval_percent }        
         end    
+      when /seller/
+        @listings = @listings.order("users.username #{sort_direction}")        
     end
     
     if not (@mtg_card.active or current_admin_user) # normal users cannot see inactive cards

@@ -4,7 +4,7 @@
 
 
 <%# use @user instance variable to capture changes in @account for incorrect form entry%>
-<%= simple_form_for(@user.with_account, :as => @user, :url => registration_path(@user)) do |f| %>
+<%= simple_form_for(@user.with_account, :as => @user, :url => registration_path(@user), :html => { :honeypot => true } ) do |f| %>
 
   <% flash[:error] = "There were one or more errors while trying to process your request" if !devise_error_messages!.empty? %>
 
@@ -41,38 +41,33 @@
     <%= a.input :state ,        :required => 'true' %>
     <%= a.input :zipcode ,      :label => "Zip" , :required => 'true' %>    
     <%= a.input :country ,      :required => 'true' , 
-                                :collection => [ ["United States", "USA"], ["Canada", "CA"] ] , 
+                                :collection => [ ["United States", "USA"] ] , 
                                 :include_blank => false , 
                                 :input_html => { :class => 'chzn-select' }  %>
   <% end %>
   
-  <h2>Confirmation</h2>
+  <%# NO LONGER USING RECAPTCHA, USING HONEYPOT INSTEAD %>
+  <%#= render :partial => "shared/recaptcha_box" %>
+  <br class = "spacer"/>
 
-  <%= render :partial => "shared/recaptcha_box" %>
+  <h2>Terms and Conditions</h2>
+  <div class ="AcknowledgeBorderDiv center" style="height:145px;width:440px;overflow-x:hidden; overflow-y:scroll;">
+  	<div class="AcknowledgeOuterDiv center" style="height:145px;width:440px;overflow-x:hidden; overflow-y:scroll;">
+      <div class="AcknowledgeInnerDiv">		
+    		<%
+      		output = ""
+      		text=File.open('public/terms.txt').read
+      		text.gsub!(/\r\n?/, "<br/>")
+      		text.each_line do |line|
+      			output = output + line
+      		end 
+    		%>
+    		<%= output.html_safe %>
+      </div>
+  	</div>
+  </div>
 
   <br class = "spacer"/>
-  <br class = "spacer"/>  
-  
-<h2>Please Read Through to Accept the Terms and Conditions</h2>
-<div class ="AcknowledgeBorderDiv center" style="height:145px;width:440px;overflow-x:hidden; overflow-y:scroll;">
-	<div class="AcknowledgeOuterDiv center" style="height:145px;width:440px;overflow-x:hidden; overflow-y:scroll;">
-	      <div class="AcknowledgeInnerDiv">
-		
-		<%
-		output = ""
-		text=File.open('public/terms.txt').read
-		text.gsub!(/\r\n?/, "<br/>")
-		text.each_line do |line|
-			output = output + line
-		end %>
-		<%= output.html_safe %>
-		
-	      </div>
-
-	</div>
-</div>
-
-<br class = "spacer"/>
 
   <%# Check boxes for age and agree-to-terms %>
   <%#= f.input :age,           :label => '',
@@ -84,10 +79,9 @@
   <%= f.input :terms,         :label => '',
                               :as => :check_boxes ,
                               :required => 'true' ,
-                              :collection => [["I agree to Terms of Service",1]], 
+                              :collection => [["I agree to Terms and Conditions",1]], 
                               :input_html => {  :id => 'AcknowledgeCheckBox',
-	 											:disabled => true,
-												:checked => "#{'checked' if params[:user][:terms][1] rescue false }" } %>
+      												:checked => "#{'checked' if params[:user][:terms][1] rescue false }" } %>
     
   <br class = "spacer"/>
   

@@ -1,7 +1,7 @@
 <div id="user_login" class="right mt-m ml" style="min-height:25px;width:50%;">
   
   <%unless user_signed_in? %>
-    <%= form_for(:user, :url => user_session_path) do |f| %>
+    <%= form_for(:user, :url => user_session_path, :html => { :honeypot => true }) do |f| %>
     
       <div class="right mr">
         <%= f.label :email, "Email:" %>
