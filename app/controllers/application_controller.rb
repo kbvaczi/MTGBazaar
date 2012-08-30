@@ -27,16 +27,6 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  # displays captcha only once.  Once user passes one captcha they are considered human and will not be presented another captcha.
-  # def check_humanity
-  #  if user_signed_in? or verify_recaptcha or session[:captcha] == true
-  #    session[:captcha] ||= true
-  #    return true
-  #  else
-  #    return false
-  #  end
-  # end
-  
   # sets the current page as the back path for following pages to return to when back_path is redirected to
   def set_back_path
     session[:return_to] = request.fullpath

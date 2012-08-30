@@ -1,5 +1,0 @@
-<%# Recaptcha box %>
-<div class = "center" style = "width: 300px;">
-  <%= javascript_tag "var RecaptchaOptions = { theme : 'white' };" %>
-  <%= recaptcha_tags if not captcha_verified? %>
-</div>
