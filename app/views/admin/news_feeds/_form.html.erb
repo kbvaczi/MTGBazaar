@@ -10,9 +10,9 @@
     <%= f.input :title %>
 
     <div style="margin:20px;">
-      <%= f.input :data,        :label => false,
-                                :input_html => {:class => :ckeditor,  
-                                                :toolbar => 'Full'} %>
+      <%#= f.input :data,        :label => false,
+                                :input_html => { :class => :ckeditor } %>
+      <%= f.cktext_area :data, :toolbar => 'Full', :width => 900, :height => 500 %>  
     </div>
     
     <script type="text/javascript">
