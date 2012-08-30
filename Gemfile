@@ -33,7 +33,7 @@ gem "honeypot-captcha", "~> 0.0.2"                                  # alternativ
 # -------------
 
 gem 'jquery-rails'                                                  # latest jquery library.  need to include "//= require jquery_ujs" and "//= require jquery" in application.js to be loaded in asset pipeline
-gem 'rails', '3.2.0'
+gem "rails", "~> 3.2.8"
 gem 'json'
 gem 'sass-rails',   '~> 3.2.3'                                      # take sass-rails out of assets group to prevent problems with heroku
 
