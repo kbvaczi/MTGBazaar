@@ -24,10 +24,10 @@ gem "active_paypal_adaptive_payment", "~> 0.3.15"                   # Adaptive P
 gem "ckeditor", "~> 3.7.1"                                          # blog editor
 gem "mini_magick", "~> 3.4"                                         # image manipulation for ckeditor
 #gem "girl_friday", "~> 0.9.7"                                      # background processing for unicorn... disabled due to issues
-gem 'unicorn'                                                       # custom webserver with multi-threaded application capabilities
+#gem 'unicorn'                                                       # custom webserver with multi-threaded application capabilities
 #gem "active_shipping", "~> 0.9.14"                                 # shipping rates for USPS
 gem "honeypot-captcha", "~> 0.0.2"                                  # alternative to capcha without the complexity  
-
+gem "thin"
 # -------------
 # STANDARD GEMS
 # -------------

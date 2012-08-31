@@ -13,7 +13,7 @@
 
   <!-- Heading -->
 
-	<p style="text-align:center;">Note: Click on table headers for sorting</p>
+	<p style="text-align:left;margin-left:5px;"><i>Click on table headers for sorting</i></p>
 	<table class="data">
 	 <tr class="header_row">
 	 	<th> <%= sort_table_header("Seller", "seller", :remote => true) %> (<%= sort_table_header("Sales", "seller_sales", :remote => true) %>, <%= sort_table_header("Feedback", "seller_feedback", :remote => true) %>) </th>
@@ -40,7 +40,7 @@
 	  </td>
 		<td><%= display_flag_symbol(listing.language) %></td>
 		<td><%= display_condition(listing.condition) %></td>
-		<td>
+		<td style="max-width:52px;">
 		  <% if listing.foil %>
         <%= listing_option_foil_icon %>
       <% end %>
