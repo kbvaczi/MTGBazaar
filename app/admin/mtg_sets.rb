@@ -70,13 +70,5 @@ ActiveAdmin.register Mtg::Set do
         format.html { redirect_to admin_mtg_sets_path, :notice => "Set Deleted..."}
       end
     end
-    controller do
-      before_filter :super_admin_authenticate, :only => :delete_card
-      
-      def super_admin_authenticate
-        authenticate_or_request_with_http_basic "This action requires special access" do |username, password|
-          username == "superadmin" && password == "superadmin" 
-        end 
-      end  
-    end
+
 end

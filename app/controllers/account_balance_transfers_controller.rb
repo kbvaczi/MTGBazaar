@@ -80,7 +80,6 @@ class AccountBalanceTransfersController < ApplicationController
     :rm => 1, #return using GET method
     :invoice => deposit.id, #invoice passthrough variable
     :amount => paypal_commission(deposit.balance.dollars), #amount to pay
-    :handling => paypal_commission(deposit.balance.dollars), # paypal's commission
     :item_name => "#{current_user.username}: #{number_to_currency(deposit.balance.dollars)} deposit", 
     :cert_id => "6NXAAY8BWC9HQ", # encryption certificate ID on paypal's site
     :notify_url => create_deposit_notification_url(:secret => "b4z44r2012!") # where to send payment notification    

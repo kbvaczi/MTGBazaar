@@ -30,6 +30,10 @@
     <% if listing.description != "" %>
       <%= listing_option_description_icon(listing) %>
     <% end %>
+		<% if listing.scan.present? %>
+      <%= listing_option_scan_icon(listing) %>
+      <%= listing_option_scan_overlay(listing) %>
+    <% end %>    
   </td>
   <td>
     <%= listing.quantity %>

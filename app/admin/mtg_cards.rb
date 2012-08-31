@@ -272,13 +272,6 @@ ActiveAdmin.register Mtg::Card do
     end
     
     controller do
-      before_filter :super_admin_authenticate, :only => :delete_card 
-      
-      def super_admin_authenticate
-        authenticate_or_request_with_http_basic "This action requires special access" do |username, password|
-          username == "superadmin" && password == "superadmin" 
-        end 
-      end
       
       def compute_type(string) #used to format type to import into cards.
         if string.split(" — ")[0]

@@ -14,6 +14,7 @@ ActiveAdmin.register NewsFeed do
        link_to news_feed.id, admin_news_feed_path(news_feed)
      end
      column :title
+     column :description
      column :created_at
      column :updated_at    
    # column :active
