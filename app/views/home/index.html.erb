@@ -8,15 +8,10 @@
 	
     <% @news_feeds.each do |feed| %>
 
-      <div class="news_title" style="text-align:left; margin-top; 4px;margin-bottom:4px;"><%= feed.title %></div>
-  	<br/>
-  	<div style="margin-top:-15px;float:left;"><%= "Posted by: #{feed.author.nickname}" %><br/><%= "#{ display_time(feed.created_at)}" %></div><br/>
-  	<br/>
-  	<div style="width:100%;border-bottom-style:solid;border-bottom-color:grey;border-bottom-width: 5px;"></div>
 	
   	<br class="spacer"/>
 	
-    <div style="min-height:420px;border-bottom-style:solid;border-bottom-color:grey;border-bottom-width: 2px;"><%= feed.data.html_safe %></div>
+    <div style="min-height:420px;border-bottom-style:solid;border-bottom-color:grey;"><%= feed.data.html_safe %></div>
 
     <% end %>
 

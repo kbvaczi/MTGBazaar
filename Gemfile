@@ -8,7 +8,7 @@ gem "devise", "~> 2.0.0"                                            # user authe
 gem "simple_form", "~> 1.5.2"                                       # simplified form creation
 #gem "recaptcha", "~> 0.3.4", :require => "recaptcha/rails"         # Bot prevention, no longer using this due to diffculty
 gem "nokogiri", "~> 1.5.0"                                          # XML/HTML Parser
-gem "activeadmin", "~> 0.4.0"                                       # Administrator Panel
+gem "activeadmin", "~> 0.5.0"                                       # Administrator Panel
 gem "formtastic", "~> 2.1.1"                                        # for admin panel only
 gem "kaminari", "~> 0.13.0"                                         # Pagination
 gem "rails3-jquery-autocomplete", "~> 1.0.6"                        # Autocomplete text fields

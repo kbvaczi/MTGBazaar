@@ -1,4 +1,4 @@
-<%= form_tag process_xml_admin_mtg_cards_path, :multipart => true do %>
+<%= form_tag process_xml_admin_mtg_cards_path, :method => :post, :multipart => true do %>
   <h2>Attach an XML file containing mtg card, block, and/or set information</h2>
   <p> XML file structure must be as follows: <p>
   <p> <%= "
@@ -27,4 +27,8 @@
   <br class = "spacer"/>
   <br class = "spacer"/>
   <%= submit_tag "Upload XML", :disabled => true, :disable_with => "Uploading...", :id => "submit_upload_file"%> 
+  
+
+
+  
 <% end %>
