@@ -2,20 +2,51 @@
 
 <h1><%=@title%></h1>
 <div class ="content">
-
-  <% @sets.each do |set| %>
-    <%= link_to "#{set.name}", mtg_cards_path(:set => set.code) %>
-    <br/>
-  <% end %>
+      
   <% if params[:set] %>
-    <%= params[:set] %>
     <%= link_to("<<back", mtg_cards_path)%>
-    <br/>
-  <% end %>
-  <br/>
+    <br class="spacer" />      
+    <br class="spacer" />          
+    <table class="data">
+      <tr class="header_row">
+        <td>Set Name</td>
+        <td>Release Date</td>
+        <td>Symbol</td>        
+        <td>Cards</td>
+      </tr>
+      <tr class=<%= cycle("even","odd") %>>
+        <td><%= @set.name %></td>
+        <td><%= display_time(@set.release_date) rescue ""%> </td>
+        <td><%= display_set_symbol(@set) %></td>
+        <td><%= @set.cards.count %></td>
+      </tr>
 
-  <%= render :partial => "teaser", :collection => @mtg_cards, :as => "mtg_card" %>
-  <br/>
+    </table>
+    
+    <br class="spacer" />  
+    
+    <%= render :partial => "teaser", :collection => @mtg_cards, :as => "mtg_card" %>
+    
+    <div class="paginator right">
+      <%= paginate @mtg_cards, :method => :get %>
+    </div>
+    
+  <% else %>
+
+    <table class="data">
+      <tr class="header_row">
+        <td>Set Name</td>
+        <td>Symbol</td>
+      </tr>
+      <% @sets.each do |set| %>
+        <tr class=<%= cycle("even","odd") %>>
+          <td><%= link_to "#{set.name}", mtg_cards_path(:set => set.code) %></td>
+          <td><%= display_set_symbol(set) %></td>
+        </tr>
+      <% end %>  
+    </table>
+    
+  <% end %>
 
 </div>
 

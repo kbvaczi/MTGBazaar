@@ -10,6 +10,7 @@
                                   :input_html => { :class => "ui-autocomplete-input" , :placeholder => "Name..." , "data-autocomplete" => autocomplete_name_mtg_cards_path },
                                   :required => true %>
     </div>
+    
     <% if not (params[:mtg_listing] && params[:mtg_listing][:set].present?) %>
       <div id="New_Generic_Set_Block" style="display:none;">        
         <%= f.input :set,           :label => "Set",
@@ -26,7 +27,8 @@
                                     :input_html => {:class => "chzn-select", "data-placeholder" => "Select a set..." } %>
       </div>    
     <% end %>
-    <div id="New_Generic_Info_Block" <%= "style=\'display:none;\'" if not params[:mtg_listing].present? %>>                      
+    
+    <div id="New_Generic_Info_Block" <%= "style=display:none;" if not params[:mtg_listing].present? %>>                      
       <%= f.input :condition,     :label => "Condition",
                                   :as => :select,
                                   :collection => condition_list,
@@ -48,7 +50,7 @@
                                   :input_html => { :class => "chzn-select chzn-nosearch" },                                  
                                   :required => 'true' %>
 
-      <div id="Custom_Pricing_Block" <%= "style=\'display:none;\'" unless (params[:mtg_listing] && params[:mtg_listing][:price_options] == "other") %>> 
+      <div id="Custom_Pricing_Block" <%= "style=display:none;" unless (params[:mtg_listing] && params[:mtg_listing][:price_options] == "other") %>> 
         <%= f.input :price,         :label => "Custom Pricing",
                                     :as => :string,
                                     :input_html => {:class => "currency_input", :maxlength => 9, :value => params[:mtg_listing].present? ? params[:mtg_listing][:price] : "$ 1.00"},
@@ -67,6 +69,7 @@
 
       <%= f.input :description,   :label => "Description",
                                   :hint => "Optional",
+                                  :input_html => { :maxlength => 100 },
                                   :as => :string %>
 
       <%= f.label "Options" %>

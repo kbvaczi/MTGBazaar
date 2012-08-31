@@ -72,7 +72,8 @@
 
     <%= f.input :description,   :label => "Description",
                                 :hint => "Optional",
-                                :as => :string %>
+                                :as => :string,
+                                :input_html => { :maxlength => 100 } %>
                               
     <%= f.label "Options" %>
 
@@ -92,7 +93,7 @@
   <br class="spacer"/>
   <br class="spacer"/>  
   <div class="center">
-    <%= f.button :submit, "Create Listing", :class => "center" %>
+    <%= f.button :submit, "Submit Listing", :class => "center" %>
   </div>
   <br class="spacer"/>
 

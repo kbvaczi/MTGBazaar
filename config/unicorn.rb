@@ -1,7 +1,7 @@
 ## SETUP file for unicorn webserver
 
-worker_processes 3
-timeout 30
+worker_processes 4
+timeout 600
 preload_app true
 
 before_fork do |server, worker|

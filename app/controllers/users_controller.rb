@@ -2,6 +2,8 @@ class UsersController < ApplicationController
 
   before_filter :authenticate_user!, :except => [:new, :create, :show, :autocomplete_name]
   
+  include ApplicationHelper
+  
   def index
     @users = User.all
     respond_to do |format|
@@ -17,6 +19,24 @@ class UsersController < ApplicationController
     @user = User.includes(:statistics, :account).find(params[:id])
     @listings = @user.mtg_listings.available.includes({:card => :set}).order("#{ params[:sort_by].present? ? params[:sort_by].to_s: "mtg_cards.name" } ASC").page(params[:page]).per(20) if params[:section] == "mtg_cards"
     @sales = @user.mtg_sales.where(:status => "delivered").order("created_at DESC").page(params[:page]).per(10) if params[:section] == "feedback"
+    
+  
+    @listings = @user.mtg_listings.available.includes({:card => :set}).page(params[:page]).per(20) if params[:section] == "mtg_cards"
+    
+    
+    case params[:sort]
+      when /price/
+        @listings = @listings.order("price #{sort_direction}")
+      when /condition/
+        @listings = @listings.order("mtg_listings.condition #{sort_direction}")
+      when /language/
+        @listings = @listings.order("language #{sort_direction}")
+      when /quantity/
+        @listings = @listings.order("quantity #{sort_direction}")        
+      when /name/
+        @listings = @listings.order("mtg_cards.name #{sort_direction}")        
+    end
+    
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @user }

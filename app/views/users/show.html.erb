@@ -107,12 +107,12 @@
   <% if params[:section] == "mtg_cards" %>
     <table class="data">
       <tr class="header_row">
-        <th>Name</th>
-        <th>Set</th>      
-        <th>Lang.</th>
+        <th> <%= sort_table_header("Name", "name") %> </th>
+        <th> <%= sort_table_header("Set", "set") %> </th>      
+        <th> <%= sort_table_header("Lang.", "language") %> </th>
         <th>Options</th>
-        <th>Price</th>
-        <th>Qty.</td>
+        <th>  <%= sort_table_header("Price", "price") %> </th>
+        <th>  <%= sort_table_header("Qty.", "quantity") %> </td>
         <th>Purchase</th>
       </tr>
       <% @listings.order("mtg_cards.name ASC").each do |listing| %>

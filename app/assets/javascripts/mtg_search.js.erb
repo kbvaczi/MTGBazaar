@@ -18,7 +18,7 @@ $(document).ready(function() {
     $.cookie('search_red', '', { expires: 1, path: '/' });  
     $.cookie('search_green', '', { expires: 1, path: '/' });
     $.cookie('search_abilities', '', { expires: 1, path: '/' });  
-	$.cookie('search_seller', '', { expires: 1, path: '/' });     
+	  $.cookie('search_seller', '', { expires: 1, path: '/' });     
     $.cookie('search_seller_id', '', { expires: 1, path: '/' });
     $.cookie('search_foil', '', { expires: 1, path: '/' });
     $.cookie('search_signed','', { expires: 1, path: '/' });
@@ -120,7 +120,7 @@ $(document).ready(function() {
   
   //UPDATE SEARCH FORM ON PAGE LOAD BASED ON COOKIES --------------------------------------------------------------------
   //UPDATE SEARCH FORM ON PAGE LOAD BASED ON COOKIES --------------------------------------------------------------------  
-  //$("#name").val($.cookie('search_name'));
+  $("#name").val($.cookie('search_name'));
 
   $("#set").val($.cookie('search_set'));
   $("#set_chzn a span").text( $("#set option:selected").text() );

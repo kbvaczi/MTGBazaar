@@ -7,10 +7,11 @@ class Mtg::CardsController < ApplicationController
     @title = "MTG Cards"
     # LIST ALL CARDS BY SET    
     if params[:set]
-      @mtg_cards = Mtg::Set.order("name").where(:code => params[:set], :active => true).first.cards
-     @sets = []
+      @set = Mtg::Set.includes(:cards => :listings).where(:code => params[:set], :active => true).first
+      @mtg_cards = @set.cards.includes(:listings).page(params[:page]).per(25)
+      @title = @title + " - #{@set.name}"
     else
-      @sets = Mtg::Set.order("name").where(:active => true)
+      @sets = Mtg::Set.order("name ASC").where(:active => true)
       @mtg_cards = []
     end
   
@@ -26,7 +27,6 @@ class Mtg::CardsController < ApplicationController
     @mtg_card_back = Mtg::Card.where("mtg_cards.card_number LIKE ?", "%03d" % @mtg_card.card_number.to_i.to_s + "b").first if @mtg_card.dual_sided_card?
     @card_variants = Mtg::Card.includes(:set).where("mtg_cards.name LIKE ?", @mtg_card.name)    
 
-    # CURRENTLY IGNORING FILTERS ON LISTINGS
     query = SmartTuple.new(" AND ")
     if params[:filter] == "true"
       query << ["mtg_listings.foil LIKE ?", true] if cookies[:search_foil].present?
@@ -34,6 +34,7 @@ class Mtg::CardsController < ApplicationController
       query << ["mtg_listings.signed LIKE ?", true] if cookies[:search_signed].present?
       query << ["mtg_listings.altart LIKE ?", true] if cookies[:search_altart].present?
       query << ["mtg_listings.seller_id LIKE ?", cookies[:search_seller_id]] if cookies[:search_seller_id].present?    
+      query << ["mtg_listings.language LIKE ?", cookies[:search_language]] if cookies[:search_language].present?          
     end
     @listings = @mtg_card.listings.includes(:seller => :statistics).available.where(query.compile)
     
