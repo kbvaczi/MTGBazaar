@@ -4,7 +4,8 @@ source 'http://rubygems.org'
 # CUSTOM GEMS
 # -----------
 
-gem "devise", "~> 2.0.0"                                            # user authentication
+gem "devise", "~> 2.1.2"                                            # user authentication
+gem "devise-encryptable", "~> 0.1.1"
 gem "simple_form", "~> 1.5.2"                                       # simplified form creation
 #gem "recaptcha", "~> 0.3.4", :require => "recaptcha/rails"         # Bot prevention, no longer using this due to diffculty
 gem "nokogiri", "~> 1.5.0"                                          # XML/HTML Parser
@@ -27,6 +28,7 @@ gem "mini_magick", "~> 3.4"                                         # image mani
 gem 'unicorn'                                                       # custom webserver with multi-threaded application capabilities
 #gem "active_shipping", "~> 0.9.14"                                 # shipping rates for USPS
 gem "honeypot-captcha", "~> 0.0.2"                                  # alternative to capcha without the complexity  
+gem "taps", "~> 0.3.24"                                             # ability to pull and push databases from development to production
 
 # -------------
 # STANDARD GEMS

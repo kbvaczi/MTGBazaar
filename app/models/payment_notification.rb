@@ -24,8 +24,11 @@ class PaymentNotification < ActiveRecord::Base
       if transfer.transfer_type == "withdraw"
         if self.status == "Completed" && self.params[:secret] == "b4z44r2012!"
           unless transfer.confirmed_at # if withdraw is already confirmed don't repeat this
-            transfer.update_attribute(:confirmed_at, Time.now)  # set balance transfer to confirmed
-            transfer.account.balance_debit!(transfer.balance)   # withdraw from user's balance
+            # Confirm user still has enough money in his/her account prior to withdraw
+            if transfer.account.balance >= transfer.balance               
+              transfer.update_attribute(:confirmed_at, Time.now)  # set balance transfer to confirmed
+              transfer.account.balance_debit!(transfer.balance)   # withdraw from user's balance
+            end
           end
         end
       end
