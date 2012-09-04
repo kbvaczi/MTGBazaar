@@ -1,6 +1,6 @@
 ActiveAdmin.register AdminUser do
 
-  menu :label => "Admin Users", :parent => "Users"
+  menu :label => "1 - Admin Users", :parent => "Users"
   
   index do
     column :email

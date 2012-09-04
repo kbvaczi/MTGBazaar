@@ -4,17 +4,19 @@
 .card_image_wrapper {
   min-height: 250px;
   width: 180px;
+  padding-left: 5px;
+  padding-top: 5px;  
   display:inline;
   float:left;
 }
 .card_show_info {
   display:table;
   margin: 0 0px 0 5px;
-  width: 320px;
+  width: 330px;
   float:left;
   text-align:left;
 }
-.card_show_info_row {
+.card_show_info_row {  
   display:table-row;
   font-size:12px;
   line-height:1.3;
@@ -29,8 +31,10 @@
   padding: 4px 5px 4px 10px;
 }
 .card_show_info_value {
+  word-wrap:break-word;
   display: table-cell;
   width:82%;
+  max-width:270px;  
   padding: 4px 0 4px 5px;
   border-left:1px solid #eee;
 }

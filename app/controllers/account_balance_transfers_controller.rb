@@ -74,21 +74,22 @@ class AccountBalanceTransfersController < ApplicationController
   # generates a link to follow to paypal for deposits
   def paypal_deposit_url(deposit)
   values = {
-    :business => "seller_1345565383_biz@mtgbazaar.com", # business account info on paypal
+    :business => PAYPAL_CONFIG[:account_email], # business account info on paypal
     :cmd => "_xclick", #acts as a "buy now" button
     :return => acknowledge_deposit_url, # user is returned here after successful purchase
+    :cancel_return => cancel_deposit_url(:invoice => deposit.id), # user cancels deposit prior to paying
     :rm => 1, #return using GET method
     :invoice => deposit.id, #invoice passthrough variable
     :amount => paypal_commission(deposit.balance.dollars), #amount to pay
     :item_name => "#{current_user.username}: #{number_to_currency(deposit.balance.dollars)} deposit", 
-    :cert_id => "6NXAAY8BWC9HQ", # encryption certificate ID on paypal's site
-    :notify_url => create_deposit_notification_url(:secret => "b4z44r2012!") # where to send payment notification    
+    :cert_id => PAYPAL_CONFIG[:cert_id], # encryption certificate ID on paypal's site
+    :notify_url => create_deposit_notification_url(:secret => PAYPAL_CONFIG[:secret]) # where to send payment notification    
   }
    params = {
      :cmd => "_s-xclick",
      :encrypted => encrypt_for_paypal(values)
    }
-   "https://www.sandbox.paypal.com/cgi-bin/webscr?" + params.to_query
+   PAYPAL_CONFIG[:paypal_url] + params.to_query
   end
 
   # computes total price including paypal commission based on price in dollars
@@ -97,15 +98,10 @@ class AccountBalanceTransfersController < ApplicationController
     return ( ( base_price.to_f / ( 1 - 0.029 ) ) + 0.304 ).round(2)
   end
   
-  # reads SSL certificates from file
-  PAYPAL_CERT_PEM = File.read("#{Rails.root}/certs/paypal_cert.pem")
-  APP_CERT_PEM = File.read("#{Rails.root}/certs/app_cert.pem")
-  APP_KEY_PEM = File.read("#{Rails.root}/certs/app_key.pem")
-  
   # encrypts values for sending deposits securely to paypal
   def encrypt_for_paypal(values)
-      signed = OpenSSL::PKCS7::sign(OpenSSL::X509::Certificate.new(APP_CERT_PEM), OpenSSL::PKey::RSA.new(APP_KEY_PEM, ''), values.map { |k, v| "#{k}=#{v}" }.join("\n"), [], OpenSSL::PKCS7::BINARY)
-      OpenSSL::PKCS7::encrypt([OpenSSL::X509::Certificate.new(PAYPAL_CERT_PEM)], signed.to_der, OpenSSL::Cipher::Cipher::new("DES3"), OpenSSL::PKCS7::BINARY).to_s.gsub("\n", "")
+      signed = OpenSSL::PKCS7::sign(OpenSSL::X509::Certificate.new(PAYPAL_CONFIG[:app_cert_pem]), OpenSSL::PKey::RSA.new(PAYPAL_CONFIG[:app_key_pem], ''), values.map { |k, v| "#{k}=#{v}" }.join("\n"), [], OpenSSL::PKCS7::BINARY)
+      OpenSSL::PKCS7::encrypt([OpenSSL::X509::Certificate.new(PAYPAL_CONFIG[:paypal_cert_pem])], signed.to_der, OpenSSL::Cipher::Cipher::new("DES3"), OpenSSL::PKCS7::BINARY).to_s.gsub("\n", "")
   end
  
 end

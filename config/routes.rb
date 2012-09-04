@@ -105,6 +105,7 @@ MTGBazaar::Application.routes.draw do
   post  'payment_notifications/create_deposit_notification'   => 'payment_notifications#create_deposit_notification',   :as => 'create_deposit_notification'
   post  'payment_notifications/create_withdraw_notification'  => 'payment_notifications#create_withdraw_notification',  :as => 'create_withdraw_notification'  
   get   'payment_notifications/acknowledge_deposit'           => 'payment_notifications#acknowledge_deposit',           :as => "acknowledge_deposit"
+  get   'payment_notifications/cancel_deposit'                => 'payment_notifications#cancel_deposit',                :as => "cancel_deposit"  
   
 # NEWS FEEDS
 

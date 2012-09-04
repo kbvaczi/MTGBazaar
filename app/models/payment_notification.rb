@@ -12,9 +12,11 @@ class PaymentNotification < ActiveRecord::Base
       
       #transfer type is a deposit
       if transfer.transfer_type == "deposit"
-        if self.status == "Completed" && self.params[:secret] == "b4z44r2012!"
+        if self.status == "Completed" && self.params[:secret] == PAYPAL_CONFIG[:secret]
           unless transfer.confirmed_at #if deposit is already confirmed don't repeat this
-            transfer.update_attribute(:confirmed_at, Time.now) # set balance transfer to confirmed
+            transfer.confirmed_at = Time.now 
+            transfer.status = "completed"
+            transfer.save
             transfer.account.balance_credit!(transfer.balance) #add deposit to user's balance
           end 
         end
@@ -22,11 +24,13 @@ class PaymentNotification < ActiveRecord::Base
       
       # transfer type is a withdraw
       if transfer.transfer_type == "withdraw"
-        if self.status == "Completed" && self.params[:secret] == "b4z44r2012!"
+        if self.status == "Completed" && self.params[:secret] == PAYPAL_CONFIG[:secret]
           unless transfer.confirmed_at # if withdraw is already confirmed don't repeat this
             # Confirm user still has enough money in his/her account prior to withdraw
             if transfer.account.balance >= transfer.balance               
-              transfer.update_attribute(:confirmed_at, Time.now)  # set balance transfer to confirmed
+              transfer.confirmed_at = Time.now 
+              transfer.status = "completed"
+              transfer.save
               transfer.account.balance_debit!(transfer.balance)   # withdraw from user's balance
             end
           end

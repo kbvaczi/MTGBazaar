@@ -1,6 +1,6 @@
 # encoding: UTF-8
 ActiveAdmin.register Mtg::Listing do
-  menu :label => "Listings", :parent => "MTG"
+  menu :label => "4 - Listings", :parent => "MTG"
   extend Mtg::CardsHelper   # access mtg_card helpers inside this class
 
   # ------ ACTION ITEMS (BUTTONS) ------- #  

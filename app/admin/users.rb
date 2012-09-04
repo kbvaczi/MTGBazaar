@@ -1,6 +1,6 @@
 ActiveAdmin.register User do
   
-  menu :label => "Standard Users", :parent => "Users"
+  menu :label => "2 - Standard Users", :parent => "Users"
 
   # Create sections on the index screen
   #scope :all, :default => true

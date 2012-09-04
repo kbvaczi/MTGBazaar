@@ -1,7 +1,6 @@
 MTGBazaar::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
-
   # CUSTOM OPTIONS -------------------------------------------------------------------------------------------------- #
   
   # this is needed for devise to work on heroku

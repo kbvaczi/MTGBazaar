@@ -1,5 +1,5 @@
 ActiveAdmin.register Mtg::Set do
-  menu :label => "Sets", :parent => "MTG"
+  menu :label => "2 - Sets", :parent => "MTG"
   extend Mtg::CardsHelper   # access mtg_card helpers inside this class
 
   # ------ ACTION ITEMS (BUTTONS) ------- #  
@@ -10,6 +10,9 @@ ActiveAdmin.register Mtg::Set do
     end    
     action_item :only => :show do
       link_to 'Delete Set', delete_set_admin_mtg_set_path(mtg_set), :confirm => "Warning! Deleting this set will also delete the #{Mtg::Set.find(params[:id]).cards.count} cards that belong to this set.  Are you sure you want to do this?"
+    end
+    action_item :only => :show do
+      link_to 'Activate all Cards', activate_all_cards_admin_mtg_set_path(mtg_set), :confirm => "Are you sure you want to activate all cards?"
     end
     action_item :only => :index do
       link_to 'Create New Set', new_admin_mtg_set_path
@@ -70,5 +73,12 @@ ActiveAdmin.register Mtg::Set do
         format.html { redirect_to admin_mtg_sets_path, :notice => "Set Deleted..."}
       end
     end
+  member_action :activate_all_cards do
+    set = Mtg::Set.find(params[:id])
+    set.cards.each { |c| c.update_attribute(:active, true) if c.active == false }
+    respond_to do |format|
+      format.html { redirect_to admin_mtg_sets_path, :notice => "All Cards Activated..."}
+    end
+  end  
 
 end

@@ -22,7 +22,7 @@ class Mtg::Card < ActiveRecord::Base
     self.statistics.save   
   end
 
-  validates_presence_of :set_id, :name, :card_type, :rarity, :artist, :description, :mana_string, :mana_color, :mana_cost, :image_path
+  #validates_presence_of :set_id, :name, :card_type, :mana_color, :image_path
   
   # allows card objects to take these inputs upon creation, even though they won't be stored under the card model itself.
   # these will be used to import prices into separate card statistics model

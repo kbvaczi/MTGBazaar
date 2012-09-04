@@ -1,5 +1,5 @@
 ActiveAdmin.register AccountBalanceTransfer do
-  menu :label => "Balance Transfers", :parent => "Users"
+  menu :label => "2 --- Balance Transfers", :parent => "Users"
   
   # ------ ACTION ITEMS (BUTTONS) ------- #  
   
@@ -73,25 +73,26 @@ ActiveAdmin.register AccountBalanceTransfer do
       # setup transaction
       ActiveMerchant::Billing::Base.mode = :test
       gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(
-        :login => "seller_1345565383_biz_api1.mtgbazaar.com",
-        :password => "7FL9R6VGEJUFPRRC",
-        :signature => "AFcWxV21C7fd0v3bYYYRCpSSRl31APzCuXjYJP4WEZKAx1jkHS4lX331",
-        :appid => "APP-80W284485P519543T" )
+        :login => PAYPAL_CONFIG[:account_email],
+        :password => PAYPAL_CONFIG[:password],
+        :signature => PAYPAL_CONFIG[:signature],
+        :appid => PAYPAL_CONFIG[:appid] )
       recipients = [ {:email => "#{withdraw.account.paypal_username}",
                       :invoice_id => withdraw.id,
                       :amount => withdraw.balance.dollars } ]
       purchase = gateway.setup_purchase(
-        :action_type => "CREATE",
-        :return_url => root_url,
-        :cancel_url => root_url,
-        :ipn_notification_url => create_withdraw_notification_url(:secret => "b4z44r2012!"),  
-        :sender_email    => "seller_1345565383_biz@mtgbazaar.com",
-        :memo => "#{withdraw.account.user.username}: Withdraw of #{number_to_currency(withdraw.balance.dollars)}",
-        :receiver_list => recipients )
+        :action_type          => "CREATE",
+        :return_url           => root_url,
+        :cancel_url           => root_url,
+        :ipn_notification_url => create_withdraw_notification_url(:secret => PAYPAL_CONFIG[:secret]),  
+        :sender_email         => PAYPAL_CONFIG[:account_email],
+        :memo                 => "#{withdraw.account.user.username}: Withdraw of #{number_to_currency(withdraw.balance.dollars)}",
+        :receiver_list        => recipients )
 
       # execute transaction
       gateway.execute_payment(purchase)
-
+      
+      wait(10)
       withdraw.reload #refresh withdraw variable since it may have changed
       
       if withdraw.confirmed_at != nil

@@ -11,17 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120831192732) do
+ActiveRecord::Schema.define(:version => 20120904182805) do
 
   create_table "account_balance_transfers", :force => true do |t|
     t.integer  "account_id"
-    t.integer  "balance",            :default => 0,  :null => false
-    t.string   "current_sign_in_ip", :default => "", :null => false
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
+    t.integer  "balance",            :default => 0,         :null => false
+    t.string   "current_sign_in_ip", :default => "",        :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
     t.datetime "confirmed_at"
     t.datetime "approved_at"
     t.string   "transfer_type"
+    t.string   "status",             :default => "pending"
   end
 
   add_index "account_balance_transfers", ["account_id"], :name => "index_account_balance_transfers_on_account_id"
@@ -207,7 +208,7 @@ ActiveRecord::Schema.define(:version => 20120831192732) do
     t.integer  "block_id"
     t.string   "name",         :default => "",           :null => false
     t.string   "code",         :default => "",           :null => false
-    t.date     "release_date", :default => '2012-09-01'
+    t.date     "release_date", :default => '2012-09-04'
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.boolean  "active",       :default => false,        :null => false

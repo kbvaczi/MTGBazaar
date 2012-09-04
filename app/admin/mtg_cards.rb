@@ -1,6 +1,6 @@
 # encoding: UTF-8
 ActiveAdmin.register Mtg::Card do
-  menu :label => "Cards", :parent => "MTG"
+  menu :label => "3 - Cards", :parent => "MTG"
 
   #access mtg_card helpers inside this class
   extend Mtg::CardsHelper
@@ -153,6 +153,9 @@ ActiveAdmin.register Mtg::Card do
   # note: collection_actions work on collections, member_acations work on individual 
   begin
     collection_action :upload_xml, :method => :get
+    
+    # PROCESS XML DATA ------------------- #
+    
     collection_action :process_xml, :method => :post do
       @block_data = Array.new  #initialize placeholders for uploaded data
       @set_data = Array.new
@@ -219,19 +222,30 @@ ActiveAdmin.register Mtg::Card do
      Rails.cache.write("card_data", @card_data, :timeToLive => 1200.seconds)#saves data in cache for 20 minutes          
     end # controller method
     
+    # IMPORT XML DATA ------------------- #
+    
     collection_action :import_xml, :method => :post do
       @block_data = Rails.cache.read("block_data")
       @set_data = Rails.cache.read("set_data")
       @card_data = Rails.cache.read("card_data")
       @block_data.each do |b|
-        Mtg::Block.create(:name => b[:name], :active => b[:active]) if Mtg::Block.where(:name => b[:name]).empty?
-        puts "Block: #{b[:name]} created"
+        if Mtg::Block.where(:name => b[:name]).empty?
+          Mtg::Block.create(:name => b[:name], :active => b[:active]) 
+          puts "Block: #{b[:name]} created"
+        else
+          puts "Block: #{b[:name]} DUPLICATE!!!"
+        end
+        
       end
       @set_data.each do |s|
         release_date = Date.strptime(s[:release_date], '%m/%Y') rescue nil
         block = Mtg::Block.where(:name => s[:block])[0]
-        block.sets << Mtg::Set.create(:name => s[:name], :code => s[:code], :release_date => release_date, :active => false) if Mtg::Set.where(:code => s[:code]).empty?
-        puts "Set: #{s[:name]} created"
+        if Mtg::Set.where(:code => s[:code]).empty?
+          block.sets << Mtg::Set.create(:name => s[:name], :code => s[:code], :release_date => release_date, :active => false) 
+          puts "Set: #{s[:name]} created"
+        else
+          puts "Set: #{s[:name]} DUPLICATE!!!"
+        end
       end
       @card_data.each do |c|
         set = Mtg::Set.where(:code => c[:set])[0]
@@ -241,25 +255,33 @@ ActiveAdmin.register Mtg::Card do
             active = true # this is part of a new set, so we will activate this card assuming the set will be deactivated
           end
         end
-        set.cards << Mtg::Card.create(  :name => c[:name], 
-                                        :card_type => c[:card_type],
-                                        :card_subtype => c[:card_subtype],
-                                        :card_number => c[:card_number],
-                                        :rarity => c[:rarity],
-                                        :artist => c[:artist],
-                                        :description => c[:description],
-                                        :mana_string => c[:mana_string],
-                                        :mana_color => c[:mana_color],
-                                        :mana_cost => c[:mana_cost],
-                                        :power => c[:power],
-                                        :toughness => c[:toughness],
-                                        :multiverse_id => c[:multiverse_id],
-                                        :price_low => c[:price_low],                          
-                                        :price_med => c[:price_med],                                                    
-                                        :price_high => c[:price_high],                                        
-                                        :image_path => c[:image_path],
-                                        :active => active) if Mtg::Card.where(:multiverse_id => c[:multiverse_id]).empty?
-        puts "Card: #{c[:name]} created"
+        if Mtg::Card.where(:multiverse_id => c[:multiverse_id]).empty?
+          if Mtg::Card.create(  :set_id => set.id,
+                                :name => c[:name], 
+                                :card_type => c[:card_type],
+                                :card_subtype => c[:card_subtype],
+                                :card_number => c[:card_number],
+                                :rarity => c[:rarity],
+                                :artist => c[:artist],
+                                :description => c[:description],
+                                :mana_string => c[:mana_string],
+                                :mana_color => c[:mana_color],
+                                :mana_cost => c[:mana_cost],
+                                :power => c[:power],
+                                :toughness => c[:toughness],
+                                :multiverse_id => c[:multiverse_id],
+                                :price_low => c[:price_low],                          
+                                :price_med => c[:price_med],                                                    
+                                :price_high => c[:price_high],                                        
+                                :image_path => c[:image_path],
+                                :active => active) 
+            puts "Card: #{c[:name]} created"
+          else
+            puts "card error"
+          end
+        else
+          puts "Card: #{c[:name]} DUPLICATE!!!"
+        end
       end      
       redirect_to admin_mtg_cards_path, :notice => "XML imported successfully!"              
     end #import_xml method
