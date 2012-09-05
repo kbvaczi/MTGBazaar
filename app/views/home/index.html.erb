@@ -3,19 +3,7 @@
 <h1></h1>
 
 <div class="ma">
-
-  <div class ="newsfeed">
-	  
-    <% @news_feeds.each do |feed| %>
-
-	
-  	<br class="spacer"/>
-	
-    <div style="min-height:420px;border-bottom-style:solid;border-bottom-color:grey;"><%= feed.data.html_safe %></div>
-
-    <% end %>
-
-  </div>
+  <%= SiteVariable.get("homepage").html_safe %>
 
 </div>
 

@@ -21,7 +21,7 @@ class PaymentNotificationsController < ApplicationController
   end
   
   def acknowledge_deposit
-    redirect_to account_funding_index_path, :notice => "Your deposit was successful!"
+    redirect_to account_funding_index_path, :notice => "Your deposit was successful! A receipt for your purchase has been emailed to you."
     return
   end
   

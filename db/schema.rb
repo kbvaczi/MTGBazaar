@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120904182805) do
+ActiveRecord::Schema.define(:version => 20120904223436) do
 
   create_table "account_balance_transfers", :force => true do |t|
     t.integer  "account_id"
@@ -301,6 +301,19 @@ ActiveRecord::Schema.define(:version => 20120904182805) do
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
+  create_table "site_variables", :force => true do |t|
+    t.string   "name"
+    t.text     "value"
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.boolean  "active",     :default => true
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+  end
+
+  add_index "site_variables", ["active"], :name => "index_site_variables_on_active"
+  add_index "site_variables", ["name"], :name => "index_site_variables_on_name"
 
   create_table "ticket_updates", :force => true do |t|
     t.integer  "ticket_id"

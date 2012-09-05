@@ -73,9 +73,9 @@ ActiveAdmin.register AccountBalanceTransfer do
       # setup transaction
       ActiveMerchant::Billing::Base.mode = :test
       gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(
-        :login => PAYPAL_CONFIG[:account_email],
-        :password => PAYPAL_CONFIG[:password],
-        :signature => PAYPAL_CONFIG[:signature],
+        :login => PAYPAL_CONFIG[:api_login],
+        :password => PAYPAL_CONFIG[:api_password],
+        :signature => PAYPAL_CONFIG[:api_signature],
         :appid => PAYPAL_CONFIG[:appid] )
       recipients = [ {:email => "#{withdraw.account.paypal_username}",
                       :invoice_id => withdraw.id,

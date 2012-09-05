@@ -1,14 +1,4 @@
 <div id="container">
-    
-	<div> 
-	<%= link_to "", "http://www.dailymtg.com", :id => "right_bar2" , :style => "background-image: url(/assets/grandprix.jpg);" %>
-	</div>
-	<div> 
-	<%= link_to "", "http://www.dailymtg.com", :id => "right_bar2" , :style => "background-image: url(/assets/grandprix2.jpg);" %>
-	</div>
-	<div> 
-	<%= link_to "", "http://www.dailymtg.com", :id => "right_bar2" , :style => "background-image: url(/assets/grandprix.jpg);" %>
-	</div>
-	
-	      
+  <%= SiteVariable.get("right_bar_2").html_safe %>
+
 </div>​
