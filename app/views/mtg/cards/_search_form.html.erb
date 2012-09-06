@@ -14,13 +14,15 @@
     
     <div class="mt-m search-type">
       <%#= label_tag "Type:" %>
-      <%= select_tag "type", options_for_select(card_type_list, :selected => params[:type]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Type...", :class => "search-select chzn-select"} %>            
+      <%= select_tag "type", options_for_select(Mtg::Card.pluck(:card_type).uniq.sort, :selected => params[:type]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Type...", :class => "search-select chzn-select"} %>            
+      <%#= select_tag "type", options_for_select(card_type_list, :selected => params[:type]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Type...", :class => "search-select chzn-select"} %>            
     </div>
 
     <div class="mt-m search-subtype">
       <%#= label_tag "Subtype:" %>
-      <%= select_tag "subtype", options_for_select(card_subtype_list, :selected => params[:subtype]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Subtype...", :class => "search-select chzn-select"} %>            
-      <%#= render :partial => "mtg/cards/search_subtype_select" %>      
+      <%= select_tag "subtype", options_for_select(Mtg::Card.pluck(:card_subtype).uniq.sort, :selected => params[:subtype]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Subtype...", :class => "search-select chzn-select"} %>            
+      <%#= select_tag "subtype", options_for_select(card_subtype_list, :selected => params[:subtype]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Subtype...", :class => "search-select chzn-select"} %>            
+      
     </div>          
     
     <div class="mt-m">
@@ -32,8 +34,8 @@
     
     <div class="mt-m search-artist">
       <%#= label_tag "Artist:" %>
-      <%= select_tag "artist" , options_for_select(artist_list, :selected => params[:artist]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Artist...", :class => "search-select chzn-select"} %>                        
-      <%#= render :partial => "mtg/cards/search_artist_select" %>
+      <%= select_tag "artist" , options_for_select(Mtg::Card.pluck(:artist).uniq.sort, :selected => params[:artist]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Artist...", :class => "search-select chzn-select"} %>                        
+      <%#= select_tag "artist" , options_for_select(artist_list, :selected => params[:artist]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Artist...", :class => "search-select chzn-select"} %>                        
     </div>
     
     <div class="mt search-color">

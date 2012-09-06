@@ -5,7 +5,7 @@ class AddStatusToAccountBalanceTransfers < ActiveRecord::Migration
     AccountBalanceTransfer.all.each do |transfer|
       if transfer.confirmed_at
         transfer.update_attribute(:status, "completed")
-      elsif tranfer.transfer_type == "deposit" && transfer.updated_at < 1.days.ago
+      elsif transfer.transfer_type == "deposit" && transfer.updated_at < 1.days.ago
         transfer.update_attribute(:status, "cancelled")
       else
         transfer.update_attribute(:status, "pending")

@@ -14,7 +14,6 @@ class SiteVariable < ActiveRecord::Base
   def update_variable_cache!
     SiteVariable.where(:name => name, :active => true).order("start_at DESC").each do |v|
       if v.start_at < Time.now && (v.end_at == nil || v.end_at > Time.now)
-        puts "yahoo"
         Rails.cache.write("site_variable_#{name}", v.value, :timeToLive => 30.minutes)
         break
       end
