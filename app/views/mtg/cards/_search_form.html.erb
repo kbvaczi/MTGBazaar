@@ -1,9 +1,9 @@
 <%= form_tag search_mtg_cards_path , :method => "get", :id => "search-form", :honeypot => true do %>   
   
   <%# autocomplete_mtg_card_name_mtg_cards_path%>
-  <div class="mt ml-m mr-m">
+  <div class="ma-m">
 
-    <div class="mt-m">
+    <div>
       <%= text_field_tag "name", params[:name], {:class => "search-text ui-autocomplete-input" , :placeholder => "Name..." , "data-autocomplete" => autocomplete_name_mtg_cards_path }%>
     </div>
 
@@ -14,15 +14,12 @@
     
     <div class="mt-m search-type">
       <%#= label_tag "Type:" %>
-      <%= select_tag "type", options_for_select(Mtg::Card.pluck(:card_type).uniq.sort, :selected => params[:type]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Type...", :class => "search-select chzn-select"} %>            
-      <%#= select_tag "type", options_for_select(card_type_list, :selected => params[:type]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Type...", :class => "search-select chzn-select"} %>            
+      <%= select_tag "type", options_for_select(card_type_list, :selected => params[:type]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Type...", :class => "search-select chzn-select"} %>            
     </div>
 
     <div class="mt-m search-subtype">
       <%#= label_tag "Subtype:" %>
-      <%= select_tag "subtype", options_for_select(Mtg::Card.pluck(:card_subtype).uniq.sort, :selected => params[:subtype]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Subtype...", :class => "search-select chzn-select"} %>            
-      <%#= select_tag "subtype", options_for_select(card_subtype_list, :selected => params[:subtype]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Subtype...", :class => "search-select chzn-select"} %>            
-      
+      <%= select_tag "subtype", options_for_select(card_subtype_list, :selected => params[:subtype]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Subtype...", :class => "search-select chzn-select"} %>            
     </div>          
     
     <div class="mt-m">
@@ -34,8 +31,7 @@
     
     <div class="mt-m search-artist">
       <%#= label_tag "Artist:" %>
-      <%= select_tag "artist" , options_for_select(Mtg::Card.pluck(:artist).uniq.sort, :selected => params[:artist]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Artist...", :class => "search-select chzn-select"} %>                        
-      <%#= select_tag "artist" , options_for_select(artist_list, :selected => params[:artist]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Artist...", :class => "search-select chzn-select"} %>                        
+      <%= select_tag "artist" , options_for_select(artist_list, :selected => params[:artist]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Artist...", :class => "search-select chzn-select"} %>                        
     </div>
     
     <div class="mt search-color">
@@ -73,7 +69,7 @@
     
     <div class="mt-m mb-s search-abilities">
       <%#= label_tag "Abilities:" %>
-      <%= select_tag "abilities" , options_for_select(Mtg::CardsHelper::ABILITY_LIST, :selected => params[:abilities]), { :multiple => true, :class => "search-select-multi chzn-select", :style => "", "data-placeholder" => "Abilities..."} %>                        
+      <%= select_tag "abilities" , options_for_select(ability_list, :selected => params[:abilities]), { :multiple => true, :class => "search-select-multi chzn-select", :style => "", "data-placeholder" => "Abilities..."} %>                        
     </div> 
 
 <div class="mt-m search-type">

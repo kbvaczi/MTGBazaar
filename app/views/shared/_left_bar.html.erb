@@ -1,13 +1,8 @@
 <div id="left_bar">
-    <h1>Search MTG Cards</h1>
+    <h1>Search Cards</h1>
 
-    <%# EXPERIMENTING WITH DIFFERENT WAYS TO CACHE SEARCH BAR... THE LATTER WILL CACHE BOTH DEVELOPMENT AND PRODUCTION? %>
-
-    <%# cache('mtg_cards_search_form') do %>
-      <%#= render :partial => 'mtg/cards/search_form' %>
-    <%# end %>
-
-    <% Rails.cache.write('mtg_cards_search_form', render(:partial => 'mtg/cards/search_form')) if not Rails.cache.read('mtg_cards_search_form') %>
-    <%= Rails.cache.read('mtg_cards_search_form') %>
-    
+    <% cache('mtg_cards_search_form') do %>
+      <%= render :partial => 'mtg/cards/search_form' %>
+    <% end %>
+        
 </div>
