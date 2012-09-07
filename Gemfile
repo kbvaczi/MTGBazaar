@@ -26,9 +26,13 @@ gem "ckeditor", "~> 3.7.1"                                          # blog edito
 gem "mini_magick", "~> 3.4"                                         # image manipulation for ckeditor
 #gem "girl_friday", "~> 0.9.7"                                      # background processing for unicorn... disabled due to issues
 gem 'unicorn'                                                       # custom webserver with multi-threaded application capabilities
-#gem "active_shipping", "~> 0.9.14"                                 # shipping rates for USPS
+
+gem "active_shipping", "~> 0.9.14"                                  # shipping rates for USPS
+gem "usps_standardizer", "~> 0.4.2"
+
 gem "honeypot-captcha", "~> 0.0.2"                                  # alternative to capcha without the complexity  
 gem "taps", "~> 0.3.24"                                             # ability to pull and push databases from development to production
+
 
 # -------------
 # STANDARD GEMS
@@ -42,6 +46,7 @@ gem 'sass-rails',   '~> 3.2.3'                                      # take sass-
 group :production do
   gem "mysql2"                                                      # allows application to use a mysql database  
   gem "newrelic_rpm", "~> 3.3.2"                                    # performance monitoring
+  gem "dalli", "~> 2.2"                                               # memcache for heroku
 end
 
 group :development do

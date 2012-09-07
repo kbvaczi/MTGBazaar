@@ -134,7 +134,7 @@ module Mtg::CardsHelper
   # Defines an array containing all the card types for select boxes
   def card_type_list
     Rails.cache.fetch 'card_type_list' do
-      Mtg::Card.pluck(:card_type).uniq.sort
+      Mtg::Card.pluck(:card_type).each {|t| t.gsub!(/[ ][\/][\/][ ](.*)/,"")}.uniq.sort
     end
     #Array.new(["Artifact", "Creature", "Enchantment", "Enchant Creature", "Instant", "Interrupt", "Land", "Plane", "Planeswalker", "Scheme", "Sorcery", "Summon", "Tribal"])
   end
@@ -190,7 +190,7 @@ module Mtg::CardsHelper
     else
       dimension = "height:#{options[:height] || "15px"}"
     end
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/set_symbols/#{set.code}.png", :title => "#{set.name}", :style => "#{dimension};vertical-align:bottom;padding-bottom:5px;")         
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/set_symbols/#{set.code}.png", :title => "#{set.name}", :style => "#{dimension};vertical-align:text-top;")         
   end
   
   # displays set symbol for a given set code
@@ -218,7 +218,7 @@ module Mtg::CardsHelper
         language = "Italian"                
     end
     height = options[:height] || "20px"
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/flags/#{language.downcase}.png", :title => "#{language}", :style => "height:#{height};vertical-align:bottom;")         
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/flags/#{language.downcase}.png", :title => "#{language}", :style => "height:#{height};vertical-align:text-top;")         
   end  
   
   def listing_option_foil_icon

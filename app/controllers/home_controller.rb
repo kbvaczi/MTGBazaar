@@ -1,13 +1,11 @@
 class HomeController < ApplicationController
 
-
+  include ActiveMerchant::Shipping
   
   def index
 
     # TESTING ACTIVE SHIPPING
-=begin    
-    require 'active_shipping'
-    include ActiveMerchant::Shipping
+=begin
     
     # Package up a poster and a Wii for your nephew.
     packages = [
@@ -26,18 +24,17 @@ class HomeController < ApplicationController
                                 :city => 'Beverly Hills',
                                 :zip => '90210')
 
-    destination = Location.new( :country => 'CA',
-                                :province => 'ON',
-                                :city => 'Ottawa',
-                                :postal_code => 'K1P 1J1')
+    destination = Location.new(                             :country => 'US',
+                                                            :state => 'CA',
+                                                            :city => 'Beverly Hills',
+                                                            :zip => '90210')
 
     # Check out USPS for comparison...
-    usps = USPS.new(:login => '403MTGBA0147', :test => true)
-    response = usps.find_rates(origin, destination, packages)
+    @usps = USPS.new(:login => '403MTGBA0147', :test => true)
+#    response = usps.find_rates(origin, destination, packages)
 
-    @usps_rates = response.rates.sort_by(&:price).collect {|rate| [rate.service_name, rate.price]}
-=end    
-
+#    @usps_rates = response.rates.sort_by(&:price).collect {|rate| [rate.service_name, rate.price]}
+=end
     if user_signed_in?
       @news_feeds = NewsFeed.where("active LIKE ?", true)
                             .where("start_at < \'#{Time.now}\' OR start_at IS null")

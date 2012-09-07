@@ -77,7 +77,7 @@
     <div class="card_show_info_label">
       Versions
     </div>
-    <div class="card_show_info_value">
+    <div class="card_show_info_value" style="line-height:1.4;">
       <% @card_variants.each do |v| %>
         <%= link_to display_set_symbol(v.set), mtg_card_path(v) %>
       <% end %>
