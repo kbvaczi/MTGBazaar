@@ -190,7 +190,7 @@ module Mtg::CardsHelper
     else
       dimension = "height:#{options[:height] || "15px"}"
     end
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/set_symbols/#{set.code}.jpg", :title => "#{set.name}", :style => "#{dimension};vertical-align:bottom;padding-bottom:5px;")         
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/set_symbols/#{set.code}.png", :title => "#{set.name}", :style => "#{dimension};vertical-align:bottom;padding-bottom:5px;")         
   end
   
   # displays set symbol for a given set code
