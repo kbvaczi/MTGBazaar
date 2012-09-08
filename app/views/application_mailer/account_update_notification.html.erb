@@ -1,0 +1,23 @@
+<div style="width:550px;">
+  <h3>Your MTGBazaar account information for <%= @user.email %> was recently changed.</h3>
+  <br class="spacer"/>
+  <p>If you made this change, no worries, ignore this message.</p>
+  <br class="spacer"/>
+  <p>If you didn't recently update your account information, however, your account might have been hijacked.</p>
+  <br class="spacer"/>
+  <p>If you think your account was hijacked, or if you are unsure whether the account changes were made by yourself, please reset your password by using the following link:</p>
+  <br class="spacer"/>
+  <%= link_to "I want to reset my password", new_password_url(@user), :method => :post %>
+  <br class="spacer"/>
+  <h3>MTGBazaar security tips:</h3>
+  <ul>
+    <li>Never give out your password.  MTGBazaar personnel will never ask for your password.</li>
+    <li>Use a different password for your MTGBazaar account than you do for your email account.</li>
+    <li>Keep your security question secure. Me may ask you this question to confirm your identity. </li>  
+  </ul>
+  <br class="spacer"/>
+  <br class="spacer"/>    
+  <p>Cheers!</p>
+  <%= image_tag "logo.png" %>
+  
+</div>

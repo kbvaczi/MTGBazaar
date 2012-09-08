@@ -84,7 +84,7 @@ MTGBazaar::Application.routes.draw do
   get 'account/purchases' => 'users#account_purchases', :as => 'account_purchases'
   post 'account/purchases' => 'users#account_purchases', :as => 'account_purchases'   # for pagination  
 
-  devise_for :users, :controllers => { :registrations => 'users/registrations' , :sessions => 'users/sessions' }
+  devise_for :users, :controllers => { :registrations => 'users/registrations', :sessions => 'users/sessions', :passwords => 'users/passwords' }
   resources :users, :only => [:index, :show], :controllers => { :users => "users/users"} do
     get "autocomplete_name", :on => :collection
     get :autocomplete_user_username, :on => :collection

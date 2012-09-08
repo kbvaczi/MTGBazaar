@@ -10,6 +10,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
     super      
   end
   
+  def update
+    ApplicationMailer.account_update_notification(resource).deliver
+    super
+  end
+  
   def create
     super
   end
