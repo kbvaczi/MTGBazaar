@@ -18,18 +18,20 @@ class SiteVariable < ActiveRecord::Base
         break
       end
     end
+    
   end
   
   def self.get(name = "")
-    unless Rails.cache.read("site_variable_#{name}").present?
+    Rails.cache.fetch "site_variable_#{name}", :expires_in => 30.minutes do
       SiteVariable.where(:name => name, :active => true).order("start_at DESC").each do |v|
         if v.start_at < Time.now && (v.end_at == nil || v.end_at > Time.now)
-          Rails.cache.write("site_variable_#{name}", v.value, :timeToLive => 30.minutes)
+          v.value
           break
         end
       end
     end
-    Rails.cache.read("site_variable_#{name}") || "" 
+    
   end
+  
 end
 

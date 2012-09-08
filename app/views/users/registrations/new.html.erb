@@ -10,10 +10,19 @@
 
   <h2>Account Setup</h2>
 
-  <%= f.input :username,              :required => 'true' , :hint => "no special characters or spaces"  %>
-  <%= f.input :email ,                :required => 'true' %>
-  <%= f.input :password,              :required => 'true', :hint => "must be at least 6 characters"  %>
-  <%= f.input :password_confirmation, :label => "Confirm Password", :required => 'true' %>
+  <%= f.input :username,              :required => true, 
+                                      :hint => "Numbers and letters only, 15 chars max.",
+                                      :placeholder => "ex. BazaarSeller23" %>
+
+  <%= f.input :email ,                :required => true,
+                                      :placeholder => "name@domain.com" %>
+
+  <%= f.input :password,              :required => true, 
+                                      :hint => "must be at least 8 characters"  %>
+
+  <%= f.input :password_confirmation, :label => "Confirm Password", 
+                                      :required => true %>
+
   <%= f.simple_fields_for :account do |a| %>
     <%= a.input :security_question,   :label => "Security Question", 
                                       :collection => [  "What was the make of your first car?",
@@ -22,37 +31,53 @@
                                                         "What is your oldest sibling's name?",
                                                         "Who was your childhood hero?",
                                                         "What is your grandmother's name?" ] , 
-                                      :include_blank => false ,
+                                      :include_blank => false,
+                                      :required => true,
                                       :input_html => { :class => 'chzn-select'} %>
+
     <%= a.input :security_answer,     :label => "Answer", 
-                                      :required => 'true',
+                                      :required => true,
                                       :hint => "please remember for identity confirmation" %>
+
   <% end %>
 
+  <br class = "spacer"/>
+    <br class = "spacer"/>
   
   <h2>Personal Information</h2>
 
   <%= f.simple_fields_for :account do |a| %>
     <%= a.input :first_name %>
-    <%= a.input :last_name ,    :required => 'true' %>
-    <%= a.input :address1,      :label => "Address 1" , :required => 'true' %>
-    <%= a.input :address2,      :label => 'Address 2', :hint => "additional line for address if needed" %>
-    <%= a.input :city ,         :required => 'true' %>
-    <%= a.input :state ,        :required => 'true' %>
-    <%= a.input :zipcode ,      :label => "Zip" , :required => 'true' %>    
-    <%= a.input :country ,      :required => 'true' , 
-                                :collection => [ ["United States", "USA"] ] , 
-                                :include_blank => false , 
-                                :input_html => { :class => 'chzn-select' }  %>
+    <%= a.input :last_name ,    :required => true %>
+    <%= a.input :address1,      :label => "Street Address" ,
+                                :placeholder => "ex. 402 Planeswalker Place",
+                                :required => true %>
+    <%= a.input :address2,      :label => 'Apt./Suite.', 
+                                :placeholder => "ex. Apt 201" %>
+    <%= a.input :city ,         :required => true %>
+    <%= a.input :state ,        :as => :select,
+                                :input_html => { :class => 'chzn-select' },
+                                :collection => us_states,
+                                :required => true %>
+    <%= a.input :zipcode ,      :label => "Zip" , 
+                                :placeholder => "12345",
+                                :required => true %>    
+    <%= a.input :country , :required => true ,
+                           :collection => [ ["United States", "US"] ] , 
+                           :include_blank => false, 
+                           :input_html => {:class => "chzn-select"},
+                           :hint => "currently we only support USA" %>
   <% end %>
   
   <br class = "spacer"/>
+  <br class = "spacer"/>    
 
   <h2>Terms and Conditions</h2>
-  <div class ="AcknowledgeBorderDiv center" style="height:145px;width:440px;overflow-x:hidden; overflow-y:scroll;">
-  	<div class="AcknowledgeOuterDiv center" style="height:145px;width:440px;overflow-x:hidden; overflow-y:scroll;">
+  <div class ="AcknowledgeBorderDiv center">
+  	<div class="AcknowledgeOuterDiv center">
       <div class="AcknowledgeInnerDiv">		
-    		<%
+          <%= SiteVariable.get("terms_of_service").html_safe %>
+    		<%#= 
       		output = ""
       		text=File.open('public/terms.txt').read
       		text.gsub!(/\r\n?/, "<br/>")
@@ -60,27 +85,29 @@
       			output = output + line
       		end 
     		%>
-    		<%= output.html_safe %>
+    		<%#= output.html_safe %>
       </div>
   	</div>
   </div>
 
   <br class = "spacer"/>
-
+  <br class = "spacer"/>
+  
   <%# Check boxes for age and agree-to-terms %>
   <%#= f.input :age,           :label => '',
                               :as => :check_boxes ,
-                              :required => 'true' ,
+                              :required => true ,
                               :collection => [["I am over the age of 18 years",1]],
                               :input_html => { :checked => "#{'checked' if  params[:user][:age][1] rescue false }" } %>
 
   <%= f.input :terms,         :label => '',
                               :as => :check_boxes ,
-                              :required => 'true' ,
+                              :required => true ,
                               :collection => [["I agree to Terms and Conditions",1]], 
                               :input_html => {  :id => 'AcknowledgeCheckBox',
       												:checked => "#{'checked' if params[:user][:terms][1] rescue false }" } %>
     
+  <br class = "spacer"/>
   <br class = "spacer"/>
   
   <%= f.submit 'Sign up' , :class => 'center' %>

@@ -23,12 +23,20 @@
     <%= a.input :first_name %>
     <%= a.input :last_name , :required => true %>
 
-    <%= a.input :address1, :label => "Address 1" , :required => true %>
-    <%= a.input :address2, :label => 'Address 2', :hint => "additional line for address if needed" %>
+    <%= a.input :address1, :label => "Street Address" , :required => true, :placeholder => "ex. 50202 Planeswalker Place" %>
+    <%= a.input :address2, :label => 'Apt./Suite', :placeholder => "ex. Apt. 201"%>
     <%= a.input :city , :required => true %>
-    <%= a.input :state , :required => true %>
+    <%= a.input :state ,        :as => :select,
+                                :input_html => { :class => 'chzn-select' },
+                                :collection => us_states,
+                                :required => true %>
     <%= a.input :zipcode , :label => "Zip" , :required => true %>    
-    <%= a.input :country , :required => true , :collection => [ ["United States", "USA"] ] , :include_blank => false, :input_html => {:class => "chzn-select"} %>
+    <%= a.input :country , :required => true ,
+                           :collection => [ ["United States", "USA"] ] , 
+                           :include_blank => false, 
+                           :input_html => {:class => "chzn-select"},
+                           :disabled => true,
+                           :hint => "currently we only support USA" %>
   <% end %>
   
   <br class = "spacer"/>
