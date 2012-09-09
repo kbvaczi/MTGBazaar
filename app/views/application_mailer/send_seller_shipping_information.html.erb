@@ -8,7 +8,18 @@
   <br class="spacer"/>
 
   <br/>
-  <%= render :partial => "mtg/transaction_items/teaser" , :collection => @transaction.items, :as => "item"   %>
+  <table>
+    <tr class="header_row">
+    	<th> Card Name </th>
+      <th> Set </th>      
+      <th> Price </th>
+      <th> Quality </th>
+      <th> Language </th>
+      <th> Options </th>
+      <th> Quantity </th>      
+    </tr>
+    <%= render :partial => "mtg/transaction_items/teaser" , :collection => @transaction.items, :as => "item"   %> 
+  </table>
 
   <h3>Ship cards to the following address:</h3>
   <p>MTGBazaar buyer <%= @transaction.buyer.username %></p>
@@ -17,5 +28,5 @@
   <p><%= "#{@transaction.buyer.account.city}, #{@transaction.buyer.account.state} #{@transaction.buyer.account.zipcode}" %></p>
   <br class="spacer"/>
   <p>Cheers!</p>
-  <%= image_tag "logo.png" %>
+  <%= image_tag 'logo_sm.png', :alt => "MTGBazaar Logo" %>
 </div>

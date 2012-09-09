@@ -178,8 +178,13 @@ module Mtg::CardsHelper
     return [["English","EN"], ["Russian","RU"], ["French","FR"], ["Japanese","JN"], ["Chinese","CN"], ["Korean","KO"], ["German","GN"], ["Portuguese", "PG"], ["Spanish", "SP"], ["Italian", "IT"]]
   end
   
-  def active_set_list
-    sets = Mtg::Set.where(:active => true).order("release_date DESC").to_a
+  def active_set_list(options = {})
+    if options[:sort] == "name"
+      sort = "name ASC"       
+    else
+      sort = "release_date DESC" 
+    end
+    sets = Mtg::Set.where(:active => true).order("#{sort}").to_a
     return sets.collect(&:name).zip(sets.collect(&:code))
   end
 

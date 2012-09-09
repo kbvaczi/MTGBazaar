@@ -3,7 +3,18 @@
   <h3>You have received a purchase request from <%= link_to @transaction.buyer.username, user_url(@transaction.buyer) %> for the following items:</h3>
   <h3>Transaction number: <%= @transaction.transaction_number %></h3><br/>
   
-  <%= render :partial => "mtg/transaction_items/teaser" , :collection => @transaction.items, :as => "item"  %> 
+  <table>
+    <tr class="header_row">
+    	<th> Card Name </th>
+      <th> Set </th>      
+      <th> Price </th>
+      <th> Quality </th>
+      <th> Language </th>
+      <th> Options </th>
+      <th> Quantity </th>      
+    </tr>
+    <%= render :partial => "mtg/transaction_items/teaser" , :collection => @transaction.items, :as => "item"   %> 
+  </table>
 
   <br class="spacer"/>
   <p>
@@ -19,5 +30,5 @@
   <br class="spacer"/>
 
   <p>Cheers!</p>
-  <%= image_tag "logo.png" %>
+  <%= image_tag 'logo_sm.png', :alt => "MTGBazaar Logo" %>
 </div>

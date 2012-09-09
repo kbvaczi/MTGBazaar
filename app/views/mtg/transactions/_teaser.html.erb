@@ -31,7 +31,7 @@
             <% if current_user.id == transaction.buyer_id && transaction.status == "shipped"%>
               <li> <%= link_to "Complete Purchase", buyer_delivery_confirmation_path(transaction)  %> </li>
             <% end %>        
-            <% if transaction.status != "delivered" %>
+            <% if transaction.status != "delivered" && transaction.status != "rejected" && transaction.status != "cancelled" && current_user.id != transaction.seller.id %>
               <li> <%= link_to "Cancel Sale", mtg_transaction_buyer_sale_cancellation_path(transaction) %> </li>
             <% end %>  
           </ul>

@@ -4,15 +4,10 @@
 <div class="ma">
 
   <%= simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }, :honeypot => true) do |f| %>
-
-    <p style="margin:0 50px;"> If you cannot remember your password, trust us, we understand.  Enter your email address and we will email you instructions on how to reset your password.</p>
-    <br class="spacer"/>
-    <br class="spacer"/>    
   
     <% flash[:error] = "There were one or more errors while trying to process your request" if !devise_error_messages!.empty? %>
 
     <%= f.input :email ,                :required => 'true' %>
-    <br class="spacer"/>
     <br class="spacer"/>
     <br class="spacer"/>      
     <%= f.submit "Send Password Reset Instructions" , :class => 'center'%>

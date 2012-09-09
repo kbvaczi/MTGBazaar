@@ -46,6 +46,8 @@ class Account < ActiveRecord::Base
                            :minimum   => 2,
                            :maximum   => 30,
                          }
+                         
+  validates             :balance, :numericality => {:greater_than_or_equal_to => 0, :less_than => 10000000, :message => "Must be between $0.00 and $100,000"}   #price must be between $0 and $10,000.00                           
 
   # Attributes accessible to multiple assign.  Others must be individually assigned.
   attr_accessible :first_name, :last_name, :country, :state, :city, :address1, :address2, :zipcode, :security_question, :security_answer, :paypal_username
@@ -58,23 +60,13 @@ class Account < ActiveRecord::Base
   # credit this account's balance with amount in dollars
   def balance_credit!(amount=0)
     self.balance += amount.to_money
-    self.save!
-#    if amount.class == Fixnum #amount is a number, do straight math
-#      self.update_attribute(:balance, self.balance.dollars + amount)    
-#    elsif amount.class == Money # amount is a money class... need to get dollar value before doing math
-#      self.update_attribute(:balance, self.balance.dollars + amount.dollars)    
-#    end
+    self.save
   end
 
   # debit this account's balance with amount in dollars
   def balance_debit!(amount=0)
     self.balance -= amount.to_money
-    self.save!
-#    if amount.class == Fixnum #amount is a number, do straight math
-#      self.update_attribute(:balance, self.balance.dollars - amount)    
-#    elsif amount.class == Money # amount is a money class... need to get dollar value before doing math
-#      self.update_attribute(:balance, self.balance.dollars - amount.dollars)    
-#    end
+    self.save
   end  
   
 end

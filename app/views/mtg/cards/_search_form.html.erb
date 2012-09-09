@@ -9,7 +9,7 @@
 
     <div class= "mt-m search-set">
       <%#= label_tag "Set:" %>
-      <%= select_tag "set" , options_for_select(Mtg::Set.where(:active => true).order(:name).to_a.collect {|s| [ s.name, s.code ] }, :selected => params[:set]), {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Set...", :class => "search-select chzn-select"} %>
+      <%= select_tag "set" , options_for_select(active_set_list, :selected => params[:set]), {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Set...", :class => "search-select chzn-select"} %>
     </div>
     
     <div class="mt-m search-type">

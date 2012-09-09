@@ -5,29 +5,39 @@ class Mtg::Transaction < ActiveRecord::Base
   
   belongs_to :seller,   :class_name => "User"
   belongs_to :buyer,    :class_name => "User"
-  has_many   :items,    :class_name => "Mtg::TransactionItem" , :foreign_key => "transaction_id"
+  has_many   :items,    :class_name => "Mtg::TransactionItem" ,   :foreign_key => "transaction_id", :dependent => :destroy
+  has_one    :payment,  :class_name => "Mtg::TransactionPayment", :foreign_key => "transaction_id", :dependent => :destroy
+  has_one    :credit,   :class_name => "Mtg::TransactionCredit",  :foreign_key => "transaction_id", :dependent => :destroy  
 
-  after_create :set_transaction_number
+  # Implement Money gem for price column
+  composed_of   :value,
+                :class_name => 'Money',
+                :mapping => %w(value cents),
+                :constructor => Proc.new { |cents| Money.new(cents || 0) },                
+                :converter => Proc.new { |value| value.respond_to?(:to_money) ? value.to_money : Money.empty }
+
+  # Implement Money gem for price column
+  composed_of   :shipping_cost,
+                :class_name => 'Money',
+                :mapping => %w(shipping_cost cents),
+                :constructor => Proc.new { |cents| Money.new(cents || 0) },                
+                :converter => Proc.new { |value| value.respond_to?(:to_money) ? value.to_money : Money.empty }                  
+
+  before_validation :update_transaction_costs
+  before_validation :build_associated_payment, :on => :create
+
+  after_create      :set_transaction_number                    
   
 # ---------------- VALIDATIONS ----------------      
 
+  validates_associated    :payment, :items, :credit
+  validates_presence_of   :payment, :seller, :buyer, :items, :value, :shipping_cost
 
 
 # ---------------- PUBLIC MEMBER METHODS -------------
   
-  # returns the total value of a transaction
-  def subtotal_value
-    Mtg::TransactionItem.by_id(item_ids).sum("mtg_transaction_items.price * mtg_transaction_items.quantity_requested").to_f / 100
-  end
-  
-  # TODO: code shipping cost method for transactions
-  # returns the total value of a transaction
-  def shipping_cost
-    0
-  end
-  
   def total_value
-    shipping_cost + subtotal_value
+    self.shipping_cost + self.value
   end
   
   def item_count
@@ -62,7 +72,7 @@ class Mtg::Transaction < ActiveRecord::Base
   end
   
   # seller has confirmed this transaction
-  def mark_as_seller_confirmed!
+  def confirm_sale
     self.update_attributes(:seller_confirmed_at => Time.now, :status => "confirmed")
   end
 
@@ -73,33 +83,34 @@ class Mtg::Transaction < ActiveRecord::Base
   end  
   
   # seller has rejected this transaction
-  def mark_as_seller_rejected!(rejection_reason, response_message = nil)
-    self.update_attributes(:seller_rejected_at => Time.now, :status => "rejected", :rejection_reason => rejection_reason, :response_message => response_message)
+  def reject_sale(rejection_reason, response_message = nil)
+    if self.update_attributes(:seller_rejected_at => Time.now, :status => "rejected", :rejection_reason => rejection_reason, :response_message => response_message)
+      self.payment.refund
+      self.reject_items!
+    end
   end  
-
-  # reverse seller confirming transaction
-  def mark_as_seller_unconfirmed!
-    self.update_attributes(:seller_confirmed_at => nil, :status => "pending")
-  end
   
   # seller has shipped this transaction
-  def mark_as_seller_shipped!(tracking_number)
+  def ship_sale(tracking_number)
     self.update_attributes(:seller_shipped_at => Time.now, :seller_tracking_number => tracking_number, :status => "shipped")
   end  
   
   # seller has delivered this transaction
-  def mark_as_seller_delivered!(confirmation)
-    self.update_attributes(:seller_delivered_at => Time.now, :buyer_delivery_confirmation => confirmation, :status => "delivered")
-  end  
-  
-  # buyer is happy with sale
-  def mark_as_final!
-    self.update_attributes(:status => "final")
+  def deliver_sale(buyer_feedback, buyer_feedback_text)
+    if update_attributes(:buyer_feedback => buyer_feedback, :buyer_feedback_text => buyer_feedback_text, :seller_delivered_at => Time.now, :status => "delivered")
+      self.credit = Mtg::TransactionCredit.create({:seller => self.seller, :transaction => self, :price => self.total_value, :commission => 0, :commission_rate => 0}, :without_protection => true)
+      buyer.statistics.update_buyer_statistics!
+      seller.statistics.update_seller_statistics!
+      update_card_statistics!
+    end
   end  
   
   # buyer has canceled this sale
-  def mark_as_cancelled!(reason)
-    self.update_attributes(:status => "cancelled", :cancellation_reason => reason)
+  def cancel_sale(reason)
+    if self.update_attributes(:status => "cancelled", :cancellation_reason => reason)
+      self.payment.refund
+      self.reject_items!
+    end
   end
   
   # creates a dummy copy of listings to be saved with rejected transaction (for tracking purposes) then frees all originals so they can be purchased again
@@ -110,8 +121,8 @@ class Mtg::Transaction < ActiveRecord::Base
     end
   end
   
-  def create_item_from_reservation(reservation)
-    item = Mtg::TransactionItem.new( :quantity_requested => reservation.quantity,
+  def build_item_from_reservation(reservation)
+    self.items.build(                {:quantity_requested => reservation.quantity,
                                      :quantity_available => reservation.quantity,
                                      :price => reservation.listing.price,
                                      :condition => reservation.listing.condition,
@@ -120,12 +131,12 @@ class Mtg::Transaction < ActiveRecord::Base
                                      :altart => reservation.listing.altart,
                                      :misprint => reservation.listing.misprint,
                                      :foil => reservation.listing.foil,
-                                     :signed => reservation.listing.signed )
-    item.card_id = reservation.listing.card_id
-    item.buyer_id = self.buyer_id
-    item.seller_id = self.seller_id
-    item.transaction_id = self.id
-    item.save
+                                     :signed => reservation.listing.signed,
+                                     :card_id => reservation.listing.card_id,
+                                     :buyer => self.buyer,
+                                     :seller => self.seller,
+                                     :transaction => self},
+                                     :without_protection => true)
   end
   
   def create_listing_from_item(item)
@@ -155,6 +166,16 @@ class Mtg::Transaction < ActiveRecord::Base
 
 # ---------------- PRIVATE MEMBER METHODS -------------  
   private
+  
+  def update_transaction_costs
+    self.value = items.to_a.inject(0) {|sum, item| sum + item[:quantity_requested] * item[:price]}.to_f / 100
+    #TODO: Program Shipping costs
+    self.shipping_cost = 0
+  end
+  
+  def build_associated_payment
+    self.build_payment(:buyer => self.buyer, :price => self.total_value, :transaction => self)
+  end
     
   # creates a unique transaction number based on transaction ID
   def set_transaction_number

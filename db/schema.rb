@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120904223436) do
+ActiveRecord::Schema.define(:version => 20120908033343) do
 
   create_table "account_balance_transfers", :force => true do |t|
     t.integer  "account_id"
@@ -208,7 +208,7 @@ ActiveRecord::Schema.define(:version => 20120904223436) do
     t.integer  "block_id"
     t.string   "name",         :default => "",           :null => false
     t.string   "code",         :default => "",           :null => false
-    t.date     "release_date", :default => '2012-08-20'
+    t.date     "release_date", :default => '2012-09-04'
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.boolean  "active",       :default => false,        :null => false
@@ -218,6 +218,20 @@ ActiveRecord::Schema.define(:version => 20120904223436) do
   add_index "mtg_sets", ["code"], :name => "index_mtg_sets_on_code"
   add_index "mtg_sets", ["name"], :name => "index_mtg_sets_on_name"
   add_index "mtg_sets", ["release_date"], :name => "index_mtg_sets_on_release_date"
+
+  create_table "mtg_transaction_credits", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "transaction_id"
+    t.integer  "price"
+    t.integer  "commission"
+    t.float    "commission_rate"
+    t.string   "status",          :default => "active"
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
+  end
+
+  add_index "mtg_transaction_credits", ["transaction_id"], :name => "index_mtg_transaction_credits_on_transaction_id"
+  add_index "mtg_transaction_credits", ["user_id"], :name => "index_mtg_transaction_credits_on_user_id"
 
   create_table "mtg_transaction_items", :force => true do |t|
     t.integer  "card_id"
@@ -244,6 +258,18 @@ ActiveRecord::Schema.define(:version => 20120904223436) do
   add_index "mtg_transaction_items", ["seller_id"], :name => "index_mtg_transaction_items_on_seller_id"
   add_index "mtg_transaction_items", ["transaction_id"], :name => "index_mtg_transaction_items_on_transaction_id"
 
+  create_table "mtg_transaction_payments", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "transaction_id"
+    t.integer  "price"
+    t.string   "status",         :default => "active"
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
+  end
+
+  add_index "mtg_transaction_payments", ["transaction_id"], :name => "index_mtg_transaction_payments_on_transaction_id"
+  add_index "mtg_transaction_payments", ["user_id"], :name => "index_mtg_transaction_payments_on_user_id"
+
   create_table "mtg_transactions", :force => true do |t|
     t.integer  "buyer_id"
     t.integer  "seller_id"
@@ -264,6 +290,8 @@ ActiveRecord::Schema.define(:version => 20120904223436) do
     t.string   "status",                      :default => "pending"
     t.datetime "created_at",                                         :null => false
     t.datetime "updated_at",                                         :null => false
+    t.integer  "value"
+    t.integer  "shipping_cost"
   end
 
   add_index "mtg_transactions", ["buyer_id"], :name => "index_mtg_transactions_on_buyer_id"
@@ -349,6 +377,13 @@ ActiveRecord::Schema.define(:version => 20120904223436) do
   add_index "tickets", ["offender_id"], :name => "index_tickets_on_offender_id"
   add_index "tickets", ["transaction_id"], :name => "index_tickets_on_transaction_id"
   add_index "tickets", ["transaction_type"], :name => "index_tickets_on_transaction_type"
+
+  create_table "transactions", :force => true do |t|
+    t.integer  "test1_id"
+    t.integer  "test2_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "user_statistics", :force => true do |t|
     t.integer  "user_id"

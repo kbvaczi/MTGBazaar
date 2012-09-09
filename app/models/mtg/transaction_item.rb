@@ -21,7 +21,10 @@ class Mtg::TransactionItem < ActiveRecord::Base
   
   # validations
   validates_presence_of :price, :condition, :language, :quantity_available, :quantity_requested
-
+  validates             :price, :numericality => {:greater_than => 0, :less_than => 5000000, :message => "Must be between $0.01 and $50,000"}   #price must be between $0 and $10,000.00  
+  validates             :quantity_available,
+                        :quantity_requested, :numericality => {:greater_than => 0, :less_than => 10000, :message => "Must be between 1 and 10000"}   #price must be between $0 and $10,000.00  
+    
   # mark this listing as rejected which permenantly removes it from user view
   def mark_as_rejected!
     self.update_attribute(:rejected_at, Time.now)
