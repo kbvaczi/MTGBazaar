@@ -6,7 +6,7 @@
 development:
   adapter: sqlite3
   database: db/development.sqlite3
-  pool: 5
+  pool: 10
   timeout: 5000
 
 # Warning: The database defined as "test" will be erased and
@@ -22,5 +22,5 @@ production:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  pool: 5
+  pool: 10
   timeout: 5000

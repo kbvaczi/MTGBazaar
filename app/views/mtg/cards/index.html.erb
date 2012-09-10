@@ -9,13 +9,13 @@
     <br class="spacer" />          
     <table class="data">
       <tr class="header_row">
-        <td>Set Name</td>
+        <td>Set</td>
         <td>Release Date</td>
         <td>Symbol</td>        
         <td>Cards</td>
       </tr>
       <tr class=<%= cycle("even","odd") %>>
-        <td><%= @set.name %></td>
+        <td style="text-align:left;width:150px;padding-left:10px;"><%= @set.name %></td>
         <td><%= display_time(@set.release_date) rescue ""%> </td>
         <td><%= display_set_symbol(@set) %></td>
         <td><%= @set.cards.count %></td>
@@ -35,12 +35,14 @@
 
     <table class="data">
       <tr class="header_row">
-        <td>Set Name</td>
+        <td>Set</td>
+        <td>Release Date</td>        
         <td>Symbol</td>
       </tr>
       <% @sets.each do |set| %>
         <tr class=<%= cycle("even","odd") %>>
-          <td><%= link_to "#{set.name}", mtg_cards_path(:set => set.code) %></td>
+          <td style="text-align:left;padding-left:10px;"><%= link_to "#{set.name}", mtg_cards_path(:set => set.code) %></td>
+          <td><%= display_time(set.release_date) rescue ""%> </td>
           <td><%= display_set_symbol(set) %></td>
         </tr>
       <% end %>  

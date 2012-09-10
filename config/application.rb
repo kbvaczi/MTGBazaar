@@ -21,7 +21,6 @@ module MTGBazaar
     # Load models in all subdirectories
     config.autoload_paths += Dir[Rails.root.join('app', 'models', '{**}')]
     #config.autoload_paths += %W(#{config.root}/app/models/mtg)     # Tell rails to look for mtg models in subdirectory
-    
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
@@ -32,7 +31,7 @@ module MTGBazaar
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
-    # config.time_zone = 'Central Time (US & Canada)'
+    config.time_zone = 'Central Time (US & Canada)'
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
@@ -52,7 +51,6 @@ module MTGBazaar
     
     config.assets.initialize_on_precompile = false
     #forcing your application to not access the DB or load models when precompiling your assets.
-
     
   end
 end

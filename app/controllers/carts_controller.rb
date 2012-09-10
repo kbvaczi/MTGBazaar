@@ -59,15 +59,15 @@ class CartsController < ApplicationController
         reservation_group.each { |r| transaction.build_item_from_reservation(r) } # create transaction items based on these reservations
         if transaction.save
           reservation_group.each { |r| r.purchased! } # update listing quantity and destroy this reservation
-          #TODO: Delayed job emails
-          ApplicationMailer.send_seller_sale_notification(transaction).deliver # send sale notification email to seller
-          ApplicationMailer.send_buyer_checkout_confirmation(transaction).deliver # notify buyer that the sale has been confirmed               
+          EmailQueue.push(:template => "seller_sale_notification", :data => transaction)
+          EmailQueue.push(:template => "buyer_checkout_confirmation", :data => transaction)          
+#          ApplicationMailer.seller_sale_notification(transaction).deliver # send sale notification email to seller
+#          ApplicationMailer.buyer_checkout_confirmation(transaction).deliver # notify buyer that the sale has been confirmed               
           current_cart.update_cache! # empty the shopping cart
           redirect_to root_path, :notice => "Your purchase request has been submitted."          
         else  
           flash[:error] = "#{transaction.errors.full_messages}There was a problem processing your request" 
           redirect_to back_path
-          return
         end
       end
     else

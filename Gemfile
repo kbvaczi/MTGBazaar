@@ -7,7 +7,6 @@ source 'http://rubygems.org'
 gem "devise", "~> 2.1.2"                                            # user authentication
 gem "devise-encryptable", "~> 0.1.1"
 gem "simple_form", "~> 1.5.2"                                       # simplified form creation
-#gem "recaptcha", "~> 0.3.4", :require => "recaptcha/rails"         # Bot prevention, no longer using this due to diffculty
 gem "nokogiri", "~> 1.5.0"                                          # XML/HTML Parser
 gem "activeadmin", "~> 0.5.0"                                       # Administrator Panel
 gem "formtastic", "~> 2.1.1"                                        # for admin panel only
@@ -24,11 +23,11 @@ gem "activemerchant", "~> 1.26.0", :require => 'active_merchant'    # integratio
 gem "active_paypal_adaptive_payment", "~> 0.3.15"                   # Adaptive Payments for ActiveMerchant for withdraws
 gem "ckeditor", "~> 3.7.1"                                          # blog editor
 gem "mini_magick", "~> 3.4"                                         # image manipulation for ckeditor
-#gem "girl_friday", "~> 0.9.7"                                      # background processing for unicorn... disabled due to issues
+gem "girl_friday", "~> 0.10.0"                                      # background processing for unicorn... disabled due to issues
 gem 'unicorn'                                                       # custom webserver with multi-threaded application capabilities
 
-gem "active_shipping", "~> 0.9.14"                                  # shipping rates for USPS
-gem "usps_standardizer", "~> 0.4.2"
+#gem "active_shipping", "~> 0.9.14"                                  # shipping rates for USPS
+#gem "usps_standardizer", "~> 0.4.2"
 
 gem "honeypot-captcha", "~> 0.0.2"                                  # alternative to capcha without the complexity  
 gem "taps", "~> 0.3.24"                                             # ability to pull and push databases from development to production

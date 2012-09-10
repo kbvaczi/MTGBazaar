@@ -11,7 +11,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
   
   def update
-    ApplicationMailer.account_update_notification(resource).deliver
+    EmailQueue.push(:template => "account_update_notification", :data => resource)
     super
   end
   

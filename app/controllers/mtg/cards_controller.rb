@@ -11,7 +11,7 @@ class Mtg::CardsController < ApplicationController
       @mtg_cards = @set.cards.includes(:listings).page(params[:page]).per(25)
       @title = @title + " - #{@set.name}"
     else
-      @sets = Mtg::Set.order("name ASC").where(:active => true)
+      @sets = Mtg::Set.order("release_date DESC").where(:active => true)
       @mtg_cards = []
     end
   

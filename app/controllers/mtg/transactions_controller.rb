@@ -19,8 +19,10 @@ class Mtg::TransactionsController < ApplicationController
       redirect_to account_sales_path
     elsif not @transaction.seller_confirmed? # this transaction hasn't been previously confirmed by seller
       @transaction.confirm_sale # this transaction is now confirmed by seller
-      ApplicationMailer.send_seller_shipping_information(@transaction).deliver # send sale notification email to seller
-      ApplicationMailer.send_buyer_sale_confirmation(@transaction).deliver # notify buyer that the sale has been confirmed      
+      EmailQueue.push(:template => "seller_shipping_information", :data => @transaction)
+      EmailQueue.push(:template => "buyer_sale_confirmation",     :data => @transaction)      
+      #ApplicationMailer.seller_shipping_information(@transaction).deliver # send sale notification email to seller
+      #ApplicationMailer.buyer_sale_confirmation(@transaction).deliver # notify buyer that the sale has been confirmed      
       redirect_to account_sales_path, :notice => "Sale successfully confirmed! Shipping information will be delivered to you shortly."
     else # this sale has already been confirmed
       flash[:error] = "You have already confirmed this sale."
@@ -40,7 +42,8 @@ class Mtg::TransactionsController < ApplicationController
     @transaction = Mtg::Transaction.where(:seller_id => current_user.id, :id => params[:id]).first
     return if not verify_seller_response_privileges?(@transaction) # this transaction exists, current user is seller, and transaction hasn't been previously confirmed or rejected already    
     if @transaction.reject_sale(params[:mtg_transaction][:rejection_reason], params[:mtg_transaction][:response_message])
-      ApplicationMailer.send_buyer_sale_rejection(@transaction).deliver # notify buyer that the sale has been confirmed
+      #ApplicationMailer.buyer_sale_rejection(@transaction).deliver # notify buyer that the sale has been confirmed
+      EmailQueue.push(:template => "buyer_sale_rejection",     :data => @transaction)
       redirect_to account_sales_path, :notice => "Your sale was rejected."
     else
       flash[:error] = "There were one or more errors while trying to process your request..."
@@ -93,7 +96,8 @@ class Mtg::TransactionsController < ApplicationController
     return if not verify_buyer_review_privileges?(@transaction)
     if params[:commit] == "Reject Changes"
       if @transaction.cancel_sale("modification") # mark status on transaction as cancelled and set cancellation reason
-        ApplicationMailer.send_seller_cancellation_notice(@transaction).deliver # notify seller their transaction was cancelled
+        EmailQueue.push(:template => "seller_cancellation_notice",     :data => @transaction)
+        #ApplicationMailer.seller_cancellation_notice(@transaction).deliver # notify seller their transaction was cancelled
         flash[:notice] = "You rejected the buyer's modifications.  Sale #{@transaction.transaction_number} was cancelled."            
       else
         flash[:error] = "There were one or more errors while trying to process your request..."
@@ -121,7 +125,8 @@ class Mtg::TransactionsController < ApplicationController
     @transaction = Mtg::Transaction.where(:buyer_id => current_user.id, :id => params[:id]).first
     return false if not buyer_sale_cancellation_validations
     if @transaction.cancel_sale(params[:mtg_transaction][:cancellation_reason]) # mark status on transaction as cancelled and set cancellation reason
-      ApplicationMailer.send_seller_cancellation_notice(@transaction).deliver # notify seller their transaction was cancelled
+      EmailQueue.push(:template => "seller_cancellation_notice",     :data => @transaction)
+      #ApplicationMailer.seller_cancellation_notice(@transaction).deliver # notify seller their transaction was cancelled
       redirect_to account_purchases_path, :notice => "You cancelled this sale..."
     else
       flash[:error] = "There were one or more errors while trying to process your request..."
@@ -162,8 +167,8 @@ class Mtg::TransactionsController < ApplicationController
     @transaction = Mtg::Transaction.where(:seller_id => current_user.id, :id => params[:id]).first
     return if not verify_shipment_privileges?(@transaction)    
     if @transaction.ship_sale(params[:mtg_transaction][:seller_tracking_number])
-      #EMAIL_QUEUE.push(@transaction) # girl friday background processing
-      ApplicationMailer.send_buyer_shipment_confirmation(@transaction).deliver # notify buyer that the sale has been confirmed 
+      EmailQueue.push(:template => "buyer_shipment_confirmation", :data => @transaction)
+      #ApplicationMailer.buyer_shipment_confirmation(@transaction).deliver # notify buyer that the sale has been confirmed 
       redirect_to account_sales_path, :notice => "You have confirmed shipment of this sale..."
     else
       flash[:error] = "There were one or more errors while trying to process your request..."

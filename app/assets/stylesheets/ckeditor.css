@@ -17,7 +17,7 @@ body {
   background-color: #eee;
   font-family: "Trebuchet MS", "Helvetica Neue", "Arial", sans-serif;
   font-size: 12px;
-  color: #555;
+  color: #333;
   height: 100%;
   line-height: 140%;
   padding: 15px;
@@ -58,22 +58,15 @@ h1 {
 h2 {
   font-size: 14px;
   line-height: 2;
-  margin: 15px -5px 25px -5px;
+  margin: 15px 0px 25px 0px;
   padding:0 10px;
-  text-shadow: 0 1px 0px #EEE;
+  text-shadow: 0 1px 0px #ddd;
   display:block;
-  border-bottom: 1px solid #eee;
-  background: #f9f9f9; /* Old browsers */
-  background: -moz-linear-gradient(45deg,  #f9f9f9 0%, #ffffff 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,#f9f9f9), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(45deg,  #f9f9f9 0%,#ffffff 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(45deg,  #f9f9f9 0%,#ffffff 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(45deg,  #f9f9f9 0%,#ffffff 100%); /* IE10+ */
-  background: linear-gradient(45deg,  #f9f9f9 0%,#ffffff 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9f9', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
+  border-bottom: 1px solid #aaa;
+  -moz-box-shadow:    0px 1px 0px 0px #ddd;
+  -webkit-box-shadow: 0px 1px 0px 0px #ddd;
+  box-shadow:         0px 1px 0px 0px #ddd;
+
 }
 h3 {
   width:auto;
@@ -133,7 +126,6 @@ a:hover, a:focus {
 select, input, .button, input[type="text"], input[type="search"], textarea  {
   outline:none;
   border: 1px solid #aaa;
-  color: #666;
   padding: 3px 4px;
   font-size: 12px;
   font-family: "Trebuchet MS", "Helvetica Neue", "Arial", sans-serif;

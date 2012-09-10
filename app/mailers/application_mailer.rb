@@ -9,43 +9,43 @@ class ApplicationMailer < ActionMailer::Base
     mail(:to => user.email, :subject => "MTGBazaar Account Information Change")
   end
 
-  def send_buyer_checkout_confirmation(transaction) #recipient is a User object, transaction is an Mtg::Transaction object
+  def buyer_checkout_confirmation(transaction) #recipient is a User object, transaction is an Mtg::Transaction object
     @transaction = transaction
     @recipient = transaction.buyer
     mail(:to => @recipient.email, :subject => "Purchase request: #{@transaction.transaction_number}" ) 
   end
 
-  def send_seller_sale_notification(transaction) #recipient is a User object, transaction is an Mtg::Transaction object
+  def seller_sale_notification(transaction) #recipient is a User object, transaction is an Mtg::Transaction object
     @transaction = transaction
     @recipient = transaction.seller    
     mail(:to => @recipient.email, :subject => "Pending sale: #{@transaction.transaction_number}" ) 
   end
 
-  def send_seller_shipping_information(transaction) #recipient is a User object, transaction is an Mtg::Transaction object
+  def seller_shipping_information(transaction) #recipient is a User object, transaction is an Mtg::Transaction object
     @transaction = transaction
     @recipient = transaction.seller
     mail(:to => @recipient.email, :subject => "Shipping information: #{@transaction.transaction_number}" ) 
   end
 
-  def send_seller_cancellation_notice(transaction) #recipient is a User object, transaction is an Mtg::Transaction object
+  def seller_cancellation_notice(transaction) #recipient is a User object, transaction is an Mtg::Transaction object
     @transaction = transaction
     @recipient = transaction.seller
     mail(:to => @recipient.email, :subject => "Cancellation Notice: #{@transaction.transaction_number}" ) 
   end  
 
-  def send_buyer_sale_confirmation(transaction) #recipient is a User object, transaction is an Mtg::Transaction object
+  def buyer_sale_confirmation(transaction) #recipient is a User object, transaction is an Mtg::Transaction object
     @transaction = transaction
     @recipient = transaction.buyer
     mail(:to => @recipient.email, :subject => "Purchase confirmation: #{@transaction.transaction_number}" ) 
   end
 
-  def send_buyer_shipment_confirmation(transaction) #recipient is a User object, transaction is an Mtg::Transaction object
+  def buyer_shipment_confirmation(transaction) #recipient is a User object, transaction is an Mtg::Transaction object
     @transaction = transaction
     @recipient = transaction.buyer
     mail(:to => @recipient.email, :subject => "Shipment confirmation: #{@transaction.transaction_number}" ) 
   end  
   
-  def send_buyer_sale_rejection(transaction) #recipient is a User object, transaction is an Mtg::Transaction object
+  def buyer_sale_rejection(transaction) #recipient is a User object, transaction is an Mtg::Transaction object
     @transaction = transaction
     @recipient = transaction.buyer
     mail(:to => @recipient.email, :subject => "Purchase rejection #{@transaction.transaction_number}" ) 
