@@ -40,7 +40,7 @@ gem "taps", "~> 0.3.24"                                             # ability to
 gem 'jquery-rails'                                                  # latest jquery library.  need to include "//= require jquery_ujs" and "//= require jquery" in application.js to be loaded in asset pipeline
 gem "rails", "~> 3.2.8"
 gem 'json'
-gem 'sass-rails',   '~> 3.2.3'                                      # take sass-rails out of assets group to prevent problems with heroku
+
 
 group :production do
   gem "mysql2"                                                      # allows application to use a mysql database  
@@ -56,8 +56,10 @@ end
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'uglifier', '>= 1.0.3'
+  gem 'sass-rails'
+  gem 'coffee-rails'
+  gem 'uglifier'
+  gem 'yui-compressor'
 end
 
 
