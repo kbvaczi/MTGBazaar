@@ -1,5 +1,5 @@
 <% update = TicketUpdate.new(params[:ticket_update]) %>
-<%= semantic_form_for update, :url => add_update_admin_ticket_path(ticket), :method => :post do |f| %>
+<%= semantic_form_for update, :url => add_update_admin_ticket_path(@ticket), :method => :post do |f| %>
   <%= f.inputs do %>
     <%= f.input :description,               :label => "Description",
                                             :as => :text,
