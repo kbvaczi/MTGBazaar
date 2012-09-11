@@ -28,9 +28,6 @@ MTGBazaar::Application.configure do
   # Don't fallback to assets pipeline if a precompiled asset is missed
   config.assets.compile = true
   
-  # add these files to be pre-compiled... for some reason they are missed?  This is needed to get CKEditor to work for Heroku
-  config.assets.precompile += ['ckeditor/config.js', 'ckeditor/skins/kama/editor.css', 'ckeditor/lang/en.js']
-  
   # Generate digests for assets URLs
   config.assets.digest = true
 
@@ -49,10 +46,13 @@ MTGBazaar::Application.configure do
   config.cache_store = :dalli_store
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
-  # config.action_controller.asset_host = "http://assets.example.com"
+  # Serve Assets from S3
+  config.action_controller.asset_host = "//#{AWS_CONFIG[:fog_directory]}.s3.amazonaws.com"
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   # config.assets.precompile += %w( search.js )
+  # add these files to be pre-compiled... for some reason they are missed?  This is needed to get CKEditor to work for Heroku
+  config.assets.precompile += ['ckeditor/config.js', 'ckeditor/skins/kama/editor.css', 'ckeditor/lang/en.js']
 
   # Disable delivery errors, bad email addresses will be ignored
   config.action_mailer.raise_delivery_errors = false

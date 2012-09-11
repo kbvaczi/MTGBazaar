@@ -60,6 +60,7 @@ group :assets do
   gem 'coffee-rails'
   gem 'uglifier'
   gem 'yui-compressor'
+  gem 'asset_sync'                                                  # Load assets to S3 during compilation on Heroku, serve assets from S3
 end
 
 

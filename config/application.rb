@@ -55,7 +55,7 @@ module MTGBazaar
     # Serving static assets and setting cache headers 
     # which will be used by cloudfront as well
     config.serve_static_assets = true
-    config.static_cache_control = "public, max-age=31536000"
+    config.static_cache_control = "public, max-age=11536000"
     
   end
 end
