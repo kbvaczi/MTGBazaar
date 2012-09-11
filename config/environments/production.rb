@@ -47,7 +47,7 @@ MTGBazaar::Application.configure do
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
   # Serve Assets from S3
-  config.action_controller.asset_host = "https://#{AWS_CONFIG[:fog_directory]}.s3.amazonaws.com"
+  config.action_controller.asset_host = "//#{AWS_CONFIG[:fog_directory]}.s3.amazonaws.com"
   
   # This will allow your app to serve up the URLs using SSL if the request is coming via SSL. 
   # Doing this can avoid warnings in the browser that your app contains secure and unsecure content.
