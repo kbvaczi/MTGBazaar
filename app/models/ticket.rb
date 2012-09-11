@@ -43,12 +43,16 @@ class Ticket < ActiveRecord::Base
   def verify_offender_username
     # Verify offender valid
     if self.offender_id.present? or self.offender_username.present? # do this only if an offender was entered
-      offender = User.where("username LIKE ?", self.offender_username).first if self.offender_username.present?
-      offender = User.find(self.offender_id) if not self.offender_username.present?
-      if not offender_username.present?
+      if self.offender_username.present?
+        o = User.where("username LIKE ?", self.offender_username).first 
+      elsif self.offender_id.present?
+        o = User.find(self.offender_id) 
+      end
+      
+      if not o.present?
         errors.add(:offender_username, "Invalid username")
       else
-        self.offender_id = offender.id
+        self.offender = o
       end
     end
     # Verify offender is present if it is needed

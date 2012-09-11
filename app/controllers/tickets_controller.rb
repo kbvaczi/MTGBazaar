@@ -15,7 +15,7 @@ class TicketsController < ApplicationController
     if @ticket.save
       redirect_to tickets_path, :notice => "Your ticket was created and will be reviewed shortly"
     else
-      flash[:error] = "There were one or more problems with your request #{@ticket.errors.full_messages}"
+      flash[:error] = "There were one or more problems with your request"
       render "new"
     end
   end
@@ -56,7 +56,7 @@ class TicketsController < ApplicationController
     if @ticket_update.save
       redirect_to ticket_path(@ticket), :notice => "Ticket updated"
     else
-      flash[:error] = "There were one or more problems with your request #{@ticket_update.errors.full_messages}"
+      flash[:error] = "There were one or more problems with your request"
       render "show"
     end
   end

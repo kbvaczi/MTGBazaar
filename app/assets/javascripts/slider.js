@@ -1,5 +1,7 @@
 $(document).ready(function(){
-	
+
+	$('#slider1').show();
+		
 	$('#slider1').bxSlider({
 	    auto: true,
   		pause: 10000,
