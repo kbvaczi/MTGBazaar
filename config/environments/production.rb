@@ -46,8 +46,13 @@ MTGBazaar::Application.configure do
   config.cache_store = :dalli_store
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
-  # Serve Assets from S3
-  config.action_controller.asset_host = "//#{AWS_CONFIG[:fog_directory]}.s3.amazonaws.com"
+  # Serve Assets from S3  
+  # This will allow your app to serve up the URLs using SSL if the request is coming via SSL. 
+  # Doing this can avoid warnings in the browser that your app contains secure and unsecure content.
+  config.action_controller.asset_host = Proc.new do |source, request|
+    scheme = request.ssl? ? "https" : "http"
+    "#{scheme}://#{ENV['FOG_DIRECTORY']}.s3.amazonaws.com"
+  end
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   # config.assets.precompile += %w( search.js )
