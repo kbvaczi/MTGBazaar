@@ -9,19 +9,8 @@
     <meta name="keywords" content="MTG Bazaar: A marketplace for buying and selling Magic the Gathering cards">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
-    <%= stylesheet_link_tag    "application" %>
-    <%#= javascript_include_tag "application" %>
-    
-    <script type="text/javascript">
-      (function() {
-        var script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.async = true;
-        script.src = '<%= j javascript_path("application") %>';
-        var other = document.getElementsByTagName('script')[0];
-        other.parentNode.insertBefore(script, other);
-      })();
-    </script>
+    <%= javascript_include_tag "application" %>
+    <%= stylesheet_link_tag    "application" %>    
 
     <% #--------- YIELD STUFF TO PUT IN HEADING SUCH AS JAVASCRIPT INCLUDES, ETC...----# %>
     <%= yield(:head) %>
