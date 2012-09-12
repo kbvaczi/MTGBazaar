@@ -16,25 +16,29 @@
       <table style="width:100%">
         <tr>
           <td> <%= display_type(mtg_card.card_type, mtg_card.card_subtype) %> </td>
-          <td style="text-align:right;"> Estimated Value</td>
+          <td style="text-align:right;"> <u>Estimated Value</u> </td>
         </tr>
         <tr>
           <td> <%= mtg_card.set.name %> </td>
-          <td style="text-align:right;"> <b><%= number_to_currency(mtg_card.statistics.price_med) %></b> </td>
+          <td class="t-l t-b" style="text-align:right;"> <%= number_to_currency(mtg_card.statistics.price_med) %> - <%= number_to_currency(mtg_card.statistics.price_high) %> </td>
         </tr>
         <tr>
           <td> <i><%= "(#{display_rarity(mtg_card.rarity)})" %></i> </td>
         </tr>
         <tr>
-          <td>
-            <% if mtg_card.listings.count > 0 %>
-              <td style="text-align:right;"> <%= link_to "#{mtg_card.listings.to_a.sum(&:quantity_available)} for sale from #{number_to_currency(mtg_card.listings.minimum(:price))}", mtg_card_path(mtg_card)  %>   </td>          
-            <% else %>
-              <td style="text-align:right;"> <%= link_to "None Available", mtg_card_path(mtg_card)  %>   </td>                    
-            <% end %>
+          <td></td>
+          <td style="text-align:right;">
+            <div style="margin-top:-10px;">
+              <% if mtg_card.listings.count > 0 %>
+                <%= link_to "#{mtg_card.listings.to_a.sum(&:quantity_available)} For Sale from #{number_to_currency(mtg_card.listings.minimum(:price))}", mtg_card_path(mtg_card), :class => "button" %>        
+              <% else %>
+                <i>None Currently Available</i>
+              <% end %>
+            </div>
           </td>
-        </tr>        
+        </tr>
       </table>
+      
     </div>
   </div>
 </div>
