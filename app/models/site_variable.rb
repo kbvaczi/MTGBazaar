@@ -25,7 +25,7 @@ class SiteVariable < ActiveRecord::Base
     Rails.cache.fetch "site_variable_#{name}", :expires_in => 30.minutes do
       SiteVariable.where(:name => name, :active => true).order("start_at DESC").each do |v|
         if v.start_at < Time.now && (v.end_at == nil || v.end_at > Time.now)
-          v.value
+          v.value.html_safe
           break
         end
       end

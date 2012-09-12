@@ -1,3 +1,5 @@
+/*
+
 $('html').addClass('js');
 
 $(function() {
@@ -15,3 +17,5 @@ $(function() {
     $divs.hide();
     showDiv();
 });
+
+*/

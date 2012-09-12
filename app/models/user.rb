@@ -91,6 +91,8 @@ class User < ActiveRecord::Base
     Mtg::Transaction.where(:seller_id => id).where("status <> \'delivered\' AND status <> \'cancelled\' AND status <> \'rejected\'")
   end
   
-  
+  def self.active
+    where(:banned => false)
+  end
 
 end

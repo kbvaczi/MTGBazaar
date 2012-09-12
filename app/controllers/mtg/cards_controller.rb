@@ -103,7 +103,7 @@ class Mtg::CardsController < ApplicationController
       query << ["mtg_listings.seller_id LIKE ? AND mtg_listings.quantity_available > 0", "#{cookies[:search_seller_id]}"] if cookies[:search_seller_id].present?
     end
     
-    @mtg_cards = Mtg::Card.includes(:set, :listings).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(20)
+    @mtg_cards = Mtg::Card.includes(:set, :listings, :statistics).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(20)
     
     # Don't show only 1 card in search results... go directly to that card's show page if there is only one.
     if @mtg_cards.length == 1

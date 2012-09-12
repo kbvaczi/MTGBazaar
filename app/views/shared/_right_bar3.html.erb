@@ -36,6 +36,23 @@
       	</div>
     	</div>
   	<% end %>
+  	
+  	<% cache("top_sellers", :expires_in => 1.days) do %>  	
+  	  <div>	
+    	  <h1>Top Sellers</h1>
+    	  <% top_sellers = User.active.includes(:statistics).order("user_statistics.number_sales DESC").limit(7) %>
+    	  <div class="mt-s mr-s ml-s">
+          <table class="data">
+            <% top_sellers.each do |seller| %>
+              <tr style="margin:2px;padding:0;">
+                <td style="margin:1px;padding:1px;text-align:left;"> <%= link_to display_name(seller.username), user_path(seller) %> </td>
+                <td style="margin:1px;padding:1px;text-align:right;"> <%= "(#{seller.statistics.number_sales} / #{seller.statistics.display_approval_percent})" %> </td>  
+              </tr>
+           	<% end %>
+          </table>
+      	</div>
+    	</div>
+  	<% end %>
 
   </div>  
   

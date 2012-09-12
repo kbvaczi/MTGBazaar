@@ -34,7 +34,7 @@ module Mtg::CardsHelper
           if letter == "t" #if the letters are t, create tap image
             image_tag('https://s3.amazonaws.com/mtgbazaar/images/mtg/various_symbols/tap.jpg', :class => "mtg_symbol")         
           else #else the symbol must be a mana symbol, create corresponding mana symbol 
-            image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/mana_symbols/mana_#{letter}.jpg", :class => "mtg_symbol")
+            image_tag("https://mtgbazaar.s3.amazonaws.com/images/mtg/mana_symbols/mana_#{letter}.jpg", :class => "mtg_symbol")
           end
       end.html_safe
     end
