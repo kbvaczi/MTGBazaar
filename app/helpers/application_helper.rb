@@ -18,7 +18,7 @@ module ApplicationHelper
   end
   
   def display_time(time)
-    time.strftime("%d-%b %Y") 
+    time.strftime("%b %d, %Y") 
   end
   
   def us_states
