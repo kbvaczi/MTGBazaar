@@ -1,22 +1,24 @@
 <% title "#{display_name(@mtg_card.name)}" #title is first 30 characters in card name %>
-
 <h1><%= display_name(@mtg_card.name) %></h1>
+
 <div class="content">
-  <div>
-    <div class="card_info_wrapper group">
-      <%= render :partial => "show_card_info", :locals => { :mtg_card => @mtg_card }%>
-    </div> <!-- card_info_wrapper -->
-    <% if @mtg_card.dual_sided_card? && @mtg_card_back.present? %>
-      <div class="card_info_wrapper_back group">
-        <%= render :partial => "show_card_info", :locals => { :mtg_card => @mtg_card_back }%>
+  
+  <%# cache card info but not listings %>
+  <% cache "mtg_card_show_#{@mtg_card.id}", :expires_in => 1.days do %>
+    <div>
+      <div class="card_info_wrapper group">
+        <%= render :partial => "show_card_info", :locals => { :mtg_card => @mtg_card }%>
       </div> <!-- card_info_wrapper -->
-    <% end %>
-    <br class="spacer"/>    
-    <%= link_to "Sell this card", new_mtg_listing_path(:card_id => @mtg_card.id), :class => "button center mt"%>
-  </div>
+      <% if @mtg_card.dual_sided_card? && @mtg_card_back.present? %>
+        <div class="card_info_wrapper_back group">
+          <%= render :partial => "show_card_info", :locals => { :mtg_card => @mtg_card_back }%>
+        </div> <!-- card_info_wrapper -->
+      <% end %>
+    </div>
+  <% end %>
+  
   <div id="card_listings">
     <%= render :partial => "show_listings", :locals => { :listings => @listings }%>
   </div>
 
-    
 </div> <!-- content -->
