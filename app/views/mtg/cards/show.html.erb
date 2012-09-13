@@ -11,11 +11,8 @@
         <%= render :partial => "show_card_info", :locals => { :mtg_card => @mtg_card_back }%>
       </div> <!-- card_info_wrapper -->
     <% end %>
-
-    <div class="ma-s">
-      <%= link_to "Sell this card", new_mtg_listing_path(:card_id => @mtg_card.id), :class => "right button"%>
-    </div>
     <br class="spacer"/>    
+    <%= link_to "Sell this card", new_mtg_listing_path(:card_id => @mtg_card.id), :class => "button center mt"%>
   </div>
   <div id="card_listings">
     <%= render :partial => "show_listings", :locals => { :listings => @listings }%>

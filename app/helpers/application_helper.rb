@@ -6,7 +6,7 @@ module ApplicationHelper
   end
   
   def title(page_title)
-    provide :title, " | #{page_title}"
+    provide :title, " | #{page_title.parameterize}"
   end
   
   def capitalize_first_word(word)
@@ -17,8 +17,12 @@ module ApplicationHelper
     return session[:return_to]
   end
   
-  def display_time(time)
-    time.strftime("%b %d, %Y") 
+  def display_time(time, options = {})
+    if options[:day] == false
+      time.strftime("%b %d, %Y")
+    else 
+      time.strftime("%b %Y")
+    end
   end
   
   def us_states

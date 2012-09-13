@@ -1,9 +1,9 @@
-<div id="right_bar3">	
+<div class="left">	
   
   <div id="slider1" class="hidden">
   
   	<% cache("top_cards", :expires_in => 1.days) do %>  
-  	  <div>	
+  	  <div class="right_bar3">	
   	    <h1>Top Cards</h1>
   		  <% top_cards = Mtg::Card.includes(:set, :statistics).order('mtg_card_statistics.number_sales DESC').limit(7) %>
   		  <div class="mt-s mr-s ml-s">
@@ -21,7 +21,7 @@
   	<% end %>	
 	
   	<% cache("recent_expansions", :expires_in => 1.days) do %>  	
-  	  <div>	
+  	  <div class="right_bar3">	
     	  <h1>Recent Expansions</h1>
     	  <% recent_added = Mtg::Set.order('release_date DESC').limit(7) %>
     	  <div class="mt-s mr-s ml-s">
@@ -38,7 +38,7 @@
   	<% end %>
   	
   	<% cache("top_sellers", :expires_in => 1.days) do %>  	
-  	  <div>	
+  	  <div class="right_bar3">	
     	  <h1>Top Sellers</h1>
     	  <% top_sellers = User.active.includes(:statistics).order("user_statistics.number_sales DESC").limit(7) %>
     	  <div class="mt-s mr-s ml-s">

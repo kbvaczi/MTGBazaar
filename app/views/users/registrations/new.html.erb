@@ -76,7 +76,7 @@
   <div class ="AcknowledgeBorderDiv center">
   	<div class="AcknowledgeOuterDiv center">
       <div class="AcknowledgeInnerDiv">		
-          <%= SiteVariable.get("terms_of_service") %>
+          <%= render :inline => SiteVariable.get("terms_of_service") %>
     		<%#= 
       		output = ""
       		text=File.open('public/terms.txt').read

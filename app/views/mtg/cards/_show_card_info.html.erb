@@ -2,8 +2,8 @@
   <%= image_tag(mtg_card.image_path, :class => "mtg_card_image") %>
   <% if mtg_card.dual_sided_card? %>
     <div>
-        <%= image_tag image_path("mtg/various_symbols/day.png"), :height => "25px", :class => "dfc_day_icon left", :style => "margin-left:40px" %>
-        <%= image_tag image_path("mtg/various_symbols/night.png"), :height => "25px", :class => "dfc_night_icon right", :style => "margin-right:40px"  %>    
+        <%= image_tag image_path("https://mtgbazaar.s3.amazonaws.com/images/mtg/various_symbols/day.png"), :height => "25px", :class => "dfc_day_icon left", :style => "margin-left:40px" %>
+        <%= image_tag image_path("https://mtgbazaar.s3.amazonaws.com/images/mtg/various_symbols/night.png"), :height => "25px", :class => "dfc_night_icon right", :style => "margin-right:40px"  %>    
     </div>
   <% end %>
 </div>
@@ -72,12 +72,21 @@
       <%= mtg_card.artist %>
     </div>      
   </div>
+  <!-- PRICE -->        
+  <div class="card_show_info_row">
+    <div class="card_show_info_label t-l">
+      Value
+    </div>
+    <div class="card_show_info_value t-l t-b">
+      <%= number_to_currency(mtg_card.statistics.price_med) %> - <%= number_to_currency(mtg_card.statistics.price_high) %>
+    </div>      
+  </div>
   <!-- VERSIONS -->
   <div class="card_show_info_row">
     <div class="card_show_info_label">
       Versions
     </div>
-    <div class="card_show_info_value" style="line-height:1.4;">
+    <div class="card_show_info_value t-l">
       <% @card_variants.each do |v| %>
         <%= link_to display_set_symbol(v.set), mtg_card_path(v) %>
       <% end %>
