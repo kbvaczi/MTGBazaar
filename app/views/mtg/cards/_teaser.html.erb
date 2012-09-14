@@ -30,7 +30,7 @@
           <td style="text-align:right;">
             <div style="margin-top:-10px;">
               <% if mtg_card.listings.count > 0 %>
-                <%= link_to "#{mtg_card.listings.to_a.sum(&:quantity_available)} For Sale from #{number_to_currency(mtg_card.listings.minimum(:price))}", mtg_card_path(mtg_card), :class => "button" %>        
+                <%= link_to "#{mtg_card.listings.to_a.sum(&:quantity_available)} For Sale from #{number_to_currency(mtg_card.listings.minimum("price").to_f/100)}", mtg_card_path(mtg_card) %>        
               <% else %>
                 <i>None Currently Available</i>
               <% end %>

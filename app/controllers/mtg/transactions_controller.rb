@@ -166,7 +166,7 @@ class Mtg::TransactionsController < ApplicationController
   def create_seller_shipment_confirmation
     @transaction = Mtg::Transaction.where(:seller_id => current_user.id, :id => params[:id]).first
     return if not verify_shipment_privileges?(@transaction)    
-    if @transaction.ship_sale(params[:mtg_transaction][:seller_tracking_number])
+    if @transaction.ship_sale
       EmailQueue.push(:template => "buyer_shipment_confirmation", :data => @transaction)
       #ApplicationMailer.buyer_shipment_confirmation(@transaction).deliver # notify buyer that the sale has been confirmed 
       redirect_to account_sales_path, :notice => "You have confirmed shipment of this sale..."

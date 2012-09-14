@@ -7,6 +7,7 @@ class HomeController < ApplicationController
       @news_feeds = NewsFeed.where(:id => 1)
     end
     
+
   end
   
 end

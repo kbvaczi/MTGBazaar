@@ -19,9 +19,9 @@ module ApplicationHelper
   
   def display_time(time, options = {})
     if options[:day] == false
-      time.strftime("%b %d, %Y")
-    else 
       time.strftime("%b %Y")
+    else 
+      time.strftime("%b %d, %Y")
     end
   end
   

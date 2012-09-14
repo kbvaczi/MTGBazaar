@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120908033343) do
+ActiveRecord::Schema.define(:version => 20120913152927) do
 
   create_table "account_balance_transfers", :force => true do |t|
     t.integer  "account_id"
@@ -298,6 +298,18 @@ ActiveRecord::Schema.define(:version => 20120908033343) do
   add_index "mtg_transactions", ["seller_id"], :name => "index_mtg_transactions_on_seller_id"
   add_index "mtg_transactions", ["status"], :name => "index_mtg_transactions_on_status"
   add_index "mtg_transactions", ["transaction_number"], :name => "index_mtg_transactions_on_transaction_number"
+
+  create_table "mtg_transactions_shipping_labels", :force => true do |t|
+    t.integer  "transaction_id"
+    t.string   "url"
+    t.string   "stamps_tx_id"
+    t.integer  "price"
+    t.string   "params"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  add_index "mtg_transactions_shipping_labels", ["transaction_id"], :name => "index_mtg_transactions_shipping_labels_on_transaction_id"
 
   create_table "news_feeds", :force => true do |t|
     t.integer  "author_id"

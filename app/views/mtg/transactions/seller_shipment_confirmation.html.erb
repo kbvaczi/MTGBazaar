@@ -5,17 +5,27 @@
 <%= simple_form_for @transaction, :url => create_seller_shipment_confirmation_path, :method => :put do |f| %>
   <br class="spacer" />
   <br class="spacer" />
-  <br class="spacer" />  
+
   
-  <div class="inputs">
-    <%= f.input :seller_tracking_number,    :label => "Delivery Confirmation",
-                                            :required => false,
-                                            :hint => "Number provided by postage service" %>
-  </div>
+  <table class="data">
+	  <tr class="header_row">
+  	  <th>Transaction Number</th>      	    
+  	  <th>Value</th>
+  	  <th>Status</th>      
+  	</tr>
+  	<tr class="even">
+  	  <td><%= link_to @transaction.transaction_number, show_mtg_transaction_path(@transaction) %></td>
+  	  <td><%= "#{ number_to_currency(@transaction.total_value) }" %> </td>  
+  	  <td> <%= "#{@transaction.status.capitalize}" %> </td>
+  	</tr>
+	</table>
+  <br class="spacer"/>
+  <br class="spacer"/>
   
   <br class="spacer"/>
   <br class="spacer"/>
-  <br class="spacer"/>  
+
+    
   <div class="center">
     <%= f.button :submit, "Confirm Shipment", :class => "center" %>
   </div>

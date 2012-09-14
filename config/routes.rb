@@ -50,6 +50,10 @@ MTGBazaar::Application.routes.draw do
   get   'transactions/:id/delivery'       => 'mtg/transactions#buyer_delivery_confirmation',          :as => 'buyer_delivery_confirmation'
   put   'transactions/:id/delivery'       => 'mtg/transactions#create_buyer_delivery_confirmation',   :as => 'create_buyer_delivery_confirmation'  
 
+  # shipping labels
+  
+  get   'transactions/:id/shipping_label' => 'mtg/transactions/shipping_labels#create',   :as => 'create_shipping_label'
+  
   namespace :mtg do
     
     resources :listings, :except => [:index, :show ] do

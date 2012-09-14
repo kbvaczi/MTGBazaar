@@ -3,11 +3,12 @@ class Mtg::Transaction < ActiveRecord::Base
 
   self.table_name = 'mtg_transactions'
   
-  belongs_to :seller,   :class_name => "User"
-  belongs_to :buyer,    :class_name => "User"
-  has_many   :items,    :class_name => "Mtg::TransactionItem" ,   :foreign_key => "transaction_id", :dependent => :destroy
-  has_one    :payment,  :class_name => "Mtg::TransactionPayment", :foreign_key => "transaction_id", :dependent => :destroy
-  has_one    :credit,   :class_name => "Mtg::TransactionCredit",  :foreign_key => "transaction_id", :dependent => :destroy  
+  belongs_to :seller,         :class_name => "User"
+  belongs_to :buyer,          :class_name => "User"
+  has_many   :items,          :class_name => "Mtg::TransactionItem" ,            :foreign_key => "transaction_id", :dependent => :destroy
+  has_one    :payment,        :class_name => "Mtg::TransactionPayment",          :foreign_key => "transaction_id", :dependent => :destroy
+  has_one    :credit,         :class_name => "Mtg::TransactionCredit",           :foreign_key => "transaction_id", :dependent => :destroy  
+  has_one    :shipping_label, :class_name => "Mtg::Transactions::ShippingLabel", :foreign_key => "transaction_id", :dependent => :destroy
 
   # Implement Money gem for price column
   composed_of   :value,
@@ -91,8 +92,8 @@ class Mtg::Transaction < ActiveRecord::Base
   end  
   
   # seller has shipped this transaction
-  def ship_sale(tracking_number)
-    self.update_attributes(:seller_shipped_at => Time.now, :seller_tracking_number => tracking_number, :status => "shipped")
+  def ship_sale
+    self.update_attributes(:seller_shipped_at => Time.now, :status => "shipped")
   end  
   
   # seller has delivered this transaction

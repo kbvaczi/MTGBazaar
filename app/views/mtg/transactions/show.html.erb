@@ -3,18 +3,72 @@
 <h1>Transaction <%= @transaction.transaction_number %></h1>
 
 <div class="ma">
-  
-  <h2>Details</h2>
-  <div><%= "Buyer: #{@transaction.buyer.username}" %></div>  
-  <div class="mb-s"><%= "Seller: #{@transaction.seller.username}" %></div>    
-  <div class="mb-s"><%= "Status: #{@transaction.status.capitalize}" %></div>
-  <div><%= "Buyer Confirmed on: #{@transaction.buyer_confirmed_at.strftime("%d-%b-%Y")}" if @transaction.buyer_confirmed_at.present? %> </div>
-  <div><%= "Seller Confirmed on: #{@transaction.seller_confirmed_at.strftime("%d-%b-%Y")}" if @transaction.seller_confirmed_at.present? %> </div>  
-  <div><%= "Rejected on: #{@transaction.seller_rejected_at.strftime("%d-%b-%Y")}" if @transaction.seller_rejected_at.present? %> </div>
-  <div><%= "Shipped on: #{@transaction.seller_shipped_at.strftime("%d-%b-%Y")}" if @transaction.seller_shipped_at.present? %>  </div>
-  <div class="mb-s"><%= "Delivered on: #{@transaction.seller_delivered_at.strftime("%d-%b-%Y")}" if @transaction.seller_delivered_at.present? %> </div>
-  <div><%= "Total Value: #{ number_to_currency(@transaction.total_value) }" %></div>
 
+  <table class="data">
+	  <tr class="header_row">
+  	  <th>Transaction Number</th>      	    
+  	  <th>Value</th>
+  	  <th>Status</th>      
+  	</tr>
+  	<tr class="even">
+  	  <td><%= "#{@transaction.transaction_number}" %></td>
+  	  <td><%= "#{ number_to_currency(@transaction.total_value) }" %> </td>  
+  	  <td> <%= "#{@transaction.status.capitalize}" %> </td>
+  	</tr>
+
+	</table>
+  <br class="spacer"/>
+  <br class="spacer"/>  
+  
+  <table class="data">
+  	<tr class="header_row">
+  	  <th></th>
+  	  <th style="width:50%;">Buyer</th>
+  	  <th style="width:50%;">Seller</th>      
+  	</tr>
+  	<tr class="even">
+  	  <th class="header_row">User</th>
+  	  <td>  <%= @transaction.buyer.username %> </td>
+  	  <td>  <%= @transaction.seller.username %> </td>
+  	</tr>
+  	<tr class="odd">
+  	  <th class="header_row">Confirmation</th>  	  
+  	  <td>  <%= "Confirmed: #{display_time(@transaction.buyer_confirmed_at)}" if @transaction.buyer_confirmed_at.present? %> </td>
+  	  <td>  
+  	    <%= "Confirmed: #{display_time(@transaction.seller_confirmed_at)}" if @transaction.seller_confirmed_at.present? %>  
+    	  <%= "Rejected: #{display_time(@transaction.seller_rejected_at)}" if @transaction.seller_rejected_at.present? %>  
+  	  </td>
+  	</tr>  	
+  	<tr class="even">
+  	  <th class="header_row">Shipment</th>  	  
+  	  <td> <%= "Shipped: #{@transaction.seller_shipped_at.strftime("%d-%b-%Y")}" if @transaction.seller_shipped_at.present? %> </td>
+  	  <td> <%= "Delivered: #{@transaction.seller_delivered_at.strftime("%d-%b-%Y")}" if @transaction.seller_delivered_at.present? %> </td>
+  	</tr>	
+	</table>
+ <br class="spacer"/>
+ <br class="spacer"/> 
+ <div>
+      <% if current_user.id == @transaction.seller_id && @transaction.status == "pending" && @transaction.seller_confirmed_at == nil %>
+         <%= link_to "Confirm Sale", seller_sale_confirmation_path(@transaction), :class => "button right mr-m ml-m" %> 
+         <%= link_to "Reject Sale", seller_sale_rejection_path(@transaction), :class => "button right mr-m ml-m"  %> 
+         <%= link_to "Modify Sale", seller_sale_modification_path(@transaction), :class => "button right mr-m ml-m"  %>                             
+      <% end %>
+      <% if current_user.id == @transaction.buyer_id && @transaction.status == "pending" && @transaction.seller_confirmed_at.present? %>
+         <%= link_to "Review Seller's Modifications", buyer_sale_modification_review_path(@transaction), :class => "button right mr-m ml-m"  %> 
+      <% end %>
+      <% if current_user.id == @transaction.seller_id && @transaction.status == "confirmed" %>
+         <%= link_to "Confirm Shipment", seller_shipment_confirmation_path(@transaction), :class => "button right mr-m ml-m" if @transaction.shipping_label.present? %> 
+         <%= link_to "Print Shipping Label", create_shipping_label_path(@transaction), :class => "button right mr-m ml-m"  %>          
+      <% end %>
+      <% if current_user.id == @transaction.buyer_id && @transaction.status == "shipped"%>
+         <%= link_to "Complete Purchase", buyer_delivery_confirmation_path(@transaction), :class => "button right mr-m ml-m"  %> 
+      <% end %>        
+      <% if @transaction.status != "delivered" && @transaction.status != "rejected" && @transaction.status != "cancelled" && current_user.id != @transaction.seller.id %>
+         <%= link_to "Cancel Sale", mtg_transaction_buyer_sale_cancellation_path(@transaction), :class => "button right mr-m ml-m" %> 
+      <% end %>  
+  </div>
+  <br class="spacer"/>
+ 
   <h2> <%= pluralize @transaction.item_count, "Item", "Items" %> </h2>
 	
 	<table class="data">
@@ -26,7 +80,6 @@
 		<th>Lang.</th>
 		<th>Options</th>
 		<th>Qty.</th>
-		
 	</tr>
 	
   <%= render :partial => "mtg/transaction_items/teaser", :collection => @items, :as => "item" %>  

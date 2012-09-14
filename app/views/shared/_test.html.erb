@@ -1,0 +1,112 @@
+<%#
+
+  integration_id = '132CB46D-2605-483C-83D1-F1A82DC0452B'
+  username       = 'mtgbazaar'
+  password       = 'postage1'
+  endpoint       = 'https://swsim.testing.stamps.com/swsim/SwsimV24.asmx'
+  soap_version   = 'http://stamps.com/xml/namespace/2012/05/swsim/swsimv24'
+  soap_action    = 'AuthenticateUser'
+
+  payload        = "<?xml version=\"1.0\" encoding=\"utf-8\"?>
+                    <soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">
+                      <soap:Body>
+                        <AuthenticateUser xmlns=\"http://stamps.com/xml/namespace/2012/05/swsim/swsimv24\">
+                          <Credentials>
+                            <IntegrationID>#{integration_id}</IntegrationID>
+                            <Username>#{username}</Username>
+                            <Password>#{password}</Password>
+                          </Credentials>
+                        </AuthenticateUser>
+                      </soap:Body>
+                    </soap:Envelope>"
+  
+  url = "#{endpoint}/#{soap_action}"
+  
+  require 'net/http'
+  
+  request = Net::HTTP::Post.new(url)
+  request["SOAPAction"] = "#{soap_version}/#{soap_action}"
+  request["Content-Type"] = "application/xml"
+  request.body = payload
+
+  uri = URI.parse(url)
+  puts url
+  puts uri
+
+  http = Net::HTTP.new(uri.host, uri.port)
+  response = http.request(request)
+
+%>
+<%
+from_address = {
+    :full_name => 'CHris SKSDOJssssOSDFJS',
+    :address1  => '821 Congress Avenue',
+    :city      => 'Austin',
+    :state     => 'TX',
+    :zip_code  => '78701'
+}
+
+to_address = Stamps.clean_address(
+  :address => {
+    :full_name   => 'Test Mom',
+    :first_name  => 'bob',
+    :last_name   => 'jones',
+    :address1    => '525 South Congress Avenue',
+    :city        => 'Austin',
+    :state       => 'TX',
+    :zip_code    => '78704'
+})
+%>
+<%#
+# send one burrito
+rates = Stamps.get_rates(
+  :from_zip_code => '78701',
+  :to_zip_code   => '78704',
+  :weight_lb     => '0.5',
+  :ship_date     => '2012-09-19',
+  :service_type  => 'US-FC',
+  :package_type  => 'Large Envelope or Flat',
+ :add_ons => {'SC-A-HP' => '20.00', 'US-A-CM' => '0.25'},
+  :insured_value => '50.00'
+)
+%>
+<%
+ stamp = Stamps.create!({
+              :sample          => false,
+              :transaction_id  => "1234567890ABCDEFZ",
+              :to               => to_address[:address],
+              :from             => from_address,
+              :rate          => {
+                :from_zip_code => '78701',
+                :to_zip_code   => '78704',
+                :weight_oz     => '1.8',
+                :ship_date     => Date.today.strftime('%Y-%m-%d'),
+                :package_type  => 'Package',
+                :service_type  => 'US-FC',
+                :cod_value     => 10.00,
+                :add_ons       => {
+                  :add_on => [
+                    { :type => 'SC-A-HP' }#,
+                    #{ :type => 'US-A-DC' }
+                    #{ :type => 'US-A-CM' }
+                  ]
+                }
+              }
+              })
+%>
+
+<%
+  track = Stamps.track(stamp[:stamps_tx_id])
+%>
+
+<%#
+  Stamps.purchase_postage(
+    :amount => "300.00",
+    :control_total => "200.00"
+  )
+%>
+<%= Stamps.account %>
+<br/><br/>
+<%= stamp %>
+<br/><br/>
+<%= track %>

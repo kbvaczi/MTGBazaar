@@ -28,11 +28,11 @@ gem 'unicorn'                                                       # custom web
 
 #gem "active_shipping", "~> 0.9.14"                                  # shipping rates for USPS
 #gem "usps_standardizer", "~> 0.4.2"
-
+#gem "stamps", "~> 0.3.0"                                            # API interface for stamps.com for printing shipping labels
 gem "honeypot-captcha", "~> 0.0.2"                                  # alternative to capcha without the complexity  
 gem "taps", "~> 0.3.24"                                             # ability to pull and push databases from development to production
 
-
+gem 'stamps', :git => 'https://github.com/darnovo/stamps.git'
 # -------------
 # STANDARD GEMS
 # -------------
