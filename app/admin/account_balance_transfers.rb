@@ -71,7 +71,7 @@ ActiveAdmin.register AccountBalanceTransfer do
       withdraw.update_attribute(:approved_at, Time.now) if withdraw.approved_at == nil
 
       # setup transaction
-      ActiveMerchant::Billing::Base.mode = :test
+      ActiveMerchant::Billing::Base.mode = :production
       gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(
         :login => PAYPAL_CONFIG[:api_login],
         :password => PAYPAL_CONFIG[:api_password],
