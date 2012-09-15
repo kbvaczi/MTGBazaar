@@ -5,12 +5,11 @@ class Mtg::Transactions::ShippingLabelsController < ApplicationController
     
   def create
     if current_transaction.shipping_label.present?
-      redirect_to current_transaction.shipping_label.url, :target => "_blank"
-      return
+      redirect_to current_transaction.shipping_label.url
     else
       label = Mtg::Transactions::ShippingLabel.new(:transaction => current_transaction)
       if label.save
-        redirect_to label.url, :target => "_blank"
+        redirect_to label.url
       else
         flash[:error] = label.errors.full_messages
         redirect_to back_path

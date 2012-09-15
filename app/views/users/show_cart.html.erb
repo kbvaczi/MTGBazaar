@@ -4,86 +4,104 @@
   <%# Do this if the user's cart is not empty %>
   <% if current_cart.item_count > 0 %>
     <%# organize items in cart by seller %>
-    <% current_cart.seller_ids.each do |s_id| %>
+    <% total = Array.new%>
+    <% current_cart.seller_ids.each_with_index do |s_id, x| %>
       <% seller_items = @reservations.where("mtg_listings.seller_id" => s_id) %>
-      <h2><%= "#{seller_items.sum(:quantity)} Items from #{User.where(:id => s_id).pluck(:username).first}" %></h2>
+      <% item_count = seller_items.sum(:quantity) %>
+      <h2><%= "#{item_count} Items from #{User.where(:id => s_id).pluck(:username).first}" %></h2>
         <%# show the items under this seller %>
       <!-- Heading -->
 
 			<table class="data">
-			 <tr class="header_row">
-			 	<th>Name</th>
-			  <th>Set</th>      
-			  <th>Cond.</th>
-				<th>Lang.</th>
-				<th>Options</th>
-				<th>Price</th>
-				<th>Avail.</th>
-				<th>In Cart</th>
-				<th>Remove</th>
-			 </tr>
-			
-      <% seller_items.each do |reservation| %>
-        <!-- listings -->
-        <tr class=<%= cycle("odd","even") %>>
-          <td>
-            <%= display_name(reservation.card.name)%>
-					</td>
-          <td>
-            <%= display_set_symbol(reservation.card.set)%>
-          </td>
-          <td>
-            <%= display_condition(reservation.listing.condition) %>
-          </td>    
-          <td>
-            <%= display_flag_symbol(reservation.listing.language) %>
-          </td>          
-          <td>
-            <% if reservation.listing.foil %>
-              <%= listing_option_foil_icon %>
-            <% end %>
-            <% if reservation.listing.misprint %>
-              <%= listing_option_misprint_icon %>
-            <% end %>
-            <% if reservation.listing.signed %>
-              <%= listing_option_signed_icon %>
-            <% end %>
-            <% if reservation.listing.altart %>
-              <%= listing_option_altart_icon %>
-            <% end %>    
-            <% if reservation.listing.description != "" %>
-              <%= listing_option_description_icon(reservation.listing) %>
-            <% end %>
-        		<% if reservation.listing.scan.present? %>
-              <%= listing_option_scan_icon(reservation.listing) %>
-            <% end %>            
-          </td>
-          <td>
-            <%= number_to_currency(reservation.listing.price) %>
-          </td>
-          <td>
-	 					<%= reservation.quantity + reservation.listing.quantity_available %> 
-					</td>                           
-          <td>
-            <%= form_tag update_quantity_in_cart_mtg_cards_path(reservation), :method => :post do %>
-              <%= text_field_tag "quantity", 1, :class => "quantity_in_cart", :id => nil, :value => reservation.quantity, :style => "width:30px;text-align:center;"%>
-              <%# This form is automatically submitted when changed per cart.js.erb no need for submit tag %>
-              <%#= submit_tag "Update" , :style => "display:none;"%>
-            <% end %>
-          </td>     
-          <td>
-            <%= form_tag remove_from_cart_mtg_listing_path(:id => reservation.id, :quantity => reservation.quantity ), :method => :delete do %>
-              <%= submit_tag "X" %>
-            <% end %>
-          </td>
+        <tr class="header_row">
+        	<th>Name</th>
+          <th>Set</th>      
+          <th>Cond.</th>
+          <th>Lang.</th>
+          <th>Options</th>
+          <th>Price</th>
+          <th>Avail.</th>
+          <th>In Cart</th>
+          <th>Remove</th>
         </tr>
-      <% end %>        
-    <% end %>
-</table>
+			
+        <% seller_items.each do |reservation| %>
+          <!-- listings -->
+          <tr class=<%= cycle("odd","even") %>>
+            <td>
+              <%= display_name(reservation.card.name)%>
+  					</td>
+            <td>
+              <%= display_set_symbol(reservation.card.set)%>
+            </td>
+            <td>
+              <%= display_condition(reservation.listing.condition) %>
+            </td>    
+            <td>
+              <%= display_flag_symbol(reservation.listing.language) %>
+            </td>          
+            <td>
+              <% if reservation.listing.foil %>
+                <%= listing_option_foil_icon %>
+              <% end %>
+              <% if reservation.listing.misprint %>
+                <%= listing_option_misprint_icon %>
+              <% end %>
+              <% if reservation.listing.signed %>
+                <%= listing_option_signed_icon %>
+              <% end %>
+              <% if reservation.listing.altart %>
+                <%= listing_option_altart_icon %>
+              <% end %>    
+              <% if reservation.listing.description != "" %>
+                <%= listing_option_description_icon(reservation.listing) %>
+              <% end %>
+          		<% if reservation.listing.scan.present? %>
+                <%= listing_option_scan_icon(reservation.listing) %>
+              <% end %>            
+            </td>
+            <td>
+              <%= number_to_currency(reservation.listing.price) %>
+            </td>
+            <td>
+  	 					<%= reservation.quantity + reservation.listing.quantity_available %> 
+  					</td>                           
+            <td>
+              <%= form_tag update_quantity_in_cart_mtg_cards_path(reservation), :method => :post do %>
+                <%= text_field_tag "quantity", 1, :class => "quantity_in_cart", :id => nil, :value => reservation.quantity, :style => "width:30px;text-align:center;"%>
+                <%# This form is automatically submitted when changed per cart.js.erb no need for submit tag %>
+                <%#= submit_tag "Update" , :style => "display:none;"%>
+              <% end %>
+            </td>     
+            <td>
+              <%= form_tag remove_from_cart_mtg_listing_path(:id => reservation.id, :quantity => reservation.quantity ), :method => :delete do %>
+                <%= submit_tag "X" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+        <tr class="header_row">
+          <% subtotal = seller_items.to_a.inject(0) { |sum, item| sum + item.quantity * item.listing.price.dollars }%>
+        	<td colspan=8 style="text-align:right;">Subtotal</td>
+          <td><%= number_to_currency(subtotal) %> </td>
+        </tr>
+        <tr class="header_row">
+          <% shipping = shipping_cost(item_count) %>
+        	<td colspan=8 style="text-align:right;">Shipping</td>
+          <td><%= number_to_currency(shipping) %> </td>
+        </tr>        
+        <tr class="header_row">
+          <% total[x] = shipping.to_f + subtotal.to_f%>
+        	<th colspan=8 style="text-align:right;">Total cost for this transaction</th>
+          <th><%= number_to_currency(total[x]) %> </th>
+        </tr>        
+    </table>            
+  <% end %>
+
 
     <br class="spacer"/>
-    <div class="right">
-      <%= "Subtotal: #{number_to_currency(current_cart.total_price)}" %>
+    <div class="right mr t-b t-l">
+      <%= "Total Cart Price: #{number_to_currency(total.sum)}" %>
     </div>
     <br class="spacer"/>
     <br class="spacer"/>    

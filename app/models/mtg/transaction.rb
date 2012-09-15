@@ -40,9 +40,19 @@ class Mtg::Transaction < ActiveRecord::Base
   def total_value
     self.shipping_cost + self.value
   end
-  
+    
   def item_count
     items.to_a.sum(&:quantity_available)
+  end
+  
+  def calculate_shipping
+    if item_count < 15
+      2.50
+    elsif item_count < 50
+      5.00 
+    else
+      10.00
+    end
   end
   
   def display_feedback
@@ -171,7 +181,7 @@ class Mtg::Transaction < ActiveRecord::Base
   def update_transaction_costs
     self.value = items.to_a.inject(0) {|sum, item| sum + item[:quantity_requested] * item[:price]}.to_f / 100
     #TODO: Program Shipping costs
-    self.shipping_cost = 0
+    self.shipping_cost = calculate_shipping
   end
   
   def build_associated_payment

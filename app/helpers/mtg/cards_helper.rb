@@ -2,6 +2,18 @@
 # make this module available to be included in other areas by using "include Mtg::CardsHelper"
 module Mtg::CardsHelper
 
+  def shipping_cost(item_count)
+    if item_count < 15
+      2.50
+    elsif item_count < 30
+      3.25 
+    elsif item_count < 50
+      4.50  
+    else
+      10.00
+    end  
+  end
+  
   ABILITY_LIST = ['Absorb',	'Affinity',	'Amplify',	'Annihilator',	'Attach',	'Aura swap',	'Banding',	'Bands with other',	'Battle cry',	'Bloodthirst',	'Bury',	'Bushido',	'Buyback',	'Cascade',	'Champion',	'Changeling',	'Channel',	'Chroma',	'Clash',	'Conspire',	'Convoke',	'Counter',	'Cumulative upkeep',	'Cycling',	'Deathtouch',	'Defender',	'Delve',	'Devour',	'Domain',	'Double strike',	'Dredge',	'Echo',	'Enchant',	'Entwine',	'Epic',	'Equip',	'Evoke',	'Exalted',	'Exile',	'Fading',	'Fateful hour',	'Fateseal',	'Fear',	'Fight',	'First strike',	'Flanking',	'Flash',	'Flashback',
                   'Flip',	'Flying',	'Forecast',	'Fortify',	'Frenzy',	'Graft',	'Grandeur',	'Gravestorm',	'Haste',	'Haunt',	'Hellbent',	'Hexproof',	'Hideaway',	'Horsemanship',	'Imprint',	'Infect',	'Intimidate',	'Join forces',	'Kicker',	'Kinship',	'Landfall',	'Landhome',	'Landwalk',	'Level up',	'Lifelink',	'Living weapon',	'Madness',	'Metalcraft',	'Modular',	'Morbid',	'Morph',	'Multikicker',	'Ninjutsu',	'Offering',	'Persist',	'Phasing',	'Poisonous',	'Proliferate',	'Protection',	'Provoke',	'Prowl',	'Radiance',	'Rampage',	'Reach',	'Rebound',	'Recover',	'Regenerate',	'Reinforce',
                   'Replicate',	'Retrace',	'Ripple',	'Sacrifice',	'Scry',	'Shadow',	'Shroud',	'Soulshift',	'Splice',	'Split second',	'Storm',	'Substance',	'Sunburst',	'Suspend',	'Sweep',	'Tap/Untap',	'Threshold',	'Totem armor',	'Trample',	'Transfigure',	'Transform',	'Transmute',	'Typecycling',	'Undying',	'Unearth',	'Vanishing',	'Vigilance',	'Wither'].sort!
