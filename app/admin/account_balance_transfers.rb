@@ -92,8 +92,7 @@ ActiveAdmin.register AccountBalanceTransfer do
       # execute transaction
       gateway.execute_payment(purchase)
       
-      wait(10)
-      withdraw.reload #refresh withdraw variable since it may have changed
+      #withdraw.reload #refresh withdraw variable since it may have changed
       
       if withdraw.confirmed_at != nil
         flash[:notice] = "Transaction Completed..."
