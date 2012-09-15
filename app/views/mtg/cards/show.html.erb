@@ -16,7 +16,7 @@
       <% end %>
     </div>
   <% end %>
-    <%= link_to "Sell this card", new_mtg_listing_path(:card_id => @mtg_card.id), :class => "button right" %>
+
 
   <div id="card_listings">
     <%= render :partial => "show_listings", :locals => { :listings => @listings }%>

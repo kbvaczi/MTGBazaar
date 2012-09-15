@@ -3,6 +3,7 @@ class Mtg::TransactionsController < ApplicationController
   before_filter :authenticate_user! # must be logged in to access any of these pages
   
   def show
+    set_back_path
     @transaction = Mtg::Transaction.includes(:items => {:card => :set}).find(params[:id])
     @items = @transaction.items.includes(:card => :set).order("mtg_cards.name").page(params[:page]).per(16)
   end

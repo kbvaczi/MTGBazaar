@@ -38,6 +38,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
                  :stamps_tx_id => "1234567890ABCDEFZ",
                  :memo => t.transaction_number,
                  :weight_in_oz   => '2.5')
+    #TODO: Code shipping weight algorithm
   end
   
   private
@@ -64,8 +65,8 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
              :from            => params[:from],
              :memo            => "MTGBazaar.com\r\n" + params[:memo],
              :rate            => {
-               :from_zip_code => params[:to][:zip_code],
-               :to_zip_code   => params[:from][:zip_code],
+               :from_zip_code => params[:from][:zip_code],
+               :to_zip_code   => params[:to][:zip_code],
                :weight_oz     => params[:weight_in_oz],
                :ship_date     => Date.today.strftime('%Y-%m-%d'),
                :package_type  => 'Package',

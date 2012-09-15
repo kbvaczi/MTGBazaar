@@ -83,12 +83,6 @@
       <%= number_to_currency(mtg_card.statistics.price_med) %> - <%= number_to_currency(mtg_card.statistics.price_high) %>
     </div>      
   </div>
-  <div class="card_show_info_row">
-    <div class="card_show_info_label"></div>
-    <div class="card_show_info_value">
-      <%= link_to "Sell this card", new_mtg_listing_path(:card_id => @mtg_card.id) %>
-    </div>
-  </div>  
   <!-- VERSIONS -->
   <div class="card_show_info_row">
     <div class="card_show_info_label">

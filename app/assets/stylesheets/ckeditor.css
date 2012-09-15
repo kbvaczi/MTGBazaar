@@ -15,7 +15,7 @@ html {
 body {
   margin:auto;
   background-color: #eee;
-  font-family: "Trebuchet MS", "Helvetica Neue", "Arial", sans-serif;
+  font-family: "Calibri", "Helvetica Neue", "Arial", sans-serif;
   font-size: 12px;
   color: #333;
   height: 100%;
@@ -128,7 +128,6 @@ select, input, .button, input[type="text"], input[type="search"], textarea  {
   border: 1px solid #aaa;
   padding: 3px 4px;
   font-size: 12px;
-  font-family: "Trebuchet MS", "Helvetica Neue", "Arial", sans-serif;
   -moz-border-radius: 8px;
   -webkit-border-radius: 8px;
   border-radius: 8px;
