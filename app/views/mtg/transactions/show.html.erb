@@ -17,6 +17,7 @@
   	</tr>
 
 	</table>
+
   <br class="spacer"/>
   <br class="spacer"/>  
   
@@ -27,12 +28,12 @@
   	  <th style="width:50%;">Seller</th>      
   	</tr>
   	<tr class="even">
-  	  <th class="header_row">User</th>
+  	  <th class="header_row"><div class="mr ml">User</div></th>
   	  <td>  <%= @transaction.buyer.username %> </td>
   	  <td>  <%= @transaction.seller.username %> </td>
   	</tr>
   	<tr class="odd">
-  	  <th class="header_row">Confirmation</th>  	  
+  	  <th class="header_row"><div class="mr ml">Confirmation</div></th>  	  
   	  <td>  <%= "Confirmed: #{display_time(@transaction.buyer_confirmed_at)}" if @transaction.buyer_confirmed_at.present? %> </td>
   	  <td>  
   	    <%= "Confirmed: #{display_time(@transaction.seller_confirmed_at)}" if @transaction.seller_confirmed_at.present? %>  
@@ -40,13 +41,28 @@
   	  </td>
   	</tr>  	
   	<tr class="even">
-  	  <th class="header_row">Shipment</th>  	  
+  	  <th class="header_row"><div class="mr ml">Shipment</div></th>  	  
   	  <td> <%= "Shipped: #{@transaction.seller_shipped_at.strftime("%d-%b-%Y")}" if @transaction.seller_shipped_at.present? %> </td>
   	  <td> <%= "Delivered: #{@transaction.seller_delivered_at.strftime("%d-%b-%Y")}" if @transaction.seller_delivered_at.present? %> </td>
   	</tr>	
 	</table>
- <br class="spacer"/>
- <br class="spacer"/> 
+
+  <br class="spacer"/>
+  <br class="spacer"/>
+	
+	<% if @transaction.status == "delivered" %>
+	  <table class="data">
+    	<tr class="header_row">
+    	  <th>Buyer Feedback</th>
+    	  <th>Feedback Message</th>    	  
+    	</tr>
+    	<tr class="even">
+    	  <td> <%= @transaction.display_feedback %> </td>
+    	  <td> <%= @transaction.buyer_feedback_text.present? ? @transaction.buyer_feedback_text : "None" %> </td>
+    	</tr>
+    </table>
+	<% end %>
+
  <div>
       <% if current_user.id == @transaction.seller_id && @transaction.status == "pending" && @transaction.seller_confirmed_at == nil %>
          <%= link_to "Confirm Sale", seller_sale_confirmation_path(@transaction), :class => "button right mr-m ml-m" %> 
