@@ -65,7 +65,7 @@ ActiveAdmin.register AccountBalanceTransfer do
     withdraw = AccountBalanceTransfer.find(params[:id])
     
     # confirm user still has enough money in his/her account to withdraw
-    if withdraw.balance > withdraw.account.balance
+    if withdraw.balance < withdraw.account.balance
       
       # set balance transfer status to confirmed
       withdraw.update_attribute(:approved_at, Time.now) if withdraw.approved_at == nil

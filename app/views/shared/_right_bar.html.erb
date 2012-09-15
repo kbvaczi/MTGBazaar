@@ -24,7 +24,7 @@
         </div>
       </h1>
       <div class="ma-m">
-        <div class="mt-s"> <div class="left">Cart (<%= current_cart.item_count > 0 ? link_to("#{pluralize(current_cart.item_count,"item","items")}", show_cart_path) : "0 items" %>):</div>  <div class="right"><%= number_to_currency(current_cart.total_price) %></div>  </div>
+        <div class="mt-s"> <div class="left"><%= current_cart.item_count > 0 ? link_to("Cart (#{pluralize(current_cart.item_count,"item","items")}):", show_cart_path) : "0 items" %></div>  <div class="right"><%= number_to_currency(current_cart.total_price) %></div>  </div>
         <br/>
         <div class="mt-m"> <div class="left">Pending Purchases:</div> <div class="right"><%= current_user.pending_purchases.count %></div>  </div>
         <br/>
