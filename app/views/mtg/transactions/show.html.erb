@@ -74,7 +74,7 @@
       <% end %>
       <% if current_user.id == @transaction.seller_id && @transaction.status == "confirmed" %>
          <%= link_to "Confirm Shipment", seller_shipment_confirmation_path(@transaction), :class => "button right mr-m ml-m" if @transaction.shipping_label.present? %> 
-         <%= link_to "Show Shipping Label".html_safe, create_shipping_label_path(@transaction), :class => "button right mr-m ml-m" %>          
+         <%= link_to "Download Shipping Label".html_safe, create_shipping_label_path(@transaction), :class => "button right mr-m ml-m" %>          
       <% end %>
       <% if current_user.id == @transaction.buyer_id && @transaction.status == "shipped"%>
          <%= link_to "Complete Purchase", buyer_delivery_confirmation_path(@transaction), :class => "button right mr-m ml-m"  %> 

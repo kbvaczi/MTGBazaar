@@ -5,11 +5,14 @@ class Mtg::Transactions::ShippingLabelsController < ApplicationController
     
   def create
     if current_transaction.shipping_label.present?
-      redirect_to current_transaction.shipping_label.url
+      #redirect_to current_transaction.shipping_label.url
+      data = open(current_transaction.shipping_label.url)
+      send_data data.read, :type => data.content_type, :x_sendfile=>true, :filename => "#{current_transaction.transaction_number} - Shipping Label.png"
     else
       label = Mtg::Transactions::ShippingLabel.new(:transaction => current_transaction)
       if label.save
-        redirect_to label.url
+        data = open(label.url)
+        send_data data.read, :type => data.content_type, :x_sendfile=>true, :filename => "#{current_transaction.transaction_number} - Shipping Label.png"
       else
         flash[:error] = label.errors.full_messages
         redirect_to back_path

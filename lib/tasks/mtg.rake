@@ -3,7 +3,7 @@
 require 'open-uri'
 
 namespace :mtg do
-
+  
   namespace :import do
     
     ######## IMPORT MTG SETS ########
@@ -103,6 +103,32 @@ namespace :mtg do
       end
     end
     puts "everything activated"
+  end
+  
+  # fixes zero prices
+  task :fix_pricing => :environment do
+    puts "ADJUSTING PRICESra"
+    Mtg::Card.includes(:statistics).where("mtg_cards.id <> 0").each do |c|
+      stats = c.statistics
+      changed = false
+      if stats.price_low == 0
+        stats.price_low = 0.05 
+        changed=true
+      end
+      if stats.price_med == 0
+        stats.price_med = 0.10 
+        changed=true
+      end
+      if stats.price_high == 0
+        stats.price_high = 0.15
+        changed=true
+      end
+      if changed == true
+        puts "updating #{c.id}"
+        stats.save
+      end
+    end
+    puts "PRICES ADJUSTED"
   end
 
   #lists all available color codes

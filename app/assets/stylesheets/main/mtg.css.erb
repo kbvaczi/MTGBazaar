@@ -1,6 +1,9 @@
 .card_info_wrapper_back {
   display:none;
 }
+.card_info_wrapper {
+
+}
 .card_image_wrapper {
   min-height: 250px;
   width: 180px;
@@ -48,25 +51,37 @@
   width:15px;
 }
 .mtg_card_image {
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
+  -moz-border-radius: 12px;
+  -webkit-border-radius: 12px;
+  border-radius: 12px;
 
   -moz-box-shadow:     0px 1px 2px 1px #777;
   -webkit-box-shadow:  0px 1px 2px 1px #777;
   box-shadow:          0px 1px 2px 1px #777;
   
   width:180px;
+  height:258px;
+  margin-bottom:5px;
   
-  -webkit-transform: scale(1);
-	-webkit-transition-timing-function: ease-out;
-	-webkit-transition-duration: 100ms;
-	
+  cursor:-webkit-zoom-in;
+  cursor:-moz-zoom-in;
+
 }
-.mtg_card_image:hover{
-  	-webkit-transform: scale(1.5);
-  	-webkit-transition-timing-function: ease-out;
-  	-webkit-transition-duration: 100ms;
+.mtg_card_image:active{
+  
+
+  transform: scale(1.5);
+  -ms-transform: scale(1.5); /* IE 9 */
+  -webkit-transform: scale(1.5); /* Safari and Chrome */
+  -o-transform: scale(1.5); /* Opera */
+  -moz-transform: scale(1.5); /* Firefox */
+}
+.mtg_card_image_horizontal:active{
+  -ms-transform: rotate(90deg) scale(1.5); /* IE 9 */
+  -o-transform: rotate(90deg) scale(1.5); /* Opera */
+  -moz-transform: rotate(90deg) scale(1.5); /* Firefox */  
+  -webkit-transform: rotate(90deg) scale(1.5); /* Safari and Chrome */
+  transform: rotate(90deg) scale(1.5);  
 }
 .mtg_teaser{
   width: 100%;

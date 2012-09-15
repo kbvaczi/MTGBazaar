@@ -10,4 +10,7 @@ $(document).ready(function() {
     $(".card_info_wrapper_back").show();    
   });  
   
+  $('.mtg_card_image').draggable( "disable" )
+  $('.mtg_card_image_horizontal:hover').draggable( "disable" )  
+  
 });

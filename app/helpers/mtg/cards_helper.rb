@@ -212,23 +212,23 @@ module Mtg::CardsHelper
         language = "Italian"                
     end
     height = options[:height] || "20px"
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/flags/#{language.downcase}.png", :title => "#{language}", :style => "height:#{height};vertical-align:text-top;")         
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/flags/#{language.downcase}.png", :title => "#{language}", :class => "left", :style => "display:inline-block;height:#{height};vertical-align:text-top;")         
   end  
   
   def listing_option_foil_icon
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/foil.png", :title => "Foil", :style => "float:left;height:20px;vertical-align:bottom;")         
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/foil.png", :title => "Foil", :class => "left", :style => "display:inline-block;height:20px;vertical-align:bottom;")         
   end
 
   def listing_option_altart_icon
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/alt.png", :title => "Alternate art", :style => "float:left;height:20px;vertical-align:bottom;")         
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/alt.png", :title => "Alternate art",:class => "left", :style => "display:inline-block;height:20px;vertical-align:bottom;")         
   end
 
   def listing_option_misprint_icon
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/miscut.png", :title => "Misprint", :style => "float:left;height:20px;vertical-align:bottom;")         
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/miscut.png", :title => "Misprint",:class => "left", :style => "display:inline-block;height:20px;vertical-align:bottom;")         
   end
 
   def listing_option_scan_icon(listing)
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/scan.png", :title => "Click to view scan", :style => "float:left;height:20px;vertical-align:bottom;cursor:pointer;", :class => "overlay_trigger", :rel => "#scan_overlay_#{listing.id}")
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/scan.png", :title => "Click to view scan", :class => "left", :style => "float:left;height:20px;vertical-align:bottom;cursor:pointer;", :class => "overlay_trigger", :rel => "#scan_overlay_#{listing.id}")
   end
   
   def listing_option_scan_overlay(listing)      
@@ -236,7 +236,7 @@ module Mtg::CardsHelper
   end
 
   def listing_option_signed_icon
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/signed.png", :title => "Signed by artist", :style => "float:left;height:20px;vertical-align:bottom;")         
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/signed.png", :title => "Signed by artist",:class => "left", :style => "display:inline-block;height:20px;vertical-align:bottom;")         
   end  
   
   def listing_option_description_icon(listing)

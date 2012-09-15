@@ -1,5 +1,6 @@
 <div class="card_image_wrapper">
-  <%= image_tag(mtg_card.image_path, :class => "mtg_card_image") %>
+  <%= content_tag(:div, "", :class => "mtg_card_image #{"mtg_card_image_horizontal" if mtg_card.card_type == "Plane"}", :style => "background-image:url('#{mtg_card.image_path}');background-size:180px 258px;")    %>
+  <%#= image_tag(mtg_card.image_path, :class => "mtg_card_image #{"mtg_card_image_horizontal" if mtg_card.card_type == "Plane"}") %>
   <% if mtg_card.dual_sided_card? %>
     <div>
         <%= image_tag image_path("https://mtgbazaar.s3.amazonaws.com/images/mtg/various_symbols/day.png"), :height => "25px", :class => "dfc_day_icon left", :style => "margin-left:40px" %>
