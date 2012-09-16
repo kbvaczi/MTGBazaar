@@ -62,7 +62,8 @@ class User < ActiveRecord::Base
   
   # username must be between 3 and 15 characters and can only have letters, numbers, dash, period, or underscore (no other special characters)
   validates             :username,  :length => { :minimum => 3, :maximum   => 15 },
-                                    :format => { :with => /\A[-_\w\d]+\z/, :message => "no special characters please"}
+                                    :format => { :with => /\A[\w]+\z/, :message => "No special characters please"}
+  validates             :username,  :format => { :with => /\A[[A-Z][a-z]]{3,}/, :message => "Must start with at least 3 letters"}                                    
 
   # validates account model when user model is saved
   validates_associated :account, :statistics

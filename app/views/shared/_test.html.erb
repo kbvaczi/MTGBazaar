@@ -1,21 +1,29 @@
-<%
+<%#
 a = {
   :full_name   => "Full Name",
-  :first_name  => "First Name",
-  :last_name   => "last name",
-  :address1    => "616 mamorial heights",
+  :address1    => "6134346 mamorial heights",
   :address2    => "office 2030",                  
   :city        => "houston",
   :state       => "TX",
   :zip_code    => "77007"
 }
 
-  @address = Stamps.clean_address(:address => a)
+  address = {  :full_name=>"FULL NAME", 
+                :first_name=>"FIRST NAME", 
+                :last_name=>"LAST NAME", 
+                :address1=>"616 MEML HEIGHTS DR OFC 2030", 
+                :address2=>nil, 
+                :city=>"HOUSTON", 
+                :state=>"TX", 
+                :zip_code=>"77007", 
+                :cleanse_hash=>"AcS3J56j55cSuDz3BKnBJrds8ohkZWFkYmVlZg==20120313", 
+                :override_hash=>"NPKodKyjIYjJgAZWnvFYsjoOnitkZWFkYmVlZg==20120313" }
+
 
 %>
 
 
-<%= @address %>
+<%#= Stamps.clean_address(:address => a) %>
 
 
 <%#
@@ -94,26 +102,27 @@ rates = Stamps.get_rates(
  stamp = Stamps.create!({
               :sample          => false,
               :transaction_id  => "1234567890ABCDEFZ",
-              :to               => to_address[:address],
+              :to               => address,
               :from             => from_address,
               :rate          => {
-                :from_zip_code => '78701',
-                :to_zip_code   => '78704',
-                :weight_oz     => '1.8',
+                :from_zip_code => from_address[:zip_code],
+                :to_zip_code   => address[:zip_code],
+                :weight_oz     => '5',
                 :ship_date     => Date.today.strftime('%Y-%m-%d'),
                 :package_type  => 'Package',
                 :service_type  => 'US-FC',
-                :cod_value     => 10.00,
                 :add_ons       => {
                   :add_on => [
-                    { :type => 'SC-A-HP' }#,
-                    #{ :type => 'US-A-DC' }
-                    #{ :type => 'US-A-CM' }
+                    { :type => 'SC-A-HP' },
+                    { :type => 'US-A-DC' }
                   ]
                 }
               }
               })
 %>
+
+
+<%#= stamp%>
 
 <%#
   track = Stamps.track(stamp[:stamps_tx_id])

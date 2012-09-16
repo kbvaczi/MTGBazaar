@@ -88,14 +88,19 @@ MTGBazaar::Application.routes.draw do
   get 'account/purchases' => 'users#account_purchases', :as => 'account_purchases'
   post 'account/purchases' => 'users#account_purchases', :as => 'account_purchases'   # for pagination  
 
-  devise_for :users, :controllers => { :registrations => 'users/registrations', :sessions => 'users/sessions', :passwords => 'users/passwords' }
+
+
+  devise_for :users, :controllers => { :registrations => 'users/registrations', :sessions => 'users/sessions', :passwords => 'users/passwords' } 
+  devise_scope :user do
+    get 'users/sign_up/verify_address' => 'users/registrations#verify_address', :as => "sign_up_verify_address"
+  end
   resources :users, :only => [:index, :show], :controllers => { :users => "users/users"} do
     get "autocomplete_name", :on => :collection
     get :autocomplete_user_username, :on => :collection
   end
   match 'users/:id/(:page)', :controller => 'users', :action => 'show'  #TODO: hack to get pagination to work in user show page... relook at this later
 
-  #resources :accounts
+
   
 # ACCOUNT BALANCE TRANSFERS
   

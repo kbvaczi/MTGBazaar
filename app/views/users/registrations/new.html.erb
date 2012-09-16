@@ -9,10 +9,11 @@
   <% flash[:error] = "There were one or more errors while trying to process your request" if !devise_error_messages!.empty? %>
 
   <h2>Account Setup</h2>
-
+  <br class = "spacer"/>
+  
   <%= f.input :username,              :required => true, 
-                                      :hint => "Numbers and letters only, 15 chars max.",
-                                      :placeholder => "ex. BazaarSeller23" %>
+                                      :hint => "Numbers, letters, underscores only, 15 chars max.",
+                                      :placeholder => "ex: BazaarSeller23" %>
 
   <%= f.input :email ,                :required => true,
                                       :placeholder => "name@domain.com" %>
@@ -42,53 +43,73 @@
   <% end %>
 
   <br class = "spacer"/>
-    <br class = "spacer"/>
+  <br class = "spacer"/>
   
   <h2>Personal Information</h2>
+  <br class = "spacer"/>
 
   <%= f.simple_fields_for :account do |a| %>
-    <%= a.input :first_name %>
-    <%= a.input :last_name ,    :required => true %>
-    <%= a.input :address1,      :label => "Street Address" ,
-                                :placeholder => "ex. 402 Planeswalker Place",
+    <%= a.input :first_name,    :input_html => { :class => "verify_address_input" },
                                 :required => true %>
-    <%= a.input :address2,      :label => 'Apt./Suite.', 
-                                :placeholder => "ex. Apt 201" %>
-    <%= a.input :city ,         :required => true %>
+    
+    <%= a.input :last_name ,    :input_html => { :class => "verify_address_input" },                                                                                                                                
+                                :required => true %>
+    <br class = "spacer"/>                               
+    <%= a.input :address1,      :label => "Street Address",
+                                :placeholder => "ex: 402 Planeswalker Place",
+                                :input_html => { :class => "verify_address_input" },                                
+                                :required => true %>
+                                
+    <%= a.input :address2,      :label => 'Apt./Suite.',
+                                :input_html => { :class => "verify_address_input" },    
+                                :placeholder => "ex: Apt 201" %>
+
+    <%= a.input :city ,         :required => true,
+                                :input_html => { :class => "verify_address_input" } %>
+
     <%= a.input :state ,        :as => :select,
-                                :input_html => { :class => 'chzn-select' },
-                                :collection => us_states,
+                                :input_html => { :class => 'chzn-select verify_address_input' },
+                                :collection => us_states,                                        
                                 :required => true %>
+                                
     <%= a.input :zipcode ,      :label => "Zip" , 
-                                :placeholder => "12345",
+                                :placeholder => "ex: 12345",
+                                :input_html => { :maxlength => 5, :class => "verify_address_input" },                                                                
                                 :required => true %>    
+                                
     <%= a.input :country , :required => true ,
                            :collection => [ ["United States", "US"] ] , 
                            :include_blank => false, 
                            :input_html => {:class => "chzn-select"},
-                           :hint => "currently we only support USA" %>
+                           :hint => "currently we only support the USA" %>
+                           
+    <div style="height:70px;">
+      <%= a.label "Address Verification", :required => true %>
+      <% if @user.account.address_verification.present? %>
+        <p id="verify_address_text" style="padding-top:5px;font-style:italic;" class="mr tc-g">Verified</p>
+      <% else %>
+        <p id="verify_address_text" style="padding-top:5px;font-style:italic;" class="mr t-l tc-r">Unverified</p>
+        <br/>                       
+        <%= link_to "Verify Address", sign_up_verify_address_path(:first_name => "bob", :last_name => "jones"), :remote => true, "data-url" => sign_up_verify_address_path, :id => "verify_address_trigger", :class => "button center" %>
+      <% end%>
+      <br/>
+      <%= a.input :address_verification ,      :label => false,
+                                               :as => :hidden,
+                                               :required => false %>
+    </div>
+
+      
   <% end %>
   
   <br class = "spacer"/>
   <br class = "spacer"/>    
 
   <h2>Terms and Conditions</h2>
-  <div class ="AcknowledgeBorderDiv center">
-  	<div class="AcknowledgeOuterDiv center">
-      <div class="AcknowledgeInnerDiv">		
-          <%= render :inline => SiteVariable.get("terms_of_service") %>
-    		<%#= 
-      		output = ""
-      		text=File.open('public/terms.txt').read
-      		text.gsub!(/\r\n?/, "<br/>")
-      		text.each_line do |line|
-      			output = output + line
-      		end 
-    		%>
-    		<%#= output.html_safe %>
-      </div>
-  	</div>
-  </div>
+  <br class = "spacer"/>  
+      
+	<div class="AcknowledgeOuterDiv center">
+    <%= render :inline => SiteVariable.get("terms_of_service") %>
+	</div>
 
   <br class = "spacer"/>
   <br class = "spacer"/>

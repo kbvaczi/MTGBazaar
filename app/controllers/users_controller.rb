@@ -66,7 +66,6 @@ class UsersController < ApplicationController
   end
   
  
-  
   def transactions_index
   end
   
