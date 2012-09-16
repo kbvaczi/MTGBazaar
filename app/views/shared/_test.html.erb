@@ -1,3 +1,23 @@
+<%
+a = {
+  :full_name   => "Full Name",
+  :first_name  => "First Name",
+  :last_name   => "last name",
+  :address1    => "616 mamorial heights",
+  :address2    => "office 2030",                  
+  :city        => "houston",
+  :state       => "TX",
+  :zip_code    => "77007"
+}
+
+  @address = Stamps.clean_address(:address => a)
+
+%>
+
+
+<%= @address %>
+
+
 <%#
 
   integration_id = '132CB46D-2605-483C-83D1-F1A82DC0452B'
@@ -37,7 +57,7 @@
   response = http.request(request)
 
 %>
-<%
+<%#
 from_address = {
     :full_name => 'CHris SKSDOJssssOSDFJS',
     :address1  => '821 Congress Avenue',
@@ -70,7 +90,7 @@ rates = Stamps.get_rates(
   :insured_value => '50.00'
 )
 %>
-<%
+<%#
  stamp = Stamps.create!({
               :sample          => false,
               :transaction_id  => "1234567890ABCDEFZ",
@@ -95,7 +115,7 @@ rates = Stamps.get_rates(
               })
 %>
 
-<%
+<%#
   track = Stamps.track(stamp[:stamps_tx_id])
 %>
 
@@ -105,8 +125,3 @@ rates = Stamps.get_rates(
     :control_total => "200.00"
   )
 %>
-<%= Stamps.account %>
-<br/><br/>
-<%= stamp %>
-<br/><br/>
-<%= track %>

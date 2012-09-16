@@ -72,7 +72,7 @@ ActiveAdmin.register AccountBalanceTransfer do
 
       # setup transaction
       gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(
-        #:pem =>       PAYPAL_CONFIG[:paypal_cert_pem],
+        :pem =>       PAYPAL_CONFIG[:paypal_cert_pem],
         :login =>     PAYPAL_CONFIG[:api_login],
         :password =>  PAYPAL_CONFIG[:api_password],
         :signature => PAYPAL_CONFIG[:api_signature],

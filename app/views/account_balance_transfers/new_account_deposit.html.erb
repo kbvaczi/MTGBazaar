@@ -4,9 +4,9 @@
   
   <div class="group">
     <ul class="tabs center">
-        <li <%= "class=\'selected\'" if request.env['PATH_INFO'] == account_funding_index_path %>> <%= link_to "Funding History", account_funding_index_path %> </li>
-        <li <%= "class=\'selected\'" if request.env['PATH_INFO'] == new_account_deposit_path %>> <%= link_to "Make a Deposit", new_account_deposit_path %> </li>        
-        <li <%= "class=\'selected\'" if request.env['PATH_INFO'] == new_account_withdraw_path %>> <%= link_to "Request a Withdraw", new_account_withdraw_path %> </li>        
+      <li <%= "class=\'selected\'" if request.env['PATH_INFO'] == account_funding_index_path %>> <%= link_to "History", account_funding_index_path %> </li>
+      <li <%= "class=\'selected\'" if request.env['PATH_INFO'] == new_account_deposit_path %>> <%= link_to "Deposit", new_account_deposit_path %> </li>        
+      <li <%= "class=\'selected\'" if request.env['PATH_INFO'] == new_account_withdraw_path %>> <%= link_to "Withdraw", new_account_withdraw_path %> </li>
     </ul>
   </div>
   <br class="spacer"/>
