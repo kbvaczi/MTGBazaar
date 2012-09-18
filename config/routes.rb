@@ -124,6 +124,7 @@ MTGBazaar::Application.routes.draw do
   match 'condition'           => 'home#condition'
   match 'contact'             => 'contact#index'
   match 'contact_create'      => 'contact#create'
+  match 'copyright'           => 'home#copyright'
   match 'help'                => 'home#help'
   match 'faq'                 => 'home#faq'
   match 'feedback'            => 'home#feedback'
