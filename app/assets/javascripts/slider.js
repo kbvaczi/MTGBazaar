@@ -1,15 +1,24 @@
 $(document).ready(function(){
-
-	$('#slider1').show();
-		
-	$('#slider1').bxSlider({
+	
+	$('#rightBar2').show();
+	
+	$('#rightBar2').bxSlider({
+	    auto: true,
+  		pause: 5000,
+		controls: false,
+  		randomStart: true,
+	  });
+	  	
+	$('#rightBar3').show();
+	
+	$('#rightBar3').bxSlider({
 	    auto: true,
   		pause: 10000,
   		randomStart: true,
 	  });
 	});
 	
-	/**********************************/
+/**********************************/
 
 	(function($){
 
