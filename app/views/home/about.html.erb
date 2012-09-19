@@ -1,40 +1,4 @@
-<% title "About" %>
-
-<div id="about">
-  <h1>About MTGBazaar</h1>
-  <div class="ma">
-    <div class="center ma" style="width:300px;text-align:center;">
-      <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/logo/logo_sm.png', :alt => "MTGBazaar Logo" %>
-    </div>
-    <h2>Who we are</h2>
-    <p>
-      Founded by a group of <b>Texas based magic players</b>. Our intention is to provide a platform for magic
-      players to buy and sell their cards. All of our listings come from players just like you. This ensures
-      that we have large numbers of cards in stock as well as the cheapest prices online.
-    </p>
-    <h2>Safety</h2>
-    <p>
-      All payments and shipments are <b>verified using PAYPAL</b> this ensures that both sellers and buyers
-      are protected. All shipments come with USPS Delivery Confirmation so that we can <b>protect both the
-      seller and the buyer in all transactions</b>.
-    </p>
-    <h2>Ease of use</h2>
-    <p>
-      We have <b>the most sophisticated and user-friendly card database on the web</b>. We are continually
-      updating and upgrading to make sure that you can find what you need without any trouble (also if
-      you have any suggestions please contact us using the link at the bottom of the page). Our database includes
-      cards from all sets and in addition we have lots of easy-to-use functions that allow you to search for
-      multiple languages as well as other oddities.
-    </p>
-    <br class="spacer"/>
-    <% if not user_signed_in?%>
-      <br class="spacer"/>
-      <p>
-        Sign up today and become a member of the Bazaar!    
-      </p>
-      <%= link_to 'Join the Bazaar!', new_user_registration_path , :class => "button center mt" %>
-    <% end %>
-
-    
-  </div>
-</div> <!-- about -->
+<h1>About Us</h1>
+<div class="ma">
+  <%= render :inline => SiteVariable.get("about") %>
+</div>
