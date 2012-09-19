@@ -2,7 +2,8 @@ class EmailQueue < GirlFriday::WorkQueue
   include Singleton
   
   def initialize
-    super(:email_queue, :size => 5) do |options|
+    super(:email_queue, :size => 1) do |options|
+      Rails.logger.info("EmailQueue STARTING! (#{options[:template]})")
       case options[:template]
         when "account_update_notification"
           ApplicationMailer.account_update_notification(options[:data]).deliver
@@ -21,6 +22,7 @@ class EmailQueue < GirlFriday::WorkQueue
         when "seller_shipping_information"
           ApplicationMailer.seller_shipping_information(options[:data]).deliver          
       end
+      Rails.logger.info('EmailQueue FINISHED!')
     end
   end
   

@@ -86,10 +86,10 @@
           <td><%= number_to_currency(subtotal) %> </td>
         </tr>
         <tr class="header_row">
-          <% shipping = shipping_cost(item_count) %>
-        	<td colspan=8 style="text-align:right;">Shipping</td>
+          <% shipping = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:item_count => item_count)[:user_charge] %>
+        	<td colspan=8 style="text-align:right;">Shipping (includes delivery confirmation)</td>
           <td><%= number_to_currency(shipping) %> </td>
-        </tr>        
+        </tr>          
         <tr class="header_row">
           <% total[x] = shipping.to_f + subtotal.to_f%>
         	<th colspan=8 style="text-align:right;">Total cost for this transaction</th>

@@ -28,6 +28,9 @@ $(document).ready(function() {
   
     // clear vanilla inputs
     $("#search-form").find("select").val(''); 
+    $('span.deleteicon').each(function(event){
+        $(this).children('span').hide(); 
+    });
     $("#search-form").find("input").removeAttr('checked'); 
     $("#search-form input[type='text']").val(''); //clear text boxes, but unfortunately also clears multiselect placeholder
     $("#search-form input[type='search']").val(''); //clear search boxes

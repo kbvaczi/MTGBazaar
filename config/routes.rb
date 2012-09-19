@@ -53,6 +53,7 @@ MTGBazaar::Application.routes.draw do
   # shipping labels
   
   get   'transactions/:id/shipping_label' => 'mtg/transactions/shipping_labels#create',   :as => 'create_shipping_label'
+  get   'transactions/:id/track'          => 'mtg/transactions/shipping_labels#track',    :as => 'track_shipping'  
   
   namespace :mtg do
     

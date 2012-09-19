@@ -3,7 +3,7 @@
 require ::File.expand_path('../config/environment',  __FILE__)
 
 # use rack deflator to gzip assets when serving from heroku.... this is not needed when serving from s3
-
-use Rack::Deflater
+# commented out, added to production.rb because it is doing funny things in development
+# use Rack::Deflater
 
 run MTGBazaar::Application

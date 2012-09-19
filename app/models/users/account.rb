@@ -19,17 +19,19 @@ class Account < ActiveRecord::Base
   # ------------ Validations -------------- #
   # --------------------------------------- #
 
+  #before_validation     :format_address_verification
+  
   validates_presence_of :first_name, 
                         :last_name, 
                         :country, 
                         :state, 
                         :city, 
-                        :address1, 
+                        :address1,
+                        :address_verification,
                         :zipcode
+                        
 
-  validates             :address_verification, :presence => { :message => "Address Verification is required" }
-
-  validates             :state, :format => { :with => /\A[A-Z]{2}\z/, :message => "Please enter a valid 5 digit zipcode" }
+  validates             :state, :format => { :with => /\A[A-Z]{2}\z/, :message => "Please enter a valid State Abbreviation" }
 
   # matches 5-digit US zipcodes only
   validates             :zipcode, :format => { :with => /\A\d{5}\z/, :message => "Please enter a valid 5 digit zipcode" }
@@ -54,7 +56,7 @@ class Account < ActiveRecord::Base
   validates             :balance, :numericality => {:greater_than_or_equal_to => 0, :less_than => 10000000, :message => "Must be between $0.00 and $100,000"}   #price must be between $0 and $10,000.00                           
 
   # Attributes accessible to multiple assign.  Others must be individually assigned.
-  attr_accessible :first_name, :last_name, :country, :state, :city, :address1, :address2, :zipcode, :security_question, :security_answer, :paypal_username, address_verification
+  attr_accessible :first_name, :last_name, :country, :state, :city, :address1, :address2, :zipcode, :security_question, :security_answer, :paypal_username, :address_verification
   
   # returns full name of user
   def full_name

@@ -2,7 +2,7 @@
 
 <h1>My Purchases</h1>
 
-<div class="ma">
+<div class="content">
   <div class="group">
     <ul class="tabs center">
         <li <%= "class=\'selected\'" if request.fullpath ==  account_purchases_path %>> <%= link_to "All (#{current_user.mtg_purchases.count})", account_purchases_path %> </li>
@@ -32,7 +32,7 @@
 
 </table>
 
-  <div class="paginator">
+  <div class="paginator center">
     <%= paginate @sales, :method => :get %>
   </div>
   

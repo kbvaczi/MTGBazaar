@@ -1,14 +1,9 @@
 ## SETUP file for unicorn webserver
 
 preload_app true
+timeout 30 # 20 minutes for development for uploading sets  
+worker_processes 1
 
-if ENV['RAILS_ENV'] == "production"
-  timeout 30 # 30 seconds for production
-  worker_processes 4
-else 
-  timeout 1200 # 20 minutes for development for uploading sets  
-  worker_processes 4
-end
 
 before_fork do |server, worker|
   # Replace with MongoDB or whatever

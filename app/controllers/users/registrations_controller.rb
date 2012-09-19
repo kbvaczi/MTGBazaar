@@ -11,11 +11,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
   
   def update
-    EmailQueue.push(:template => "account_update_notification", :data => resource)
+    set_address_info
     super
+    EmailQueue.push(:template => "account_update_notification", :data => resource)
+    Rails.logger.info("TESTING #{resource.account.address_verification}")
   end
   
   def create
+    set_address_info
     super
   end
   
@@ -30,25 +33,29 @@ class Users::RegistrationsController < Devise::RegistrationsController
       :zip_code    => params[:zip_code]
     }
     
-    @response = Stamps.clean_address(:address => address)
-    @address_verification = {:cleanse_hash => @response[:address][:cleanse_hash], :override_hash => @response[:address][:override_hash]}
-    
+    begin
+      @response = Stamps.clean_address(:address => address)
+      session[:address_info] = @response[:address]
+    rescue Exception
+      @error = true 
+    end 
+        
     respond_to do |format|
       format.js { }
     end
   end
   
-  protected
-
-  #pass single or array of keys, which will be removed, returning the remaining hash  
-  def remove!(*keys)
-    
-    self
-  end
-
-  #non-destructive version
-  def remove(*keys)
-    self.dup.remove!(*keys)
+  def set_address_info
+    if session[:address_info]
+      address_info = session[:address_info]
+      params[:user][:account_attributes][:address1] = address_info[:address1] || ""
+      params[:user][:account_attributes][:address2] = address_info[:address2] || ""          
+      params[:user][:account_attributes][:city] = address_info[:city] || ""             
+      params[:user][:account_attributes][:state] = address_info[:state] || ""
+      params[:user][:account_attributes][:zipcode] = address_info[:zip_code] || ""
+      params[:user][:account_attributes][:address_verification] = { :cleanse_hash => address_info[:cleanse_hash], :override_hash => address_info[:override_hash] } || ""
+      session[:address_info] == ""
+    end
   end
   
 end

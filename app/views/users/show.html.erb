@@ -1,7 +1,7 @@
 <% title @user.username %>
 
 <h1><%= @user.username %></h1>
-<div class="ma">
+<div class="content">
   
   <div class="group">
     <ul class="tabs center">
@@ -95,7 +95,7 @@
   </table>
       
       <br class="spacer">
-      <div class="paginator">
+      <div class="paginator center">
         <%= paginate @sales %>
       </div>
 
@@ -115,7 +115,7 @@
         <th>  <%= sort_table_header("Qty.", "quantity") %> </td>
         <th>Purchase</th>
       </tr>
-      <% @listings.order("mtg_cards.name ASC").each do |listing| %>
+      <% @listings.each do |listing| %>
         <tr class=<%= cycle("odd","even") %>>  
           <td style="text-align:left;"><%= listing.card.name %></td>
           <td><div><%= display_set_symbol(listing.card.set) %></div></td>          
@@ -146,23 +146,21 @@
           <td style="text-align:right;"><%= number_to_currency(listing.price)%></td>
           <td><%= listing.quantity_available %></td>
           <td style="text-align:right;">
-            <div style="width:80px;float:right;">
+
               <%= form_tag add_to_cart_mtg_listing_path(listing.id), :method => :post do %>
-                <% if listing.quantity > 1 %>
-                  <%= text_field_tag "quantity", 1, :id => nil, :style => "width:30px;text-align:center;"%>            
-                <% else %>
-                  <%= listing.quantity %> &nbsp; &nbsp;
-                  <%= text_field_tag "quantity", 1, :id => nil, :style => "width:30px;text-align:center;display:none;"%>            
-                <% end %>
-                <%= submit_tag "Buy" %>
+                  <div class="left" style="width:30px;">
+                    <%= text_field_tag "quantity", 1, :id => nil, :style => "width:30px;text-align:center;", :maxlength => 4%>            
+                  </div>
+                  <%#= text_field_tag "quantity", 1, :id => nil, :style => "width:30px;text-align:center;display:none;"%>            
+                  <%= submit_tag "Buy" %>
               <% end %>
-            </div>
+
           </td>         
         </tr>
       <% end %>
     </table>
     
-    <div class="paginator right">
+    <div class="paginator center">
       <%= paginate @listings, :method => :get %>
     </div>
   <% end %>

@@ -8,6 +8,8 @@ class Mtg::TransactionsController < ApplicationController
     @items = @transaction.items.includes(:card => :set).order("mtg_cards.name").page(params[:page]).per(16)
   end
   
+##### ---------- SELLER SALE CONFIRMATION ------------- #####
+
   def seller_sale_confirmation
     @transaction = Mtg::Transaction.where(:seller_id => current_user.id, :id => params[:id]).first
     return if not verify_seller_response_privileges?(@transaction) # this transaction exists, current user is seller, and transaction hasn't been previously confirmed or rejected already
@@ -21,7 +23,8 @@ class Mtg::TransactionsController < ApplicationController
     elsif not @transaction.seller_confirmed? # this transaction hasn't been previously confirmed by seller
       @transaction.confirm_sale # this transaction is now confirmed by seller
       EmailQueue.push(:template => "seller_shipping_information", :data => @transaction)
-      EmailQueue.push(:template => "buyer_sale_confirmation",     :data => @transaction)      
+      EmailQueue.push(:template => "buyer_sale_confirmation",     :data => @transaction)
+      #Mtg::Transactions::ShippingLabelQueue.push(:transaction => @transaction)      
       #ApplicationMailer.seller_shipping_information(@transaction).deliver # send sale notification email to seller
       #ApplicationMailer.buyer_sale_confirmation(@transaction).deliver # notify buyer that the sale has been confirmed      
       redirect_to account_sales_path, :notice => "Sale successfully confirmed! Shipping information will be delivered to you shortly."
@@ -77,8 +80,11 @@ class Mtg::TransactionsController < ApplicationController
     if quantity_updated # have quantities been updated? 
       #TODO: notify buyer by email that their purchase has been modified
       @transaction.update_attributes(:buyer_confirmed_at => nil, :seller_confirmed_at => Time.now, :response_message => params[:response_message] )  # seller has confirmed sale as modified, buyer must now reconfirm sale        
+      redirect_to account_sales_path, :notice => "Your sale was modified. Buyer must now accept changes."      
+    else
+      flash[:error] = "You did not make any modifications"
+      redirect_to back_path
     end
-      redirect_to account_sales_path, :notice => "Your sale was modified. Buyer must now accept changes."
     return
   end  
 

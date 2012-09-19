@@ -5,26 +5,20 @@ class UsersController < ApplicationController
   include ApplicationHelper
   
   def index
-    @users = User.all
+    #@users = User.all
     respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @users }
+      format.html {render :nothing => true} # index.html.erb
     end
   end
-
+  
   # GET /users/1
-  # GET /users/1.json
   def show
     set_back_path    
-    @user = User.includes(:statistics, :account).find(params[:id])
-    @listings = @user.mtg_listings.available.includes({:card => :set}).order("#{ params[:sort_by].present? ? params[:sort_by].to_s: "mtg_cards.name" } ASC").page(params[:page]).per(20) if params[:section] == "mtg_cards"
+    @user = User.includes(:statistics, :account, :mtg_listings => {:card => :set}).find(params[:id])
     @sales = @user.mtg_sales.where(:status => "delivered").order("created_at DESC").page(params[:page]).per(10) if params[:section] == "feedback"
+    @listings = @user.mtg_listings.includes(:card => :set).available.page(params[:page]).per(20) if params[:section] == "mtg_cards"
     
-  
-    @listings = @user.mtg_listings.available.includes({:card => :set}).page(params[:page]).per(20) if params[:section] == "mtg_cards"
-    
-    
-    case params[:sort]
+    case params[:sort]        
       when /price/
         @listings = @listings.order("price #{sort_direction}")
       when /condition/
@@ -35,11 +29,14 @@ class UsersController < ApplicationController
         @listings = @listings.order("quantity #{sort_direction}")        
       when /name/
         @listings = @listings.order("mtg_cards.name #{sort_direction}")        
+      when /set/
+        @listings = @listings.order("mtg_sets.release_date #{sort_direction}")        
+      when //
+        @listings = @listings.order("mtg_cards.name ASC")        
     end
     
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @user }
     end
   end
   

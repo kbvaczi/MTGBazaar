@@ -22,7 +22,6 @@ a = {
 
 %>
 
-
 <%#= Stamps.clean_address(:address => a) %>
 
 
@@ -66,24 +65,27 @@ a = {
 
 %>
 <%#
-from_address = {
-    :full_name => 'CHris SKSDOJssssOSDFJS',
-    :address1  => '821 Congress Avenue',
-    :city      => 'Austin',
-    :state     => 'TX',
-    :zip_code  => '78701'
-}
+from_address = Stamps.clean_address(
+  :address => {
+    :full_name   => 'LA Chipotle',
+    :first_name  => 'bob',
+    :last_name   => 'jones',
+    :address1    => '601 West 7th Street',
+    :city        => 'Los Angeles',
+    :state       => 'CA',
+    :zip_code    => '17525'
+})[:address]
 
 to_address = Stamps.clean_address(
   :address => {
     :full_name   => 'Test Mom',
     :first_name  => 'bob',
     :last_name   => 'jones',
-    :address1    => '525 South Congress Avenue',
-    :city        => 'Austin',
-    :state       => 'TX',
-    :zip_code    => '78704'
-})
+    :address1    => '413 8th Avenue',
+    :city        => 'Manhattan',
+    :state       => 'NY',
+    :zip_code    => '10001'
+})[:address]
 %>
 <%#
 # send one burrito
@@ -99,30 +101,41 @@ rates = Stamps.get_rates(
 )
 %>
 <%#
- stamp = Stamps.create!({
-              :sample          => false,
-              :transaction_id  => "1234567890ABCDEFZ",
-              :to               => address,
-              :from             => from_address,
-              :rate          => {
-                :from_zip_code => from_address[:zip_code],
-                :to_zip_code   => address[:zip_code],
-                :weight_oz     => '5',
-                :ship_date     => Date.today.strftime('%Y-%m-%d'),
-                :package_type  => 'Package',
-                :service_type  => 'US-FC',
-                :add_ons       => {
-                  :add_on => [
-                    { :type => 'SC-A-HP' },
-                    { :type => 'US-A-DC' }
-                  ]
+ begin
+   stamp = Stamps.create!({
+                :sample          => false,
+                :transaction_id  => "1234567890ABCDEFZ",
+                :to               => to_address,
+                :from             => from_address,
+                :rate          => {
+                  :from_zip_code => from_address[:zip_code],
+                  :to_zip_code   => to_address[:zip_code],
+                  :weight_oz     => '4.5',
+                  :ship_date     => (Date.today + 2.days).strftime('%Y-%m-%d'),
+                  :service_type  => 'US-FC', :package_type  => 'Package',
+#                  :service_type  => 'US-PM', :package_type  => 'Package',
+                  :insured_value => '100.00',
+                  :add_ons       => {
+                    :add_on => [
+  #                    { :type => 'SC-A-INS' },  # Insurance
+                      { :type => 'SC-A-HP' },  # hidden postage
+                      { :type => 'US-A-DC' }   # delivery confirmation
+                    ]
+                  }
                 }
-              }
-              })
+                })
+  rescue Exception => e
+    Rails.logger.info("Error Message: #{e}")
+    if e == "bah"
+      Rails.logger.info("Error Handled")
+    else
+      raise
+    end
+  end
 %>
 
 
-<%#= stamp%>
+<%= Stamps.account %>
 
 <%#
   track = Stamps.track(stamp[:stamps_tx_id])
@@ -130,7 +143,7 @@ rates = Stamps.get_rates(
 
 <%#
   Stamps.purchase_postage(
-    :amount => "300.00",
-    :control_total => "200.00"
+    :amount => "10.00",
+    :control_total => "500.00"
   )
 %>

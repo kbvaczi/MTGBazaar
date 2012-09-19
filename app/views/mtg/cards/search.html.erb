@@ -6,7 +6,7 @@
   <div id="search_results">
     <%= render :partial => "teaser", :collection => @mtg_cards, :as => "mtg_card" %>
   </div>
-  <div class="paginator right">
+  <div class="paginator center">
     <%= paginate @mtg_cards, :window => 2, :remote => true ,:collection => @mtg_cards %>
   </div>
   

@@ -1,20 +1,11 @@
 module ApplicationHelper
 
-  def captcha_verified?
-    return true if session[:captcha]
-    return false
-  end
-  
   def title(page_title)
     provide :title, " | #{page_title.parameterize}"
   end
   
   def capitalize_first_word(word)
     word.split(' ').map {|w| w.capitalize }.join(' ')
-  end
-  
-  def back_path
-    return session[:return_to]
   end
   
   def display_time(time, options = {})
@@ -65,7 +56,7 @@ module ApplicationHelper
         ['Ohio', 'OH'],
         ['Oklahoma', 'OK'],
         ['Oregon', 'OR'],
-        ['Pennsylvania', 'PA'],
+        ['Pennsylvania', 'PA'], 
         ['Rhode Island', 'RI'],
         ['South Carolina', 'SC'],
         ['South Dakota', 'SD'],
@@ -102,5 +93,5 @@ module ApplicationHelper
 end
 
 def menu_icon
-  image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/options.png", :style => "float:left;height:20px;vertical-align:bottom;")         
+  image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/options.png", :style => "display:inline-block;height:20px;vertical-align:bottom;")         
 end

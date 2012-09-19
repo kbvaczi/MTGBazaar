@@ -6,79 +6,66 @@
   
   <div class="group">
     <ul class="tabs center">
-        <li <%= "class=\'selected\'" if not params[:status].present? %>> <%= link_to "All Items (#{@items.count})", buyer_sale_modification_review_path(@transaction) %> </li>
-        <li <%= "class=\'selected\'" if params[:status] == "modified" %>> <%= link_to "Modified Items (#{@items_modified.count})", buyer_sale_modification_review_path(@transaction, :status => "modified")%> </li>
+        <li <%= "class=selected" if params[:status] == "all" %>> <%= link_to "All Items (#{@items.count})", buyer_sale_modification_review_path(@transaction, :status => "all") %> </li>
+        <li <%= "class=selected" if not params[:status].present? %>> <%= link_to "Modified Items (#{@items_modified.count})", buyer_sale_modification_review_path(@transaction)%> </li>
     </ul>
   </div>
+  
+  <%  @items = @items_modified if params[:status] != "all"  %>
   <h2>Seller's Response Message</h2>
   <div class="ma">
     <%= @transaction.response_message %>
   </div>
-  <%= form_tag create_buyer_sale_modification_review_path(@transaction), :method => :put do %>
-    <% if params[:status] == "modified"
-         items = @items_modified
-       else
-         items = @items
-       end
-    %>
-    <h2>Updated Sale Items</h2>
-    <% items.each do |item| %>
-      <div style="display:table; width:100%; padding:10px; margin-bottom:5px; -moz-border-radius: 7px; -webkit-border-radius: 7px; border-radius: 7px; <%= cycle("background-color: rgb(250,250,250);", "") %>">  
-  
-        <div style="width:25%; text-align:left; vertical-align:middle; display:table-cell;">
-          <%= display_name(item.card.name) %>
-        </div>
-  
-        <div style="width:10%; vertical-align:middle; display:table-cell; text-align:center;">
-          <%= display_set_symbol(item.card.set) %>
-        </div>  
-  
-        <div style="width:10%; vertical-align:middle; display:table-cell; text-align:center;">
-          <%= number_to_currency(item.price) %>
-        </div>  
-  
-        <div style="width:10%; vertical-align:middle; display:table-cell; text-align:center;">
-          <%= display_condition(item.condition) %>
-        </div>
-  
-        <div style="width:10%; vertical-align:middle; display:table-cell; text-align:center;">
-          <%= display_flag_symbol(item.language) %>
-        </div>
-  
-        <div style="width:15%; vertical-align:middle; display:table-cell; text-align:center;">
-          <% if item.foil %>
-            <%= listing_option_foil_icon %>
-          <% end %>
-          <% if item.misprint %>
-            <%= listing_option_misprint_icon %>
-          <% end %>
-          <% if item.signed %>
-            <%= listing_option_signed_icon %>
-          <% end %>
-          <% if item.altart %>
-            <%= listing_option_altart_icon %>
-          <% end %>    
-          <% if item.description != "" %>
-            <%= listing_option_description_icon(item) %>
-          <% end %>
-        </div>
-  
-        <div style="width:10%; vertical-align:middle; display:table-cell; text-align:center;">  
-          <%= item.quantity_requested %>
-        </div>  
-        <div style="width:10%; vertical-align:middle; display:table-cell; text-align:center;">  
-          <%= item.quantity_available %>          
-        </div>      
-  
-      </div>     
-    <% end %>
+    <h2>Sale Items</h2>
 
-    <br class="spacer"/>
-    <%= submit_tag "Accept Changes", :class => "center" %>
-    <br class="spacer"/>
-    <br class="spacer"/>          
-    <%= submit_tag "Reject Changes", :class => "center" %>
-  
+      <table class="data">
+        <tr class="header_row">
+          <th>Name</th>
+          <th>Set</th>
+          <th>Price</th>
+          <th>Condition</th>
+          <th>Language</th>
+          <th>Options</th>
+          <th>Quantity<br/>Requested</th>
+          <th>Quantity<br/>Available</th>        
+        </tr>
+        <% @items.each do |item| %>
+          <tr class=<%=cycle("even","odd")%>>
+            <td><%= display_name(item.card.name) %></td>
+            <td><%= display_set_symbol(item.card.set) %></td>
+            <td><%= number_to_currency(item.price) %></td>   
+            <td><%= display_condition(item.condition) %></td>    
+            <td><%= display_flag_symbol(item.language) %></td>
+            <td>
+          		<div style="max-width:52px;">
+          		  <% if item.foil %>
+                  <%= listing_option_foil_icon %>
+                <% end %>
+                <% if item.misprint %>
+                  <%= listing_option_misprint_icon %>
+                <% end %>
+                <% if item.signed %>
+                  <%= listing_option_signed_icon %>
+                <% end %>
+                <% if item.altart %>
+                  <%= listing_option_altart_icon %>
+                <% end %>    
+                <% if item.description != "" %>
+                  <%= listing_option_description_icon(item) %>
+                <% end %>
+              </div>
+            </td>
+            <td><%= item.quantity_requested %></td>
+            <td><%= item.quantity_available %></td>            
+          </tr>
+        <% end %>
+      </table>
+  <br class="spacer"/>
+  <%= form_tag create_buyer_sale_modification_review_path(@transaction), :method => :put do %>
+    <div class="center">
+      <%= submit_tag "Accept Changes" %>
+      <%= submit_tag "Reject Changes" %>
+    </div>
   <% end %>
 
 </div>

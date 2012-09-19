@@ -1,0 +1,21 @@
+<h2>Tracking <%= @transaction.transaction_number %></h2>
+<table class='data'>
+  <tr class='header_row'>
+    <th>Date</th>
+    <th>Location</th>
+    <th>Event</th>    
+  </tr>
+
+  <% @response[:tracking_events].each_value do |value| %>
+    <tr>
+      <td> <%= value[:timestamp] %> </td>
+      <% if value[:city] %>      
+        <td> <%= "#{value[:city]}, #{value[:state]} #{value[:zipcode]}" %> </td>            
+      <% else %>
+        <td> <%= "#{value[:zipcode]}" %> </td>            
+      <% end %>
+      <td> <%= value[:event] %> </td>
+    </tr>
+  <% end %>
+
+</table>

@@ -6,6 +6,8 @@ class Mtg::ListingsController < ApplicationController
   before_filter :verify_not_in_cart?, :only => [:edit, :update, :destroy]  # don't allow users to change listings when they're in someone's cart or when they're in a transaction.
   
   include ActionView::Helpers::NumberHelper  # needed for number_to_currency  
+  include ActionView::Helpers::TextHelper
+  include Singleton
     
   def new
     @listing = Mtg::Card.find(params[:card_id]).listings.build(params[:mtg_listing]) 
@@ -28,9 +30,9 @@ class Mtg::ListingsController < ApplicationController
       duplicate_listing.increment(:quantity_available, params[:mtg_listing][:quantity].to_i)
       duplicate_listing.increment(:quantity, params[:mtg_listing][:quantity].to_i)      
       duplicate_listing.save!
-      redirect_to back_path, :notice => " #{help.pluralize(params[:mtg_listing][:quantity], "Listing", "Listings")} Created..."
+      redirect_to back_path, :notice => " #{pluralize(params[:mtg_listing][:quantity], "Listing", "Listings")} Created..."
     elsif @listing.save
-      redirect_to back_path, :notice => " #{help.pluralize(params[:mtg_listing][:quantity], "Listing", "Listings")} Created... Good Luck!"
+      redirect_to back_path, :notice => " #{pluralize(params[:mtg_listing][:quantity], "Listing", "Listings")} Created... Good Luck!"
     else
       flash[:error] = "There were one or more errors while trying to process your request"
       render 'new'
@@ -127,9 +129,9 @@ class Mtg::ListingsController < ApplicationController
       duplicate_listing.increment(:quantity_available, params[:mtg_listing][:quantity].to_i)
       duplicate_listing.increment(:quantity, params[:mtg_listing][:quantity].to_i)      
       duplicate_listing.save!
-      redirect_to back_path, :notice => " #{help.pluralize(params[:mtg_listing][:quantity], "Listing", "Listings")} Created... Sell More Cards?"
+      redirect_to back_path, :notice => " #{pluralize(params[:mtg_listing][:quantity], "Listing", "Listings")} Created... Sell More Cards?"
     elsif @listing.save
-      redirect_to back_path, :notice => " #{help.pluralize(params[:mtg_listing][:quantity], "Listing", "Listings")} Created... Sell More Cards?"
+      redirect_to back_path, :notice => " #{pluralize(params[:mtg_listing][:quantity], "Listing", "Listings")} Created... Sell More Cards?"
     else
       flash[:error] = "There were one or more errors while trying to process your request"
       render 'new_generic'

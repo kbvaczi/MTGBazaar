@@ -4,7 +4,7 @@
   <div class="ma-m">
 
     <div>
-      <%= text_field_tag "name", params[:name], {:class => "search-text ui-autocomplete-input" , :placeholder => "Name..." , "data-autocomplete" => autocomplete_name_mtg_cards_path }%>
+      <%= text_field_tag "name", params[:name], {:class => "search-text ui-autocomplete-input deletable" , :placeholder => "Name..." , "data-type" => "search", "data-autocomplete" => autocomplete_name_mtg_cards_path }%>
     </div>
 
     <div class= "mt-m search-set">
@@ -106,7 +106,7 @@
 	  </div>
 
 	<div class="mt search-seller group">
-	    <%= text_field_tag "seller", cookies[:search_seller], {:class => "search-text ui-autocomplete-input mb-m" , :placeholder => "Filter by seller..." , "data-autocomplete" => autocomplete_name_users_path }%>
+	    <%= text_field_tag "seller", cookies[:search_seller], {:class => "search-text ui-autocomplete-input mb-m deletable" , :placeholder => "Filter by seller..." , "data-autocomplete" => autocomplete_name_users_path }%>
 	    <%= text_field_tag "seller_id", cookies[:search_seller_id], :style => "display:none;" %>
 
 	  </div>

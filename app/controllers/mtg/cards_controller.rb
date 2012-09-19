@@ -93,18 +93,18 @@ class Mtg::CardsController < ApplicationController
       query << ["artist LIKE ?", "#{params[:artist]}"] if params[:artist].present?
       query << SmartTuple.new(" AND ").add_each(params[:abilities]) {|v| ["mtg_cards.description LIKE ?", "%#{v}%"]} if params[:abilities].present?
       # language filters
-      query << ["mtg_listings.language LIKE ? AND mtg_listings.quantity_available > 0", cookies[:search_language]] if cookies[:search_language].present?
+      query << ["mtg_listings.language LIKE ? AND mtg_listings.quantity_available > 0", params[:language]] if params[:language].present?
       # options filters
-      query << ["mtg_listings.foil LIKE ? AND mtg_listings.quantity_available > 0", true] if cookies[:search_foil].present?
-      query << ["mtg_listings.misprint LIKE ? AND mtg_listings.quantity_available > 0", true] if cookies[:search_miscut].present?
-      query << ["mtg_listings.signed LIKE ? AND mtg_listings.quantity_available > 0", true] if cookies[:search_signed].present?
-      query << ["mtg_listings.altart LIKE ? AND mtg_listings.quantity_available > 0", true] if cookies[:search_altart].present?
+      query << ["mtg_listings.foil LIKE ? AND mtg_listings.quantity_available > 0", true] if params[:options].present? && params[:options].include?('f')
+      query << ["mtg_listings.misprint LIKE ? AND mtg_listings.quantity_available > 0", true] if params[:options].present? && params[:options].include?('m')
+      query << ["mtg_listings.signed LIKE ? AND mtg_listings.quantity_available > 0", true] if params[:options].present? && params[:options].include?('s')
+      query << ["mtg_listings.altart LIKE ? AND mtg_listings.quantity_available > 0", true] if params[:options].present? && params[:options].include?('a')
       # seller filter
-      query << ["mtg_listings.seller_id LIKE ? AND mtg_listings.quantity_available > 0", "#{cookies[:search_seller_id]}"] if cookies[:search_seller_id].present?
+      query << ["mtg_listings.seller_id LIKE ? AND mtg_listings.quantity_available > 0", "#{params[:seller_id]}"] if params[:seller_id].present?
     end
     
     @mtg_cards = Mtg::Card.includes(:set, :listings, :statistics).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(20)
-    
+    Rails.logger.info("WTF #{params[:options]}")
     # Don't show only 1 card in search results... go directly to that card's show page if there is only one.
     if @mtg_cards.length == 1
       redirect_to mtg_card_path(@mtg_cards.first)

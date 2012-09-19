@@ -11,11 +11,7 @@
 	<td><%= transaction.status %></td>      
   <td><%= transaction.items.to_a.sum(&:quantity_available) %></td>
   <td><%= number_to_currency(transaction.total_value) %></td>      
-  <td class="teaser_row_actions center">
-      <div class="teaser_row_actions_icon center">
-        <%= link_to menu_icon, show_mtg_transaction_path(transaction) %>
-      </div>
-  </td>  
+  <td><%= link_to "Details", show_mtg_transaction_path(transaction) %></td>  
 </tr>
         
       

@@ -1,9 +1,12 @@
 <% 
   puts "Verify Address AJAX Call Running"
-  puts @address_verification
+  
 %>
-
-<% if @response[:address_match] %>
+<% if @error %>
+  $("#verify_address_text").text('Error, address verification service is not working at the moment.  Please try again in a few minutes');      
+  $("#verify_address_text").addClass('tc-r');          
+  $("#verify_address_text").removeClass('tc-g tc-y');
+<% elsif @response[:address_match] %>
   $("#user_account_attributes_first_name").val('<%= @response[:address][:first_name] %>');    
   $("#user_account_attributes_last_name").val('<%= @response[:address][:last_name] %>');      
   $("#user_account_attributes_address1").val('<%= @response[:address][:address1] %>');    
@@ -11,8 +14,8 @@
   $("#user_account_attributes_city").val('<%= @response[:address][:city] %>');      
   $("#user_account_attributes_state").val('<%= @response[:address][:state] %>');      
   $("#user_account_attributes_state").trigger("liszt:updated");  
-  $("#user_account_attributes_zipcode").val('<%= @response[:address][:zip_code] %>');  
-  $("#user_account_attributes_address_verification").val('<%= @address_verification.to_s %>');    
+  $("#user_account_attributes_zipcode").val('<%= @response[:address][:zip_code] %>');     
+  $("#user_account_attributes_address_verification").val('true');      
   $("#verify_address_text").text('Verified');      
   $("#verify_address_text").addClass('tc-g'); 
   $("#verify_address_text").removeClass('tc-r tc-y');          
@@ -26,8 +29,8 @@
   $("#user_account_attributes_state").val('<%= @response[:address][:state] %>');      
   $("#user_account_attributes_state").trigger("liszt:updated");
   $("#user_account_attributes_zipcode").val('<%= @response[:address][:zip_code] %>');
-  $("#user_account_attributes_address_verification").val('<%= @address_verification.to_s %>'); 
-  $("#verify_address_text").text('Address unrecognized by USPS, Please double-check and continue if you are sure everything is correct.');      
+  $("#user_account_attributes_address_verification").val('true');      
+  $("#verify_address_text").text('Address unrecognized by USPS, Please double-check and continue only if you are sure everything is correct.');      
   $("#verify_address_text").addClass('tc-y');          
   $("#verify_address_text").removeClass('tc-r tc-y');            
   $("#verify_address_trigger").hide();          

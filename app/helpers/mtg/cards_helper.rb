@@ -1,18 +1,6 @@
 # encoding: UTF-8
 # make this module available to be included in other areas by using "include Mtg::CardsHelper"
 module Mtg::CardsHelper
-
-  def shipping_cost(item_count)
-    if item_count < 15
-      2.50
-    elsif item_count < 30
-      3.25 
-    elsif item_count < 50
-      4.50  
-    else
-      10.00
-    end  
-  end
   
   ABILITY_LIST = ['Absorb',	'Affinity',	'Amplify',	'Annihilator',	'Attach',	'Aura swap',	'Banding',	'Bands with other',	'Battle cry',	'Bloodthirst',	'Bury',	'Bushido',	'Buyback',	'Cascade',	'Champion',	'Changeling',	'Channel',	'Chroma',	'Clash',	'Conspire',	'Convoke',	'Counter',	'Cumulative upkeep',	'Cycling',	'Deathtouch',	'Defender',	'Delve',	'Devour',	'Domain',	'Double strike',	'Dredge',	'Echo',	'Enchant',	'Entwine',	'Epic',	'Equip',	'Evoke',	'Exalted',	'Exile',	'Fading',	'Fateful hour',	'Fateseal',	'Fear',	'Fight',	'First strike',	'Flanking',	'Flash',	'Flashback',
                   'Flip',	'Flying',	'Forecast',	'Fortify',	'Frenzy',	'Graft',	'Grandeur',	'Gravestorm',	'Haste',	'Haunt',	'Hellbent',	'Hexproof',	'Hideaway',	'Horsemanship',	'Imprint',	'Infect',	'Intimidate',	'Join forces',	'Kicker',	'Kinship',	'Landfall',	'Landhome',	'Landwalk',	'Level up',	'Lifelink',	'Living weapon',	'Madness',	'Metalcraft',	'Modular',	'Morbid',	'Morph',	'Multikicker',	'Ninjutsu',	'Offering',	'Persist',	'Phasing',	'Poisonous',	'Proliferate',	'Protection',	'Provoke',	'Prowl',	'Radiance',	'Rampage',	'Reach',	'Rebound',	'Recover',	'Regenerate',	'Reinforce',
@@ -212,7 +200,7 @@ module Mtg::CardsHelper
         language = "Italian"                
     end
     height = options[:height] || "20px"
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/flags/#{language.downcase}.png", :title => "#{language}", :class => "left", :style => "display:inline-block;height:#{height};vertical-align:text-top;")         
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/flags/#{language.downcase}.png", :title => "#{language}", :style => "display:inline-block;height:#{height};vertical-align:text-top;")         
   end  
   
   def listing_option_foil_icon
@@ -232,7 +220,7 @@ module Mtg::CardsHelper
   end
   
   def listing_option_scan_overlay(listing)      
-    content_tag(:div, image_tag(listing.scan.url, :title => "Card Scan"), :class => "overlay_window", :id => "scan_overlay_#{listing.id}")    
+    content_tag(:div, image_tag(listing.scan.url, :title => "Card Scan", :style => "max-width:450px;max-height:500px;"), :class => "overlay_window", :id => "scan_overlay_#{listing.id}")    
   end
 
   def listing_option_signed_icon

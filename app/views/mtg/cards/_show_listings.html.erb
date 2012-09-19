@@ -67,12 +67,7 @@
 		<td><%= listing.quantity_available %></td>
 		<td style="text-align:right;width:80px">
 		  <%= form_tag add_to_cart_mtg_listing_path(listing.id), :method => :post do %>
-        <% if listing.quantity > 1 %>
-          <%= text_field_tag "quantity", 1, :id => nil, :style => "width:30px;text-align:center;"%>            
-        <% else %>
-          <%= listing.quantity %> &nbsp; &nbsp;
-          <%= text_field_tag "quantity", 1, :id => nil, :style => "width:30px;text-align:center;display:none;"%>        
-        <% end %>
+        <%= text_field_tag "quantity", 1, :id => nil, :style => "width:30px;text-align:center;"%>            
         <%= submit_tag "Buy" %>
       <% end %>
     </td>

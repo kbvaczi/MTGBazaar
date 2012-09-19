@@ -117,7 +117,7 @@ a {
 a:hover, a:focus {
 	text-decoration: none;
 }
-select, input, .button, input[type="text"], input[type="search"], textarea  {
+select, input, input[type="text"], input[type="search"], textarea  {
   outline:none;
   border: 1px solid #aaa;
   padding: 3px 4px;
@@ -176,9 +176,8 @@ select[disabled] {
   -moz-box-shadow:    0 0 0 0 #FFF;
   -webkit-box-shadow: 0 0 0 0 #FFF;
   box-shadow:         0 0 0 0 #FFF;
-  font-size: 100%;
-  padding: 3px 7px 3px 7px;
-  margin:0px;
+  padding: 4px 7px 4px 7px;
+  margin:0;
   color: #fff;
   display: inline-block;
   text-decoration: none;
@@ -200,9 +199,13 @@ select[disabled] {
 .button:hover, .button:focus, input[type="submit"]:hover, .active_button {
   color: #fff;
   cursor: pointer;
+//  background: #BEC1C4;
+
+}
+.button:active, input[type="submit"]:active {
   background: #BEC1C4;
   text-decoration: none;
-  text-shadow: none;
+  text-shadow: none;  
 }
 textarea {
   resize: none; 
@@ -496,7 +499,7 @@ textarea {
 
 table.data {
   width: 100%;
-  cellspacing: 2px;  
+  overflow:hidden;
 }
 table.data tr:last-child td:first-child, table.data tr:last-child th:first-child {
     -moz-border-radius-bottomleft:8px;
@@ -518,20 +521,15 @@ table.data tr:first-child th:last-child, table.data tr:first-child td:last-child
     -webkit-border-top-right-radius:8px;
     border-top-right-radius:8px
 }
-table.data tr {
-  max-width:520px;
-}
-table.data tr th {
-  cellspacing:0px;
-  max-width:520px;
-}
 table.data tr td, table.data tr th {
   padding:5px;
   vertical-align: middle;
   text-align: center;
   word-wrap: break-word;
   white-space: wrap;   
-  max-width:420px;  
+}
+table.data tr td {
+  word-break:break-all;
 }
 .odd {
   background-color: rgb(245,245,245);  
@@ -550,7 +548,7 @@ table.data tr td, table.data tr th {
 .spacer { clear: both; }
 .left { display:inline-block; float: left; }
 .right { display:inline-block; float: right; }
-.center { min-width: 30%; } /* objects automatically centered using jquery */
+.center { min-width: 20%; } /* objects automatically centered using jquery */
 .hidden { display:none; }
 .mr {margin-right:15px; }
 .mr-s {margin-right:5px; }
@@ -571,7 +569,7 @@ table.data tr td, table.data tr th {
 .t-s {font-size: 80%; line-height:80%;}
 .t-l {font-size: 120%; line-height:120%;}
 .t-b {font-weight:bold;}
-.tc-y {color:yellow;}
+.tc-y {color:#FFE51E;}
 .tc-g {color:green;}
 .tc-r {color:red;}
 
@@ -652,7 +650,7 @@ ul.tabs li a:active {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#7e858b, endColorstr=#3c4043);
   -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#7e858b, endColorstr=#3c4043); 
 }
- 
+
 ul.tabs li a:hover {
   color: #444;
   background: #fdfdfd;
@@ -702,7 +700,7 @@ ul.tabs li a.selected {
   -moz-box-shadow: 0 1px 0px rgba(0, 0, 0, 0.1), 0 0 0 1px white inset, 0 0 10px rgba(120, 175, 220, 0.36);
   -ms-box-shadow: 0 1px 0px rgba(0, 0, 0, 0.1), 0 0 0 1px white inset, 0 0 10px rgba(120, 175, 220, 0.36);
   -o-box-shadow: 0 1px 0px rgba(0, 0, 0, 0.1), 0 0 0 1px white inset, 0 0 10px rgba(120, 175, 220, 0.36);
-  box-shadow: 0 1px 0px rgba(0, 0, 0, 0.1), 0 0 0 1px white inset, 0 0 10px rgba(120, 175, 220, 0.36); 
+  box-shadow: 0 1px 0px rgba(0, 0, 0, 0.1), 0 0 0 1px white inset, 0 0 10px rgba(120, 175, 220, 0.36);
 }
     
 ul.tabs li a.selected:active {
@@ -779,8 +777,10 @@ ul.tabs li.selected a:hover {
   height:145px;
   width:440px;
   overflow-x:hidden;
+  word-wrap:break-word;
   overflow-y:scroll;	
   padding:10px;
+  margin-left:20px;
 }
 
 .AcknowledgeInnerDiv
@@ -899,7 +899,27 @@ ul.tabs li.selected a:hover {
 	font-size: 12px;
 }
 
+/* DELETE ICON FOR TEXT INPUTS, SEE delete_icon.js.erb */
 
+span.deleteicon {
+     position: relative;
+}
+span.deleteicon span {
+   position: absolute;
+   display: block;
+   top: 0px;
+   width: 10px;
+   height: 10px;
+   background: url('chosen-sprite.png') right top no-repeat;
+   right: 23px; left: auto; 
+   cursor: pointer;
+}
+span.deleteicon span:hover {
+  background-position: right -11px;
+}
+span.deleteicon input {
+  padding-right: 16px;
+}
 
 
 

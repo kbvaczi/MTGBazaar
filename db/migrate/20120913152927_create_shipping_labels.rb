@@ -5,11 +5,13 @@ class CreateShippingLabels < ActiveRecord::Migration
       t.integer   :transaction_id
       
       #table data
-      t.string    :url      # url to fetch postage from stamps.com
+      t.string    :url          # url to fetch postage from stamps.com
       t.string    :stamps_tx_id # used for tracking
-      t.integer   :price    # total postage price
+      t.integer   :price        # total postage price
+      t.boolean   :status       , :default => "active" # active, or refunded?
 
-      t.string    :params   # raw data coming back from stamps.com
+      t.text      :params       # raw data coming back from stamps.create
+      t.text      :tracking     # raw data coming back from stamps.track
       t.timestamps
       
     end

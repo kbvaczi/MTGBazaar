@@ -1,7 +1,9 @@
 
 $(document).ready(function() {
-
-  $("#user_account_attributes_state").val("TX");      
+  
+  if($("#user_account_attributes_address_verification").val()){
+    $("#verify_address_trigger").hide();         
+  } 
   
   $(".verify_address_input").change(function(){  
     var first_name = $("#user_account_attributes_first_name").val();
@@ -20,8 +22,8 @@ $(document).ready(function() {
                       "&state="      + state +
                       "&zip_code="   + zip_code ;
     $("#verify_address_trigger").attr("href", url); 
-      
-    $("#verify_address_text").text('Unverified');      
+    $("#verify_address_text").text('Unverified');            
+    $("#user_account_attributes_address_verification").val('');      
     $("#verify_address_text").addClass('tc-r'); 
     $("#verify_address_text").removeClass('tc-y tc-g');
     $("#verify_address_trigger").show();    

@@ -305,9 +305,11 @@ ActiveRecord::Schema.define(:version => 20120916122815) do
     t.string   "url"
     t.string   "stamps_tx_id"
     t.integer  "price"
-    t.string   "params"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.boolean  "status",         :default => false
+    t.text     "params"
+    t.text     "tracking"
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
   end
 
   add_index "mtg_transactions_shipping_labels", ["transaction_id"], :name => "index_mtg_transactions_shipping_labels_on_transaction_id"
