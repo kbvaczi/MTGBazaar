@@ -1,6 +1,6 @@
 <%= title "Shopping Cart"%>
 <h1><%="Your Cart (#{pluralize(current_cart.item_count,"item","items")})"%></h1>
-<div class="ma">
+<div class="content">
   <%# Do this if the user's cart is not empty %>
   <% if current_cart.item_count > 0 %>
     <%# organize items in cart by seller %>
@@ -58,6 +58,7 @@
               <% end %>
           		<% if reservation.listing.scan.present? %>
                 <%= listing_option_scan_icon(reservation.listing) %>
+                <%= listing_option_scan_overlay(reservation.listing) %>
               <% end %>            
             </td>
             <td>
