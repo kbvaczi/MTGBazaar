@@ -67,24 +67,24 @@ a = {
 <%#
 from_address = Stamps.clean_address(
   :address => {
-    :full_name   => 'LA Chipotle',
-    :first_name  => 'bob',
-    :last_name   => 'jones',
-    :address1    => '601 West 7th Street',
-    :city        => 'Los Angeles',
-    :state       => 'CA',
-    :zip_code    => '17525'
+    :full_name   => 'bazaarTrader',
+    :first_name  => 'Chris',
+    :last_name   => 'Odorizzi',
+    :address1    => '19 chestnut hill ct.',
+    :city        => 'The Woodlands',
+    :state       => 'TX',
+    :zip_code    => '77380'
 })[:address]
 
 to_address = Stamps.clean_address(
   :address => {
-    :full_name   => 'Test Mom',
-    :first_name  => 'bob',
-    :last_name   => 'jones',
-    :address1    => '413 8th Avenue',
-    :city        => 'Manhattan',
-    :state       => 'NY',
-    :zip_code    => '10001'
+    :full_name   => 'Bailyn',
+    :first_name  => 'Kenneth',
+    :last_name   => 'Vaczi',
+    :address1    => '511 w 34th',
+    :city        => 'Houston',
+    :state       => 'TX',
+    :zip_code    => '77018'
 })[:address]
 %>
 <%#
@@ -104,17 +104,18 @@ rates = Stamps.get_rates(
  begin
    stamp = Stamps.create!({
                 :sample          => false,
-                :transaction_id  => "1234567890ABCDEFZ",
+                :transaction_id  => "First Stamp",
                 :to               => to_address,
                 :from             => from_address,
+                :memo          => "MTGBazaar.com",
                 :rate          => {
                   :from_zip_code => from_address[:zip_code],
                   :to_zip_code   => to_address[:zip_code],
-                  :weight_oz     => '4.5',
-                  :ship_date     => (Date.today + 2.days).strftime('%Y-%m-%d'),
+                  :weight_oz     => '3',
+                  :ship_date     => (Date.today).strftime('%Y-%m-%d'),
                   :service_type  => 'US-FC', :package_type  => 'Package',
 #                  :service_type  => 'US-PM', :package_type  => 'Package',
-                  :insured_value => '100.00',
+#                  :insured_value => '100.00',
                   :add_ons       => {
                     :add_on => [
   #                    { :type => 'SC-A-INS' },  # Insurance
@@ -134,8 +135,9 @@ rates = Stamps.get_rates(
   end
 %>
 
+<%#= stamp %>
 
-<%= Stamps.account %>
+<%#= Stamps.account %>
 
 <%#
   track = Stamps.track(stamp[:stamps_tx_id])
@@ -143,7 +145,7 @@ rates = Stamps.get_rates(
 
 <%#
   Stamps.purchase_postage(
-    :amount => "10.00",
-    :control_total => "500.00"
+    :amount => "95.00",
+    :control_total => "5.00"
   )
 %>

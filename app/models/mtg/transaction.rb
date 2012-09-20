@@ -31,8 +31,10 @@ class Mtg::Transaction < ActiveRecord::Base
   
 # ---------------- VALIDATIONS ----------------      
 
-  validates_associated    :payment, :items, :credit
-  validates_presence_of   :payment, :seller, :buyer, :items, :value, :shipping_cost
+  validates_presence_of   :seller, :buyer, :value, :shipping_cost
+  validates               :value, :numericality => {:greater_than => 0, :less_than => 5000000, :message => "Must be between $0.01 and $50,000"}   #price must be between $0 and $10,000.00    
+  validates               :shipping_cost, :numericality => {:greater_than => 150, :less_than => 3000, :message => "Must be between $1.50 and $30"}
+  validates_associated    :items, :payment, :credit
 
 
 # ---------------- PUBLIC MEMBER METHODS -------------
@@ -43,16 +45,6 @@ class Mtg::Transaction < ActiveRecord::Base
     
   def item_count
     items.to_a.sum(&:quantity_available)
-  end
-  
-  def calculate_shipping
-    if item_count < 15
-      2.50
-    elsif item_count < 50
-      5.00 
-    else
-      10.00
-    end
   end
   
   def display_feedback
@@ -180,12 +172,11 @@ class Mtg::Transaction < ActiveRecord::Base
   
   def update_transaction_costs
     self.value = items.to_a.inject(0) {|sum, item| sum + item[:quantity_requested] * item[:price]}.to_f / 100
-    #TODO: Program Shipping costs
-    self.shipping_cost = calculate_shipping
+    self.shipping_cost = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:item_count => self.item_count)[:user_charge]
   end
   
   def build_associated_payment
-    self.build_payment(:buyer => self.buyer, :price => self.total_value, :transaction => self)
+    self.payment = Mtg::TransactionPayment.new(:buyer => self.buyer, :price => self.total_value, :transaction => self)
   end
     
   # creates a unique transaction number based on transaction ID

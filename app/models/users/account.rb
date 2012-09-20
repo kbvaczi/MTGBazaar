@@ -28,7 +28,9 @@ class Account < ActiveRecord::Base
                         :city, 
                         :address1,
                         :address_verification,
-                        :zipcode
+                        :zipcode,
+                        :security_question,
+                        :security_answer
                         
 
   validates             :state, :format => { :with => /\A[A-Z]{2}\z/, :message => "Please enter a valid State Abbreviation" }
@@ -43,11 +45,6 @@ class Account < ActiveRecord::Base
   
   validates             :first_name, 
                         :last_name, 
-                        :country, 
-                        :state, 
-                        :city, 
-                        :address1, 
-                        :zipcode,
                         :length => {
                            :minimum   => 2,
                            :maximum   => 30,
@@ -66,13 +63,13 @@ class Account < ActiveRecord::Base
   # credit this account's balance with amount in dollars
   def balance_credit!(amount=0)
     self.balance += amount.to_money
-    self.save
+    return self.save
   end
 
   # debit this account's balance with amount in dollars
   def balance_debit!(amount=0)
     self.balance -= amount.to_money
-    self.save
+    return self.save
   end  
   
 end

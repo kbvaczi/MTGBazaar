@@ -104,8 +104,7 @@
                                                                   :class => "button center" %>
 
       <br/>
-      <%= a.input :address_verified ,          :label => false,
-                                               :input_html => {:value => @user.account.address_verification.present? ? true : ""},
+      <%= a.input :address_verification ,      :label => false,
                                                :as => :hidden,
                                                :required => false %>
     </div>
