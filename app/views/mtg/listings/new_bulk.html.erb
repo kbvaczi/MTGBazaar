@@ -2,7 +2,7 @@
 
 <h1>Step 2: Complete Bulk Import</h1>
 
-<div class="ma">
+<div class="content">
   
   <%= form_tag create_bulk_mtg_listings_path do %>
 
@@ -93,10 +93,15 @@
           </td>
         </tr>
       <% end %>
+      <tr class="header_row">
+        <th colspan=4>
+          Please double check the form for accuracy before submitting.<br/> This process cannot be easily reversed!
+        </th>
+      </tr>
     </table>
     
     <br class="spacer"/>
-    <div style="width:400px;text-align:center;" class="center"><b>Note:</b> Please double check the form for accuracy before submitting. This process cannot be easily reversed!</div>  
+
 
     <br class="spacer"/>
     <br class="spacer"/>    

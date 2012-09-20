@@ -1,13 +1,31 @@
 <% title "MTG Cards" %>
 
-<h1>Search Results (<%=pluralize(@mtg_cards.total_count,"card","cards")%>)</h1>
+<h1>Search Results</h1>
 
 <div class ="content">
-  <div id="search_results">
-    <%= render :partial => "teaser", :collection => @mtg_cards, :as => "mtg_card" %>
+  <div class="group">
+    <ul class="tabs center">
+        <li <%= "class=selected" if params[:show] == "all" %>> <%= link_to "All (#{@mtg_cards.total_count})", url_for(params.merge(:show => "all", :page => 1)), :remote => true %> </li>
+        <li <%= "class=selected" if params[:show] != "all" %>> <%= link_to "With Listings (#{@mtg_cards_with_listings.total_count})", url_for(params.merge(:show => "", :page => 1)), :remote => true %> </li>      
+    </ul>
   </div>
-  <div class="paginator center">
-    <%= paginate @mtg_cards, :window => 2, :remote => true ,:collection => @mtg_cards %>
-  </div>
+  
+
+    <% if params[:show] == "all" %>
+      <div id="search_results">
+        <%= render :partial => "teaser", :collection => @mtg_cards, :as => "mtg_card" %>
+      </div>        
+      <div class="paginator center"><%= paginate @mtg_cards, :window => 2, :remote => true ,:collection => @mtg_cards %></div>      
+    <% else %>      
+      <div id="search_results">
+        <%= render :partial => "teaser", :collection => @mtg_cards_with_listings, :as => "mtg_card" %>
+      </div>        
+      <div class="paginator center"><%= paginate @mtg_cards_with_listings, :window => 2, :remote => true ,:collection => @mtg_cards_with_listings %></div>
+    <% end %>          
+
+  
+
+
+
   
 </div>

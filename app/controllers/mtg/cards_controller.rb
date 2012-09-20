@@ -92,23 +92,34 @@ class Mtg::CardsController < ApplicationController
       query << ["card_subtype LIKE ?", "%#{params[:subtype]}%"] if params[:subtype].present?
       query << ["artist LIKE ?", "#{params[:artist]}"] if params[:artist].present?
       query << SmartTuple.new(" AND ").add_each(params[:abilities]) {|v| ["mtg_cards.description LIKE ?", "%#{v}%"]} if params[:abilities].present?
-      # language filters
-      query << ["mtg_listings.language LIKE ? AND mtg_listings.quantity_available > 0", params[:language]] if params[:language].present?
-      # options filters
-      query << ["mtg_listings.foil LIKE ? AND mtg_listings.quantity_available > 0", true] if params[:options].present? && params[:options].include?('f')
-      query << ["mtg_listings.misprint LIKE ? AND mtg_listings.quantity_available > 0", true] if params[:options].present? && params[:options].include?('m')
-      query << ["mtg_listings.signed LIKE ? AND mtg_listings.quantity_available > 0", true] if params[:options].present? && params[:options].include?('s')
-      query << ["mtg_listings.altart LIKE ? AND mtg_listings.quantity_available > 0", true] if params[:options].present? && params[:options].include?('a')
-      # seller filter
-      query << ["mtg_listings.seller_id LIKE ? AND mtg_listings.quantity_available > 0", "#{params[:seller_id]}"] if params[:seller_id].present?
     end
+
+    query_listings = SmartTuple.new(" AND ")
+    # language filters
+    query_listings << ["mtg_listings.quantity_available > 0"]
+    query_listings << ["mtg_listings.language LIKE ?", params[:language]] if params[:language].present?
+    # options filters
+    query_listings << ["mtg_listings.foil LIKE ?", true] if params[:options].present? && params[:options].include?('f')
+    query_listings << ["mtg_listings.misprint LIKE ?", true] if params[:options].present? && params[:options].include?('m')
+    query_listings << ["mtg_listings.signed LIKE ?", true] if params[:options].present? && params[:options].include?('s')
+    query_listings << ["mtg_listings.altart LIKE ?", true] if params[:options].present? && params[:options].include?('a')
+    # seller filter
+    query_listings << ["mtg_listings.seller_id LIKE ?", "#{params[:seller_id]}"] if params[:seller_id].present?
     
     @mtg_cards = Mtg::Card.includes(:set, :listings, :statistics).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(20)
-    Rails.logger.info("WTF #{params[:options]}")
+    @mtg_cards_with_listings = @mtg_cards.where(query_listings.compile).page(params[:page]).per(20)    
+
+
     # Don't show only 1 card in search results... go directly to that card's show page if there is only one.
     if @mtg_cards.length == 1
       redirect_to mtg_card_path(@mtg_cards.first)
     end
+    
+    respond_to do |format|
+      format.html {}
+      format.js {}      
+    end
+    
   end
   
   def autocomplete_name

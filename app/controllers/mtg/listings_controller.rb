@@ -145,9 +145,9 @@ class Mtg::ListingsController < ApplicationController
   def new_bulk
     @set = Mtg::Set.where(:code => params[:mtg_listing][:set]).first
     if params[:sort] == "name"
-      @cards = Mtg::Card.joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_listing][:set]).order("name ASC")
+      @cards = Mtg::Card.joins(:set).includes(:statistics).where("mtg_sets.code LIKE ?", params[:mtg_listing][:set]).order("name ASC")
     else
-      @cards = Mtg::Card.joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_listing][:set]).order("card_number ASC")      
+      @cards = Mtg::Card.joins(:set).includes(:statistics).where("mtg_sets.code LIKE ?", params[:mtg_listing][:set]).order("card_number ASC")      
     end
   end
   
