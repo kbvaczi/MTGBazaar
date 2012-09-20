@@ -12,23 +12,24 @@ class Mtg::Transactions::ShippingLabelsController < ApplicationController
       begin
         label = Mtg::Transactions::ShippingLabel.new(:transaction => current_transaction)
         if not label.save
-          Rails.logger.info("label.errors.full_messages")
-          flash[:error] = label.errors.full_messages
+          Rails.logger.debug("label.errors.full_messages")
+          flash[:error] = "There was a problem retreiving your shipping label.  Please try again later..."
           redirect_to back_path
           return
         end
       rescue Exception => message
-        Rails.logger.info(message)
+        Rails.logger.debug(message)
         @error = true
       end 
     end
     
     respond_to do |format|
       format.html do 
-        data = open(label.url)
-        if data.present?
-          send_data data.read, :type => data.content_type, :x_sendfile=>true, :filename => "Shipping Label - #{current_transaction.transaction_number}.png"
-        end
+        redirect_to label.url
+      #  data = open(label.url)
+      #  if data.present?
+      #    send_data data.read, :type => data.content_type, :x_sendfile=>true, :filename => "Shipping Label - #{current_transaction.transaction_number}.png"
+      #  end
       end
       format.js  { }
     end

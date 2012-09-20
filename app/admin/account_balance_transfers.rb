@@ -92,16 +92,16 @@ ActiveAdmin.register AccountBalanceTransfer do
         :receiver_list        => recipients )
 
       # execute transaction
+      logger.debug "ADAPTIVE PAYMENT REQUEST:  \n #{purchase.to_xml}"
       response = gateway.execute_payment(purchase)
-      
-      logger.debug response.to_yaml
+      logger.debug "ADAPTIVE PAYMENT RESPONSE: \n #{response.to_xml}"
       
       #withdraw.reload #refresh withdraw variable since it may have changed
       
-      if withdraw.confirmed_at != nil
-        flash[:notice] = "Transaction Completed..."
+      if response.success?
+        flash[:notice] = "Transaction Completed... Awaiting Payment Notification from Paypal"
       else
-        flash[:error]  = "Potential Transaction Error... See Payment Notification for details..."
+        flash[:error]  = "Potential Transaction Error... Check paypal logs"
       end
     
     else

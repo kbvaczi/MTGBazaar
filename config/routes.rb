@@ -136,6 +136,11 @@ MTGBazaar::Application.routes.draw do
   match 'feedback'            => 'home#feedback'
   mount Ckeditor::Engine      => "/ckeditor"
   
+  
+  if Rails.env.development?
+    match 'test'              => 'home#test'
+  end
+  
 # RAILS STANDARD COMMENTS ----------- #
   
   #match "*a" => redirect('/') # send all random routes to home

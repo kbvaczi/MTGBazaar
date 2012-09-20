@@ -64,7 +64,7 @@ a = {
   response = http.request(request)
 
 %>
-<%#
+<%
 from_address = Stamps.clean_address(
   :address => {
     :full_name   => 'bazaarTrader',
@@ -100,10 +100,11 @@ rates = Stamps.get_rates(
   :insured_value => '50.00'
 )
 %>
-<%#
+<%
  begin
    stamp = Stamps.create!({
                 :sample          => true,
+                :image_type      => "Pdf",
                 :transaction_id  => "First Stamp",
                 :to               => to_address,
                 :from             => from_address,
@@ -135,7 +136,7 @@ rates = Stamps.get_rates(
   end
 %>
 
-<%#= stamp %>
+<%= stamp %>
 
 <%#= Stamps.account %>
 

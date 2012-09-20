@@ -104,8 +104,8 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
       :city          => params[:user].account.city,
       :state         => params[:user].account.state,
       :zip_code      => params[:user].account.zipcode,
-#      :cleanse_hash  => params[:user].account.address_verification[:cleanse_hash],
-#      :override_hash => params[:user].account.address_verification[:override_hash]    
+      :cleanse_hash  => (params[:user].account.address_verification[:cleanse_hash] || ""),
+      :override_hash => (params[:user].account.address_verification[:override_hash] || "")   
     }
     params[:clean] == true ? Stamps.clean_address(:address => a)[:address] : a
   end
@@ -114,6 +114,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
     details = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:item_count => transaction.item_count)
     stamp = Stamps.create!({
                :sample          => STAMPS_CONFIG[:mode] == "production" ? false : true,  # all labels are test labels if we aren't in production mode....
+               :image_type      => "Pdf",
                :customer_id     => "12345", #TODO: code customer ID
                :transaction_id  => params[:stamps_tx_id],
                :to              => params[:to],
