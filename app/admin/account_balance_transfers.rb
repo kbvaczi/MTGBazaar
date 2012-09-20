@@ -92,9 +92,9 @@ ActiveAdmin.register AccountBalanceTransfer do
         :receiver_list        => recipients )
 
       # execute transaction
-      gateway.execute_payment(purchase)
+      response = gateway.execute_payment(purchase)
       
-      logger.debug purchase.to_yaml
+      logger.debug response.to_yaml
       
       #withdraw.reload #refresh withdraw variable since it may have changed
       
