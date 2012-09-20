@@ -1,6 +1,5 @@
 ## SETUP file for unicorn webserver
 
-preload_app true
 timeout 30 # 20 minutes for development for uploading sets  
 worker_processes 1
 

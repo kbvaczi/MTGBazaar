@@ -50,6 +50,7 @@ $(document).ready(function() {
   // don't allow users to freely write text box
   $("#seller").change(function() {  
     $(this).val('');
+    $('#seller_id').val('');
     $.cookie('search_seller', "", { expires: 1, path: '/' });
     $.cookie('search_seller_id', "", { expires: 1, path: '/' });
   });
@@ -59,7 +60,8 @@ $(document).ready(function() {
     $.cookie('search_seller', $(this).val().split(',')[1], { expires: 1, path: '/' });
     $.cookie('search_seller_id', $(this).val().split(',')[0], { expires: 1, path: '/' });    
     $('#seller_id').val($(this).val().split(',')[0]);
-    $('#seller').val($(this).val().split(',')[1]);    
+    $('#seller').val($(this).val().split(',')[1]);   
+    $('#seller').siblings('span').show();  
   });
 
   //UPDATE COOKEIS TO STORE SEARCH INFO---------------------------------------------------------------------
