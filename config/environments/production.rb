@@ -8,6 +8,7 @@ MTGBazaar::Application.configure do
   
   # Gzip assets on production only
   # http://bindle.me/blog/index.php/304/rack-middleware-for-seo-fun-and-profit
+  config.middleware.use Rack::Cache
   config.middleware.insert_before Rack::Cache, Rack::Deflater
 
   config.middleware.insert_before(Rack::Lock, Rack::Rewrite) do
