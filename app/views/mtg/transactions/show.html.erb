@@ -78,7 +78,7 @@
            <% if not @transaction.shipping_label.present? %>
              <%= link_to "Create Shipping Label", create_shipping_label_path(@transaction), :class => "button ma", :remote => true, :style => "display:inline-block;" %>          
            <% else %>             
-             <%= link_to "Download Shipping Label", @transaction.shipping_label.url, :target => "_blank", :class => "button ma" %>          
+             <%= link_to "Download Shipping Label", @transaction.shipping_label.params[:url], :target => "_blank", :class => "button ma" %>          
              <%= link_to "Confirm Shipment", seller_shipment_confirmation_path(@transaction), :class => "button ma" %> 
            <% end %>
          </div>

@@ -64,7 +64,7 @@ a = {
   response = http.request(request)
 
 %>
-<%
+<%#
 from_address = Stamps.clean_address(
   :address => {
     :full_name   => 'bazaarTrader',
@@ -100,7 +100,7 @@ rates = Stamps.get_rates(
   :insured_value => '50.00'
 )
 %>
-<%
+<%#
  begin
    stamp = Stamps.create!({
                 :sample          => true,
@@ -136,13 +136,14 @@ rates = Stamps.get_rates(
   end
 %>
 
-<%= stamp %>
+<%#= stamp %>
 
 <%#= Stamps.account %>
 
-<%#
-  track = Stamps.track(stamp[:stamps_tx_id])
+<%
+  track = Stamps.track("b6774184-36b6-4684-8c0c-132ba0011511")
 %>
+<%= track %>
 
 <%#
   Stamps.purchase_postage(

@@ -25,8 +25,8 @@ class Mtg::Transactions::ShippingLabelsController < ApplicationController
     
     respond_to do |format|
       format.html do 
-        redirect_to label.url
-      #  data = open(label.url)
+        redirect_to label.params[:url]
+      #  data = open(label.params[:url])
       #  if data.present?
       #    send_data data.read, :type => data.content_type, :x_sendfile=>true, :filename => "Shipping Label - #{current_transaction.transaction_number}.png"
       #  end

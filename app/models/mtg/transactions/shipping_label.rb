@@ -138,12 +138,11 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
     self.params = stamp
     self.stamps_tx_id = stamp[:stamps_tx_id]
     self.price = stamp[:rate][:amount]
-    self.url = stamp[:url]
     buy_postage_if_necessary(:current_balance => stamp[:postage_balance][:available_postage].to_i, 
                              :control_total   => stamp[:postage_balance][:control_total].to_i)
   end
   
-  # buy postage if balance is below minimum
+  # buy postage if balance is below minimum (only works in STAMPS_CONFIG[:mode] = production)
   def buy_postage_if_necessary(params = {:current_balance => 9999, :control_total => 0})
     min_postage_balance = 80 # buy postage if balance is under this amount
     max_control_total = 1000 # max amount to spend per month?
