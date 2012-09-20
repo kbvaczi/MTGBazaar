@@ -113,7 +113,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
   def create_stamp(params={})
     details = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:item_count => transaction.item_count)
     stamp = Stamps.create!({
-               :sample          => false,
+               :sample          => STAMPS_CONFIG[:mode] == "production" ? false : true,  # all labels are test labels if we aren't in production mode....
                :customer_id     => "12345", #TODO: code customer ID
                :transaction_id  => params[:stamps_tx_id],
                :to              => params[:to],
@@ -123,7 +123,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
                  :from_zip_code => params[:from][:zip_code],
                  :to_zip_code   => params[:to][:zip_code],
                  :weight_oz     => details[:weight_in_oz],
-                 :ship_date     => (Date.today + 1.days).strftime('%Y-%m-%d'),
+                 :ship_date     => (Date.today).strftime('%Y-%m-%d'),
                  :package_type  => details[:package_type],
                  :service_type  => details[:service_type],
                  :add_ons       => {
@@ -143,21 +143,25 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
   end
   
   # buy postage if balance is below minimum
-  def buy_postage_if_necessary(params = {:current_balance => 999, :control_total => 0})
+  def buy_postage_if_necessary(params = {:current_balance => 9999, :control_total => 0})
     min_postage_balance = 80 # buy postage if balance is under this amount
     max_control_total = 1000 # max amount to spend per month?
     postage_purchase_amount = 50 # amount to purchase at a time
-    if params[:current_balance] < min_postage_balance && params[:control_total] < max_control_total
-        Rails.logger.info("Postage below #{min_postage_balance}, attempting to purchase #{postage_purchase_amount} in postage")
-        response = Stamps.purchase_postage(:amount => postage_purchase_amount,
-                                           :control_total => params[:control_total])
-        if response[:purchase_status] == "Rejected"
-          Rails.logger.info("Postage purchase FAILED!, Rejection reason: #{response[:rejection_reason]}")
-        else
-          Rails.logger.info("Postage purchase SUCCESS!")          
-        end
+    if STAMPS_CONFIG[:mode] == "production"
+      if params[:current_balance] < min_postage_balance && params[:control_total] < max_control_total
+          Rails.logger.info("STAMPS: Postage below #{min_postage_balance}, attempting to purchase #{postage_purchase_amount} in postage")
+          response = Stamps.purchase_postage(:amount => postage_purchase_amount,
+                                             :control_total => params[:control_total])
+          if response[:purchase_status] == "Rejected"
+            Rails.logger.info("STAMPS: Postage purchase FAILED!, Rejection reason: #{response[:rejection_reason]}")
+          else
+            Rails.logger.info("STAMPS: Postage purchase SUCCESS!")          
+          end
+      else
+        Rails.logger.info("STAMPS: Checking Postage Balance: #{params[:current_balance]}")          
+      end
     else
-      Rails.logger.info("Postage Balance: #{params[:current_balance]}")          
+       Rails.logger.info("STAMPS: We don't buy postage in test mode")          
     end
   end
 

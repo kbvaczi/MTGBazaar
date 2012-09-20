@@ -3,9 +3,9 @@
   <td><%= transaction.transaction_number %></td>
  	<td>
  	  <% if current_user.id == transaction.buyer_id %>
-       <%= link_to transaction.seller.username, user_path(transaction.seller) %>
+       <%= link_to transaction.seller.username, user_path(transaction.seller) rescue "ERROR" %>
     <% else %>
-       <%= link_to transaction.buyer.username, user_path(transaction.buyer) %>
+       <%= link_to transaction.buyer.username, user_path(transaction.buyer) rescue "ERROR" %>
     <% end %>
   </td>
 	<td><%= transaction.status %></td>      
