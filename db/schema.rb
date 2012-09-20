@@ -209,7 +209,7 @@ ActiveRecord::Schema.define(:version => 20120916122815) do
     t.integer  "block_id"
     t.string   "name",         :default => "",           :null => false
     t.string   "code",         :default => "",           :null => false
-    t.date     "release_date", :default => '2012-08-20'
+    t.date     "release_date", :default => '2012-09-04'
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.boolean  "active",       :default => false,        :null => false
@@ -305,11 +305,11 @@ ActiveRecord::Schema.define(:version => 20120916122815) do
     t.string   "url"
     t.string   "stamps_tx_id"
     t.integer  "price"
-    t.boolean  "status",         :default => false
+    t.string   "status",         :default => "active"
     t.text     "params"
     t.text     "tracking"
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
   end
 
   add_index "mtg_transactions_shipping_labels", ["transaction_id"], :name => "index_mtg_transactions_shipping_labels_on_transaction_id"
@@ -392,6 +392,13 @@ ActiveRecord::Schema.define(:version => 20120916122815) do
   add_index "tickets", ["offender_id"], :name => "index_tickets_on_offender_id"
   add_index "tickets", ["transaction_id"], :name => "index_tickets_on_transaction_id"
   add_index "tickets", ["transaction_type"], :name => "index_tickets_on_transaction_type"
+
+  create_table "transactions", :force => true do |t|
+    t.integer  "test1_id"
+    t.integer  "test2_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "user_statistics", :force => true do |t|
     t.integer  "user_id"
