@@ -6,21 +6,6 @@ MTGBazaar::Application.configure do
   # this is needed for devise to work on heroku
   config.action_mailer.default_url_options = { :host => 'mtgbazaar.herokuapp.com' }
   
-  # Gzip assets on production only
-  # http://bindle.me/blog/index.php/304/rack-middleware-for-seo-fun-and-profit
-  config.middleware.use Rack::Cache
-  config.middleware.insert_before Rack::Cache, Rack::Deflater
-
-  config.middleware.insert_before(Rack::Lock, Rack::Rewrite) do
-    # anything ending in / to the same without the '/'
-    r301 %r{(.+)/$}, '$1'
-
-    # bndl.es/www.bindle.me -> bindle.me (will then go to the shortener)
-    r301 %r{.*}, 'http://bindle.me$&amp;', :if => Proc.new { |rack_env|
-      ['bndl.es', 'www.bindle.me'].include?(rack_env['SERVER_NAME'])
-    }
-  end
-  
   # STANDARD OPTIONS -------------------------------------------------------------------------------------------------- #
 
   # Code is not reloaded between requests
