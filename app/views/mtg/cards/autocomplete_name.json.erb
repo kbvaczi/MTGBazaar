@@ -18,4 +18,4 @@
     @return_array << Hash[ "label" => computed_label, "value" => computed_value ]
   end
 %>
-<%= @return_array.uniq.first(15).to_json.html_safe %>
+<%= @return_array.to_json.html_safe %>

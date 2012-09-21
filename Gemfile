@@ -25,14 +25,14 @@ gem "ckeditor", "~> 3.7.1"                                          # blog edito
 gem "mini_magick", "~> 3.4"                                         # image manipulation for ckeditor
 gem "girl_friday", "~> 0.10.0"                                      # background processing for unicorn... disabled due to issues
 gem 'unicorn'                                                       # custom webserver with multi-threaded application capabilities
+#gem "stamps", "~> 0.3.0"                                           # API interface for stamps.com for printing shipping labels
+gem 'stamps', :git => 'https://github.com/darnovo/stamps.git'       # forked repo with updated gem dependencies
 
-#gem "active_shipping", "~> 0.9.14"                                  # shipping rates for USPS
-#gem "usps_standardizer", "~> 0.4.2"
-#gem "stamps", "~> 0.3.0"                                            # API interface for stamps.com for printing shipping labels
 gem "honeypot-captcha", "~> 0.0.2"                                  # alternative to capcha without the complexity  
 gem "taps", "~> 0.3.24"                                             # ability to pull and push databases from development to production
 
-gem 'stamps', :git => 'https://github.com/darnovo/stamps.git'
+gem "valium", "~> 0.5.0"                                            # improved activerecord queries?
+
 # -------------
 # STANDARD GEMS
 # -------------

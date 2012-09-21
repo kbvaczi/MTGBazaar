@@ -2,25 +2,25 @@
 
 <h1>Search Results</h1>
 
-<div class ="content">
+<div class ="content" style="text-align:center;">
   <div class="group">
-    <ul class="tabs center">
-        <li <%= "class=selected" if params[:show] == "all" %>> <%= link_to "All (#{@mtg_cards.total_count})", url_for(params.merge(:show => "all", :page => 1)), :remote => true %> </li>
-        <li <%= "class=selected" if params[:show] != "all" %>> <%= link_to "With Listings (#{@mtg_cards_with_listings.total_count})", url_for(params.merge(:show => "", :page => 1)), :remote => true %> </li>      
+    <ul class="tabs">
+        <li <%= "class=selected" if params[:show] != "listed" %>> <%= link_to "All (#{@mtg_cards.total_count})", url_for(params.merge(:show => "", :page => 1)), :remote => true %> </li>
+        <li <%= "class=selected" if params[:show] == "listed" %>> <%= link_to "With Listings (#{@mtg_cards_with_listings.total_count})", url_for(params.merge(:show => "listed", :page => 1)), :remote => true %> </li>      
     </ul>
   </div>
   
 
-    <% if params[:show] == "all" %>
-      <div id="search_results">
-        <%= render :partial => "teaser", :collection => @mtg_cards, :as => "mtg_card" %>
-      </div>        
-      <div class="paginator center"><%= paginate @mtg_cards, :window => 2, :remote => true ,:collection => @mtg_cards %></div>      
-    <% else %>      
+    <% if params[:show] == "listed" %>
       <div id="search_results">
         <%= render :partial => "teaser", :collection => @mtg_cards_with_listings, :as => "mtg_card" %>
       </div>        
       <div class="paginator center"><%= paginate @mtg_cards_with_listings, :window => 2, :remote => true ,:collection => @mtg_cards_with_listings %></div>
+    <% else %>      
+      <div id="search_results">
+        <%= render :partial => "teaser", :collection => @mtg_cards, :as => "mtg_card" %>
+      </div>        
+      <div class="paginator center"><%= paginate @mtg_cards, :window => 2, :remote => true ,:collection => @mtg_cards %></div>
     <% end %>          
 
   
