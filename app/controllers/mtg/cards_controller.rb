@@ -119,7 +119,7 @@ class Mtg::CardsController < ApplicationController
       @other_count = Mtg::Card.joins(:set, :statistics).where(query.compile).count
     else  
       @mtg_cards = Mtg::Card.includes(:set, :statistics).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(20)
-      @other_count = Mtg::Card.joins(:set, :statistics).where(query_listings.compile).count
+      @other_count = Mtg::Card.joins(:set, :statistics, :listings).where(query_listings.compile).count
     end 
     
     respond_to do |format|
