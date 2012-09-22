@@ -105,7 +105,7 @@ class Mtg::CardsController < ApplicationController
     query_listings << ["mtg_listings.altart LIKE ?", true] if params[:options].present? && params[:options].include?('a')
     # seller filter
     query_listings << ["mtg_listings.seller_id LIKE ?", "#{params[:seller_id]}"] if params[:seller_id].present?
-    
+
     @mtg_cards = Mtg::Card.includes(:set, :listings, :statistics).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(20)
     @mtg_cards_with_listings = @mtg_cards.where(query_listings.compile).page(params[:page]).per(20)    
 
@@ -114,9 +114,9 @@ class Mtg::CardsController < ApplicationController
     if @mtg_cards.length == 1
       redirect_to mtg_card_path(@mtg_cards.first)
     end
-    
+
     respond_to do |format|
-      format.html {}
+      format.html { }
       format.js {}      
     end
     

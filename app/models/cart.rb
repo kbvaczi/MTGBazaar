@@ -10,6 +10,8 @@ class Cart < ActiveRecord::Base
                 :mapping => %w(total_price cents),
                 :constructor => Proc.new { |cents| Money.new(cents || 0) },                
                 :converter => Proc.new { |value| value.respond_to?(:to_money) ? value.to_money : Money.empty }  
+
+  attr_accessible :user_id, :total_price, :item_count
                     
   def add_mtg_listing(listing, quantity = 1)
     if listing.quantity_available >= quantity && quantity > 0 # check to make sure there are enough cards available in the listing

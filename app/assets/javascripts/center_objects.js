@@ -4,7 +4,7 @@
 
 $(document).ready(function() {
 
-  $(".center").centerHorizontal();
+  //$(".center").centerHorizontal();
   
   $(".centerScreen").centerScreen();
 

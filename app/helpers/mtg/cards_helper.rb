@@ -108,6 +108,10 @@ module Mtg::CardsHelper
        else return "Unknown"
      end
    end
+   
+  def thumbnail_image_path(card)
+    return card.image_path.gsub(".jpg", "_thumb.jpg")
+  end
      
   # Defines an array containing all the card types for select boxes
   def card_type_list
@@ -173,6 +177,16 @@ module Mtg::CardsHelper
       dimension = "height:#{options[:height] || "15px"}"
     end
     image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/set_symbols/#{set.code}.png", :title => "#{set.name}", :style => "#{dimension};vertical-align:text-top;")         
+  end
+  
+  # displays set symbol for a given set code
+  def display_set_symbol_by_id(set_name, set_code, options = {})
+    if options[:width].present?
+      dimension = "width:#{options[:width]}"
+    else
+      dimension = "height:#{options[:height] || "15px"}"
+    end
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/set_symbols/#{set_code}.png", :title => "#{set_name}", :style => "#{dimension};vertical-align:text-top;")         
   end
   
   # displays set symbol for a given set code

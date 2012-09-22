@@ -3,7 +3,6 @@ class Mtg::Listing < ActiveRecord::Base
   
   belongs_to :card,         :class_name => "Mtg::Card"
   belongs_to :seller,       :class_name => "User"
-  belongs_to :transaction,  :class_name => "Mtg::Transaction"
   has_many   :reservations, :class_name => "Mtg::Reservation"
   has_many   :carts,        :through => :reservations
   mount_uploader :scan, MtgScanUploader

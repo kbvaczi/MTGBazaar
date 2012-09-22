@@ -2,10 +2,10 @@
 
 <h1>Search Results</h1>
 
-<div class ="content" style="text-align:center;">
-  <div class="group">
+<div class ="content">
+  <div class="group center_wrap">
     <ul class="tabs">
-        <li <%= "class=selected" if params[:show] != "listed" %>> <%= link_to "All (#{@mtg_cards.total_count})", url_for(params.merge(:show => "", :page => 1)), :remote => true %> </li>
+        <li <%= "class=selected" if params[:show] != "listed" %>> <%= link_to "All Results (#{@mtg_cards.total_count})", url_for(params.merge(:show => "", :page => 1)), :remote => true %> </li>
         <li <%= "class=selected" if params[:show] == "listed" %>> <%= link_to "With Listings (#{@mtg_cards_with_listings.total_count})", url_for(params.merge(:show => "listed", :page => 1)), :remote => true %> </li>      
     </ul>
   </div>
@@ -15,12 +15,16 @@
       <div id="search_results">
         <%= render :partial => "teaser", :collection => @mtg_cards_with_listings, :as => "mtg_card" %>
       </div>        
-      <div class="paginator center"><%= paginate @mtg_cards_with_listings, :window => 2, :remote => true ,:collection => @mtg_cards_with_listings %></div>
+      <div class="center_wrap">
+      <div class="paginator"><%= paginate @mtg_cards_with_listings, :window => 2, :remote => true ,:collection => @mtg_cards_with_listings %></div>
+      </div>
     <% else %>      
       <div id="search_results">
         <%= render :partial => "teaser", :collection => @mtg_cards, :as => "mtg_card" %>
       </div>        
-      <div class="paginator center"><%= paginate @mtg_cards, :window => 2, :remote => true ,:collection => @mtg_cards %></div>
+      <div class="center_wrap">
+        <div class="paginator"><%= paginate @mtg_cards, :window => 2, :remote => true ,:collection => @mtg_cards %></div>
+      </div>
     <% end %>          
 
   

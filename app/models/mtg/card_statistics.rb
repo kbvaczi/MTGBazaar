@@ -32,6 +32,7 @@ class Mtg::CardStatistics < ActiveRecord::Base
   # --------------------------------------- #
 
   belongs_to :card,     :class_name => "Mtg::Card"
+  has_many :listings,   :class_name => "Mtg::Listing", :through => :card
 
   # --------------------------------------- #
   # ------------ Validations -------------- #

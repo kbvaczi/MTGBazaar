@@ -45,9 +45,9 @@ class ApplicationController < ActionController::Base
     if user_signed_in?
       if session[:cart_id] # current session already has a cart, let's link to it
         @current_cart ||= Cart.find(session[:cart_id]) 
-        @current_cart.update_attribute(:user_id, current_user.id) if current_user # assign user to cart when they log in
+        #@current_cart.update_attribute(:user_id, current_user.id) if current_user # assign user to cart when they log in
       elsif session[:cart_id].nil? # there is no cart for current session, let's create one
-        @current_cart ||= Cart.create! # create a cart if there isn't one already
+        @current_cart ||= Cart.create(:user_id => current_user.id) # create a cart if there isn't one already
         session[:cart_id] = @current_cart.id # link cart to current session
       end
       @current_cart

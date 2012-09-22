@@ -29,8 +29,9 @@
           <td></td>
           <td style="text-align:right;">
             <div style="margin-top:-10px;">
-              <% if mtg_card.listings.available.count > 0 %>
-                <%= link_to "#{mtg_card.listings.to_a.sum(&:quantity_available)} For Sale from #{number_to_currency(mtg_card.listings.minimum("price").to_f/100)}", mtg_card_path(mtg_card) %>        
+              <% available_count = mtg_card.listings.available.to_a.sum(&:quantity_available) %>
+              <% if available_count > 0 %>
+                <%= link_to "#{available_count} For Sale from #{number_to_currency(mtg_card.listings.to_a.min {|a,b| a.price <=> b.price }.price.to_f/100)}", mtg_card_path(mtg_card) %>        
               <% else %>
                 <i>None Currently Available</i>
               <% end %>
