@@ -6,6 +6,13 @@ class Mtg::CardStatistics < ActiveRecord::Base
 
   self.table_name = 'mtg_card_statistics'  
 
+  # Implement Money gem for price_min column
+  composed_of   :price_min,
+                :class_name => 'Money',
+                :mapping => %w(price_min cents),
+                :constructor => Proc.new { |cents| Money.new(cents || 0) },                
+                :converter => Proc.new { |value| value.respond_to?(:to_money) ? value.to_money : Money.empty }
+
   # Implement Money gem for price_low column
   composed_of   :price_low,
                 :class_name => 'Money',
@@ -44,9 +51,38 @@ class Mtg::CardStatistics < ActiveRecord::Base
   #validates :number_sales_rejected, :number_sales, :number_sales_cancelled, :positive_feedback_count, :neutral_feedback_count, :negative_feedback_count,
   #          :numericality => {:only_integer => true, :greater_than_or_equal_to => 0, :less_than => 1000000}
 
+
   # --------------------------------------- #
-  # ------------ Model Methods ------------ #
+  # ------------ Accessors ---------------- #
   # --------------------------------------- #
+
+  def price_min(overwrite = false)
+    if read_attribute(:price_min) && (not overwrite)
+      read_attribute(:price_min).to_money     
+    else
+      write_attribute(:price_min, listings.available.minimum(:price))
+      self.save
+      read_attribute(:price_min).to_money rescue nil     
+    end
+  end
+  
+  def listings_available(overwrite = false)
+    if read_attribute(:listings_available) && (not overwrite)
+      read_attribute(:listings_available)       
+    else
+      write_attribute(:listings_available, listings.available.sum(:quantity_available))
+      self.save
+      read_attribute(:listings_available) rescue nil  
+    end
+  end  
+
+
+
+
+  # --------------------------------------- #
+  # ------------ Public Model Methods ----- #
+  # --------------------------------------- #
+
 
   def update!
     #gather all sales of this card

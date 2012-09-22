@@ -73,7 +73,9 @@ class Mtg::CardsController < ApplicationController
   end
 
   def search
-    # SEARCH CARDS                
+    # SEARCH CARDS
+
+    
     query = SmartTuple.new(" AND ")
     query_listings = SmartTuple.new(" AND ")
     
@@ -97,7 +99,7 @@ class Mtg::CardsController < ApplicationController
       
       query_listings << query.compile
       # language filters
-      query_listings << ["mtg_listings.quantity_available > 0"]
+      query_listings << ["mtg_card_statistics.listings_available > 0"]
       query_listings << ["mtg_listings.language LIKE ?", params[:language]] if params[:language].present?
       # options filters
       query_listings << ["mtg_listings.foil LIKE ?", true] if params[:options].present? && params[:options].include?('f')
@@ -108,11 +110,19 @@ class Mtg::CardsController < ApplicationController
       query_listings << ["mtg_listings.seller_id LIKE ?", "#{params[:seller_id]}"] if params[:seller_id].present?
     end
     
-    params[:show] = "listed" if params[:seller_id].present? || params[:options].present? || params[:language].present? && params[:show] != "all"
+    if params[:seller_id].present? || params[:options].present? || params[:language].present? && params[:show] != "all"
+      params[:show] = "listed"
+      params[:show_level] = "details"
+      @mtg_cards = Mtg::Card.includes(:set, :listings, :statistics).where(query_listings.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(20)      
+      @other_count = Mtg::Card.includes(:set, :statistics).where(query.compile).count    
+    elsif params[:show] == "listed"
+      @mtg_cards = Mtg::Card.includes(:set, :statistics).where(query_listings.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(20)      
+      @other_count = Mtg::Card.joins(:set, :statistics).where(query.compile).count
+    else  
+      @mtg_cards = Mtg::Card.includes(:set, :statistics).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(20)
+      @other_count = Mtg::Card.joins(:set, :statistics).where(query_listings.compile).count
+    end 
     
-    @mtg_cards = Mtg::Card.includes(:set, :listings, :statistics).where(params[:show] == "listed" ? query_listings.compile : query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(20)
-    @other_count = Mtg::Card.includes(:set, :listings, :statistics).where(params[:show] != "listed" ? query_listings.compile : query.compile).count
-
     respond_to do |format|
       format.html do
         # Don't show only 1 card in search results... go directly to that card's show page if there is only one.

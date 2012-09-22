@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120921115009) do
+ActiveRecord::Schema.define(:version => 20120922164705) do
 
   create_table "account_balance_transfers", :force => true do |t|
     t.integer  "account_id"
@@ -121,12 +121,14 @@ ActiveRecord::Schema.define(:version => 20120921115009) do
 
   create_table "mtg_card_statistics", :force => true do |t|
     t.integer  "card_id"
-    t.integer  "number_sales", :default => 0
-    t.integer  "price_low",    :default => 10
-    t.integer  "price_med",    :default => 100
-    t.integer  "price_high",   :default => 500
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.integer  "number_sales",       :default => 0
+    t.integer  "price_low",          :default => 10
+    t.integer  "price_med",          :default => 100
+    t.integer  "price_high",         :default => 500
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
+    t.integer  "price_min"
+    t.integer  "listings_available"
   end
 
   add_index "mtg_card_statistics", ["card_id"], :name => "index_mtg_card_statistics_on_card_id"

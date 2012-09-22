@@ -2,6 +2,7 @@ class Mtg::Listing < ActiveRecord::Base
   self.table_name = 'mtg_listings'    
   
   belongs_to :card,         :class_name => "Mtg::Card"
+  has_one    :statistics,   :class_name => "Mtg::CardStatistics", :through => :card
   belongs_to :seller,       :class_name => "User"
   has_many   :reservations, :class_name => "Mtg::Reservation"
   has_many   :carts,        :through => :reservations
@@ -20,8 +21,37 @@ class Mtg::Listing < ActiveRecord::Base
 
   # not-in-model field for current password confirmation
   attr_accessor :name, :set, :price_options
+
+  # --------------------------------------- #
+  # ------------ Callbacks ==-------------- #
+  # --------------------------------------- #
+
   
-  # validations
+  before_create do      # all cards are available when created
+    self.quantity_available = self.quantity
+  end
+  
+  after_save :update_statistics_cache_on_save, :if => "price_changed? || quantity_available.changed?"
+  before_destroy :update_statistics_cache_on_delete
+  
+  def update_statistics_cache_on_save
+    stats = self.statistics
+    stats.listings_available.increment(quantity_available - quantity_available_was)
+    stats.write_attribute(:price_min, stats.listings.available.minimum(:price)) if price <= stats.price_min
+    stats.save
+  end
+  
+  def update_statistics_cache_on_delete
+    stats = self.statistics
+    stats.listings_available.decrement(quantity_available)
+    stats.write_attribute(:price_min, stats.listings.available.minimum(:price)) if price <= stats.price_min
+    stats.save
+  end
+  
+  # --------------------------------------- #
+  # ------------ Validations -------------- #
+  # --------------------------------------- #
+
   validates_presence_of :price, :condition, :language, :quantity
   validates :quantity, :numericality => {:greater_than => 0, :less_than => 10000}  #quantity must be between 0 and 10000
   validates :price, :numericality => {:greater_than => 0, :less_than => 1000000, :message => "Must be between $0.01 and $10,000"}   #price must be between $0 and $10,000.00
@@ -37,9 +67,10 @@ class Mtg::Listing < ActiveRecord::Base
     errors[:scan] << "Required for the options you have selected" if ( altart.present? || misprint.present? || signed.present? ) && !scan.present?    
   end
   
-  before_create do      # all cards are available when created
-    self.quantity_available = self.quantity
-  end
+
+  # --------------------------------------- #
+  # ------------ Public Model Methods ----- #
+  # --------------------------------------- #
   
   def quantity_reserved
     self.quantity - self.quantity_available
