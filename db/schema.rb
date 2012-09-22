@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120916122815) do
+ActiveRecord::Schema.define(:version => 20120921115009) do
 
   create_table "account_balance_transfers", :force => true do |t|
     t.integer  "account_id"
@@ -41,10 +41,6 @@ ActiveRecord::Schema.define(:version => 20120916122815) do
     t.string   "security_question",    :default => "",    :null => false
     t.string   "security_answer",      :default => "",    :null => false
     t.integer  "balance",              :default => 0,     :null => false
-    t.integer  "number_sales",         :default => 0,     :null => false
-    t.integer  "number_purchases",     :default => 0,     :null => false
-    t.float    "average_rating",       :default => 0.0,   :null => false
-    t.float    "average_ship_time",    :default => 0.0,   :null => false
     t.boolean  "vacation",             :default => false, :null => false
     t.datetime "created_at",                              :null => false
     t.datetime "updated_at",                              :null => false
@@ -168,8 +164,6 @@ ActiveRecord::Schema.define(:version => 20120916122815) do
   create_table "mtg_listings", :force => true do |t|
     t.integer  "card_id"
     t.integer  "seller_id"
-    t.integer  "transaction_id"
-    t.integer  "cart_id"
     t.integer  "price",              :default => 100,   :null => false
     t.integer  "quantity",           :default => 1,     :null => false
     t.integer  "quantity_available", :default => 1,     :null => false
@@ -182,17 +176,18 @@ ActiveRecord::Schema.define(:version => 20120916122815) do
     t.boolean  "altart",             :default => false, :null => false
     t.boolean  "reserved",           :default => false, :null => false
     t.boolean  "active",             :default => true,  :null => false
-    t.datetime "sold_at"
-    t.datetime "rejected_at"
     t.datetime "created_at",                            :null => false
     t.datetime "updated_at",                            :null => false
     t.string   "scan",               :default => ""
   end
 
+  add_index "mtg_listings", ["altart"], :name => "index_mtg_listings_on_altart"
   add_index "mtg_listings", ["card_id"], :name => "index_mtg_listings_on_card_id"
-  add_index "mtg_listings", ["cart_id"], :name => "index_mtg_listings_on_cart_id"
+  add_index "mtg_listings", ["foil"], :name => "index_mtg_listings_on_foil"
+  add_index "mtg_listings", ["language"], :name => "index_mtg_listings_on_language"
+  add_index "mtg_listings", ["misprint"], :name => "index_mtg_listings_on_misprint"
   add_index "mtg_listings", ["seller_id"], :name => "index_mtg_listings_on_seller_id"
-  add_index "mtg_listings", ["transaction_id"], :name => "index_mtg_listings_on_transaction_id"
+  add_index "mtg_listings", ["signed"], :name => "index_mtg_listings_on_signed"
 
   create_table "mtg_reservations", :force => true do |t|
     t.integer  "cart_id"
@@ -209,7 +204,7 @@ ActiveRecord::Schema.define(:version => 20120916122815) do
     t.integer  "block_id"
     t.string   "name",         :default => "",           :null => false
     t.string   "code",         :default => "",           :null => false
-    t.date     "release_date", :default => '2012-09-04'
+    t.date     "release_date", :default => '2012-09-22'
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.boolean  "active",       :default => false,        :null => false
@@ -278,19 +273,18 @@ ActiveRecord::Schema.define(:version => 20120916122815) do
     t.datetime "buyer_confirmed_at"
     t.datetime "seller_confirmed_at"
     t.datetime "seller_rejected_at"
-    t.string   "rejection_reason",            :default => ""
-    t.string   "response_message",            :default => ""
+    t.string   "rejection_reason",       :default => ""
+    t.string   "response_message",       :default => ""
     t.datetime "seller_shipped_at"
-    t.string   "seller_tracking_number",      :default => ""
+    t.string   "seller_tracking_number", :default => ""
     t.datetime "seller_delivered_at"
-    t.boolean  "buyer_delivery_confirmation"
-    t.string   "buyer_feedback",              :default => "P"
-    t.string   "buyer_feedback_text",         :default => ""
+    t.string   "buyer_feedback",         :default => "P"
+    t.string   "buyer_feedback_text",    :default => ""
     t.datetime "buyer_cancelled_at"
-    t.string   "cancellation_reason",         :default => ""
-    t.string   "status",                      :default => "pending"
-    t.datetime "created_at",                                         :null => false
-    t.datetime "updated_at",                                         :null => false
+    t.string   "cancellation_reason",    :default => ""
+    t.string   "status",                 :default => "pending"
+    t.datetime "created_at",                                    :null => false
+    t.datetime "updated_at",                                    :null => false
     t.integer  "value"
     t.integer  "shipping_cost"
   end
@@ -302,17 +296,17 @@ ActiveRecord::Schema.define(:version => 20120916122815) do
 
   create_table "mtg_transactions_shipping_labels", :force => true do |t|
     t.integer  "transaction_id"
-    t.string   "url"
     t.string   "stamps_tx_id"
     t.integer  "price"
     t.string   "status",         :default => "active"
     t.text     "params"
     t.text     "tracking"
+    t.text     "refund"
     t.datetime "created_at",                           :null => false
     t.datetime "updated_at",                           :null => false
   end
 
-  add_index "mtg_transactions_shipping_labels", ["transaction_id"], :name => "index_mtg_transactions_shipping_labels_on_transaction_id"
+  add_index "mtg_transactions_shipping_labels", ["transaction_id"], :name => "shipping_labels_transactions_id"
 
   create_table "news_feeds", :force => true do |t|
     t.integer  "author_id"

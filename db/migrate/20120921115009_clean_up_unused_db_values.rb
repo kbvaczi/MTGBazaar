@@ -13,8 +13,12 @@ class CleanUpUnusedDbValues < ActiveRecord::Migration
     remove_column :accounts, :number_sales # user statistics
     remove_column :accounts, :average_rating # user statistics        
     remove_column :accounts, :average_ship_time # user statistics            
-    
-    
+
+    add_index     :mtg_listings,  :language
+    add_index     :mtg_listings,  :foil
+    add_index     :mtg_listings,  :misprint
+    add_index     :mtg_listings,  :signed
+    add_index     :mtg_listings,  :altart
     
   end
 end

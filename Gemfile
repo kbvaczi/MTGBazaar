@@ -10,7 +10,7 @@ gem "simple_form", "~> 1.5.2"                                       # simplified
 gem "nokogiri", "~> 1.5.0"                                          # XML/HTML Parser
 gem "activeadmin", "~> 0.5.0"                                       # Administrator Panel
 gem "formtastic", "~> 2.1.1"                                        # for admin panel only
-gem "kaminari", "~> 0.13.0"                                         # Pagination
+gem "kaminari", "~> 0.14"                                           # Pagination
 gem "rails3-jquery-autocomplete", "~> 1.0.6"                        # Autocomplete text fields
 gem "smart_tuple", "~> 0.1.2"                                       # Aid for building complex and conditional queries
 gem "money", "~> 4.0.2"                                             # handles currency inputs and currency conversions if we need those in the future

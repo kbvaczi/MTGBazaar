@@ -47,53 +47,17 @@ class Mtg::Listing < ActiveRecord::Base
   
   # determines if listing is available to be added to cart (active, not already in cart, and not already sold)
   def available?
-    self.cart_id == nil and self.active == true and self.sold_at == nil and self.transaction_id == nil and self.rejected_at == nil and self.quantity_available > 0
+    self.active == true and self.quantity_available > 0
   end
   
   def active?
     self.active == true
   end
   
-  # used for searching for available listings... Mtg::Listing.available will return all available listings
-  def self.available
-    where(:cart_id => nil, :active => true, :sold_at => nil, :transaction_id => nil, :rejected_at => nil).where("quantity_available > 0")
-  end
-  
   def in_cart?
     not (self.quantity_available == self.quantity and quantity_available > 0)
   end
-  
-  # mark a listing as reserved (added to a cart)
-  def reserve!
-    self.update_attribute(:cart_id, current_cart.id)
-  end
-
-  # mark a listing as NOT reserved (removed from a cart and transaction)
-  def free!
-    self.cart_id = nil
-    self.transaction_id = nil
-    self.sold_at = nil    
-    self.save(:validate => false)
-  end
-  
-  # mark a listing as sold
-  def mark_as_sold!(transaction_id)
-    self.sold_at = Time.now
-    self.transaction_id = transaction_id
-    self.save(:validate => false)
-  end
-
-  # mark a listing as NOT sold
-  def mark_as_unsold!
-    self.update_attribute(:sold_at, nil)
-  end  
-
-  # mark this listing as rejected which permenantly removes it from user view
-  def mark_as_rejected!
-    self.update_attribute(:rejected_at, Time.now)
-    self.update_attribute(:active, false)    
-  end  
-  
+    
   def mark_as_active!
     self.update_attribute(:active, true)    
   end
@@ -101,32 +65,22 @@ class Mtg::Listing < ActiveRecord::Base
   def mark_as_inactive!
     self.update_attribute(:active, false)    
   end
-  
-  # returns listings that are in a shopping cart
-  def self.reserved
-    where("cart_id IS NOT NULL")
-  end  
-
-  # used for searching for available listings... Mtg::Listing.sold will return all available listings
-  def self.sold
-    where("sold_at IS NOT NULL AND rejected_at IS NULL")
-  end  
-  
-  # searches for rejected listings.  Rejected listings are dummy placeholders for tracking rejected transactions... users cannot see rejected listings
-  def self.rejected
-    where("rejected_at IS NOT NULL")
-  end  
-  
+    
   # used for searching for active listings...
   def self.active
-    where(:active => true, :sold_at => nil, :transaction_id => nil, :rejected_at => nil)
+    where(:active => true)
   end
   
   # used for searching for inactive listings...
   def self.inactive
-    where(:active => false, :sold_at => nil, :transaction_id => nil, :rejected_at => nil)
+    where(:active => false)
   end
-  
+
+  # used for searching for available listings... Mtg::Listing.available will return all available listings
+  def self.available
+    where(:active => true).where("quantity_available > 0")
+  end
+    
   # used for searching listings by seller...  Mtg::Listing.by_seller_id([2,3]) will return all listings from seller 2 and 3
   def self.by_seller_id(id)
     where(:seller_id => id )
@@ -136,20 +90,6 @@ class Mtg::Listing < ActiveRecord::Base
   def self.by_id(id)
     where(:id => id )
   end  
-  
-  def formatted_condition
-    case self.condition
-      when /1/ 
-        return "NM"
-      when /2/ 
-        return "EX"
-      when /3/ 
-        return "FN"
-      when /4/ 
-        return "GD"
-      else return "Unknown"
-    end
-  end
   
   # returns true if other_listing is a duplicate listing to this listing otherwise returns false
   def duplicate_listing?(other_listing)

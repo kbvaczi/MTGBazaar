@@ -91,18 +91,18 @@
         <p id="verify_address_text" style="padding-top:5px;font-style:italic;" class="mr t-l tc-r">Unverified</p>
         <br/>                       
       <% end %>
-      <%= link_to "Verify Address", sign_up_verify_address_path(:first_name  => @user.account.first_name,
-                                                                :last_name   => @user.account.last_name,
-                                                                :address1    => @user.account.address1,
-                                                                :address2    => @user.account.address2,              
-                                                                :city        => @user.account.city,
-                                                                :state       => @user.account.state,
-                                                                :zip_code    => @user.account.zipcode ), 
-                                                                  :remote => true, 
-                                                                  "data-url" => sign_up_verify_address_path, 
-                                                                  :id => "verify_address_trigger", 
-                                                                  :class => "button center" %>
-
+      <div class="center_wrap">
+        <%= link_to "Verify Address", sign_up_verify_address_path(:first_name  => @user.account.first_name,
+                                                                  :last_name   => @user.account.last_name,
+                                                                  :address1    => @user.account.address1,
+                                                                  :address2    => @user.account.address2,              
+                                                                  :city        => @user.account.city,
+                                                                  :state       => @user.account.state,
+                                                                  :zip_code    => @user.account.zipcode ), :remote => true, 
+                                                                                                            "data-url" => sign_up_verify_address_path, 
+                                                                                                            :id => "verify_address_trigger", 
+                                                                                                            :class => "button center" %>
+      </div>                                                            
       <br/>
       <%= a.input :address_verification ,      :label => false,
                                                :as => :hidden,
@@ -117,32 +117,34 @@
 
   <h2>Terms and Conditions</h2>
   <br class = "spacer"/>  
-      
-	<div class="AcknowledgeOuterDiv">
-    <%= render :inline => SiteVariable.get("terms_of_service") %>
-	</div>
 
-  <br class = "spacer"/>
-  <br class = "spacer"/>
+
+  	<div class="AcknowledgeOuterDiv center_wrap">
+      <%= render :inline => SiteVariable.get("terms_of_service") %>
+  	</div>
+
+    <br class = "spacer"/>
+    <br class = "spacer"/>
   
-  <%# Check boxes for age and agree-to-terms %>
-  <%#= f.input :age,           :label => '',
-                              :as => :check_boxes ,
-                              :required => true ,
-                              :collection => [["I am over the age of 18 years",1]],
-                              :input_html => { :checked => "#{'checked' if  params[:user][:age][1] rescue false }" } %>
+    <%# Check boxes for age and agree-to-terms %>
+    <%#= f.input :age,           :label => '',
+                                :as => :check_boxes ,
+                                :required => true ,
+                                :collection => [["I am over the age of 18 years",1]],
+                                :input_html => { :checked => "#{'checked' if  params[:user][:age][1] rescue false }" } %>
 
-  <%= f.input :terms,         :label => '',
-                              :as => :check_boxes ,
-                              :required => true ,
-                              :collection => [["I agree to Terms and Conditions",1]], 
-                              :input_html => {  :id => 'AcknowledgeCheckBox',
-      												:checked => "#{'checked' if params[:user][:terms][1] rescue false }" } %>
+    <%= f.input :terms,         :label => '',
+                                :as => :check_boxes ,
+                                :required => true ,
+                                :collection => [["I agree to Terms and Conditions",1]], 
+                                :input_html => {  :id => 'AcknowledgeCheckBox',
+                          												:checked => "#{'checked' if params[:user][:terms][1] rescue false }" } %>
     
-  <br class = "spacer"/>
-  <br class = "spacer"/>
-  
-  <%= f.submit 'Sign up' , :class => 'center' %>
+    <br class = "spacer"/>
+    <br class = "spacer"/>
+  <div class="center_wrap">      
+    <%= f.submit 'Sign up' , :class => '' %>
+  </div>
   
 <% end %>
 
