@@ -74,7 +74,6 @@ class Mtg::CardsController < ApplicationController
 
   def search
     # SEARCH CARDS
-
     
     query = SmartTuple.new(" AND ")
     query_listings = SmartTuple.new(" AND ")
