@@ -60,9 +60,9 @@ class Mtg::CardStatistics < ActiveRecord::Base
     if read_attribute(:price_min) && (not overwrite)
       Money.new(read_attribute(:price_min))
     else
-      write_attribute(:price_min, listings.available.minimum(:price))
+      write_attribute(:price_min, (listings.available.minimum(:price) || 0))
       self.save
-      Money.new(read_attribute(:price_min)) rescue nil     
+      Money.new(read_attribute(:price_min) || 0)
     end
   end
   
@@ -70,9 +70,9 @@ class Mtg::CardStatistics < ActiveRecord::Base
     if read_attribute(:listings_available) && (not overwrite)
       read_attribute(:listings_available)       
     else
-      write_attribute(:listings_available, listings.available.sum(:quantity_available))
+      write_attribute(:listings_available, (listings.available.sum(:quantity_available) || 0))
       self.save
-      read_attribute(:listings_available) rescue nil  
+      read_attribute(:listings_available || 0)
     end
   end  
 
