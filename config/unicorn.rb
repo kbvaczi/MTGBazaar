@@ -4,7 +4,7 @@ preload_app true
 
 if ENV['RAILS_ENV'] == "production"
   timeout 30 # 30 seconds for production
-  worker_processes 4
+  worker_processes 3
 else 
   timeout 1200 # 20 minutes for development for uploading sets  
   worker_processes 2
