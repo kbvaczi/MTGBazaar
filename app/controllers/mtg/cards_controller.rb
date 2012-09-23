@@ -109,17 +109,22 @@ class Mtg::CardsController < ApplicationController
       query_listings << ["mtg_listings.seller_id LIKE ?", "#{params[:seller_id]}"] if params[:seller_id].present?
     end
     
-    if params[:seller_id].present? || params[:options].present? || params[:language].present? && params[:show] != "all"
-      params[:show] = "listed"
-      params[:show_level] = "details"
-      @mtg_cards = Mtg::Card.includes(:set, :listings, :statistics).where(query_listings.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(20)      
-      @other_count = Mtg::Card.includes(:set, :statistics).where(query.compile).count    
+    if params[:seller_id].present? || params[:options].present? || params[:language].present?
+      if params[:show] != "all"
+        params[:show] = "listed" # show users the listings tab
+        params[:show_level] = "details" 
+        @mtg_cards = Mtg::Card.includes(:set, :listings, :statistics).where(query_listings.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(20)      
+        @other_count = Mtg::Card.includes(:set, :statistics).where(query.compile).count    
+      else
+        @mtg_cards = Mtg::Card.includes(:set, :statistics).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(20)
+        @other_count = Mtg::Card.joins(:set, :statistics, :listings).where(query_listings.compile).count        
+      end
     elsif params[:show] == "listed"
       @mtg_cards = Mtg::Card.includes(:set, :statistics).where(query_listings.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(20)      
       @other_count = Mtg::Card.joins(:set, :statistics).where(query.compile).count
     else  
       @mtg_cards = Mtg::Card.includes(:set, :statistics).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(20)
-      @other_count = Mtg::Card.joins(:set, :statistics, :listings).where(query_listings.compile).count
+      @other_count = Mtg::Card.joins(:set, :statistics).where(query_listings.compile).count
     end 
     
     respond_to do |format|

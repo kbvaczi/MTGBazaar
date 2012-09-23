@@ -1,17 +1,18 @@
 <%= title "Make a Deposit" %>
 <h1>Make a Deposit</h1>
-<div class="ma">
+<div class="content">
   
-  <div class="group">
+  <div class="group center_wrap">
     <ul class="tabs center">
       <li <%= "class=\'selected\'" if request.env['PATH_INFO'] == account_funding_index_path %>> <%= link_to "History", account_funding_index_path %> </li>
       <li <%= "class=\'selected\'" if request.env['PATH_INFO'] == new_account_deposit_path %>> <%= link_to "Deposit", new_account_deposit_path %> </li>        
       <li <%= "class=\'selected\'" if request.env['PATH_INFO'] == new_account_withdraw_path %>> <%= link_to "Withdraw", new_account_withdraw_path %> </li>
     </ul>
   </div>
-  <br class="spacer"/>
-  
+
   <%= simple_form_for @deposit, :url => create_account_deposit_path, :method => :post do |f| %>  
+    <h2>Amount to deposit</h2>
+    <br class="spacer"/>  
     <div class="inputs">
       
       <%= f.input :balance,     :label => "Amount to deposit",
@@ -19,14 +20,15 @@
                                 :input_html => {:class => "currency_input", :maxlength => 9, :value => "$ 0" },
                                 :required => 'true' %>
       <br class="spacer"/>  
-          
-      <div id="commission_statement" class="center" style="display:inline-block;white-space:nowrap;">
-        Total charge including Paypal's fee: $0.30
-      </div>
-      <br class="spacer"/>
-      <br class="spacer"/>    
-      <div id="commission_help" class="overlay_trigger center" rel="#commission_help_overlay" style="display:inline-block;cursor:pointer;color:blue;">
-        What do you mean a fee?!
+      <div class="center_wrap">    
+        <div id="commission_statement" style="display:inline-block;white-space:nowrap;">
+          Total charge including Paypal's fee: $0.30
+        </div>
+        <br class="spacer"/>
+        <br class="spacer"/>    
+        <div id="commission_help" class="overlay_trigger" rel="#commission_help_overlay" style="display:inline-block;cursor:pointer;color:blue;">
+          What do you mean a fee?!
+        </div>
       </div>
       <div id="commission_help_overlay" class="overlay_window" style="width:500px;  ">
         <%= link_to image_tag("https://www.paypalobjects.com/webstatic/i/ex_ce2/logo/logo_paypal_106x29.png"), "https://www.paypal.com/", :target => "_blank" %> 
@@ -40,10 +42,10 @@
         <br/>
         <p>Also, to avoid paying this fee, simply sell some cards on the site to build money in your account.</p>
       </div>
-      <br class="spacer"/>
       <br class="spacer"/>      
       <br class="spacer"/>            
-
+      <h2>Confirmation</h2>
+      <br class="spacer"/>
       <%= f.input :current_password,  :required => "true", 
                                       :hint => "enter current password to confirm deposit"%>
 

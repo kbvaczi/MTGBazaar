@@ -62,38 +62,39 @@
     	</tr>
     </table>
 	<% end %>
-
- <div class="center">
-      <% if current_user.id == @transaction.seller_id && @transaction.status == "pending" && @transaction.seller_confirmed_at == nil %>
-         <%= link_to "Confirm Sale", seller_sale_confirmation_path(@transaction), :class => "button ma" %> 
-         <%= link_to "Reject Sale", seller_sale_rejection_path(@transaction), :class => "button  ma"  %> 
-         <%= link_to "Modify Sale", seller_sale_modification_path(@transaction), :class => "button  ma"  %>                             
-      <% end %>
-
-      <% if current_user.id == @transaction.buyer_id && @transaction.status == "pending" && @transaction.seller_confirmed_at.present? %>
-         <%= link_to "Review Seller's Modifications", buyer_sale_modification_review_path(@transaction), :class => "button  ma"  %> 
-      <% end %>
-      <% if current_user.id == @transaction.seller_id && @transaction.status == "confirmed" %>
-         <div id="shipping_label_change" style="display:inline-block;">
-           <% if not @transaction.shipping_label.present? %>
-             <%= link_to "Create Shipping Label", create_shipping_label_path(@transaction), :class => "button ma", :remote => true, :style => "display:inline-block;" %>          
-           <% else %>             
-             <%= link_to "Download Shipping Label", @transaction.shipping_label.params[:url], :target => "_blank", :class => "button ma" %>          
-             <%= link_to "Confirm Shipment", seller_shipment_confirmation_path(@transaction), :class => "button ma" %> 
-           <% end %>
-         </div>
-      <% end %>
-      <% if @transaction.status == "shipped"%>
-        <%= link_to "Track Shipment", track_shipping_path(@transaction), :remote => true, :class => "button ma" %>
-        <%= content_tag(:div, "", :class => "overlay_trigger hidden", :id => "tracking_overlay_trigger", :rel => "#tracking_overlay" ) %>
-        <%= content_tag(:div, "", :class => "overlay_window", :id => "tracking_overlay") %>
-        <% if current_user.id == @transaction.buyer_id %>
-          <%= link_to "Complete Purchase", buyer_delivery_confirmation_path(@transaction), :class => "button  ma"  %> 
+ <div class="center_wrap">
+   <div class="center">
+        <% if current_user.id == @transaction.seller_id && @transaction.status == "pending" && @transaction.seller_confirmed_at == nil %>
+           <%= link_to "Confirm Sale", seller_sale_confirmation_path(@transaction), :class => "button ma" %> 
+           <%= link_to "Reject Sale", seller_sale_rejection_path(@transaction), :class => "button  ma"  %> 
+           <%= link_to "Modify Sale", seller_sale_modification_path(@transaction), :class => "button  ma"  %>                             
         <% end %>
-      <% end %>        
-      <% if @transaction.status != "delivered" && @transaction.status != "rejected" && @transaction.status != "cancelled" && current_user.id == @transaction.buyer.id %>
-         <%= link_to "Cancel Sale", mtg_transaction_buyer_sale_cancellation_path(@transaction), :class => "button  ma" %> 
-      <% end %>  
+
+        <% if current_user.id == @transaction.buyer_id && @transaction.status == "pending" && @transaction.seller_confirmed_at.present? %>
+           <%= link_to "Review Seller's Modifications", buyer_sale_modification_review_path(@transaction), :class => "button  ma"  %> 
+        <% end %>
+        <% if current_user.id == @transaction.seller_id && @transaction.status == "confirmed" %>
+           <div id="shipping_label_change" style="display:inline-block;">
+             <% if not @transaction.shipping_label.present? %>
+               <%= link_to "Create Shipping Label", create_shipping_label_path(@transaction), :class => "button ma", :remote => true, :style => "display:inline-block;" %>          
+             <% else %>             
+               <%= link_to "Download Shipping Label", @transaction.shipping_label.params[:url], :target => "_blank", :class => "button ma" %>          
+               <%= link_to "Confirm Shipment", seller_shipment_confirmation_path(@transaction), :class => "button ma" %> 
+             <% end %>
+           </div>
+        <% end %>
+        <% if @transaction.status == "shipped"%>
+          <%= link_to "Track Shipment", track_shipping_path(@transaction), :remote => true, :class => "button ma" %>
+          <%= content_tag(:div, "", :class => "overlay_trigger hidden", :id => "tracking_overlay_trigger", :rel => "#tracking_overlay" ) %>
+          <%= content_tag(:div, "", :class => "overlay_window", :id => "tracking_overlay") %>
+          <% if current_user.id == @transaction.buyer_id %>
+            <%= link_to "Complete Purchase", buyer_delivery_confirmation_path(@transaction), :class => "button  ma"  %> 
+          <% end %>
+        <% end %>        
+        <% if @transaction.status != "delivered" && @transaction.status != "rejected" && @transaction.status != "cancelled" && current_user.id == @transaction.buyer.id %>
+           <%= link_to "Cancel Sale", mtg_transaction_buyer_sale_cancellation_path(@transaction), :class => "button  ma" %> 
+        <% end %>  
+    </div>
   </div>
   <br class="spacer"/>
  

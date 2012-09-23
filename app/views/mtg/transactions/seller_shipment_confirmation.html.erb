@@ -9,12 +9,14 @@
   
   <table class="data">
 	  <tr class="header_row">
-  	  <th>Transaction Number</th>      	    
+  	  <th>Transaction Number</th>
+  	  <th>Buyer</th>      	    
   	  <th>Value</th>
   	  <th>Status</th>      
   	</tr>
   	<tr class="even">
   	  <td><%= link_to @transaction.transaction_number, show_mtg_transaction_path(@transaction) %></td>
+  	  <td><%= @transaction.buyer.username %> </td>    	  
   	  <td><%= "#{ number_to_currency(@transaction.total_value) }" %> </td>  
   	  <td> <%= "#{@transaction.status.capitalize}" %> </td>
   	</tr>
@@ -24,7 +26,7 @@
   
   <br class="spacer"/>
   <br class="spacer"/>
-
-  <%= f.button :submit, "Confirm Shipment", :class => "center" %>
-
+  <div class="center_wrap">
+    <%= f.button :submit, "Confirm Shipment", :class => "center" %>
+  </div>
 <% end %>

@@ -107,14 +107,14 @@
     <br class="spacer"/>
     <br class="spacer"/>    
     <br class="spacer"/>        
-    <%= button_to "Check Out", cart_checkout_path, :method => :post , :class => "center"%>
-
-    <%# do this if there are no items in the user's cart%>
-    <% else %>
     
-      <div class="center"><%= "Your cart is currently empty" %></div>
-      
-    <% end %>  
+    <div class="center_wrap">
+      <%= button_to "Check Out", cart_checkout_path, :method => :post , :class => "center"%>
+      <%# do this if there are no items in the user's cart%>
+      <% else %>
+        <div class="center"><%= "Your cart is currently empty" %></div>
+      <% end %>  
+    </div>
   
 </div>
 

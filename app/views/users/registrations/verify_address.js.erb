@@ -16,7 +16,7 @@
   $("#user_account_attributes_state").trigger("liszt:updated");  
   $("#user_account_attributes_zipcode").val('<%= @response[:address][:zip_code] %>');     
   $("#user_account_attributes_address_verification").val('true');      
-  $("#verify_address_text").text('Verified');      
+  $("#verify_address_text").text('Verified, Please double-check for accuracy.');      
   $("#verify_address_text").addClass('tc-g'); 
   $("#verify_address_text").removeClass('tc-r tc-y');          
   $("#verify_address_trigger").hide();   
@@ -30,9 +30,9 @@
   $("#user_account_attributes_state").trigger("liszt:updated");
   $("#user_account_attributes_zipcode").val('<%= @response[:address][:zip_code] %>');
   $("#user_account_attributes_address_verification").val('true');      
-  $("#verify_address_text").text('Address unrecognized by USPS, Please double-check and continue only if you are sure everything is correct.');      
-  $("#verify_address_text").addClass('tc-y');          
-  $("#verify_address_text").removeClass('tc-r tc-y');            
+  $("#verify_address_text").text('Address unrecognized by USPS, Please double-check! Continue only if you are absolutely sure address is correct.');      
+  $("#verify_address_text").addClass('tc-r');          
+  $("#verify_address_text").removeClass('tc-g');            
   $("#verify_address_trigger").hide();          
 <% else %>
   $("#verify_address_text").text('Error, please re-enter address info');      

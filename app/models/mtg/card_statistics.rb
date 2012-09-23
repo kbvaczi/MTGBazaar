@@ -58,11 +58,11 @@ class Mtg::CardStatistics < ActiveRecord::Base
 
   def price_min(overwrite = false)
     if read_attribute(:price_min) && (not overwrite)
-      read_attribute(:price_min).to_money     
+      Money.new(read_attribute(:price_min))
     else
       write_attribute(:price_min, listings.available.minimum(:price))
       self.save
-      read_attribute(:price_min).to_money rescue nil     
+      Money.new(read_attribute(:price_min)) rescue nil     
     end
   end
   

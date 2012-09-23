@@ -3,10 +3,25 @@
 <h1>Delivery Confirmation</h1>
 
 <%= simple_form_for @transaction, :url => create_buyer_delivery_confirmation_path, :method => :put do |f| %>
-  <br class="spacer" />
-  <br class="spacer" />
-  <br class="spacer" />  
   
+  <table class="data">
+	  <tr class="header_row">
+  	  <th>Transaction Number</th>
+  	  <th>Seller</th>      	    
+  	  <th>Value</th>
+  	  <th>Status</th>      
+  	</tr>
+  	<tr class="even">
+  	  <td><%= link_to @transaction.transaction_number, show_mtg_transaction_path(@transaction) %></td>
+  	  <td><%= link_to @transaction.seller.username, user_path(@transaction.seller)%> </td>    	  
+  	  <td><%= "#{ number_to_currency(@transaction.total_value) }" %> </td>  
+  	  <td> <%= "#{@transaction.status.capitalize}" %> </td>
+  	</tr>
+	</table>
+	
+	<br class="spacer"/>
+	<br class="spacer"/>	
+	
   <div class="inputs">
     <%#= f.input :buyer_delivery_confirmation,   :label => "Confirm Delivery",
                                                 :as => :select,
@@ -48,7 +63,7 @@
   <br class="spacer"/>
   <br class="spacer"/>
   <br class="spacer"/>  
-  
-  <%= f.button :submit, "Confirm Delivery", :class => "center" %>
-  
+  <div class='center_wrap'>
+    <%= f.button :submit, "Confirm Delivery", :class => "center" %>
+  </div>
 <% end %>

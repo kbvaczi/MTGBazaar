@@ -3,7 +3,7 @@
 <h1><%= @user.username %></h1>
 <div class="content">
   
-  <div class="group">
+  <div class="group center_wrap">
     <ul class="tabs center">
         <li <%= "class=\'selected\'" if not params[:section].present? %>> <%= link_to "Profile", user_path(@user) %> </li>
         <li <%= "class=\'selected\'" if params[:section] == "feedback" %>> <%= link_to "Feedback", user_path(@user, :section => "feedback") %> </li>        
@@ -13,7 +13,7 @@
   
   <%# PROFILE SECTION %>
   <% if not params[:section].present? %>
-
+    <h2>Profile</h2>
     <table class="data">
       <tr class="header_row">
         <th colspan=2>Location</th>    
@@ -24,7 +24,7 @@
       </tr>
       <tr class="even">
         <td>State</td>
-        <td><%= capitalize_first_word(@user.account.state.capitalize) %></td>
+        <td><%= capitalize_first_word(@user.account.state.upcase) %></td>
       </tr>
       <tr class="odd">
         <td>City</td>
@@ -68,6 +68,7 @@
 
   <%# FEEDBACK SECTION %>
   <% if params[:section] == "feedback" %>
+  <h2><%= pluralize(@sales.total_count, "Completed Sale", "Completed Sales") %></h2>
 	<table class="data">
     <tr class="header_row">
       <th>Date</th>
@@ -105,6 +106,7 @@
   
   <%# MTG_CARDS SECTION %>
   <% if params[:section] == "mtg_cards" %>
+    <h2><%= pluralize(@listings.total_count, "Listing", "Listings") %></h2>
     <table class="data">
       <tr class="header_row">
         <th> <%= sort_table_header("Name", "name") %> </th>
@@ -117,7 +119,7 @@
       </tr>
       <% @listings.each do |listing| %>
         <tr class=<%= cycle("odd","even") %>>  
-          <td style="text-align:left;"><%= listing.card.name %></td>
+          <td style="text-align:left;"><%= link_to listing.card.name, mtg_card_path(listing.card) %></td>
           <td><div><%= display_set_symbol(listing.card.set) %></div></td>          
           <td><%= display_flag_symbol(listing.language) %></td>
           <td>
@@ -160,7 +162,7 @@
       <% end %>
     </table>
     
-    <div class="paginator center">
+    <div class="paginator center_wrap">
       <%= paginate @listings, :method => :get %>
     </div>
   <% end %>
