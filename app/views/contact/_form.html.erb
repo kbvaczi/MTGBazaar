@@ -19,7 +19,8 @@
   <%#= render :partial => "shared/recaptcha_box" unless current_user %> 
   
   <br class = "spacer"/>
-  <%= f.submit 'Submit' , :class => 'center' %>
-
+  <div class="center_wrap">
+    <%= f.submit 'Submit' , :class => 'center' %>
+  </div>
   
 <% end %>

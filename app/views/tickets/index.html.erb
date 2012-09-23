@@ -1,7 +1,7 @@
 <h1>My Ticket History</h1>
 <div class="ma">
   
-  <div class="group">
+  <div class="group center_wrap">
     <ul class="tabs center">
         <li <%= "class=\'selected\'" if request.fullpath == tickets_path %>> <%= link_to "All (#{current_user.tickets.count})", tickets_path %> </li>
         <li <%= "class=\'selected\'" if request.fullpath == tickets_path(:status => "active") %>> <%= link_to "Active (#{current_user.tickets.active.count})", tickets_path(:status => "active") %> </li>      

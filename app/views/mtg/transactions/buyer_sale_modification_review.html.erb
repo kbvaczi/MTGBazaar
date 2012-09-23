@@ -62,9 +62,9 @@
       </table>
   <br class="spacer"/>
   <%= form_tag create_buyer_sale_modification_review_path(@transaction), :method => :put do %>
-    <div class="center">
-      <%= submit_tag "Accept Changes" %>
-      <%= submit_tag "Reject Changes" %>
+    <div class="center_wrap">
+      <%= submit_tag "Accept Changes" :class => "center" %>
+      <%= submit_tag "Reject Changes" :class => "center" %>
     </div>
   <% end %>
 

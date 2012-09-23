@@ -1,5 +1,5 @@
 <tr class=<%= cycle("odd","even") %>> 
-  <td>
+  <td style="text-align:left;">
     <%= display_name(item.card.name) %>
   </td>
   <td>
@@ -14,7 +14,7 @@
   <td>
     <%= display_flag_symbol(item.language) %>
   </td>
-  <td>
+  <td class="mtg_options_cell">
     <% if item.foil %>
       <%= listing_option_foil_icon %>
     <% end %>

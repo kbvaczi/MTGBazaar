@@ -4,7 +4,7 @@
 
 <div class="ma">
   
-  <div class="group">
+  <div class="group center_wrap">
     <ul class="tabs center">
       <li <%= "class=\'selected\'" if request.env['PATH_INFO'] == account_funding_index_path %>> <%= link_to "History", account_funding_index_path %> </li>
       <li <%= "class=\'selected\'" if request.env['PATH_INFO'] == new_account_deposit_path %>> <%= link_to "Deposit", new_account_deposit_path %> </li>        
@@ -38,8 +38,8 @@
 
   </table>
 
-  <div class="paginator right">
-    <%= paginate @transfers, :method => :get %>
+  <div class="paginator center_wrap">
+    <%= paginate @transfers, :method => :get , :class => "center" %>
   </div>
 
 

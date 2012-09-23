@@ -13,7 +13,9 @@
   <%= f.input :email ,                :required => 'true' %>
   
   <br class="spacer"/>
-  <%= f.submit "Resend" , :class => 'center'%>
+  <div class="center_wrap">
+    <%= f.submit "Resend" , :class => 'center'%>
+  </div>
 <% end %>
 
 <%= render :partial => "devise/shared/links" %>

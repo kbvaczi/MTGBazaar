@@ -218,31 +218,31 @@ module Mtg::CardsHelper
   end  
   
   def listing_option_foil_icon
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/foil.png", :title => "Foil", :class => "left", :style => "display:inline-block;height:20px;vertical-align:bottom;")         
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/foil.png", :title => "Foil", :class => "mtg_option_symbol")         
   end
 
   def listing_option_altart_icon
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/alt.png", :title => "Alternate art",:class => "left", :style => "display:inline-block;height:20px;vertical-align:bottom;")         
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/alt.png", :title => "Alternate art",:class => "mtg_option_symbol")         
   end
 
   def listing_option_misprint_icon
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/miscut.png", :title => "Misprint",:class => "left", :style => "display:inline-block;height:20px;vertical-align:bottom;")         
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/miscut.png", :title => "Misprint",:class => "mtg_option_symbol")         
   end
 
   def listing_option_scan_icon(listing)
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/scan.png", :title => "Click to view scan", :class => "left", :style => "float:left;height:20px;vertical-align:bottom;cursor:pointer;", :class => "overlay_trigger", :rel => "#scan_overlay_#{listing.id}")
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/scan.png", :title => "Click to view scan", :class => "overlay_trigger mtg_option_symbol", :style => "cursor:pointer;", :rel => "#scan_overlay_#{listing.id}")
   end
   
   def listing_option_scan_overlay(listing)      
-    content_tag(:div, image_tag(listing.scan.url, :title => "Card Scan", :style => "max-width:450px;max-height:500px;"), :class => "overlay_window", :id => "scan_overlay_#{listing.id}")    
+    content_tag(:div, image_tag(listing.scan.url, :title => "Card Scan", :style => "max-width:500px;max-height:500px;"), :class => "overlay_window", :id => "scan_overlay_#{listing.id}")    
   end
 
   def listing_option_signed_icon
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/signed.png", :title => "Signed by artist",:class => "left", :style => "display:inline-block;height:20px;vertical-align:bottom;")         
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/signed.png", :title => "Signed by artist",:class => "mtg_option_symbol")         
   end  
   
   def listing_option_description_icon(listing)
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/description.png", :title => "#{listing.description}", :class => "tooltip_trigger", :style => "float:left;height:20px;vertical-align:bottom;")         
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/description.png", :title => "#{listing.description}", :class => "tooltip_trigger mtg_option_symbol")         
   end
   
 end

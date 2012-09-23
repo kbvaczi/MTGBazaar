@@ -3,7 +3,7 @@
 <h1>Card Condition Guide</h1>
 
 <div class="ma">
-  <div class="group">
+  <div class="group center_wrap">
     <ul class="tabs center">
         <li <%= "class=\'selected\'" if not params[:section].present? %>> <%= link_to "Near-Mint (NM)"%></li>
         <li <%= "class=\'selected\'" if params[:section] == "Slightly Played" %>> <%= link_to "Slightly Played (SP)", :section => "Slightly Played" %> </li>        
