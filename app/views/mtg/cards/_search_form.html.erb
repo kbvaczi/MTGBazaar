@@ -71,7 +71,7 @@
     
       <div class="mt-m mb-s search-abilities">
         <%#= label_tag "Abilities:" %>
-        <%= select_tag "abilities" , options_for_select(ability_list, :selected => params[:abilities]), { :multiple => true, :class => "search-select-multi chzn-select", :style => "", "data-placeholder" => "Abilities..."} %>                        
+        <%= select_tag "abilities" , options_for_select(Mtg::Cards::Ability.pluck(:name), :selected => params[:abilities]), { :multiple => true, :class => "search-select-multi chzn-select", :style => "", "data-placeholder" => "Abilities..."} %>                        
       </div> 
 
       <div class="mt-m search-type">

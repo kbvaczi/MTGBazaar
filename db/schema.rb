@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120924003458) do
+ActiveRecord::Schema.define(:version => 20120924192816) do
 
   create_table "account_balance_transfers", :force => true do |t|
     t.integer  "account_id"
@@ -161,6 +161,10 @@ ActiveRecord::Schema.define(:version => 20120924003458) do
   add_index "mtg_cards", ["name"], :name => "index_mtg_cards_on_name"
   add_index "mtg_cards", ["rarity"], :name => "index_mtg_cards_on_rarity"
   add_index "mtg_cards", ["set_id"], :name => "index_mtg_cards_on_set_id"
+
+  create_table "mtg_cards_abilities", :force => true do |t|
+    t.string "name", :default => ""
+  end
 
   create_table "mtg_listings", :force => true do |t|
     t.integer  "card_id"
