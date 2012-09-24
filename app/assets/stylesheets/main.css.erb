@@ -581,6 +581,23 @@ table.data tr td {
 .tc-g {color:green;}
 .tc-r {color:red;}
 
+#loader {
+  z-index:1000;
+  position:absolute;
+  height:100px;
+  width:100px;
+  margin-right:40px;
+  margin-bottom:200px;  
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px; 
+  background-color:#505050;
+  background-image:url('https://s3.amazonaws.com/mtgbazaar/images/loading.gif');
+  background-repeat:no-repeat;  
+  background-position:center;
+  display:none;
+}
+
 ul.tabs a {
   background: #838a90;
   background: -webkit-gradient(linear, left top, left bottom, from(#838a90), to(#414549));

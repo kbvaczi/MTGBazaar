@@ -1,0 +1,13 @@
+$(document).ready(function() {
+
+  $('#loader').bind('ajaxStart', function(){
+      $(this).centerScreen();
+      $(this).show();
+  }).bind('ajaxStop', function(){
+      $(this).hide();
+  });
+          
+});
+
+
+
