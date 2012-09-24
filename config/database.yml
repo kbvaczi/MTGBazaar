@@ -22,9 +22,9 @@ production:
   adapter: mysql2
   encoding: utf8
   reconnect: true
-  sslkey: /certs/client-key.pem
-  sslcert: /certs/client-cert.pem
-  sslca: /certs/ca-cert.pem
+  sslkey: /certs/cleardb-key.pem
+  sslcert: /certs/cleardb-cert.pem
+  sslca: /certs/cleardb-ca-cert.pem
   sslcapath: /certs
   pool: 20
   timeout: 5000
