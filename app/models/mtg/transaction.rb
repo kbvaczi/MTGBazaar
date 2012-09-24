@@ -35,7 +35,11 @@ class Mtg::Transaction < ActiveRecord::Base
   validates               :value, :numericality => {:greater_than => 0, :less_than => 5000000, :message => "Must be between $0.01 and $50,000"}   #price must be between $0 and $10,000.00    
   validates               :shipping_cost, :numericality => {:greater_than => 150, :less_than => 3000, :message => "Must be between $1.50 and $30"}
   validates_associated    :items, :payment, :credit
-
+  validate                :self_buying_not_allowed
+  
+  def self_buying_not_allowed
+    self.errors[:base] << "You cannot buy from yourself..." if seller_id == buyer_id
+  end
 
 # ---------------- PUBLIC MEMBER METHODS -------------
   

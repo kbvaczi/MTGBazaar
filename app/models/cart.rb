@@ -12,20 +12,25 @@ class Cart < ActiveRecord::Base
                 :converter => Proc.new { |value| value.respond_to?(:to_money) ? value.to_money : Money.empty }  
 
   attr_accessible :user_id, :total_price, :item_count
+  
+  validates_presence_of   :user
+  validates :total_price, :numericality => {:greater_than => 0, :less_than => 10000000}  #quantity must be between 0 and $100,000
+  validates :item_count,  :numericality => {:greater_than => 0, :less_than => 10000}  #quantity must be between 0 and 10,000
                     
   def add_mtg_listing(listing, quantity = 1)
-    if listing.quantity_available >= quantity && quantity > 0 # check to make sure there are enough cards available in the listing
+    #if listing.quantity_available >= quantity && quantity > 0 # check to make sure there are enough cards available in the listing
       if self.listings.include?(listing) # is there already a reservation for this listing in cart?
-        self.reservations.where(:listing_id => listing.id).first.increment(:quantity, quantity).save # add to existing reservation
+        res = self.reservations.where(:listing_id => listing.id).first.increment(:quantity, quantity) # add to existing reservation
       else
-        self.reservations.create(:listing_id => listing.id, :quantity => quantity) # build a new reservation
+        res = self.reservations.new(:listing_id => listing.id, :quantity => quantity) # build a new reservation
       end
-      self.update_cache! # update item count and price
-      listing.decrement(:quantity_available, quantity).save # keep track of listing available quantity
-      return true # success
-    else
-      return false # fail
-    end
+      res.listing.decrement(:quantity_available, quantity)
+      if res.save
+        self.update_cache! # update item count and price
+        return true # success
+      else
+        return false # fail
+      end
   end
 
   def remove_mtg_listing(reservation, quantity = 1)
@@ -48,7 +53,7 @@ class Cart < ActiveRecord::Base
     reservations = Mtg::Reservation.where(:cart_id => self.id).joins(:listing)
     self.item_count = reservations.sum("mtg_reservations.quantity")
     self.total_price = reservations.sum("mtg_listings.price * mtg_reservations.quantity").to_f / 100
-    self.save!
+    self.save
   end
 
   def empty!

@@ -40,7 +40,7 @@
             <td>
               <%= display_flag_symbol(reservation.listing.language) %>
             </td>          
-            <td>
+            <td class="mtg_options_cell"> 
               <% if reservation.listing.foil %>
                 <%= listing_option_foil_icon %>
               <% end %>
@@ -96,8 +96,8 @@
         	<th colspan=8 style="text-align:right;">Total cost for this transaction</th>
           <th><%= number_to_currency(total[x]) %> </th>
         </tr>        
-    </table>            
-  <% end %>
+      </table>            
+    <% end %>
 
 
     <br class="spacer"/>
@@ -107,14 +107,15 @@
     <br class="spacer"/>
     <br class="spacer"/>    
     <br class="spacer"/>        
-    
     <div class="center_wrap">
       <%= button_to "Check Out", cart_checkout_path, :method => :post , :class => "center"%>
       <%# do this if there are no items in the user's cart%>
-      <% else %>
-        <div class="center"><%= "Your cart is currently empty" %></div>
-      <% end %>  
     </div>
-  
+  <% else %>
+
+    <div class="center_wrap">
+      <%= "Your cart is currently empty" %>
+    </div>
+  <% end %>  
 </div>
 

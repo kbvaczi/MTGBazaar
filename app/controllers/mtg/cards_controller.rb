@@ -101,12 +101,12 @@ class Mtg::CardsController < ApplicationController
       query_listings << ["mtg_card_statistics.listings_available > 0"]
       query_listings << ["mtg_listings.language LIKE ?", params[:language]] if params[:language].present?
       # options filters
-      query_listings << ["mtg_listings.foil LIKE ?", true] if params[:options].present? && params[:options].include?('f')
-      query_listings << ["mtg_listings.misprint LIKE ?", true] if params[:options].present? && params[:options].include?('m')
-      query_listings << ["mtg_listings.signed LIKE ?", true] if params[:options].present? && params[:options].include?('s')
-      query_listings << ["mtg_listings.altart LIKE ?", true] if params[:options].present? && params[:options].include?('a')
+      query_listings << ["mtg_listings.foil = ?", true] if params[:options].present? && params[:options].include?('f')
+      query_listings << ["mtg_listings.misprint = ?", true] if params[:options].present? && params[:options].include?('m')
+      query_listings << ["mtg_listings.signed = ?", true] if params[:options].present? && params[:options].include?('s')
+      query_listings << ["mtg_listings.altart = ?", true] if params[:options].present? && params[:options].include?('a')
       # seller filter
-      query_listings << ["mtg_listings.seller_id LIKE ?", "#{params[:seller_id]}"] if params[:seller_id].present?
+      query_listings << ["mtg_listings.seller_id LIKE ? AND mtg_listings.quantity_available > 0 AND mtg_listings.active = ?", "#{params[:seller_id]}", true] if params[:seller_id].present?
     end
     
     if params[:seller_id].present? || params[:options].present? || params[:language].present?
