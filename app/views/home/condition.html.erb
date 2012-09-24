@@ -5,9 +5,9 @@
 <div class="ma">
   <div class="group center_wrap">
     <ul class="tabs center">
-        <li <%= "class=\'selected\'" if not params[:section].present? %>> <%= link_to "Near-Mint (NM)"%></li>
-        <li <%= "class=\'selected\'" if params[:section] == "Slightly Played" %>> <%= link_to "Slightly Played (SP)", :section => "Slightly Played" %> </li>        
-        <li <%= "class=\'selected\'" if params[:section] == "Moderately Played" %>> <%= link_to "Moderately Played (MP)", :section => "Moderately Played" %> </li>        
+        <li <%= "class=selected" if not params[:section].present? %>> <%= link_to "Near-Mint (NM)"%></li>
+        <li <%= "class=selected" if params[:section] == "Slightly Played" %>> <%= link_to "Slightly Played (SP)", :section => "Slightly Played" %> </li>        
+        <li <%= "class=selected" if params[:section] == "Moderately Played" %>> <%= link_to "Moderately Played (MP)", :section => "Moderately Played" %> </li>        
 	</ul>
   </div>
 
@@ -33,9 +33,7 @@
 	    </tr>
 	
 		<tr class=<%= cycle("odd","even") %>> 
-			<td> <div class="ma">This Lightning Bolt is in Near-Mint condition. It is extremely rare to find a perfectly centered card without any printing imperfections.</div> </td>
-	     	<td> <div class="ma">This Reset is in Slightly Played condition. It is extremely rare to find a perfectly centered card without any printing imperfections.</div> </td>
-	  		<td> <div class="ma">This Reset is in Moderately Played condition. It is extremely rare to find a perfectly centered card without any printing imperfections.</div> </td>
+			<td colspan=3><div class="ma">Near-Mint cards show minimal to no wear from shuffling or general play.  They typically resemble a card straight out of a pack and are indistinguishable from other cards in Near-Mint condition, however, a very minor nick or scratch is usually acceptable.</div> </td>
 		</tr>
 
 	  </table>
@@ -64,9 +62,7 @@
 	    </tr>
 	
 		 <tr class=<%= cycle("odd","even") %>> 
-		      <td> <div class="ma">This Lightning Bolt is in Near-Mint condition. It is extremely rare to find a perfectly centered card without any printing imperfections.</div> </td>
-		      <td> <div class="ma">This Reset is in Slightly Played condition. It is extremely rare to find a perfectly centered card without any printing imperfections.</div> </td>
-			  <td> <div class="ma">This Reset is in Moderately Played condition. It is extremely rare to find a perfectly centered card without any printing imperfections.</div> </td>
+		      <td colspan=3> <div class="ma">This Lightning Bolt is in Near-Mint condition. It is extremely rare to find a perfectly centered card without any printing imperfections.</div> </td>
 		 </tr>
 
 	  </table>
@@ -95,9 +91,7 @@
 	    </tr>
 	
 		 <tr class=<%= cycle("odd","even") %>> 
-		      <td> <div class="ma">This Lightning Bolt is in Near-Mint condition. It is extremely rare to find a perfectly centered card without any printing imperfections.</div> </td>
-		      <td> <div class="ma">This Reset is in Slightly Played condition. It is extremely rare to find a perfectly centered card without any printing imperfections.</div> </td>
-			  <td> <div class="ma">This Reset is in Moderately Played condition. It is extremely rare to find a perfectly centered card without any printing imperfections.</div> </td>
+		      <td colspan=3> <div class="ma">This Lightning Bolt is in Near-Mint condition. It is extremely rare to find a perfectly centered card without any printing imperfections.</div> </td>
 		 </tr>
 
 	  </table>

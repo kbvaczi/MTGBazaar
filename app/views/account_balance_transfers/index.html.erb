@@ -6,9 +6,9 @@
   
   <div class="group center_wrap">
     <ul class="tabs center">
-      <li <%= "class=\'selected\'" if request.env['PATH_INFO'] == account_funding_index_path %>> <%= link_to "History", account_funding_index_path %> </li>
-      <li <%= "class=\'selected\'" if request.env['PATH_INFO'] == new_account_deposit_path %>> <%= link_to "Deposit", new_account_deposit_path %> </li>        
-      <li <%= "class=\'selected\'" if request.env['PATH_INFO'] == new_account_withdraw_path %>> <%= link_to "Withdraw", new_account_withdraw_path %> </li>
+      <li <%= "class=selected" if request.env['PATH_INFO'] == account_funding_index_path %>> <%= link_to "History", account_funding_index_path %> </li>
+      <li <%= "class=selected" if request.env['PATH_INFO'] == new_account_deposit_path %>> <%= link_to "Deposit", new_account_deposit_path %> </li>        
+      <li <%= "class=selected" if request.env['PATH_INFO'] == new_account_withdraw_path %>> <%= link_to "Withdraw", new_account_withdraw_path %> </li>
     </ul>
   </div>
   <br class="spacer"/>  
@@ -39,7 +39,7 @@
   </table>
 
   <div class="paginator center_wrap">
-    <%= paginate @transfers, :method => :get , :class => "center" %>
+    <%= paginate @transfers, :method => :get %>
   </div>
 
 

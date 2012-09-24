@@ -5,9 +5,9 @@
   
   <div class="group center_wrap">
     <ul class="tabs center">
-        <li <%= "class=\'selected\'" if not params[:section].present? %>> <%= link_to "Profile", user_path(@user) %> </li>
-        <li <%= "class=\'selected\'" if params[:section] == "feedback" %>> <%= link_to "Feedback", user_path(@user, :section => "feedback") %> </li>        
-        <li <%= "class=\'selected\'" if params[:section] == "mtg_cards" %>> <%= link_to "MTG Cards", user_path(@user, :section => "mtg_cards") %> </li>        
+        <li <%= "class=selected" if not params[:section].present? %>> <%= link_to "Profile", user_path(@user) %> </li>
+        <li <%= "class=selected" if params[:section] == "feedback" %>> <%= link_to "Feedback", user_path(@user, :section => "feedback") %> </li>        
+        <li <%= "class=selected" if params[:section] == "mtg_cards" %>> <%= link_to "MTG Cards", user_path(@user, :section => "mtg_cards") %> </li>        
     </ul>
   </div>
   
