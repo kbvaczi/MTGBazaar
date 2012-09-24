@@ -76,14 +76,11 @@ class Mtg::CardsController < ApplicationController
     # SEARCH CARDS
     
     query = SmartTuple.new(" AND ")
-    query_listings = SmartTuple.new(" AND ")
     
-    query << ["mtg_cards.active LIKE ?", true]
-    query << ["mtg_sets.active LIKE ?", true]
-    if params[:search_type].present? #user clicks on autocomplete name for specific card bypass all filters
-      query << ["mtg_cards.name LIKE ?", "#{params[:name]}"]
-    else
-      query << ["mtg_cards.name LIKE ?", "%#{params[:name]}%"] if params[:name].present? 
+    query << ["mtg_cards.active = ?", true]
+    query << ["mtg_sets.active = ?", true]
+    query << ["mtg_cards.name LIKE ?", "%#{params[:name]}%"] if params[:name].present? 
+    unless params[:search_type].present? #user clicks on autocomplete name for specific card bypass all filters
       query << ["mtg_sets.code LIKE ?", "#{params[:set]}"] if params[:set].present?
       query << ["mana_color LIKE ?", "%#{params[:white]}%"] if params[:white].present?
       query << ["mana_color LIKE ?", "%#{params[:black]}%"] if params[:black].present?    
@@ -95,37 +92,21 @@ class Mtg::CardsController < ApplicationController
       query << ["card_subtype LIKE ?", "%#{params[:subtype]}%"] if params[:subtype].present?
       query << ["artist LIKE ?", "#{params[:artist]}"] if params[:artist].present?
       query << SmartTuple.new(" AND ").add_each(params[:abilities]) {|v| ["mtg_cards.description LIKE ?", "%#{v}%"]} if params[:abilities].present?
-      
-      query_listings << query.compile
-      # language filters
-      query_listings << ["mtg_card_statistics.listings_available > 0"]
-      query_listings << ["mtg_listings.language LIKE ?", params[:language]] if params[:language].present?
-      # options filters
-      query_listings << ["mtg_listings.foil = ?", true] if params[:options].present? && params[:options].include?('f')
-      query_listings << ["mtg_listings.misprint = ?", true] if params[:options].present? && params[:options].include?('m')
-      query_listings << ["mtg_listings.signed = ?", true] if params[:options].present? && params[:options].include?('s')
-      query_listings << ["mtg_listings.altart = ?", true] if params[:options].present? && params[:options].include?('a')
-      # seller filter
-      query_listings << ["mtg_listings.seller_id LIKE ? AND mtg_listings.quantity_available > 0 AND mtg_listings.active = ?", "#{params[:seller_id]}", true] if params[:seller_id].present?
-    end
-    
-    if params[:seller_id].present? || params[:options].present? || params[:language].present?
-      if params[:show] != "all"
-        params[:show] = "listed" # show users the listings tab
-        params[:show_level] = "details" 
-        @mtg_cards = Mtg::Card.includes(:set, :listings, :statistics).where(query_listings.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(20)      
-        @other_count = Mtg::Card.includes(:set, :statistics).where(query.compile).count    
-      else
-        @mtg_cards = Mtg::Card.includes(:set, :statistics).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(20)
-        @other_count = Mtg::Card.joins(:set, :statistics, :listings).where(query_listings.compile).count        
+      if params[:language].present? or params[:options].present? or params[:seller_id].present? or params[:show] == "listed"
+        # language filters
+        query << ["mtg_listings.active = ? AND users.active = ? AND mtg_listings.quantity_available > 0", true, true]
+        query << ["mtg_listings.language LIKE ?", params[:language]] if params[:language].present?
+        # options filters
+        query << ["mtg_listings.foil = ?", true] if params[:options].present? && params[:options].include?('f')
+        query << ["mtg_listings.misprint = ?", true] if params[:options].present? && params[:options].include?('m')
+        query << ["mtg_listings.signed = ?", true] if params[:options].present? && params[:options].include?('s')
+        query << ["mtg_listings.altart = ?", true] if params[:options].present? && params[:options].include?('a')
+        # seller filter
+        query << ["mtg_listings.seller_id = ?", "#{params[:seller_id]}"] if params[:seller_id].present?
       end
-    elsif params[:show] == "listed"
-      @mtg_cards = Mtg::Card.includes(:set, :statistics).where(query_listings.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(20)      
-      @other_count = Mtg::Card.joins(:set, :statistics).where(query.compile).count
-    else  
-      @mtg_cards = Mtg::Card.includes(:set, :statistics).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(20)
-      @other_count = Mtg::Card.joins(:set, :statistics).where(query_listings.compile).count
-    end 
+    end
+  
+    @mtg_cards = Mtg::Card.includes(:set, {:listings => :seller}, :statistics).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(20)
     
     respond_to do |format|
       format.html do

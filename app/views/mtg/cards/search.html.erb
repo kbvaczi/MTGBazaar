@@ -1,16 +1,16 @@
 <% title "MTG Cards" %>
 
-<h1>Search Results</h1>
+<h1><%= pluralize(@mtg_cards.total_count, "Search Result", "Search Results")%></h1>
 
 <div class ="content">
   <div class="group center_wrap">
     <ul class="tabs">
       <% if params[:show] == "listed" %>
-        <li>                  <%= link_to "All Results (#{@other_count})", url_for(params.merge(:show => "all", :page => 1)), :remote => true %> </li>
-        <li class="selected"> <%= link_to "With Listings (#{@mtg_cards.total_count})", url_for(params.merge(:show => "listed", :page => 1)), :remote => true %> </li>
+        <li>                  <%= link_to "All Results", url_for(params.merge(:show => "all", :page => 1)), :remote => true %> </li>
+        <li class="selected"> <%= link_to "With Listings", url_for(params.merge(:show => "listed", :page => 1)), :remote => true %> </li>
       <% else %>
-        <li class="selected"> <%= link_to "All Results (#{@mtg_cards.total_count})", url_for(params.merge(:show => "all", :page => 1)), :remote => true %> </li>
-        <li>                  <%= link_to "With Listings (#{@other_count})", url_for(params.merge(:show => "listed", :page => 1)), :remote => true %> </li>      
+        <li class="selected"> <%= link_to "All Results", url_for(params.merge(:show => "all", :page => 1)), :remote => true %> </li>
+        <li>                  <%= link_to "With Listings", url_for(params.merge(:show => "listed", :page => 1)), :remote => true %> </li>      
       <% end %>  
     </ul>
   </div>

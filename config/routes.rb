@@ -71,8 +71,7 @@ MTGBazaar::Application.routes.draw do
     resources :cards, :only => [:index, :show] do # don't allow users to create/destroy mtg cards by only allowing index and show routes
       get  "autocomplete_name", :on => :collection
       get  "search", :as => 'search', :on => :collection  # can't figure out how to send autocorrect click link via post so we need get too for now
-      post "search", :as => 'search', :on => :collection
-      put  "search", :as => 'search', :on => :collection            
+      post "search", :as => 'search', :on => :collection       
     end
     
   end
