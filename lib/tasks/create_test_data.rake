@@ -12,7 +12,7 @@ namespace :create_test_data do
                              :card_id => rand(1..card_count),
                              :language => Mtg::CardsHelper.language_list[rand(Mtg::CardsHelper.language_list.length) -1 ][1],
                              :quantity => rand(1..100),
-                             :price => rand(1..100).to_f / 100,
+                             :price => rand(1..1000).to_f / 100,
                              :condition => Mtg::CardsHelper.condition_list[rand(Mtg::CardsHelper.condition_list.length) -1][1]}, :without_protection => true)
       end
       puts "Finished creating #{      (ENV['count'] || 1)} listings"      

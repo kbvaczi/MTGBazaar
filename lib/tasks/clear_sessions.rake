@@ -5,6 +5,7 @@ task :clear_expired_sessions => :environment do
   Rails.logger.info "Running clear_expired_sessions task:"
   Session.all.each do |s|
     if s.updated_at < 30.minutes.ago.to_s(:db) or s.created_at < 1.days.ago.to_s(:db) # if session has expired (not touched in 30 minutes or more than a day old)
+=begin
       Rails.logger.debug " found expired session ID:#{s.id}"
       cart_id = ActiveRecord::SessionStore::Session.find_by_session_id(s.session_id).data["cart_id"] # find the cart associated with this session
       if cart_id.present? # does this session have an active cart?
@@ -17,6 +18,7 @@ task :clear_expired_sessions => :environment do
           Rails.logger.debug "  -cart ID:#{cart.id} destroyed"      
         end
       end
+=end
       s.destroy # delete this session.
       Rails.logger.debug "  -session ID:#{s.id} destroyed"
     end
