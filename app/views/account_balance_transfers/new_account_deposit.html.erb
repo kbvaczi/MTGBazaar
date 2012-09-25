@@ -4,9 +4,9 @@
   
   <div class="group center_wrap">
     <ul class="tabs center">
-      <li <%= "class=\'selected\'" if request.env['PATH_INFO'] == account_funding_index_path %>> <%= link_to "History", account_funding_index_path %> </li>
-      <li <%= "class=\'selected\'" if request.env['PATH_INFO'] == new_account_deposit_path %>> <%= link_to "Deposit", new_account_deposit_path %> </li>        
-      <li <%= "class=\'selected\'" if request.env['PATH_INFO'] == new_account_withdraw_path %>> <%= link_to "Withdraw", new_account_withdraw_path %> </li>
+      <li <%= "class=selected" if request.env['PATH_INFO'] == account_funding_index_path %>> <%= link_to "History", account_funding_index_path %> </li>
+      <li <%= "class=selected" if request.env['PATH_INFO'] == new_account_deposit_path %>> <%= link_to "Deposit", new_account_deposit_path %> </li>        
+      <li <%= "class=selected" if request.env['PATH_INFO'] == new_account_withdraw_path %>> <%= link_to "Withdraw", new_account_withdraw_path %> </li>
     </ul>
   </div>
 
@@ -31,7 +31,7 @@
         </div>
       </div>
       <div id="commission_help_overlay" class="overlay_window" style="width:500px;  ">
-        <%= link_to image_tag("https://www.paypalobjects.com/webstatic/i/ex_ce2/logo/logo_paypal_106x29.png"), "https://www.paypal.com/", :target => "_blank" %> 
+        <%= link_to image_tag("/assets/paypal.png"), "https://www.paypal.com/", :target => "_blank" %> 
         <br class="spacer"/>
         <br class="spacer"/>  
         <p>Paypal provides us with a secure gateway to guarantee the integrity of your money.  Unfortunately this service is not free.</p>

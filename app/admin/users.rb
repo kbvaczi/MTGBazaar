@@ -37,15 +37,6 @@ ActiveAdmin.register User do
     column "balance", :sortable => :'accounts.balance' do |user|
       number_to_currency user.account.balance.dollars #balance is in cents
     end
-    column "Rating", :sortable => :'accounts.average_rating' do |user|
-      user.account.average_rating
-    end
-    column "Sales", :sortable => :'accounts.number_sales' do |user|
-      user.account.number_sales
-    end    
-    column "Purchases", :sortable => :'accounts.number_purchases' do |user|
-      user.account.number_purchases
-    end
     column "Current Sign-in", :current_sign_in_at
     column "Last Sign-in", :last_sign_in_at
     column "Banned?", :sortable => :banned do |user|
@@ -62,8 +53,8 @@ ActiveAdmin.register User do
         "yes"
       end
     end
-    column "Vacation?", :sortable => :'accounts.vacation' do |user|
-      if user.account.vacation?
+    column "Active?", :sortable => :'user.active' do |user|
+      if user.active
         "yes"
       else
         "no"

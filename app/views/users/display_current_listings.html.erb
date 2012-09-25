@@ -3,9 +3,9 @@
   
   <div class="group center_wrap">
     <ul class="tabs">
-      <li <%= "class=\'selected\'" if request.fullpath ==  user_current_listings_path %>> <%= link_to "All (#{current_user.mtg_listings.count})", user_current_listings_path %> </li>
-      <li <%= "class=\'selected\'" if params[:status] == "active" %>> <%= link_to "Active (#{current_user.mtg_listings.active.count})", user_current_listings_path(:status => "active")%> </li>
-      <li <%= "class=\'selected\'" if params[:status] == "inactive" %>> <%= link_to "Inactive (#{current_user.mtg_listings.inactive.count})", user_current_listings_path(:status => "inactive") %> </li>      
+      <li <%= "class=selected" if request.fullpath ==  user_current_listings_path %>> <%= link_to "All (#{current_user.mtg_listings.count})", user_current_listings_path %> </li>
+      <li <%= "class=selected" if params[:status] == "active" %>> <%= link_to "Active (#{current_user.mtg_listings.active.count})", user_current_listings_path(:status => "active")%> </li>
+      <li <%= "class=selected" if params[:status] == "inactive" %>> <%= link_to "Inactive (#{current_user.mtg_listings.inactive.count})", user_current_listings_path(:status => "inactive") %> </li>      
     </ul>
   </div>
   
