@@ -67,7 +67,7 @@ class Cart < ActiveRecord::Base
   end
 
   def empty!
-    self.reservations.each {|r| self.remove_mtg_listing(r,r.quantity)}
+    self.reservations.each {|r| self.remove_mtg_listing(r,r.quantity)} if self.item_count > 0
   end  
 
    def mtg_listing_ids   #returns array of ids of mtg_listings in cart
