@@ -7,7 +7,7 @@ development:
   adapter: sqlite3
   database: db/development.sqlite3
   pool: 20
-  timeout: 10000
+  timeout: 500
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -22,10 +22,6 @@ production:
   adapter: mysql2
   encoding: utf8
   reconnect: true
-  sslkey: /certs/cleardb-key.pem
-  sslcert: /certs/cleardb-cert.pem
-  sslca: /certs/cleardb-ca-cert.pem
-  sslcapath: /certs
   pool: 20
   timeout: 5000
 

@@ -5,10 +5,11 @@ class CartsController < ApplicationController
   def add_mtg_cards
     listing = Mtg::Listing.find(params[:id])
     unless current_cart.add_mtg_listing(listing, params[:quantity].to_i) # add this listing to cart, this returns false if there is a problem
-      flash[:error] = "there was a problem processing your request" # ERROR - problem while adding listing to cart?
+      flash[:error] = current_cart.errors.full_messages#"there was a problem processing your request" # ERROR - problem while adding listing to cart?
       redirect_to back_path
       return
     end
+    flash[:error] = current_cart.errors.full_messages
     redirect_to back_path, :notice => "#{params[:quantity].to_i} cards added to cart!"    
     return #stop method, don't display a view
   end
@@ -69,8 +70,8 @@ class CartsController < ApplicationController
       transactions.each do |seller_id, transaction| 
         transaction.save # save each transaction        
         reservations[seller_id].each { |r| r.purchased! } # update listing quantity and destroy each reservation for this transaction
-        EmailQueue.push(:template => "seller_sale_notification", :data => transaction)
-        EmailQueue.push(:template => "buyer_checkout_confirmation", :data => transaction)
+        ApplicationMailer.seller_sale_notification(transaction).deliver # send sale notification email to seller
+        ApplicationMailer.buyer_checkout_confirmation(transaction).deliver # send sale notification email to seller        
       end
       current_cart.update_cache! # empty the shopping cart
       redirect_to root_path, :notice => "Your purchase request has been submitted."          

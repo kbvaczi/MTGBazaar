@@ -13,8 +13,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def update
     set_address_info
     super
-    EmailQueue.push(:template => "account_update_notification", :data => resource)
-    Rails.logger.info("TESTING #{resource.account.address_verification}")
+    ApplicationMailer.account_update_notification(resource).deliver
   end
   
   def create

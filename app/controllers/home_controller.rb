@@ -8,7 +8,8 @@ class HomeController < ApplicationController
       @news_feeds = NewsFeed.where(:id => 1)
     end
     
+    Rails.logger.info(GirlFriday.status)
+    
   end
-
   
 end

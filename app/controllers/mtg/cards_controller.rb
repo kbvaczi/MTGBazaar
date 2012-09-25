@@ -77,8 +77,8 @@ class Mtg::CardsController < ApplicationController
     
     query = SmartTuple.new(" AND ")
     
-    query << ["mtg_cards.active = ?", true]
-    query << ["mtg_sets.active = ?", true]
+    query << ["mtg_cards.active LIKE ?", true]
+    query << ["mtg_sets.active LIKE ?", true]
     query << ["mtg_cards.name LIKE ?", "%#{params[:name]}%"] if params[:name].present? 
     unless params[:search_type].present? #user clicks on autocomplete name for specific card bypass all filters
       query << ["mtg_sets.code LIKE ?", "#{params[:set]}"] if params[:set].present?
@@ -93,16 +93,17 @@ class Mtg::CardsController < ApplicationController
       query << ["artist LIKE ?", "#{params[:artist]}"] if params[:artist].present?
       query << SmartTuple.new(" AND ").add_each(params[:abilities]) {|v| ["mtg_cards.description LIKE ?", "%#{v}%"]} if params[:abilities].present?
       if params[:language].present? or params[:options].present? or params[:seller_id].present? or params[:show] == "listed"
+        params[:show] = "listed" unless params[:show] == "all"
         # language filters
-        query << ["mtg_listings.active = ? AND users.active = ? AND mtg_listings.quantity_available > 0", true, true]
+        query << ["mtg_listings.active LIKE ? AND users.active LIKE ? AND mtg_listings.quantity_available > 0", true, true]
         query << ["mtg_listings.language LIKE ?", params[:language]] if params[:language].present?
         # options filters
-        query << ["mtg_listings.foil = ?", true] if params[:options].present? && params[:options].include?('f')
-        query << ["mtg_listings.misprint = ?", true] if params[:options].present? && params[:options].include?('m')
-        query << ["mtg_listings.signed = ?", true] if params[:options].present? && params[:options].include?('s')
-        query << ["mtg_listings.altart = ?", true] if params[:options].present? && params[:options].include?('a')
+        query << ["mtg_listings.foil LIKE ?", true] if params[:options].present? && params[:options].include?('f')
+        query << ["mtg_listings.misprint LIKE ?", true] if params[:options].present? && params[:options].include?('m')
+        query << ["mtg_listings.signed LIKE ?", true] if params[:options].present? && params[:options].include?('s')
+        query << ["mtg_listings.altart LIKE ?", true] if params[:options].present? && params[:options].include?('a')
         # seller filter
-        query << ["mtg_listings.seller_id = ?", "#{params[:seller_id]}"] if params[:seller_id].present?
+        query << ["mtg_listings.seller_id LIKE ?", "#{params[:seller_id]}"] if params[:seller_id].present?
       end
     end
   

@@ -7,7 +7,7 @@ class Mtg::Reservation < ActiveRecord::Base
   has_one    :seller,       :class_name => "User",          :through => :listing
   has_one    :card,         :class_name => "Mtg::Card",     :through => :listing
   
-  validate              :seller_cannot_be_buyer
+  validate              :seller_cannot_be_buyer, :on => :create
   validates :quantity,  :numericality => {:greater_than => 0, :less_than => 10000}  #quantity must be between 0 and 10000
   validates_associated  :listing, :cart
   

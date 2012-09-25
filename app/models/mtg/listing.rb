@@ -26,13 +26,13 @@ class Mtg::Listing < ActiveRecord::Base
   # ------------ Callbacks ==-------------- #
   # --------------------------------------- #
 
-  
-  before_create do      # all cards are available when created
-    self.quantity_available = self.quantity
-  end
-  
+  before_validation :set_quantity_available, :on => :create
   after_save :update_statistics_cache_on_save, :if => "price_changed? || quantity_available_changed?"
   before_destroy :update_statistics_cache_on_delete
+  
+  def set_quantity_available
+    self.quantity_available = self.quantity    
+  end
   
   def update_statistics_cache_on_save
     stats = self.statistics
