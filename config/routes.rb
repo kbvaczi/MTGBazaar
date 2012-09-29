@@ -82,7 +82,7 @@ MTGBazaar::Application.routes.draw do
   # see http://stackoverflow.com/questions/5051487/combining-devise-with-resources-users-in-rails
 
   get 'account' => 'users#show_account_info', :as => 'show_account_info'  
-  get 'account/listings' => 'users#display_current_listings', :as => 'user_current_listings'
+  get 'account/listings' => 'users#account_listings', :as => 'user_current_listings'
   get 'account/sales' => 'users#account_sales', :as => 'account_sales'
   post 'account/sales' => 'users#account_sales', :as => 'account_sales'   # for pagination
   get 'account/purchases' => 'users#account_purchases', :as => 'account_purchases'

@@ -1,6 +1,6 @@
 <h1>My Listings</h1>
 <div class="ma">
-  
+
   <div class="group center_wrap">
     <ul class="tabs">
       <li <%= "class=selected" if request.fullpath ==  user_current_listings_path %>> <%= link_to "All (#{current_user.mtg_listings.count})", user_current_listings_path %> </li>
@@ -9,6 +9,12 @@
     </ul>
   </div>
   
+  <% if params[:filter] != "true"%>
+    <%= link_to "Apply Search Filters", url_for(url_for(params.merge(:filter => "true"))), :class => "right" %>  
+  <% else %>
+    <%= link_to "Remove Search Filters", url_for(url_for(params.delete_if {|key, value| key == "filter"})), :class => "right" %>  
+  <% end %>
+
   <h2><%="#{@listings.total_count} #{(params[:status] || "").capitalize} Listings"%></h2>
 
   <p>Note: Only active listings will be visible to be purchased.  While you are in inactive mode, all your listings invisible regardless if they are set to active or not.</p>  
@@ -27,6 +33,7 @@
     	</tr>
       <%= render :partial => "mtg/listings/teaser" , :collection => @listings, :as => "listing" %>      
   </table>
+  
   <div class="center_wrap">
     <div class="paginator center">
       <%= paginate @listings, :method => :get %>

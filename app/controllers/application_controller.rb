@@ -26,7 +26,8 @@ class ApplicationController < ActionController::Base
       Session.where(["updated_at < ? OR created_at < ?", 30.minutes.ago, 12.hours.ago]).each {|s| s.destroy}
       Rails.logger.info "CLEARING SESSIONS COMPLETE"
     end
-    unless ActiveRecord::SessionStore::Session.find_by_session_id(request.session_options[:id]) #we cleared your session
+    # if we cleared your session
+    unless request.session_options[:id] && ActiveRecord::SessionStore::Session.find_by_session_id(request.session_options[:id]) 
       reset_session # give them a new session
       flash[:error] = "For security purposes, your session was timed out..." # tell them their session was timed out
     end
@@ -66,6 +67,31 @@ class ApplicationController < ActionController::Base
       end
       @current_cart
     end
+  end
+  
+  def build_mtg_query(options = {})
+    query = SmartTuple.new(" AND ")
+    query << ["mtg_sets.code LIKE ?", "#{cookies[:search_set]}"] if cookies[:search_set].present? && options[:set] != false
+    query << ["mtg_cards.mana_color LIKE ?", "%#{cookies[:search_white]}%"] if cookies[:search_white].present? && options[:color] != false
+    query << ["mtg_cards.mana_color LIKE ?", "%#{cookies[:search_black]}%"] if cookies[:search_black].present? && options[:color] != false    
+    query << ["mtg_cards.mana_color LIKE ?", "%#{cookies[:search_blue]}%"] if cookies[:search_blue].present? && options[:color] != false
+    query << ["mtg_cards.mana_color LIKE ?", "%#{cookies[:search_red]}%"] if cookies[:search_red].present? && options[:color] != false
+    query << ["mtg_cards.mana_color LIKE ?", "%#{cookies[:search_green]}%"] if cookies[:search_green].present? && options[:color] != false
+    query << ["mtg_cards.rarity LIKE ?", "#{cookies[:search_rarity]}"] if cookies[:search_rarity].present? && options[:rarity] != false
+    query << ["mtg_cards.card_type LIKE ?", "#{cookies[:search_type]}"] if cookies[:search_type].present? && options[:type] != false
+    query << ["mtg_cards.card_subtype LIKE ?", "%#{cookies[:search_subtype]}%"] if cookies[:search_subtype].present? && options[:subtype] != false
+    query << ["mtg_cards.artist LIKE ?", "#{cookies[:search_artist]}"] if cookies[:search_artist].present? && options[:artist] != false
+    query << SmartTuple.new(" AND ").add_each(cookies[:search_abilities]) {|v| ["mtg_cards.description LIKE ?", "%#{v}%"]} if cookies[:search_abilities].present? && options[:abilities] != false
+    # language filters
+    query << ["mtg_listings.language LIKE ?", cookies[:search_language]] if cookies[:search_language].present? && options[:language] != false
+    # options filters
+    query << ["mtg_listings.foil LIKE ?", true] if cookies[:search_options].present? && cookies[:search_options].include?('f') && options[:options] != false
+    query << ["mtg_listings.misprint LIKE ?", true] if cookies[:search_options].present? && cookies[:search_options].include?('m') && options[:options] != false
+    query << ["mtg_listings.signed LIKE ?", true] if cookies[:search_options].present? && cookies[:search_options].include?('s') && options[:options] != false
+    query << ["mtg_listings.altart LIKE ?", true] if cookies[:search_options].present? && cookies[:search_options].include?('a') && options[:options] != false
+    # seller filter
+    query << ["mtg_listings.seller_id LIKE ?", "#{cookies[:search_seller_id]}"] if cookies[:search_seller_id].present? && options[:seller] != false
+    query.compile
   end
     
 end

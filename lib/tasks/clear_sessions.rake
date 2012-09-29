@@ -12,7 +12,7 @@ task :clear_expired_sessions => :environment do
         cart = Cart.includes(:reservations => :listing).where(:id => cart_id).first # find the cart associated with this session        
         if cart.present?
           Rails.logger.debug "  -found cart ID:#{cart.id} with #{cart.item_count} listings"
-          cart.empty! # remove all listings out of this cart and make them available for other users to purchase
+          cart.empty # remove all listings out of this cart and make them available for other users to purchase
           Rails.logger.debug "  -cart ID:#{cart.id} was emptied and now has #{cart.item_count} listings"      
           cart.destroy # delete this cart
           Rails.logger.debug "  -cart ID:#{cart.id} destroyed"      

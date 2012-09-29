@@ -62,7 +62,7 @@ class Cart
     @session[:cart][:seller_ids].values.flatten.length
   end  
   
-  def empty!            #removes all listings from cart
+  def empty            #removes all listings from cart
     mtg_listings.each {|l| remove_mtg_listing(l)}
   end
   

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120924192816) do
+ActiveRecord::Schema.define(:version => 20120928001137) do
 
   create_table "account_balance_transfers", :force => true do |t|
     t.integer  "account_id"
@@ -194,16 +194,30 @@ ActiveRecord::Schema.define(:version => 20120924192816) do
   add_index "mtg_listings", ["seller_id"], :name => "index_mtg_listings_on_seller_id"
   add_index "mtg_listings", ["signed"], :name => "index_mtg_listings_on_signed"
 
-  create_table "mtg_reservations", :force => true do |t|
+  create_table "mtg_orders", :force => true do |t|
     t.integer  "cart_id"
+    t.integer  "seller_id"
+    t.integer  "item_count"
+    t.integer  "item_price_total"
+    t.integer  "shipping_cost"
+    t.integer  "total_cost"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "mtg_orders", ["cart_id"], :name => "index_mtg_orders_on_cart_id"
+  add_index "mtg_orders", ["seller_id"], :name => "index_mtg_orders_on_seller_id"
+
+  create_table "mtg_reservations", :force => true do |t|
     t.integer  "listing_id"
     t.integer  "quantity",   :default => 0, :null => false
     t.datetime "created_at",                :null => false
     t.datetime "updated_at",                :null => false
+    t.integer  "order_id"
   end
 
-  add_index "mtg_reservations", ["cart_id"], :name => "index_mtg_reservations_on_cart_id"
   add_index "mtg_reservations", ["listing_id"], :name => "index_mtg_reservations_on_listing_id"
+  add_index "mtg_reservations", ["order_id"], :name => "index_mtg_reservations_on_order_id"
 
   create_table "mtg_sets", :force => true do |t|
     t.integer  "block_id"

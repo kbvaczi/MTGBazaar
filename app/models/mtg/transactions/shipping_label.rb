@@ -29,25 +29,25 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
   validates             :price, :numericality => {:greater_than => 0, :less_than => 5000, :message => "Must be between $0.01 and $50"}, :if => "postage_created"   #price must be between $0 and $10,000.00  
   
   
-  def self.calculate_shipping_parameters(params = {:item_count => 1})
-    card_weight_in_oz = (params[:item_count] / 15.to_f) # 15 cards per ounce
-    if params[:item_count] <= 150
+  def self.calculate_shipping_parameters(options = {:item_count => 1})
+    card_weight_in_oz = (options[:item_count] / 15.to_f) # 15 cards per ounce
+    if options[:item_count] <= 150
       service_type = 'US-FC' 
       package_type = 'Package'
       package_weight_in_oz = 1.7
-      if params[:item_count] <= 15
+      if options[:item_count] <= 15
         user_charge = 1.99.to_money # our cost = 1.64 at 3oz, USPS 2.80 with DC
-      elsif params[:item_count] <= 50
+      elsif options[:item_count] <= 50
         user_charge = 2.99.to_money # our cost = 2.15 at 6oz, USPS 3.31 with DC
-      elsif params[:item_count] <= 150
+      elsif options[:item_count] <= 150
         user_charge = 3.99.to_money # our cost = 3.28 at 13oz, USPS 4.50 with DC            
       end 
-    elsif params[:item_count] <= 500
+    elsif options[:item_count] <= 500
       service_type = 'US-PM' 
       package_type = 'Small Flat Rate Box'
       package_weight_in_oz = 4
       user_charge = 5.99.to_money # our cost = 5.15 flat rate, USPS = 6.10 with DC
-    elsif params[:item_count] <= 4000
+    elsif options[:item_count] <= 4000
       service_type = 'US-PM' 
       package_type = 'Flat Rate Box'
       package_weight_in_oz = 5
@@ -94,35 +94,35 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
     #TODO: Code insurance algorithm    
   end
 
-  def build_address(params={})
+  def build_address(options={})
     a = {
-      :full_name     => params[:full_name].present? ? params[:full_name] : "#{params[:user].account.first_name} #{params[:user].account.last_name}" ,
-      :first_name    => params[:user].account.first_name,
-      :last_name     => params[:user].account.last_name,
-      :address1      => params[:user].account.address1,
-      :address2      => params[:user].account.address2,                  
-      :city          => params[:user].account.city,
-      :state         => params[:user].account.state,
-      :zip_code      => params[:user].account.zipcode,
-      :cleanse_hash  => (params[:user].account.address_verification[:cleanse_hash] || ""),
-      :override_hash => (params[:user].account.address_verification[:override_hash] || "")   
+      :full_name     => options[:full_name].present? ? options[:full_name] : "#{options[:user].account.first_name} #{options[:user].account.last_name}" ,
+      :first_name    => options[:user].account.first_name,
+      :last_name     => options[:user].account.last_name,
+      :address1      => options[:user].account.address1,
+      :address2      => options[:user].account.address2,                  
+      :city          => options[:user].account.city,
+      :state         => options[:user].account.state,
+      :zip_code      => options[:user].account.zipcode,
+      :cleanse_hash  => (options[:user].account.address_verification[:cleanse_hash] || ""),
+      :override_hash => (options[:user].account.address_verification[:override_hash] || "")   
     }
-    params[:clean] == true ? Stamps.clean_address(:address => a)[:address] : a
+    options[:clean] == true ? Stamps.clean_address(:address => a)[:address] : a
   end
   
-  def create_stamp(params={})
+  def create_stamp(options={})
     details = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:item_count => transaction.item_count)
     stamp = Stamps.create!({
                :sample          => STAMPS_CONFIG[:mode] == "production" ? false : true,  # all labels are test labels if we aren't in production mode....
                :image_type      => "Pdf",
                :customer_id     => "12345", #TODO: code customer ID
-               :transaction_id  => params[:stamps_tx_id],
-               :to              => params[:to],
-               :from            => params[:from],
-               :memo            => "MTGBazaar.com\r\n" + params[:memo],
+               :transaction_id  => options[:stamps_tx_id],
+               :to              => options[:to],
+               :from            => options[:from],
+               :memo            => "MTGBazaar.com\r\n" + options[:memo],
                :rate            => {
-                 :from_zip_code => params[:from][:zip_code],
-                 :to_zip_code   => params[:to][:zip_code],
+                 :from_zip_code => options[:from][:zip_code],
+                 :to_zip_code   => options[:to][:zip_code],
                  :weight_oz     => details[:weight_in_oz],
                  :ship_date     => (Date.today).strftime('%Y-%m-%d'),
                  :package_type  => details[:package_type],
@@ -135,7 +135,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
                  }
                }
             })
-    self.params = stamp
+    self.options = stamp
     self.stamps_tx_id = stamp[:stamps_tx_id]
     self.price = stamp[:rate][:amount]
     buy_postage_if_necessary(:current_balance => stamp[:postage_balance][:available_postage].to_i, 
@@ -143,22 +143,22 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
   end
   
   # buy postage if balance is below minimum (only works in STAMPS_CONFIG[:mode] = production)
-  def buy_postage_if_necessary(params = {:current_balance => 9999, :control_total => 0})
+  def buy_postage_if_necessary(options = {:current_balance => 9999, :control_total => 0})
     min_postage_balance = 80 # buy postage if balance is under this amount
     max_control_total = 1000 # max amount to spend per month?
     postage_purchase_amount = 50 # amount to purchase at a time
     if STAMPS_CONFIG[:mode] == "production"
-      if params[:current_balance] < min_postage_balance && params[:control_total] < max_control_total
+      if options[:current_balance] < min_postage_balance && options[:control_total] < max_control_total
           Rails.logger.info("STAMPS: Postage below #{min_postage_balance}, attempting to purchase #{postage_purchase_amount} in postage")
           response = Stamps.purchase_postage(:amount => postage_purchase_amount,
-                                             :control_total => params[:control_total])
+                                             :control_total => options[:control_total])
           if response[:purchase_status] == "Rejected"
             Rails.logger.info("STAMPS: Postage purchase FAILED!, Rejection reason: #{response[:rejection_reason]}")
           else
             Rails.logger.info("STAMPS: Postage purchase SUCCESS!")          
           end
       else
-        Rails.logger.info("STAMPS: Checking Postage Balance: #{params[:current_balance]}")          
+        Rails.logger.info("STAMPS: Checking Postage Balance: #{options[:current_balance]}")          
       end
     else
        Rails.logger.info("STAMPS: We don't buy postage in test mode")          

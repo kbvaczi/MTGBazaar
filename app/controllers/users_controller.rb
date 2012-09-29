@@ -40,18 +40,7 @@ class UsersController < ApplicationController
     end
   end
   
-  def display_current_listings
-    set_back_path
-    @active_listings = current_user.mtg_listings.active.page(params[:page]).per(15)
 
-    if params[:status] == "active"
-      @listings = current_user.mtg_listings.includes(:card => :set).where(:active => true).order("mtg_cards.name ASC").page(params[:page]).per(25)
-    elsif params[:status] == "inactive"
-      @listings = current_user.mtg_listings.includes(:card => :set).where(:active => false).order("mtg_cards.name ASC").page(params[:page]).per(25)      
-    else
-      @listings = current_user.mtg_listings.includes(:card => :set).order("mtg_cards.name ASC").page(params[:page]).per(25)
-    end
-  end
   
   def account_info 
     set_back_path    
@@ -64,6 +53,20 @@ class UsersController < ApplicationController
   
  
   def transactions_index
+  end
+  
+  def account_listings
+    set_back_path
+
+    query = build_mtg_query(:seller => false) if params[:filter]
+
+    if params[:status] == "active"
+      @listings = current_user.mtg_listings.includes(:card => :set).where(query).active.order("mtg_cards.name ASC").page(params[:page]).per(25)
+    elsif params[:status] == "inactive"
+      @listings = current_user.mtg_listings.includes(:card => :set).where(query).inactive.order("mtg_cards.name ASC").page(params[:page]).per(25)      
+    else
+      @listings = current_user.mtg_listings.includes(:card => :set).where(query).order("mtg_cards.name ASC").page(params[:page]).per(25)
+    end
   end
   
   def account_sales

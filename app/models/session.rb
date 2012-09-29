@@ -5,7 +5,7 @@ class Session < ActiveRecord::Base
   # clear associated cart before destroying session
   def clear_cart
     Rails.logger.info "  - session ID:#{self.id} destroyed with cart ID:#{cart.id}"
-    cart.empty!
+    cart.empty
     cart.destroy
   end
   

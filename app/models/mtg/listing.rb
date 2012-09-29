@@ -2,10 +2,12 @@ class Mtg::Listing < ActiveRecord::Base
   self.table_name = 'mtg_listings'    
   
   belongs_to :card,         :class_name => "Mtg::Card"
-  has_one    :statistics,   :class_name => "Mtg::CardStatistics", :through => :card
   belongs_to :seller,       :class_name => "User"
+  has_one    :statistics,   :class_name => "Mtg::CardStatistics",   :through => :card
   has_many   :reservations, :class_name => "Mtg::Reservation"
-  has_many   :carts,        :through => :reservations
+  has_many   :orders,       :class_name => "Mtg::Order",            :through => :reservations,      :foreign_key => :order_id  
+  has_many   :carts,        :class_name => "Cart",                  :through => :reservations,      :source => :cart
+  
   mount_uploader :scan, MtgScanUploader
   
   # Implement Money gem for price column
@@ -28,7 +30,12 @@ class Mtg::Listing < ActiveRecord::Base
 
   before_validation :set_quantity_available, :on => :create
   after_save :update_statistics_cache_on_save, :if => "price_changed? || quantity_available_changed?"
+  after_save :delete_if_empty
   before_destroy :update_statistics_cache_on_delete
+  
+  def delete_if_empty
+    self.destroy if quantity_available == 0 && quantity == 0 && reservations.count == 0
+  end
   
   def set_quantity_available
     self.quantity_available = self.quantity    
@@ -37,14 +44,14 @@ class Mtg::Listing < ActiveRecord::Base
   def update_statistics_cache_on_save
     stats = self.statistics
     stats.increment(:listings_available, quantity_available - quantity_available_was)
-    stats.update_attribute(:price_min, Money.new(stats.listings.available.minimum(:price))) if price <= stats.price_min
+    stats.update_attribute(:price_min, Money.new(stats.listings.available.minimum(:price) || 0)) if price <= stats.price_min
     stats.save
   end
   
   def update_statistics_cache_on_delete
     stats = self.statistics
     stats.decrement(:listings_available, quantity_available)
-    stats.update_attribute(:price_min, Money.new(stats.listings.available.minimum(:price))) if price <= stats.price_min
+    stats.update_attribute(:price_min, Money.new(stats.listings.available.minimum(:price) || 0)) if price <= stats.price_min
     stats.save
   end
   
