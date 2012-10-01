@@ -76,9 +76,6 @@ class Mtg::CardStatistics < ActiveRecord::Base
     end
   end  
 
-
-
-
   # --------------------------------------- #
   # ------------ Public Model Methods ----- #
   # --------------------------------------- #

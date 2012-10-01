@@ -29,7 +29,7 @@ class Mtg::Listing < ActiveRecord::Base
   # --------------------------------------- #
 
   before_validation :set_quantity_available, :on => :create
-  after_save :update_statistics_cache_on_save, :if => "price_changed? || quantity_available_changed?"
+  after_save :update_statistics_cache_on_save, :if => "price_changed? || quantity_available_changed? || self.new_record?"
   after_save :delete_if_empty
   before_destroy :update_statistics_cache_on_delete
   
@@ -42,17 +42,13 @@ class Mtg::Listing < ActiveRecord::Base
   end
   
   def update_statistics_cache_on_save
-    stats = self.statistics
-    stats.increment(:listings_available, quantity_available - quantity_available_was)
-    stats.update_attribute(:price_min, Money.new(stats.listings.available.minimum(:price) || 0)) if price <= stats.price_min
-    stats.save
+    statistics.listings_available(:overwrite => true)
+    statistics.price_min(:overwrite => true) if price <= statistics.price_min
   end
   
   def update_statistics_cache_on_delete
-    stats = self.statistics
-    stats.decrement(:listings_available, quantity_available)
-    stats.update_attribute(:price_min, Money.new(stats.listings.available.minimum(:price) || 0)) if price <= stats.price_min
-    stats.save
+    statistics.listings_available(:overwrite => true)
+    statistics.price_min(:overwrite => true) if price <= statistics.price_min
   end
   
   # --------------------------------------- #

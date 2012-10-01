@@ -1,8 +1,12 @@
 <% title "#{display_name(@mtg_card.name)}" #title is first 30 characters in card name %>
+<%= link_to "back", search_mtg_cards_path, :class => "bx-prev", :style => "top:6px;"%>
+
+
 <h1><%= display_name(@mtg_card.name) %></h1>
 
+
 <div class="content">
-  
+
   <%# cache card info but not listings %>
   <% cache "mtg_card_show_#{@mtg_card.id}", :expires_in => 1.days do %>
     <div>
