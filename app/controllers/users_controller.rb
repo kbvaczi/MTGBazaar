@@ -46,11 +46,6 @@ class UsersController < ApplicationController
     set_back_path    
   end
   
-  def show_cart
-    set_back_path
-    @reservations = current_cart.reservations.includes(:listing)
-  end
-  
  
   def transactions_index
   end

@@ -16,7 +16,7 @@ MTGBazaar::Application.routes.draw do
   delete  "mtg/listings/:id/remove_from_cart" => "carts#remove_mtg_cards",          :as => 'remove_from_cart_mtg_listing'
   post    "mtg/listings/:id/update_quantity"  => "carts#update_quantity_mtg_cards", :as => 'update_quantity_in_cart_mtg_cards'  
 
-  get     'mtg/cart'                          => 'users#show_cart',                 :as => 'show_cart'
+  get     'mtg/cart'                          => 'carts#show',                      :as => 'show_cart'
   post    'mtg/checkout'                      => 'carts#checkout',                  :as => 'cart_checkout'
   
 # TICKETS ------------------- #

@@ -1,0 +1,83 @@
+<%= title "Shopping Cart"%>
+<h1><%="Your Cart (#{pluralize(current_cart.item_count,"item","items")})"%></h1>
+<div class="content">
+  <%# Do this if the user's cart is not empty %>
+  <% if current_cart.item_count <= 0 %>
+    <br class="spacer"/>
+    <br class="spacer"/>    
+    <div class="center_wrap">
+      <%= "Your cart is currently empty" %>
+    </div>
+    
+  <% else %>
+
+    <% @orders.each do |order| %>
+
+      <h2><%= "#{order.item_count} Items from #{order.seller.username}" %></h2>
+   		<table class="data">
+        <tr class="header_row">
+          <th>Name</th>
+          <th>Set</th>      
+          <th>Cond</th>
+          <th>Lang</th>
+          <th>Options</th>
+          <th>Price<br/>Each</th>
+          <th>Quantity</th>
+          <th>Price</th>
+        </tr>
+        <% order.reservations.each do |reservation| %>
+          <%= render :partial => "cart_mtg_card_teaser", :locals => {:reservation => reservation} %>          
+        <% end %>
+        <tr class="header_row">
+        	<td colspan=7 style="text-align:right;">Subtotal</td>
+          <td><%= number_to_currency(order.item_price_total) %> </td>      
+        </tr>
+        <tr class="header_row">
+        	<td colspan=7 style="text-align:right;">Shipping (with delivery confirmation)</td>
+          <td><%= number_to_currency(order.shipping_cost) %> </td>      
+        </tr>          
+        <tr class="header_row">
+        	<th colspan=7 style="text-align:right;">Total cost for this order</th>
+          <th style="min-width:40px;"><%= number_to_currency(order.total_cost) %> </th>
+        </tr>
+      </table>
+      
+      <% reset_cycle("rows") %>
+      <br class="spacer"/>
+            <br class="spacer"/>      
+    <% end %>
+
+    <br class="spacer"/>
+    <div class="right mr t-b t-l">
+      <%= "Total Cart Price: #{number_to_currency(current_cart.total_price)}" %>
+    </div>
+    <br class="spacer"/>
+    <br class="spacer"/>    
+    <br class="spacer"/>        
+    <div class="center_wrap">
+      <%= button_to "Check Out", cart_checkout_path, :method => :post , :class => "center"%>
+      <%# do this if there are no items in the user's cart%>
+    </div>
+
+  <% end %>  
+  
+</div>
+
+<script>
+  // UPDATE QUANTITY IN CART WHEN CHANGED
+  // If ajax is not working properly, the value of the select box won't change to avoid confusion
+  
+  $('.quantity_in_cart').each(function() {
+    $(this).data('lastSelected', $(this).find('option:selected'));
+  });
+  $('.quantity_in_cart').click(function() {
+    $(this).data('lastSelected', $(this).find('option:selected'));
+  });
+  $(".quantity_in_cart").change(function() {
+    $(this).closest("form").submit();
+    $(this).data('lastSelected').attr('selected', true);    
+    $(this).trigger("liszt:updated");
+  });
+  
+</script>
+

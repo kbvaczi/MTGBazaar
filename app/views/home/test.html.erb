@@ -1,7 +1,16 @@
-<form action= "https://www.sandbox.paypal.com/webapps/adaptivepayment/flow/pay?" target="PPDGFrame">
+
+
+<br/><br/><br/><br/>
+<form action= "https://www.sandbox.paypal.com/webapps/adaptivepayment/flow/preapproval" target="PPDGFrame">  
 		<input id="type" type="hidden" name="expType" value="mini">	 
-		<input id="paykey" type="hidden" name="paykey" value= <%#= @purchase["payKey"]%> >
-		<input type="submit" id="submitBtn" value="Pay with PayPal"> 	
+		<input id="paykey" type="hidden" name="preapprovalkey" value= <%= @pre_approval["preapprovalKey"] rescue ""%> >
+		<input type="submit" id="submitBtn" value="Pre-Approval"> 	
+</form>
+<br/><br/><br/><br/>
+<form action= "https://www.sandbox.paypal.com/webapps/adaptivepayment/flow/pay" target="PPDGFrame">  
+		<input id="blah" type="hidden" name="expType" value="mini">	 
+		<input id="blah2" type="hidden" name="paykey" value= <%= @purchase["payKey"] rescue ""%> >
+		<input type="submit" id="submitBtn" value="Purchase"> 	
 </form>
 
 <script src="https://www.paypalobjects.com/js/external/dg.js"></script>
@@ -9,17 +18,15 @@
 <script> 
 	var dgFlow = new PAYPAL.apps.DGFlow({ trigger: 'submitBtn' }); 
 </script>
+
+
 <%# CHAINED PAYMENTS TESTING %>
 
 
 
 
 
-<form action= "https://www.sandbox.paypal.com/webapps/adaptivepayment/flow/preapproval" target="PPDGFrame">  
-		<input id="type" type="hidden" name="expType" value="mini">	 
-		<input id="paykey" type="hidden" name="preapprovalkey" value= <%#= @pre_approval["preapprovalKey"]%> >
-		<input type="submit" id="submitBtn" value="Pay with PayPal"> 	
-</form>
+
 
 
 

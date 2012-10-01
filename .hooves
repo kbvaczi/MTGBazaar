@@ -1,6 +1,6 @@
 ## SETUP file for unicorn webserver
 
-timeout 10 # 20 minutes for development for uploading sets  
+timeout 10000 # number is in seconds... 20 minutes for development for uploading sets  
 worker_processes 1
 
 

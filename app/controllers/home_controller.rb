@@ -15,7 +15,7 @@ class HomeController < ApplicationController
   
   def test
     
-=begin
+
       # setup transaction
       gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(
         :pem =>       PAYPAL_CONFIG[:paypal_cert_pem],
@@ -32,34 +32,36 @@ class HomeController < ApplicationController
                        :primary => true,
                        :amount => "12.00" } ]   
                        
-      business =  [ {:email => "seller_1345565383_biz@mtgbazaar.com",
-                     :amount => "10.00" } ]
+      second_leg =   [ {:email => "seller_1348611401_per@mtgbazaar.com",
+                        :primary => false,
+                        :amount => "8.00" } ]
                          
       refunder     =  [ {:email => "seller_1345565383_biz@mtgbazaar.com",
+                         :primary => true,
                          :amount => "5.00" } ]                         
-=begin
+
        @pre_approval = gateway.preapprove_payment(
-         :return_url           => root_url(:notice => "return"),
-         :cancel_url           => root_url(:notice => "cancel"),
-         :displayMaxTotalAmount             =>        "TRUE", 
-         :memo                 => "$52 dollars total split among 5 transactions",
-         :start_date           => Time.now,
-         :end_date             => Time.now + 30.days,
+         :return_url            => root_url(:notice => "return"),
+         :cancel_url            => root_url(:notice => "cancel"),
+         :displayMaxTotalAmount => "TRUE", 
+         :memo                  => "<br/>$52 dollars total split among 5 transactions. <br/>Note: Your account will be charged when seller confirms sale",
+         :start_date            => Time.now,
+         :end_date              => Time.now + 30.days,
         # :sender_email         => "buyer_1348611316_per@mtgbazaar.com",
 
          :currency_code        => "USD",
          :max_amount           => "50.00",
          :max_number_of_payments  => "5" )
-=begin
+
 
       @purchase = gateway.setup_purchase(
-        :action_type          => "PAY_PRIMARY",
+        :action_type          => "PAY",
         :return_url           => root_url(:notice => "return"),
         :cancel_url           => root_url(:notice => "cancel"),
         :memo                 => "TEST",
 #        :sender_email         => "buyer_1348611316_per@mtgbazaar.com",         
         :receiver_list        => recipients,
-        :fees_payer           => "EACHRECEIVER"
+#        :fees_payer           => "SECONDARYONLY"
       )
       
  
@@ -95,10 +97,11 @@ class HomeController < ApplicationController
       #redirect_to (gateway.redirect_url_for(@purchase["payKey"]))
       #redirect_to "https://www.paypal.com/webapps/adaptivepayment/flow/pay?paykey=#{@purchase[:payKey]}"
  
-      #@refund = gateway.refund(:pay_key => Rails.cache.read("test_paykey"), :receiver_list        => refunder )
+      
                                
       # COMPLETE DELAYED PAYMENT
-      #@response = gateway.execute_payment(:pay_key => Rails.cache.read("test_paykey"))                               
+      #@response = gateway.execute_payment(:pay_key => Rails.cache.read("test_paykey"), :receiver_list => second_leg)                               
+      #@refund = gateway.refund(:pay_key => Rails.cache.read("test_paykey"), :receiver_list        => second_leg )  
 
       Rails.logger.info "GATEWAY: #{gateway.debug.to_xml}"  rescue ""
       Rails.logger.info "PREAPPROVAL: #{@pre_approval.to_xml}"rescue ""

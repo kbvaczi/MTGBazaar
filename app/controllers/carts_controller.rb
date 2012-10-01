@@ -2,6 +2,16 @@ class CartsController < ApplicationController
   
   before_filter :authenticate_user!
   
+  def show
+    set_back_path
+    @orders = current_cart.orders.includes(:reservations, :listings, :seller)
+    
+    respond_to do |format|
+      format.html {}
+      format.js {}
+    end
+  end
+  
   def add_mtg_cards
     listing = Mtg::Listing.find(params[:id])
     unless current_cart.add_mtg_listing(listing, params[:quantity].to_i) # add this listing to cart, this returns false if there is a problem

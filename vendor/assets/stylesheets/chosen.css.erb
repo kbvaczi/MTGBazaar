@@ -50,7 +50,7 @@ select.chzn-select {
   position: relative;
   height: 22px;
   line-height: 23px;
-  padding: 0 0 0 8px;
+  padding: 0 0 0 5px;
   color: #444444;
   text-decoration: none;
 }
@@ -58,13 +58,13 @@ select.chzn-select {
   color: #999;
 }
 .chzn-container-single .chzn-single span {
-  margin-right: 35px;
+  margin-right: 20px;
   display: block;
   overflow: hidden;
   white-space: nowrap;
-  -o-text-overflow: ellipsis;
-  -ms-text-overflow: ellipsis;
-  text-overflow: ellipsis;
+  -o-text-overflow: clip;
+  -ms-text-overflow: clip;
+  text-overflow: clip;
 }
 .chzn-container-single .chzn-single abbr {
   display: block;
@@ -251,7 +251,7 @@ select.chzn-select {
 .chzn-container .chzn-results {
   margin: 0 4px 4px 0;
   max-height: 240px;
-  padding: 0 4px 0 4px;
+  padding: 0 4px 0 0;
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
@@ -264,7 +264,7 @@ select.chzn-select {
 .chzn-container .chzn-results li {
   display: none;
   line-height: 15px;
-  padding: 5px;
+  padding: 2px;
   margin: 0;
   list-style: none;
   border:1px solid #fff;
@@ -285,7 +285,6 @@ select.chzn-select {
   background-image: linear-gradient(top, #3875d7 20%, #2a62bc 90%);
   color: #fff;*/
   border: 1px solid #999999; background: #dadada url(<%= asset_path("ui-bg_glass_75_dadada_1x400.png") %>) 50% 50% repeat-x; color: #212121;
-  //margin: -1px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   border-radius: 5px;

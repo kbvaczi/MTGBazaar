@@ -55,9 +55,11 @@
                           
         </div>
         <div id="center_bar">
-            <%= yield %>
+          <%= yield %>
         </div>        
-        <%= render :partial => 'shared/right_bar' %>
+        <div id="right_bar">
+          <%= render :partial => 'shared/right_bar' %>
+        </div>                
         <%= render :partial => 'shared/right_bar2' %>
         <%= render :partial => 'shared/right_bar3' %>    
       </div>

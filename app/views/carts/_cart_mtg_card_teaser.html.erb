@@ -1,0 +1,58 @@
+<tr class=<%= cycle("odd","even", :name => "rows") %>>
+  <td style="max-width:120px;">
+    <div class="mr-s ml-s" style="white-space: nowrap; overflow:hidden;text-overflow: clip;"><%= link_to display_name(reservation.card.name), mtg_card_path(reservation.card), :title => reservation.card.name %></div>
+	</td>
+  <td>
+    <%= display_set_symbol(reservation.card.set)%>
+  </td>
+  <td>
+    <%= display_condition(reservation.listing.condition) %>
+  </td>    
+  <td>
+    <%= display_flag_symbol(reservation.listing.language) %>
+  </td>          
+  <td class="mtg_options_cell"> 
+    <% if reservation.listing.foil %>
+      <%= listing_option_foil_icon %>
+    <% end %>
+    <% if reservation.listing.misprint %>
+      <%= listing_option_misprint_icon %>
+    <% end %>
+    <% if reservation.listing.signed %>
+      <%= listing_option_signed_icon %>
+    <% end %>
+    <% if reservation.listing.altart %>
+      <%= listing_option_altart_icon %>
+    <% end %>    
+    <% if reservation.listing.description != "" %>
+      <%= listing_option_description_icon(reservation.listing) %>
+    <% end %>
+		<% if reservation.listing.scan.present? %>
+      <%= listing_option_scan_icon(reservation.listing) %>
+      <%= listing_option_scan_overlay(reservation.listing) %>
+    <% end %>            
+  </td>
+  <td>
+    <%= number_to_currency(reservation.listing.price) %>
+  </td>                          
+  <td>
+    <div class="center_wrap">
+      <div class="center mr-s">
+        <%= form_tag update_quantity_in_cart_mtg_cards_path(reservation), :method => :post, :remote => true do %>
+          <%#= text_field_tag "quantity", 1, :class => "quantity_in_cart", :id => nil, :value => reservation.quantity, :style => "width:30px;text-align:center;"%>
+          <%= select_tag "quantity", options_for_select(update_quantity_in_cart_selection(reservation), :selected => reservation.quantity), :class => "quantity_in_cart chzn-select chzn-nosearch", :id => nil, :style => "width:#{reservation.quantity > 900 ? "65px" : "55px"};"%>  
+          <%# This form is automatically submitted when changed per cart.js.erb no need for submit tag %>
+          <%#= submit_tag "Update" , :style => "display:none;"%>
+        <% end %>
+      </div>
+      <div class="center">
+        <%= form_tag remove_from_cart_mtg_listing_path(:id => reservation.id, :quantity => reservation.quantity ), :method => :delete, :remote => true do %>
+          <%= submit_tag "X" %>
+        <% end %>
+      </div>
+    </div>
+  </td>    
+  <td>
+    <%= number_to_currency(reservation.quantity * reservation.listing.price.dollars)%>
+  </td>  
+</tr>
