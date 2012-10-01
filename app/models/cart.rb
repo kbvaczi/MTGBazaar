@@ -20,13 +20,14 @@ class Cart < ActiveRecord::Base
   validates :item_count,  :numericality => {:greater_than_or_equal_to => 0, :less_than => 10000}  #quantity must be between 0 and 10,000
                     
   def add_mtg_listing(listing, quantity = 1)
-    order = self.orders.where(:seller_id => listing.seller.id).first || self.orders.create(:cart_id => self.id, :seller_id => listing.seller.id, :total_cost => 0, :item_count => 0) # add listing to existing order, or create a new order if one doesn't exist for this seller
-    if order.add_mtg_listing(listing, quantity) #add listing to order
+    order = self.orders.where(:seller_id => listing.seller.id).first || self.orders.build(:seller_id => listing.seller.id, :total_cost => 0, :item_count => 0) # add listing to existing order, or create a new order if one doesn't exist for this seller
+    if order.valid? && order.add_mtg_listing(listing, quantity) #add listing to order
       self.update_cache
       return true
     end
-    return false
     Rails.logger.info("cart add failed")
+    Rails.logger.debug(order.errors.full_messages)    
+    return false
   end
 
   def remove_mtg_listing(reservation, quantity = 1)

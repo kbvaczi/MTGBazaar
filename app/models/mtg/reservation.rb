@@ -11,12 +11,7 @@ class Mtg::Reservation < ActiveRecord::Base
   
   ##### ------ VALIDATIONS ----- #####
   
-  validate              :seller_cannot_be_buyer, :on => :create
   validates :quantity,  :numericality => {:greater_than_or_equal_to => 0, :less_than => 10000}  #quantity must be between 0 and 10000
-  
-  def seller_cannot_be_buyer
-    self.errors[:base] << "You cannot buy from yourself..." if buyer == seller
-  end
 
   ##### ------ CALLBACKS ----- #####  
 

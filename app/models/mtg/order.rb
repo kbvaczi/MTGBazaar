@@ -45,29 +45,27 @@ class Mtg::Order < ActiveRecord::Base
   
   ##### ------ CALLBACKS ----- #####  
   
-  after_update :delete_if_empty
+  after_save :delete_if_empty
   
   def delete_if_empty
-    self.destroy if item_price_total == 0 && item_count == 0
+    self.destroy if item_count == 0
   end
   
   ##### ------ PUBLIC METHODS ----- #####  
   
   def add_mtg_listing(listing, quantity = 1, update = true)
-    unless self.new_record?
-      if self.listings.include?(listing) # is there already a reservation for this listing in cart?
-        res = self.reservations.where(:listing_id => listing.id).first # add to existing reservation
-      else
-        res = self.reservations.build(:listing_id => listing.id, :quantity => 0) # build a new reservation
-      end
-      res.increment(:quantity, quantity)
-      res.listing.decrement(:quantity_available, quantity)
-      if res.valid? && res.listing.valid?
-        res.save
-        res.listing.save
-        self.update_cache
-        return true # success
-      end
+    if self.listings.include?(listing) # is there already a reservation for this listing in cart?
+      res = self.reservations.where(:listing_id => listing.id).first # add to existing reservation
+    else
+      res = self.reservations.build(:listing_id => listing.id, :quantity => 0) # build a new reservation
+    end
+    res.increment(:quantity, quantity)
+    res.listing.decrement(:quantity_available, quantity)
+    if res.valid? && res.listing.valid?
+      res.save
+      res.listing.save
+      self.update_cache if update
+      return true # success
     end
     return false # fail
   end
@@ -80,7 +78,7 @@ class Mtg::Order < ActiveRecord::Base
         if reservation.valid? && reservation.listing.valid?
           reservation.save
           reservation.listing.save
-          self.update_cache
+          self.update_cache if update
           return true # success          
         end  
       end
@@ -97,18 +95,24 @@ class Mtg::Order < ActiveRecord::Base
   protected
   
   def update_cache
-    res = reservations.includes(:listing)
+    res = self.reservations.includes(:listing)
+    Rails.logger.debug("Order.update_cache Called")
+    Rails.logger.debug("Reservations: #{res.inspect}")
+    Rails.logger.debug("Order BEFORE Update: #{self.inspect}")    
     if res.count > 0
+      Rails.logger.debug("More than 0 reservations found")    
       self.item_count = res.to_a.inject(0) {|sum, res| sum + res[:quantity] }
       self.item_price_total = Money.new(res.to_a.inject(0) {|sum, res| sum + res[:quantity] * res.listing[:price]})
       self.shipping_cost = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:item_count => item_count)[:user_charge]        
       self.total_cost = (item_price_total + shipping_cost)
     else
-      item_count = 0
-      item_price_total = 0
-      shipping_cost = 0
-      total_cost = 0
+      Rails.logger.debug("0 reservations found")          
+      self.item_count = 0
+      self.item_price_total = 0
+      self.shipping_cost = 0
+      self.total_cost = 0
     end
+    Rails.logger.debug("Order AFTER Update: #{self.inspect}")
     self.save
   end
   
