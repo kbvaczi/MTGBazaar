@@ -25,7 +25,7 @@ class Mtg::CardsController < ApplicationController
     set_back_path
     @mtg_card = Mtg::Card.includes(:set, :listings => [:seller => :statistics]).where(:id => params[:id].to_i).first
     @mtg_card_back = Mtg::Card.where("mtg_cards.card_number LIKE ?", "%03d" % @mtg_card.card_number.to_i.to_s + "b").first if @mtg_card.dual_sided_card?
-    @card_variants = Mtg::Card.includes(:set).where("mtg_cards.name LIKE ?", @mtg_card.name)    
+    @card_variants = Mtg::Card.includes(:set).where("mtg_cards.name LIKE ?", @mtg_card.name).order("mtg_sets.release_date DESC")  
 
     query = SmartTuple.new(" AND ")
     if params[:filter] == "true"
@@ -82,11 +82,11 @@ class Mtg::CardsController < ApplicationController
     query << ["mtg_cards.name LIKE ?", "%#{cookies[:search_name]}%"] if cookies[:search_name].present? 
     unless params[:search_type].present? #user clicks on autocomplete name for specific card bypass all filters
       query << ["mtg_sets.code LIKE ?", "#{cookies[:search_set]}"] if cookies[:search_set].present?
-      query << ["mana_color LIKE ?", "%#{cookies[:search_white]}%"] if cookies[:search_white].present?
-      query << ["mana_color LIKE ?", "%#{cookies[:search_black]}%"] if cookies[:search_black].present?    
-      query << ["mana_color LIKE ?", "%#{cookies[:search_blue]}%"] if cookies[:search_blue].present?
-      query << ["mana_color LIKE ?", "%#{cookies[:search_red]}%"] if cookies[:search_red].present?
-      query << ["mana_color LIKE ?", "%#{cookies[:search_green]}%"] if cookies[:search_green].present?
+      query << ["mana_color LIKE ?", "%W%"] if cookies[:search_white].present?
+      query << ["mana_color LIKE ?", "%B%"] if cookies[:search_black].present?    
+      query << ["mana_color LIKE ?", "%U%"] if cookies[:search_blue].present?
+      query << ["mana_color LIKE ?", "%R%"] if cookies[:search_red].present?
+      query << ["mana_color LIKE ?", "%G%"] if cookies[:search_green].present?
       query << ["rarity LIKE ?", "#{cookies[:search_rarity]}"] if cookies[:search_rarity].present?
       query << ["card_type LIKE ?", "#{cookies[:search_type]}"] if cookies[:search_type].present?
       query << ["card_subtype LIKE ?", "%#{cookies[:search_subtype]}%"] if cookies[:search_subtype].present?
