@@ -1,12 +1,13 @@
 class Mtg::Reservation < ActiveRecord::Base
   self.table_name = 'mtg_reservations'    
 
-  belongs_to :listing,      :class_name => "Mtg::Listing",  :foreign_key => "listing_id"
-  belongs_to :order,        :class_name => "Mtg::Order",    :foreign_key => "order_id"
+  belongs_to :listing,      :class_name => "Mtg::Listing",                          :foreign_key => "listing_id"
+  belongs_to :order,        :class_name => "Mtg::Order",                            :foreign_key => "order_id"
   has_one    :seller,       :class_name => "User",          :through => :listing
   has_one    :card,         :class_name => "Mtg::Card",     :through => :listing
   has_one    :cart,         :class_name => "Cart",          :through => :order  
-  has_one    :buyer,        :class_name => "User",          :through => :cart,              :source => :user  
+  
+  attr_accessible :listing_id, :order_id, :quantity
   
   ##### ------ VALIDATIONS ----- #####
   
@@ -26,6 +27,10 @@ class Mtg::Reservation < ActiveRecord::Base
   end
 
   ##### ------ PUBLIC METHODS ----- #####  
+  
+  def buyer
+    self.order.buyer
+  end
   
   def purchased!
     listing.decrement(:quantity, self.quantity).save

@@ -36,15 +36,16 @@ class Mtg::Order < ActiveRecord::Base
   validates_presence_of   :seller, :cart
   validates :total_cost,  :numericality => {:greater_than_or_equal_to => 0, :less_than => 10000000}  #quantity must be between 0 and $100,000
   validates :item_count,  :numericality => {:greater_than_or_equal_to => 0, :less_than => 10000}  #quantity must be between 0 and 10,000
-  validate  :listings_from_one_seller_only, :on => :update
+  validate  :listings_from_one_seller_only
   
   def listings_from_one_seller_only
-    self.errors[:base] << "Cannot add listings from multiple sellers to an order" if listings.pluck(:seller_id).uniq.count > 1
+    self.errors[:base] << "Cannot add listings from multiple sellers to an order" if self.id && listings.pluck(:seller_id).uniq.count > 1
+    self.errors[:base] << "Cannot add listings from yourself" if seller == buyer
   end
   
   ##### ------ CALLBACKS ----- #####  
   
-  after_save :delete_if_empty
+  after_update :delete_if_empty
   
   def delete_if_empty
     self.destroy if item_price_total == 0 && item_count == 0
@@ -53,21 +54,22 @@ class Mtg::Order < ActiveRecord::Base
   ##### ------ PUBLIC METHODS ----- #####  
   
   def add_mtg_listing(listing, quantity = 1, update = true)
-    if self.listings.include?(listing) # is there already a reservation for this listing in cart?
-      res = self.reservations.where(:listing_id => listing.id).first # add to existing reservation
-    else
-      res = self.reservations.build(:listing_id => listing.id, :quantity => 0) # build a new reservation
+    unless self.new_record?
+      if self.listings.include?(listing) # is there already a reservation for this listing in cart?
+        res = self.reservations.where(:listing_id => listing.id).first # add to existing reservation
+      else
+        res = self.reservations.build(:listing_id => listing.id, :quantity => 0) # build a new reservation
+      end
+      res.increment(:quantity, quantity)
+      res.listing.decrement(:quantity_available, quantity)
+      if res.valid? && res.listing.valid?
+        res.save
+        res.listing.save
+        self.update_cache
+        return true # success
+      end
     end
-    res.increment(:quantity, quantity)
-    res.listing.decrement(:quantity_available, quantity)
-    if res.valid? && res.listing.valid?
-      res.save
-      res.listing.save
-      self.update_cache
-      return true # success
-    else
-      return false # fail
-    end
+    return false # fail
   end
 
   def remove_mtg_listing(reservation, quantity = 1, update = true)

@@ -1,9 +1,10 @@
 class Cart < ActiveRecord::Base
 
-  belongs_to  :user
+  belongs_to  :user,          :class_name => "User"
   has_many    :orders,        :class_name => "Mtg::Order",        :dependent => :destroy
   has_many    :reservations,  :class_name => "Mtg::Reservation",  :through => :orders
   has_many    :listings,      :class_name => "Mtg::Listing" ,     :through => :reservations
+  has_many    :sellers,       :class_name => "User",              :through => :listings,        :source => :seller
   
   # Implement Money gem for total_price column
   composed_of   :total_price,
@@ -19,7 +20,7 @@ class Cart < ActiveRecord::Base
   validates :item_count,  :numericality => {:greater_than_or_equal_to => 0, :less_than => 10000}  #quantity must be between 0 and 10,000
                     
   def add_mtg_listing(listing, quantity = 1)
-    order = self.orders.where(:seller_id => listing.seller.id).first || self.orders.build(:seller_id => listing.seller.id) # add listing to existing order, or create a new order if one doesn't exist for this seller
+    order = self.orders.where(:seller_id => listing.seller.id).first || self.orders.create(:cart_id => self.id, :seller_id => listing.seller.id, :total_cost => 0, :item_count => 0) # add listing to existing order, or create a new order if one doesn't exist for this seller
     if order.add_mtg_listing(listing, quantity) #add listing to order
       self.update_cache
       return true
@@ -51,16 +52,16 @@ class Cart < ActiveRecord::Base
     self.update_cache
   end  
 
-   def mtg_listing_ids   #returns array of ids of mtg_listings in cart
-     self.listings.collect { |l| l.id }
-   end
+  def mtg_listing_ids   #returns array of ids of mtg_listings in cart
+   self.listings.collect { |l| l.id }
+  end
 
-   def seller_ids        #creates a unique list of seller ids
-     self.listings.collect { |l| l.seller_id }.uniq
-   end
+  def seller_ids        #creates a unique list of seller ids
+   self.listings.collect { |l| l.seller_id }.uniq
+  end
 
-   def mtg_listings_for_seller_id(id)
-     self.listings.where(:seller_id => id)
-   end
+  def mtg_listings_for_seller_id(id)
+   self.listings.where(:seller_id => id)
+  end
    
 end

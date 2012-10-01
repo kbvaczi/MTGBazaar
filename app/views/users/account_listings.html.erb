@@ -3,8 +3,8 @@
 
   <div class="group center_wrap">
     <ul class="tabs">
-      <li <%= "class=selected" unless params[:status] %>> <%= link_to "All (#{current_user.mtg_listings.count})", account_listings_path %> </li>
-      <li <%= "class=selected" if params[:status] == "active" %>> <%= link_to "Active (#{current_user.mtg_listings.active.count})", account_listings_path(:status => "active")%> </li>
+      <li <%= "class=selected" unless params[:status] %>>           <%= link_to "All (#{current_user.mtg_listings.count})", account_listings_path %> </li>
+      <li <%= "class=selected" if params[:status] == "active" %>>   <%= link_to "Active (#{current_user.mtg_listings.active.count})", account_listings_path(:status => "active")%> </li>
       <li <%= "class=selected" if params[:status] == "inactive" %>> <%= link_to "Inactive (#{current_user.mtg_listings.inactive.count})", account_listings_path(:status => "inactive") %> </li>      
     </ul>
   </div>
