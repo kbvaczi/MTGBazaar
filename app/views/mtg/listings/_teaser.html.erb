@@ -1,6 +1,6 @@
 <tr class=<%= cycle("odd","even") %>>
-  <td style="text-align:left">
-    <%= display_name(listing.card.name) %>
+  <td>
+    <%= link_to display_name(listing.card.name), mtg_card_path(listing.card) %>
   </td>
   <td>
     <%= display_set_symbol(listing.card.set) %>

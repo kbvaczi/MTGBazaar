@@ -53,14 +53,16 @@ class UsersController < ApplicationController
   def account_listings
     set_back_path
 
-    query = build_mtg_query(:seller => false) if params[:filter]
+    query = SmartTuple.new(" AND ")
+    query << ["mtg_sets.code  LIKE ?", "#{params[:filters][:set] }"] if params[:filters] && params[:filters][:set].present?
+    query << ["mtg_cards.name LIKE ?", "#{params[:filters][:name]}"] if params[:filters] && params[:filters][:name].present?   
 
     if params[:status] == "active"
-      @listings = current_user.mtg_listings.includes(:card => :set).where(query).active.order("mtg_cards.name ASC").page(params[:page]).per(25)
+      @listings = current_user.mtg_listings.includes(:card => :set).where(query.compile).active.order("mtg_cards.name ASC").page(params[:page]).per(25)
     elsif params[:status] == "inactive"
-      @listings = current_user.mtg_listings.includes(:card => :set).where(query).inactive.order("mtg_cards.name ASC").page(params[:page]).per(25)      
+      @listings = current_user.mtg_listings.includes(:card => :set).where(query.compile).inactive.order("mtg_cards.name ASC").page(params[:page]).per(25)      
     else
-      @listings = current_user.mtg_listings.includes(:card => :set).where(query).order("mtg_cards.name ASC").page(params[:page]).per(25)
+      @listings = current_user.mtg_listings.includes(:card => :set).where(query.compile).order("mtg_cards.name ASC").page(params[:page]).per(25)
     end
   end
   

@@ -3,21 +3,29 @@
 
   <div class="group center_wrap">
     <ul class="tabs">
-      <li <%= "class=selected" if request.fullpath ==  user_current_listings_path %>> <%= link_to "All (#{current_user.mtg_listings.count})", user_current_listings_path %> </li>
-      <li <%= "class=selected" if params[:status] == "active" %>> <%= link_to "Active (#{current_user.mtg_listings.active.count})", user_current_listings_path(:status => "active")%> </li>
-      <li <%= "class=selected" if params[:status] == "inactive" %>> <%= link_to "Inactive (#{current_user.mtg_listings.inactive.count})", user_current_listings_path(:status => "inactive") %> </li>      
+      <li <%= "class=selected" unless params[:status] %>> <%= link_to "All (#{current_user.mtg_listings.count})", account_listings_path %> </li>
+      <li <%= "class=selected" if params[:status] == "active" %>> <%= link_to "Active (#{current_user.mtg_listings.active.count})", account_listings_path(:status => "active")%> </li>
+      <li <%= "class=selected" if params[:status] == "inactive" %>> <%= link_to "Inactive (#{current_user.mtg_listings.inactive.count})", account_listings_path(:status => "inactive") %> </li>      
     </ul>
   </div>
-  
-  <% if params[:filter] != "true"%>
-    <%= link_to "Apply Search Filters", url_for(url_for(params.merge(:filter => "true"))), :class => "right" %>  
-  <% else %>
-    <%= link_to "Remove Search Filters", url_for(url_for(params.delete_if {|key, value| key == "filter"})), :class => "right" %>  
-  <% end %>
 
   <h2><%="#{@listings.total_count} #{(params[:status] || "").capitalize} Listings"%></h2>
 
-  <p>Note: Only active listings will be visible to be purchased.  While you are in inactive mode, all your listings invisible regardless if they are set to active or not.</p>  
+  <%= form_tag account_listings_path, :method => :get, :id => "account_listings_filters", :remote => false do %>   
+    <div class="ma">
+      <div class="left">
+        <%= text_field_tag "filters[name]", (params[:filters][:name] rescue ""), {:class => "search-text ui-autocomplete-input deletable", :style => "width:180px;", :placeholder => "Name..." , "data-type" => "search", "data-autocomplete" => autocomplete_name_mtg_cards_path }%>
+      </div>  
+      <div class="left ml">
+        <%= select_tag "filters[set]" , options_for_select(active_set_list, :selected => (params[:filters][:set] rescue "")), {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Set...", :class => "chzn-select", :style => "width:200px;"} %>    
+      </div>
+      <div class="right">
+        <%= submit_tag "Apply" %>
+      </div>      
+    </div>
+  <% end %>
+  <br class="spacer"/>
+  
   <br class="spacer"/>
   
   <table class="data">

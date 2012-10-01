@@ -1,6 +1,6 @@
 <% title "#{display_name(@mtg_card.name)}" #title is first 30 characters in card name %>
-<%= link_to "back", search_mtg_cards_path, :class => "bx-prev", :style => "top:6px;"%>
-
+<%= link_to "Back", :back, :class => "bx-prev", :style => "top:6px;"%>
+<div style="position:absolute;top:5px;left:28px;">Back</div>
 
 <h1><%= display_name(@mtg_card.name) %></h1>
 
