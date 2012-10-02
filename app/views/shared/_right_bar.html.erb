@@ -35,7 +35,14 @@
       <br/>
       <div class="mt-m"><div class="left">Active Listings:</div><div class="right"><%= current_user.mtg_listings.active.count %></div></div>
       <br/>        
-      <div class=""><div class="left">Seller Status:</div><div class="right">active</div></div>
+      <div class="">
+        <div class="left">Seller Status:</div>
+        <% if current_user.active %>
+          <div class="right"><%= link_to "Active", seller_status_toggle_users_path, :remote => true, :method => :post %></div>
+        <% else %>
+          <div class="right"><%= link_to "Inactive", seller_status_toggle_users_path, :remote => true, :method => :post %></div>
+        <% end %>
+      </div>
     </div>
     
   <% end %>  

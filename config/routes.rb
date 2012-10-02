@@ -97,6 +97,7 @@ MTGBazaar::Application.routes.draw do
   resources :users, :only => [:index, :show], :controllers => { :users => "users/users"} do
     get "autocomplete_name", :on => :collection
     get :autocomplete_user_username, :on => :collection
+    post :seller_status_toggle, :on => :collection
   end
   match 'users/:id/(:page)', :controller => 'users', :action => 'show'  #TODO: hack to get pagination to work in user show page... relook at this later
 

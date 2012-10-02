@@ -36,11 +36,11 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
       package_type = 'Package'
       package_weight_in_oz = 1.7
       if options[:item_count] <= 15
-        user_charge = 1.99.to_money # our cost = 1.64 at 3oz, USPS 2.80 with DC
+        user_charge = 2.29.to_money # our cost = 1.64 at 3oz, USPS 2.80 with DC
       elsif options[:item_count] <= 50
         user_charge = 2.99.to_money # our cost = 2.15 at 6oz, USPS 3.31 with DC
       elsif options[:item_count] <= 150
-        user_charge = 3.99.to_money # our cost = 3.28 at 13oz, USPS 4.50 with DC            
+        user_charge = 4.29.to_money # our cost = 3.28 at 13oz, USPS 4.50 with DC            
       end 
     elsif options[:item_count] <= 500
       service_type = 'US-PM' 
