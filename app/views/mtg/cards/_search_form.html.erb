@@ -1,7 +1,8 @@
 <%= form_tag search_mtg_cards_path , :method => :post, :id => "search-form", :remote => (request.path == search_mtg_cards_path ? true : false) do %>   
   <% cache('mtg_cards_search_form') do %>
    
-    <%# autocomplete_mtg_card_name_mtg_cards_path%>
+    <%= hidden_field_tag "page", 1 %>
+    
     <div class="ma-m">
 
       <div>

@@ -108,8 +108,9 @@ class Mtg::CardsController < ApplicationController
     else
       params[:search_type] = "" # clear search type after an exact search to prevent ajax from continuing exact searches
     end
-  
-    @mtg_cards = Mtg::Card.includes(:set, {:listings => :seller}, :statistics).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(20)
+    cookies[:search_page] = params[:page] if params[:page] # set page number if this was a search request, otherwise we keep the old one for return paths
+    
+    @mtg_cards = Mtg::Card.includes(:set, {:listings => :seller}, :statistics).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(cookies[:search_page]).per(20)
     
     respond_to do |format|
       format.html do
