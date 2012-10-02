@@ -49,7 +49,7 @@ class ApplicationController < ActionController::Base
   
   # returns to the url where set_back_path has last been set and clears back_path
   def back_path
-    return_path = session[:return_to] || root_path
+    return_path = session[:return_to] || request.referer
     session[:return_to] = nil
     return return_path
   end

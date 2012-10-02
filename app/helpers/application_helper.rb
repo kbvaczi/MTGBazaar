@@ -21,6 +21,10 @@ module ApplicationHelper
     "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH",
     "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
   end
+  
+  def back_link(options)
+    content_tag :div, link_to("back", options[:path] || request.referer, :class => "bx-prev", :style => "top:6px;") + content_tag(:div, options[:message] || "Back", :class => "t-s", :style => "position:absolute;top:10px;left:28px;")
+  end
 
   def sort_table_header(title, value, options = {:remote => false})
     if params[:sort] && params[:sort].to_s == "#{value}_asc"

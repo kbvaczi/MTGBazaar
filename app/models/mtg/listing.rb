@@ -113,7 +113,7 @@ class Mtg::Listing < ActiveRecord::Base
 
   # used for searching for available listings... Mtg::Listing.available will return all available listings
   def self.available
-    where(:active => true).where("quantity_available > 0")
+    where("quantity_available > 0").active
   end
     
   # used for searching listings by seller...  Mtg::Listing.by_seller_id([2,3]) will return all listings from seller 2 and 3

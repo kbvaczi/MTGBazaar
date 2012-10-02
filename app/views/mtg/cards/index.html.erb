@@ -1,12 +1,12 @@
 <% title "MTG Cards" %>
 
 <h1><%=@title%></h1>
+
 <div class ="content">
       
   <% if params[:set] %>
-    <%= link_to("<<back", mtg_cards_path)%>
-    <br class="spacer" />      
-    <br class="spacer" />          
+    <%#= link_to("<<back", mtg_cards_path)%>
+    <%= back_link(:path => url_for(params.merge(:set => nil)), :message => "Back to sets") %>         
     <table class="data">
       <tr class="header_row">
         <td>Set</td>
