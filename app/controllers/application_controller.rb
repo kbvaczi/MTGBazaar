@@ -29,7 +29,6 @@ class ApplicationController < ActionController::Base
     # if we cleared your session
     unless request.session_options[:id] && ActiveRecord::SessionStore::Session.find_by_session_id(request.session_options[:id]) 
       reset_session # give them a new session
-      flash[:error] = "For security purposes, your session was timed out..." # tell them their session was timed out
     end
   end
 
