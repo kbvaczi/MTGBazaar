@@ -8,12 +8,12 @@
 
 <% unless listings.empty? %>
 
-  <div> 
-    <span style="text-align:left;margin-left:5px;"><i>Click on table headers for sorting</i></span>
-  	<% if params[:filter] == "true" %> 
-      <%= link_to "Remove search filters", params.merge(:filter => false), :remote => true, :id => "filter_link", :class => "right", :style => "font-weight:normal;" %>
+  <div>
+    <div class="left ml"<i>Click on table headers for sorting</i></div>
+  	<% if params[:filter] == "false" %> 
+      <%= link_to "Apply search filters", params.merge(:filter => true), :remote => true, :id => "filter_link", :class => "right mr", :style => "font-weight:normal;" %>  
     <% else %>
-      <%= link_to "Apply search filters", params.merge(:filter => true), :remote => true, :id => "filter_link", :class => "right", :style => "font-weight:normal;" %>  
+      <%= link_to "Remove search filters", params.merge(:filter => false), :remote => true, :id => "filter_link", :class => "right mr", :style => "font-weight:normal;" %>
     <% end %>
   </div>
   <table class="data">

@@ -103,7 +103,7 @@ class Mtg::Listing < ActiveRecord::Base
     
   # used for searching for active listings...
   def self.active
-    joins(:seller).where(:active => true, "users.active" => true)
+    joins(:seller).where(:active => true, "users.active" => true, "users.banned" => false, "users.locked_at" => nil)
   end
   
   # used for searching for inactive listings...

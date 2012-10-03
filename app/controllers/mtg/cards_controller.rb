@@ -31,7 +31,7 @@ class Mtg::CardsController < ApplicationController
     @card_variants = Mtg::Card.includes(:set).where("mtg_cards.name LIKE ?", @mtg_card.name).order("mtg_sets.release_date DESC")  
 
     query = SmartTuple.new(" AND ")
-    if params[:filter] == "true"
+    unless params[:filter] == "false"
       query << ["mtg_listings.foil LIKE ?", true] if cookies[:search_foil].present?
       query << ["mtg_listings.misprint LIKE ?", true] if cookies[:search_miscut].present?
       query << ["mtg_listings.signed LIKE ?", true] if cookies[:search_signed].present?
