@@ -1,5 +1,7 @@
 class Mtg::CardsController < ApplicationController
   
+  after_filter :set_back_path, :only => [:index, :show, :search]
+  
   include ApplicationHelper
   
   # GET /mtg_cards
@@ -22,7 +24,6 @@ class Mtg::CardsController < ApplicationController
 
   # GET /mtg/cards/:id
   def show
-    set_back_path
     @mtg_card = Mtg::Card.includes(:set, :listings => [:seller => :statistics]).where(:id => params[:id].to_i).first
     if @mtg_card.dual_sided_card?
       @mtg_card = @mtg_card.dual_sided_card_front if @mtg_card.dual_sided_card_back?

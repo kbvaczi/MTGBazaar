@@ -18,12 +18,12 @@
   </div>
   <table class="data">
     <tr class="header_row">
-      <th> <%= table_sort_header("Seller", :remote => true) %> (<%= table_sort_header("Sales", :remote => true) %>, <%= table_sort_header("Feedback", :remote => true) %>) </th>
-      <th> <%= table_sort_header("Lang", :value => "language", :remote => true) %> </th>      
-      <th> <%= table_sort_header("Cond", :value => "condition", :remote => true) %> </th>
+      <th> <%= table_sort_header("Seller", :params => {:update_card_info => false}, :remote => true) %> (<%= table_sort_header("Sales", :params => {:update_card_info => false}, :remote => true) %>, <%= table_sort_header("Feedback", :params => {:update_card_info => false}, :remote => true) %>) </th>
+      <th> <%= table_sort_header("Lang", :params => {:update_card_info => false}, :value => "language", :remote => true) %> </th>      
+      <th> <%= table_sort_header("Cond", :params => {:update_card_info => false}, :value => "condition", :remote => true) %> </th>
       <th> Options </th>
-      <th> <%= table_sort_header("Price", :remote => true) %> </th>
-      <th> <%= table_sort_header("Qty", :value => "quantity", :remote => true) %> </th>
+      <th> <%= table_sort_header("Price", :params => {:update_card_info => false}, :remote => true) %> </th>
+      <th> <%= table_sort_header("Qty", :params => {:update_card_info => false}, :value => "quantity", :remote => true) %> </th>
       <th> Add to Cart </th>
     </tr>
     <% @listings.each do |listing| %>  

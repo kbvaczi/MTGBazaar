@@ -1,11 +1,11 @@
 <% title "#{display_name(@mtg_card.name)}" #title is first 30 characters in card name %>
-<%= back_link(:message => "Back", :path => "javascript:history.back()") %>         
+<%= back_link(:message => "Back", :path => back_path) %>         
 
 
 <h1><%= display_name(@mtg_card.name) %></h1>
 
 
-<div class="content">
+<div id="content">
 
   <%# cache card info but not listings %>
   <% cache "mtg_card_show_#{@mtg_card.id}", :expires_in => 1.days do %>
