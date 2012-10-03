@@ -23,9 +23,11 @@ class Mtg::CardsController < ApplicationController
   # GET /mtg/cards/:id
   def show
     set_back_path
-    
     @mtg_card = Mtg::Card.includes(:set, :listings => [:seller => :statistics]).where(:id => params[:id].to_i).first
-    @mtg_card_back = Mtg::Card.where("mtg_cards.card_number LIKE ?", "%03d" % @mtg_card.card_number.to_i.to_s + "b").first if @mtg_card.dual_sided_card?
+    if @mtg_card.dual_sided_card?
+      @mtg_card = @mtg_card.dual_sided_card_front if @mtg_card.dual_sided_card_back?
+      @mtg_card_back = Mtg::Card.where("mtg_cards.card_number LIKE ?", "%03d" % @mtg_card.card_number.to_i.to_s + "b").first
+    end
     @card_variants = Mtg::Card.includes(:set).where("mtg_cards.name LIKE ?", @mtg_card.name).order("mtg_sets.release_date DESC")  
 
     query = SmartTuple.new(" AND ")

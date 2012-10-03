@@ -45,7 +45,7 @@ class Mtg::Card < ActiveRecord::Base
   end
   
   def dual_sided_card_front
-    #Mtg::Card.where(:set => self.set, :)
+    Mtg::Card.where(:set_id => self.set_id, :card_number => self.card_number.gsub(/[bB]/,"a")).first
   end  
   
   def thumbnail_image_path

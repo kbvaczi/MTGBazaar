@@ -98,7 +98,7 @@ class ApplicationController < ActionController::Base
     if selected_sort
       sort_string = "#{selected_sort} #{params[:sort_order] == "asc" ? "ASC" : "DESC"}" 
     else 
-      sort_string = "#{options[:default]} ASC"
+      sort_string = "#{options[:default]} ASC" if options[:default]
     end
   end
 
