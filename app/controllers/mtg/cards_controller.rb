@@ -53,7 +53,7 @@ class Mtg::CardsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.js
+      format.js  #show.js.erb
     end
 
   end
