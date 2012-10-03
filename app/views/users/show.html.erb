@@ -109,17 +109,17 @@
     <h2><%= pluralize(@listings.total_count, "Listing", "Listings") %></h2>
     <table class="data">
       <tr class="header_row">
-        <th> <%= sort_table_header("Name", "name") %> </th>
-        <th> <%= sort_table_header("Set", "set") %> </th>      
-        <th> <%= sort_table_header("Lang.", "language") %> </th>
+        <th> <%= table_sort_header("Name") %> </th>
+        <th> <%= table_sort_header("Set") %> </th>      
+        <th> <%= table_sort_header("Lang", :value => "language") %> </th>
         <th>Options</th>
-        <th>  <%= sort_table_header("Price", "price") %> </th>
-        <th>  <%= sort_table_header("Qty.", "quantity") %> </td>
+        <th>  <%= table_sort_header("Price") %> </th>
+        <th>  <%= table_sort_header("Qty", :value => "quantity") %> </td>
         <th>Purchase</th>
       </tr>
       <% @listings.each do |listing| %>
         <tr class=<%= cycle("odd","even") %>>  
-          <td style="text-align:left;"><%= link_to listing.card.name, mtg_card_path(listing.card) %></td>
+          <td><%= link_to listing.card.name, mtg_card_path(listing.card) %></td>
           <td><div><%= display_set_symbol(listing.card.set) %></div></td>          
           <td><%= display_flag_symbol(listing.language) %></td>
           <td>

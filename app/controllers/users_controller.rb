@@ -16,24 +16,11 @@ class UsersController < ApplicationController
     set_back_path    
     @user = User.includes(:statistics, :account).find(params[:id])
     @sales = @user.mtg_sales.includes(:items => {:card => :set}).where(:status => "delivered").order("created_at DESC").page(params[:page]).per(10) if params[:section] == "feedback"
-    @listings = @user.mtg_listings.includes(:card => :set).available.page(params[:page]).per(20) if params[:section] == "mtg_cards"
     
-    case params[:sort]        
-      when /price/
-        @listings = @listings.order("price #{sort_direction}")
-      when /condition/
-        @listings = @listings.order("mtg_listings.condition #{sort_direction}")
-      when /language/
-        @listings = @listings.order("language #{sort_direction}")
-      when /quantity/
-        @listings = @listings.order("quantity #{sort_direction}")        
-      when /name/
-        @listings = @listings.order("mtg_cards.name #{sort_direction}")        
-      when /set/
-        @listings = @listings.order("mtg_sets.release_date #{sort_direction}")        
-      when //
-        @listings = @listings.order("mtg_cards.name ASC")        
-    end
+    listings_sort_string = table_sort(:default => "mtg_cards.name", :price => "price", :condition => "mtg_listings.condition", :language => "mtg_listings.language",
+                                      :quantity => "mtg_listings.quantity", :name => "mtg_cards.name", :set => "mtg_sets.release_date")
+    
+    @listings = @user.mtg_listings.includes(:card => :set).available.order(listings_sort_string).page(params[:page]).per(20) if params[:section] == "mtg_cards"
     
     respond_to do |format|
       format.html # show.html.erb

@@ -18,12 +18,12 @@
   </div>
   <table class="data">
     <tr class="header_row">
-      <th> <%= sort_table_header("Seller", "seller", :remote => true) %> (<%= sort_table_header("Sales", "seller_sales", :remote => true) %>, <%= sort_table_header("Feedback", "seller_feedback", :remote => true) %>) </th>
-      <th> <%= sort_table_header("Lang.", "language", :remote => true) %> </th>      
-      <th> <%= sort_table_header("Cond.", "condition", :remote => true) %> </th>
+      <th> <%= table_sort_header("Seller", :remote => true) %> (<%= table_sort_header("Sales", :remote => true) %>, <%= table_sort_header("Feedback", :remote => true) %>) </th>
+      <th> <%= table_sort_header("Lang", :value => "language", :remote => true) %> </th>      
+      <th> <%= table_sort_header("Cond", :value => "condition", :remote => true) %> </th>
       <th> Options </th>
-      <th> <%= sort_table_header("Price", "price", :remote => true) %> </th>
-      <th> <%= sort_table_header("Qty.", "quantity", :remote => true) %> </th>
+      <th> <%= table_sort_header("Price", :remote => true) %> </th>
+      <th> <%= table_sort_header("Qty", :value => "quantity", :remote => true) %> </th>
       <th> Add to Cart </th>
     </tr>
     <% @listings.each do |listing| %>  

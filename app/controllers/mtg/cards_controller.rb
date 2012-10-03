@@ -23,6 +23,7 @@ class Mtg::CardsController < ApplicationController
   # GET /mtg/cards/:id
   def show
     set_back_path
+    
     @mtg_card = Mtg::Card.includes(:set, :listings => [:seller => :statistics]).where(:id => params[:id].to_i).first
     @mtg_card_back = Mtg::Card.where("mtg_cards.card_number LIKE ?", "%03d" % @mtg_card.card_number.to_i.to_s + "b").first if @mtg_card.dual_sided_card?
     @card_variants = Mtg::Card.includes(:set).where("mtg_cards.name LIKE ?", @mtg_card.name).order("mtg_sets.release_date DESC")  
@@ -36,32 +37,15 @@ class Mtg::CardsController < ApplicationController
       query << ["mtg_listings.seller_id LIKE ?", cookies[:search_seller_id]] if cookies[:search_seller_id].present?    
       query << ["mtg_listings.language LIKE ?", cookies[:search_language]] if cookies[:search_language].present?          
     end
-    @listings = @mtg_card.listings.includes(:seller => :statistics).available.where(query.compile)
     
-    case params[:sort]
-      when /price/
-        @listings = @listings.order("price #{sort_direction}")
-      when /condition/
-        @listings = @listings.order("mtg_listings.condition #{sort_direction}")
-      when /language/
-        @listings = @listings.order("language #{sort_direction}")
-      when /quantity/
-        @listings = @listings.order("quantity #{sort_direction}")        
-      when /seller_sales/
-        @listings = @listings.order("user_statistics.number_sales #{sort_direction}") 
-      when /seller_feedback/        
-        case params[:sort]
-          when /_asc/ 
-            @listings.sort! { |a,b| a.seller.statistics.display_approval_percent <=> b.seller.statistics.display_approval_percent }        
-          when /_desc/
-            @listings.sort! { |a,b| b.seller.statistics.display_approval_percent <=> a.seller.statistics.display_approval_percent }        
-        end    
-      when /seller/
-        @listings = @listings.order("users.username #{sort_direction}")        
-    end
+    sort_string = table_sort(:price => "mtg_listings.price", :condition => "mtg_listings.condition", :language => "mtg_listings.language",
+                             :quantity => "mtg_listings.quantity_available", :seller => "users.username", :sales => "user_statistics.number_sales",
+                             :feedback => "user_statistics.positive_feedback_count + user_statistics.neutral_feedback_count / user_statistics.number_sales")                      
+    
+    @listings = @mtg_card.listings.includes(:seller => :statistics).available.where(query.compile).order(sort_string)
     
     if not (@mtg_card.active or current_admin_user) # normal users cannot see inactive cards
-      redirect_to (:root)
+      redirect_to back_path
       return false
     end
 

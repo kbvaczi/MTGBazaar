@@ -40,6 +40,14 @@ class Mtg::Card < ActiveRecord::Base
     return false
   end
   
+  def dual_sided_card_back?
+    return true if card_number.match(/[\d]+[bB]/).present?
+  end
+  
+  def dual_sided_card_front
+    #Mtg::Card.where(:set => self.set, :)
+  end  
+  
   def thumbnail_image_path
     return image_path.gsub(".jpg", "_thumb.jpg")
   end

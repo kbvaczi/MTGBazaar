@@ -93,4 +93,14 @@ class ApplicationController < ActionController::Base
     query.compile
   end
     
+  def table_sort(options = {})
+    selected_sort = options[params[:sort].parameterize.underscore.to_sym] rescue nil
+    if selected_sort
+      sort_string = "#{selected_sort} #{params[:sort_order] == "asc" ? "ASC" : "DESC"}" 
+    else 
+      sort_string = "#{options[:default]} ASC"
+    end
+  end
+
+  
 end
