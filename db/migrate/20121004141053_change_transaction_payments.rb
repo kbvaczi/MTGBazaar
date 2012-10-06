@@ -2,7 +2,7 @@ class ChangeTransactionPayments < ActiveRecord::Migration
   def up
     add_column    :mtg_transaction_payments,   :paypal_paykey,                   :string
     add_column    :mtg_transaction_payments,   :paypal_transaction_number,       :string
-    add_column    :mtg_transaction_payments,   :paypal_purchase_response,        :textrak
+    add_column    :mtg_transaction_payments,   :paypal_purchase_response,        :text
     remove_column :mtg_transaction_payments,   :status
     add_column    :mtg_transaction_payments,   :status,                          :string,         :default => "unpaid"
     remove_column :mtg_transaction_payments,   :price    
