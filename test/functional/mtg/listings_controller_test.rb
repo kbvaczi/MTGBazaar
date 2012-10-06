@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class Mtg::ListingsControllerTest < ActionController::TestCase
+class Mtg::Cards::ListingsControllerTest < ActionController::TestCase
   # test "the truth" do
   #   assert true
   # end

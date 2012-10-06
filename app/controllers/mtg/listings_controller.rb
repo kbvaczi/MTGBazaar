@@ -1,4 +1,4 @@
-class Mtg::ListingsController < ApplicationController
+class Mtg::Cards::ListingsController < ApplicationController
   
   before_filter :authenticate_user! # must be logged in to make or edit listings
   before_filter :verify_owner?, :except => [:new, :create, :new_generic, :new_generic_set, :new_generic_pricing, :create_generic, 
@@ -21,10 +21,10 @@ class Mtg::ListingsController < ApplicationController
     if params[:mtg_listing] && params[:mtg_listing][:price_options] != "other"  # handle price options
       params[:mtg_listing][:price] = params[:mtg_listing][:price_options]
     end 
-    @listing = Mtg::Listing.new(params[:mtg_listing])
+    @listing = Mtg::Cards::Listing.new(params[:mtg_listing])
     @listing.card_id = card.id
     @listing.seller_id = current_user.id
-    duplicate_listings = Mtg::Listing.duplicate_listings_of(@listing)
+    duplicate_listings = Mtg::Cards::Listing.duplicate_listings_of(@listing)
     if duplicate_listings.count > 0 # there is already an identical listing, just add quantity to existing listing
       duplicate_listing = duplicate_listings.first
       duplicate_listing.increment(:quantity_available, params[:mtg_listing][:quantity].to_i)
@@ -41,14 +41,14 @@ class Mtg::ListingsController < ApplicationController
   
   def edit
     session[:return_to] = request.referer #set backlink    
-    @listing = Mtg::Listing.find(params[:id])
+    @listing = Mtg::Cards::Listing.find(params[:id])
     respond_to do |format|
       format.html
     end
   end  
   
   def update
-    @listing = Mtg::Listing.find(params[:id])
+    @listing = Mtg::Cards::Listing.find(params[:id])
     # handle pricing select options to determine how to update price
     if params[:mtg_listing] && params[:mtg_listing][:price_options] != "other"
       params[:mtg_listing][:price] = params[:mtg_listing][:price_options]
@@ -64,21 +64,21 @@ class Mtg::ListingsController < ApplicationController
   end
   
   def destroy
-    Mtg::Listing.find(params[:id]).destroy
+    Mtg::Cards::Listing.find(params[:id]).destroy
     respond_to do |format|
       format.html { redirect_to :back , :notice => "Listing Deleted!"}
     end
   end
   
   def set_active
-    listing = Mtg::Listing.find(params[:id]).mark_as_active!
+    listing = Mtg::Cards::Listing.find(params[:id]).mark_as_active!
     respond_to do |format|
       format.html { redirect_to :back , :notice => "Listing set as active!"}
     end
   end
   
   def set_inactive
-    listing = Mtg::Listing.find(params[:id]).mark_as_inactive!
+    listing = Mtg::Cards::Listing.find(params[:id]).mark_as_inactive!
     respond_to do |format|
       format.html { redirect_to :back , :notice => "Listing set as inactive!"}
     end
@@ -88,7 +88,7 @@ class Mtg::ListingsController < ApplicationController
   
   def new_generic
     set_back_path
-    @listing = Mtg::Listing.new(params[:mtg_listing])
+    @listing = Mtg::Cards::Listing.new(params[:mtg_listing])
     if params[:mtg_listing] && params[:mtg_listing][:set]
       @sets = Mtg::Set.includes(:cards).where(:active => true).where("mtg_cards.name LIKE ?", "#{params[:mtg_listing][:name]}").order("release_date DESC").to_a
       @card = Mtg::Card.includes(:set, :statistics).where(:active => true).where("mtg_cards.name LIKE ? AND mtg_sets.code LIKE ?", "#{params[:mtg_listing][:name]}", "#{params[:set]}").first      
@@ -120,10 +120,10 @@ class Mtg::ListingsController < ApplicationController
     if params[:mtg_listing] && params[:mtg_listing][:price_options] != "other"  # handle price options
       params[:mtg_listing][:price] = params[:mtg_listing][:price_options]
     end 
-    @listing = Mtg::Listing.new(params[:mtg_listing])
+    @listing = Mtg::Cards::Listing.new(params[:mtg_listing])
     @listing.card_id = @card.id
     @listing.seller_id = current_user.id
-    duplicate_listings = Mtg::Listing.duplicate_listings_of(@listing)
+    duplicate_listings = Mtg::Cards::Listing.duplicate_listings_of(@listing)
     if duplicate_listings.count > 0 # there is already an identical listing, just add quantity to existing listing
       duplicate_listing = duplicate_listings.first
       duplicate_listing.increment(:quantity_available, params[:mtg_listing][:quantity].to_i)
@@ -139,7 +139,7 @@ class Mtg::ListingsController < ApplicationController
   end
   
   def new_bulk_prep
-    @listing = Mtg::Listing.new(params[:mtg_listing])
+    @listing = Mtg::Cards::Listing.new(params[:mtg_listing])
   end
   
   def new_bulk
@@ -163,7 +163,7 @@ class Mtg::ListingsController < ApplicationController
     params[:sales].each do |key, value| # iterate through all of our individual listings from the bulk form
       if value[:quantity].to_i > 0 # we only care if they entered quantity > 0 for a specific card
         asking_price = (value[:price] == "other") ? value[:custom_price] : value[:price] # set price either from pre-select options or custom price if they have other selected in price options
-        listing = Mtg::Listing.new(:foil => params[:mtg_listing][:foil], :condition => params[:mtg_listing][:condition], :language => params[:mtg_listing][:language],
+        listing = Mtg::Cards::Listing.new(:foil => params[:mtg_listing][:foil], :condition => params[:mtg_listing][:condition], :language => params[:mtg_listing][:language],
                                    :price => asking_price, :quantity => value[:quantity].to_i) # create the listing in memory
         listing.seller_id = current_user.id # assign seller manually since it cannot be mass assigned
         listing.card_id = key.to_i # assign card manually since it cannot be mass assigned
@@ -190,7 +190,7 @@ class Mtg::ListingsController < ApplicationController
   # CONTROLLER FUNCTIONS
     
   def verify_owner?
-    @listing = Mtg::Listing.find(params[:id])
+    @listing = Mtg::Cards::Listing.find(params[:id])
     if @listing.seller == current_user
       return true
     else
@@ -201,7 +201,7 @@ class Mtg::ListingsController < ApplicationController
   end
   
   def verify_not_in_cart?
-    @listing = Mtg::Listing.find(params[:id])
+    @listing = Mtg::Cards::Listing.find(params[:id])
     unless @listing.in_cart?
       return true # this listing is available to edit
     else

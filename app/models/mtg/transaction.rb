@@ -5,10 +5,11 @@ class Mtg::Transaction < ActiveRecord::Base
   
   belongs_to :seller,         :class_name => "User"
   belongs_to :buyer,          :class_name => "User"
-  has_many   :items,          :class_name => "Mtg::TransactionItem" ,            :foreign_key => "transaction_id", :dependent => :destroy
-  has_one    :payment,        :class_name => "Mtg::TransactionPayment",          :foreign_key => "transaction_id", :dependent => :destroy
-  has_one    :credit,         :class_name => "Mtg::TransactionCredit",           :foreign_key => "transaction_id", :dependent => :destroy  
-  has_one    :shipping_label, :class_name => "Mtg::Transactions::ShippingLabel", :foreign_key => "transaction_id", :dependent => :destroy
+  belongs_to :order,          :class_name => "Mtg::Order"
+  has_one    :payment,        :class_name => "Mtg::Transactions::Payment",          :foreign_key => "transaction_id", :dependent => :destroy
+  has_one    :shipping_label, :class_name => "Mtg::Transactions::ShippingLabel",    :foreign_key => "transaction_id", :dependent => :destroy
+  has_many   :items,          :class_name => "Mtg::Transactions::Item" ,            :foreign_key => "transaction_id", :dependent => :destroy
+
 
   # Implement Money gem for price column
   composed_of   :value,
@@ -25,20 +26,18 @@ class Mtg::Transaction < ActiveRecord::Base
                 :converter => Proc.new { |value| value.respond_to?(:to_money) ? value.to_money : Money.empty }                  
 
   before_validation :update_transaction_costs
-  before_validation :build_associated_payment, :on => :create
 
   after_create      :set_transaction_number                    
   
 # ---------------- VALIDATIONS ----------------      
 
-  validates_presence_of   :seller, :buyer, :value, :shipping_cost
   validates               :value, :numericality => {:greater_than => 0, :less_than => 5000000, :message => "Must be between $0.01 and $50,000"}   #price must be between $0 and $10,000.00    
   validates               :shipping_cost, :numericality => {:greater_than => 150, :less_than => 3000, :message => "Must be between $1.50 and $30"}
-  validates_associated    :items, :payment, :credit
+  validates_associated    :items
   validate                :self_buying_not_allowed
   
   def self_buying_not_allowed
-    self.errors[:base] << "You cannot buy from yourself..." if seller_id == buyer_id
+    self.errors[:base] << "You cannot buy from yourself..." if seller_id == buyer_id && buyer_id != nil
   end
 
 # ---------------- PUBLIC MEMBER METHODS -------------
@@ -147,7 +146,7 @@ class Mtg::Transaction < ActiveRecord::Base
   end
   
   def create_listing_from_item(item)
-    listing = Mtg::Listing.new(      :quantity => item.quantity_available,
+    listing = Mtg::Cards::Listing.new(      :quantity => item.quantity_available,
                                      :price => item.price,
                                      :condition => item.condition,
                                      :language => item.language,
@@ -158,7 +157,7 @@ class Mtg::Transaction < ActiveRecord::Base
                                      :signed => item.signed )
     listing.card_id = item.card_id
     listing.seller_id = self.seller_id
-    duplicate = Mtg::Listing.duplicate_listings_of(listing).first
+    duplicate = Mtg::Cards::Listing.duplicate_listings_of(listing).first
     if duplicate.present? # there is already a duplicate listing, just update quantity of cards
       duplicate.update_attributes(  :quantity => duplicate.quantity + item.quantity_available, 
                                     :quantity_available => duplicate.quantity_available + item.quantity_available )
@@ -177,10 +176,6 @@ class Mtg::Transaction < ActiveRecord::Base
   def update_transaction_costs
     self.value = items.to_a.inject(0) {|sum, item| sum + item[:quantity_requested] * item[:price]}.to_f / 100
     self.shipping_cost = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:item_count => self.item_count)[:user_charge]
-  end
-  
-  def build_associated_payment
-    self.payment = Mtg::TransactionPayment.new(:buyer => self.buyer, :price => self.total_value, :transaction => self)
   end
     
   # creates a unique transaction number based on transaction ID

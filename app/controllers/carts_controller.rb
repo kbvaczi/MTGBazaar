@@ -13,7 +13,7 @@ class CartsController < ApplicationController
   end
   
   def add_mtg_cards
-    listing = Mtg::Listing.find(params[:id])
+    listing = Mtg::Cards::Listing.find(params[:id])
     unless current_cart.add_mtg_listing(listing, params[:quantity].to_i) # add this listing to cart, this returns false if there is a problem
       flash[:error] = "there was a problem processing your request" # ERROR - problem while adding listing to cart?
       redirect_to back_path
@@ -61,35 +61,24 @@ class CartsController < ApplicationController
     return #stop method, don't display a view
   end
   
-  def checkout
-    if current_user.account.balance >= current_cart.total_price # does user have money to purchase?
-      transactions = Hash.new
-      reservations = Hash.new
-      current_cart.seller_ids.each do |id| #create a transaction for each seller
-        transactions[id] = Mtg::Transaction.new(:buyer => current_user, :seller_id => id, :status => "pending", :buyer_confirmed_at => Time.now) #create the transaction
-        reservations[id] = current_cart.reservations.includes(:listing).where("mtg_listings.seller_id" => id) # find reservations from this seller
-        reservations[id].each { |r| transactions[id].build_item_from_reservation(r) } # create transaction items based on these reservations
-        if not transactions[id].valid?
-          flash[:error] = "There was a problem processing your request" 
-          redirect_to back_path
-          return
-        end
-      end
-      # once we've verified everything in the cart we can save everything to the database
-      transactions.each do |seller_id, transaction| 
-        transaction.save # save each transaction        
-        reservations[seller_id].each { |r| r.purchased! } # update listing quantity and destroy each reservation for this transaction
-        ApplicationMailer.seller_sale_notification(transaction).deliver # send sale notification email to seller
-        ApplicationMailer.buyer_checkout_confirmation(transaction).deliver # send sale notification email to seller        
-      end
-      current_cart.update_cache # empty the shopping cart
-      redirect_to root_path, :notice => "Your purchase request has been submitted."          
-    else
-      set_back_path # set back path so that user is returned to cart after depositing
-      flash[:error] = "Insufficient Balance... Please deposit funds." 
-      redirect_to new_account_deposit_path # redirect to deposit page
-    end
+  def checkout_successful
+    order = current_cart.orders.includes(:reservations).where(:id => params[:id]).first
+    transaction = Mtg::Transaction.new(:buyer => current_user, :seller_id => order.seller_id, :status => "pending", :buyer_confirmed_at => Time.now) #create the transaction
+    order.reservations.each { |r| transaction.build_item_from_reservation(r) } # create transaction items based on these reservations
+    if not transaction.valid?
+      flash[:error] = "There was a problem processing your request" 
+      redirect_to back_path
+      return
+    end  
+    # once we've verified everything in the cart we can save everything to the database
+    transaction.save # save each transaction        
+    order.reservations.each { |r| r.purchased! } # update listing quantity and destroy each reservation for this transaction
+    ApplicationMailer.seller_sale_notification(transaction).deliver # send sale notification email to seller
+    ApplicationMailer.buyer_checkout_confirmation(transaction).deliver # send sale notification email to seller        
+    current_cart.update_cache # empty the shopping cart
+    redirect_to root_path, :notice => "Your purchase request has been submitted."  
     return #stop method, don't display a view
   end
-  
+
+
 end

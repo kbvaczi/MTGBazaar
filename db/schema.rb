@@ -11,21 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120928001137) do
-
-  create_table "account_balance_transfers", :force => true do |t|
-    t.integer  "account_id"
-    t.integer  "balance",            :default => 0,         :null => false
-    t.string   "current_sign_in_ip", :default => "",        :null => false
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
-    t.datetime "confirmed_at"
-    t.datetime "approved_at"
-    t.string   "transfer_type"
-    t.string   "status",             :default => "pending"
-  end
-
-  add_index "account_balance_transfers", ["account_id"], :name => "index_account_balance_transfers_on_account_id"
+ActiveRecord::Schema.define(:version => 20121006151430) do
 
   create_table "accounts", :force => true do |t|
     t.integer  "user_id"
@@ -44,6 +30,7 @@ ActiveRecord::Schema.define(:version => 20120928001137) do
     t.datetime "created_at",                           :null => false
     t.datetime "updated_at",                           :null => false
     t.string   "address_verification"
+    t.float    "commission_rate"
   end
 
   add_index "accounts", ["user_id"], :name => "index_accounts_on_user_id"
@@ -234,20 +221,6 @@ ActiveRecord::Schema.define(:version => 20120928001137) do
   add_index "mtg_sets", ["name"], :name => "index_mtg_sets_on_name"
   add_index "mtg_sets", ["release_date"], :name => "index_mtg_sets_on_release_date"
 
-  create_table "mtg_transaction_credits", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "transaction_id"
-    t.integer  "price"
-    t.integer  "commission"
-    t.float    "commission_rate"
-    t.string   "status",          :default => "active"
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
-  end
-
-  add_index "mtg_transaction_credits", ["transaction_id"], :name => "index_mtg_transaction_credits_on_transaction_id"
-  add_index "mtg_transaction_credits", ["user_id"], :name => "index_mtg_transaction_credits_on_user_id"
-
   create_table "mtg_transaction_items", :force => true do |t|
     t.integer  "card_id"
     t.integer  "seller_id"
@@ -276,10 +249,16 @@ ActiveRecord::Schema.define(:version => 20120928001137) do
   create_table "mtg_transaction_payments", :force => true do |t|
     t.integer  "user_id"
     t.integer  "transaction_id"
-    t.integer  "price"
-    t.string   "status",         :default => "active"
-    t.datetime "created_at",                           :null => false
-    t.datetime "updated_at",                           :null => false
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
+    t.string   "paypal_paykey"
+    t.string   "paypal_transaction_number"
+    t.text     "paypal_purchase_response"
+    t.string   "status",                    :default => "unpaid"
+    t.integer  "amount",                    :default => 0
+    t.integer  "commission",                :default => 0
+    t.integer  "shipping_cost",             :default => 0
+    t.float    "commission_rate",           :default => 0.0
   end
 
   add_index "mtg_transaction_payments", ["transaction_id"], :name => "index_mtg_transaction_payments_on_transaction_id"
@@ -306,12 +285,25 @@ ActiveRecord::Schema.define(:version => 20120928001137) do
     t.datetime "updated_at",                                    :null => false
     t.integer  "value"
     t.integer  "shipping_cost"
+    t.integer  "order_id"
   end
 
   add_index "mtg_transactions", ["buyer_id"], :name => "index_mtg_transactions_on_buyer_id"
+  add_index "mtg_transactions", ["order_id"], :name => "index_mtg_transactions_on_order_id"
   add_index "mtg_transactions", ["seller_id"], :name => "index_mtg_transactions_on_seller_id"
   add_index "mtg_transactions", ["status"], :name => "index_mtg_transactions_on_status"
   add_index "mtg_transactions", ["transaction_number"], :name => "index_mtg_transactions_on_transaction_number"
+
+  create_table "mtg_transactions_payment_notifications", :force => true do |t|
+    t.integer  "payment_id"
+    t.text     "response"
+    t.string   "status"
+    t.string   "paypal_transaction_id"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+  end
+
+  add_index "mtg_transactions_payment_notifications", ["payment_id"], :name => "index_mtg_transactions_payment_notifications_on_payment_id"
 
   create_table "mtg_transactions_shipping_labels", :force => true do |t|
     t.integer  "transaction_id"
@@ -337,15 +329,6 @@ ActiveRecord::Schema.define(:version => 20120928001137) do
     t.datetime "end_at"
     t.boolean  "active",      :default => true
     t.string   "description"
-  end
-
-  create_table "payment_notifications", :force => true do |t|
-    t.text     "params"
-    t.string   "status"
-    t.string   "transaction_id"
-    t.integer  "account_balance_transfer_id"
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
   end
 
   create_table "sessions", :force => true do |t|

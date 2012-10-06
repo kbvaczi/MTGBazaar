@@ -1,4 +1,4 @@
-class Mtg::TransactionItem < ActiveRecord::Base
+class Mtg::Transactions::Item < ActiveRecord::Base
   self.table_name = 'mtg_transaction_items'    
   
   belongs_to :card,         :class_name => "Mtg::Card"
@@ -36,7 +36,7 @@ class Mtg::TransactionItem < ActiveRecord::Base
     where("rejected_at IS NOT NULL")
   end  
   
-  # used for searching listings by seller...  Mtg::Listing.by_seller_id([2,3]) will return all listings from seller 2 and 3
+  # used for searching listings by seller...  Mtg::Cards::Listing.by_seller_id([2,3]) will return all listings from seller 2 and 3
   def self.by_seller_id(id)
     where(:seller_id => id )
   end

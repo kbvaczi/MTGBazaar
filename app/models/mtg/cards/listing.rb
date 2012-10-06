@@ -1,9 +1,9 @@
-class Mtg::Listing < ActiveRecord::Base
+class Mtg::Cards::Listing < ActiveRecord::Base
   self.table_name = 'mtg_listings'    
   
   belongs_to :card,         :class_name => "Mtg::Card"
   belongs_to :seller,       :class_name => "User"
-  has_one    :statistics,   :class_name => "Mtg::CardStatistics",   :through => :card
+  has_one    :statistics,   :class_name => "Mtg::Cards::Statistics",   :through => :card
   has_many   :reservations, :class_name => "Mtg::Reservation"
   has_many   :orders,       :class_name => "Mtg::Order",            :through => :reservations,      :foreign_key => :order_id  
   has_many   :carts,        :class_name => "Cart",                  :through => :reservations,      :source => :cart
@@ -111,17 +111,17 @@ class Mtg::Listing < ActiveRecord::Base
     joins(:seller).where("mtg_listings.active LIKE ? OR users.active LIKE ?", false, false)
   end
 
-  # used for searching for available listings... Mtg::Listing.available will return all available listings
+  # used for searching for available listings... Mtg::Cards::Listing.available will return all available listings
   def self.available
     where("quantity_available > 0").active
   end
     
-  # used for searching listings by seller...  Mtg::Listing.by_seller_id([2,3]) will return all listings from seller 2 and 3
+  # used for searching listings by seller...  Mtg::Cards::Listing.by_seller_id([2,3]) will return all listings from seller 2 and 3
   def self.by_seller_id(id)
     where(:seller_id => id )
   end
   
-  # used for searching listings by seller...  Mtg::Listing.by_seller_id([2,3]) will return all listings from seller 2 and 3
+  # used for searching listings by seller...  Mtg::Cards::Listing.by_seller_id([2,3]) will return all listings from seller 2 and 3
   def self.by_id(id)
     where(:id => id )
   end  
@@ -170,7 +170,7 @@ class Mtg::Listing < ActiveRecord::Base
     if subset
       relation_of_listings = subset
     else 
-      relation_of_listings = Mtg::Listing.where(:seller_id => self.seller_id, :card_id => self.card_id)
+      relation_of_listings = Mtg::Cards::Listing.where(:seller_id => self.seller_id, :card_id => self.card_id)
     end
     #relation_of_listings.duplicate_listings_of(self, false, show_only_available).count
     count = 0
@@ -185,7 +185,7 @@ class Mtg::Listing < ActiveRecord::Base
     duplicate_listings_of(listing).count
   end
   
-  # organizes an activerecord relation of Mtg::Listings by duplicates 
+  # organizes an activerecord relation of Mtg::Cards::Listings by duplicates 
   # in the form of [{"count" => count, "listing" => reference listing}, {"count" => count, "listing" => reference listing}]
   def self.organize_by_duplicates(show_only_available = true)
     array_of_listings = available if show_only_available
@@ -204,7 +204,7 @@ class Mtg::Listing < ActiveRecord::Base
     if subset
       array_of_listings = subset
     else 
-      array_of_listings = Mtg::Listing.where(:seller_id => self.seller_id, :card_id => self.card_id).available
+      array_of_listings = Mtg::Cards::Listing.where(:seller_id => self.seller_id, :card_id => self.card_id).available
     end
       
   end

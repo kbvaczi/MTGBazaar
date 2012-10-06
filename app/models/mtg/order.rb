@@ -4,9 +4,10 @@ class Mtg::Order < ActiveRecord::Base
   
   belongs_to  :cart
   belongs_to  :seller,       :class_name => "User"  
-  has_many    :reservations, :class_name => "Mtg::Reservation", :dependent => :destroy
-  has_one     :buyer,        :class_name => "User",             :through => :cart,            :source => :user
-  has_many    :listings,     :class_name => "Mtg::Listing" ,    :through => :reservations,    :source => :listing
+  has_one     :buyer,        :class_name => "User",                     :through => :cart,            :source => :user
+  has_one     :transaction,  :class_name => "Mtg::Transaction",                                       :foreign_key => "order_id"
+  has_many    :reservations, :class_name => "Mtg::Reservation",         :dependent => :destroy
+  has_many    :listings,     :class_name => "Mtg::Cards::Listing",      :through => :reservations,    :source => :listing
 
   # Implement Money gem for item_price_total column
   composed_of   :item_price_total,
@@ -33,9 +34,11 @@ class Mtg::Order < ActiveRecord::Base
   
   ##### ------ VALIDATIONS ----- #####
 
-  validates_presence_of   :seller, :cart
-  validates :total_cost,  :numericality => {:greater_than_or_equal_to => 0, :less_than => 10000000}  #quantity must be between 0 and $100,000
-  validates :item_count,  :numericality => {:greater_than_or_equal_to => 0, :less_than => 10000}  #quantity must be between 0 and 10,000
+  validates_presence_of         :seller, :cart
+  validates :total_cost,        :numericality => {:greater_than_or_equal_to => 0, :less_than => 10000000}  #quantity must be between 0 and $100,000
+  validates :item_price_total,  :numericality => {:greater_than_or_equal_to => 0, :less_than => 10000000}  #quantity must be between 0 and $100,000  
+  validates :shipping_cost,     :numericality => {:greater_than_or_equal_to => 0, :less_than => 10000}      #quantity must be between 0 and $100
+  validates :item_count,        :numericality => {:greater_than_or_equal_to => 0, :less_than => 10000}  #quantity must be between 0 and 10,000
   validate  :listings_from_one_seller_only
   
   def listings_from_one_seller_only
@@ -89,6 +92,23 @@ class Mtg::Order < ActiveRecord::Base
   def empty
     reservations.each {|r| remove_mtg_listing(r,r.quantity, false)} if item_count > 0
     self.update_cache
+  end
+  
+  # creates a transaction and transaction items in preparation for checkout.
+  def setup_transaction_for_checkout
+    self.transaction.destroy if self.transaction.present?                             # refresh transaction every time we try to check out so we don't get old data
+    #TODO: buyer_confirmed_at now obsolete for transactions
+    self.build_transaction(:buyer_confirmed_at => Time.now)
+    self.reservations.each { |r| self.transaction.build_item_from_reservation(r) }   # create transaction items based on these reservations
+    self.transaction.save!
+  end
+    
+  def checkout_transaction
+    self.transaction.buyer = self.buyer                                               # setup buyer and seller for transaction
+    self.transaction.seller = self.seller                                     
+    self.transaction.status = "confirmed"                                             # set transaction to confirmed since money has changed hands
+    self.transaction.order_id = nil                                                   # disconnect transaction from order so order can be destroyed
+    self.transaction.save
   end
   
   ##### ------ PRIVATE METHODS ----- #####          

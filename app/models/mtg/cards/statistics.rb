@@ -1,4 +1,4 @@
-class Mtg::CardStatistics < ActiveRecord::Base
+class Mtg::Cards::Statistics < ActiveRecord::Base
   
   # --------------------------------------- #
   # ------------ Configuration ------------ #
@@ -39,7 +39,7 @@ class Mtg::CardStatistics < ActiveRecord::Base
   # --------------------------------------- #
 
   belongs_to :card,     :class_name => "Mtg::Card"
-  has_many :listings,   :class_name => "Mtg::Listing", :through => :card
+  has_many :listings,   :class_name => "Mtg::Cards::Listing", :through => :card
 
   # --------------------------------------- #
   # ------------ Validations -------------- #
@@ -83,7 +83,7 @@ class Mtg::CardStatistics < ActiveRecord::Base
 
   def update!
     #gather all sales of this card
-    sales = Mtg::TransactionItem.includes(:transaction).where(:card_id => self.card_id).where("mtg_transactions.status LIKE ?", "delivered").order("created_at DESC")
+    sales = Mtg::Transactions::Item.includes(:transaction).where(:card_id => self.card_id).where("mtg_transactions.status LIKE ?", "delivered").order("created_at DESC")
     self.number_sales = sales.count
     #get the latest 20 "normal" completed sales to compute pricing
     latest_sold_items = sales.where(:foil => false, :altart => false, :misprint => false, :signed => false).limit(20)

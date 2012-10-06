@@ -5,15 +5,7 @@ class Account < ActiveRecord::Base
   # --------------------------------------- #
 
   belongs_to :user
-  has_many   :balance_transfers, :class_name => 'AccountBalanceTransfer', :dependent => :destroy    
   serialize  :address_verification
-
-  # Implement Money gem for balance column
-  composed_of   :balance,
-                :class_name => 'Money',
-                :mapping => %w(balance cents),
-                :constructor => Proc.new { |cents| Money.new(cents || 0) },                
-                :converter => Proc.new { |value| value.respond_to?(:to_money) ? value.to_money : Money.empty }
 
   # --------------------------------------- #
   # ------------ Validations -------------- #
@@ -50,8 +42,6 @@ class Account < ActiveRecord::Base
                            :maximum   => 30,
                          }
                          
-  validates             :balance, :numericality => {:greater_than_or_equal_to => 0, :less_than => 10000000, :message => "Must be between $0.00 and $100,000"}   #price must be between $0 and $10,000.00                           
-
   # Attributes accessible to multiple assign.  Others must be individually assigned.
   attr_accessible :first_name, :last_name, :country, :state, :city, :address1, :address2, :zipcode, :security_question, :security_answer, :paypal_username, :address_verification
   
@@ -59,17 +49,5 @@ class Account < ActiveRecord::Base
   def full_name
     first_name + " " + last_name
   end
-  
-  # credit this account's balance with amount in dollars
-  def balance_credit!(amount=0)
-    self.balance += amount.to_money
-    return self.save
-  end
-
-  # debit this account's balance with amount in dollars
-  def balance_debit!(amount=0)
-    self.balance -= amount.to_money
-    return self.save
-  end  
   
 end

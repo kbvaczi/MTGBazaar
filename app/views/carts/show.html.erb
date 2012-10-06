@@ -12,7 +12,6 @@
   <% else %>
 
     <% @orders.each do |order| %>
-
       <h2><%= "#{order.item_count} Items from #{order.seller.username}" %></h2>
    		<table class="data">
         <tr class="header_row">
@@ -41,10 +40,12 @@
           <th style="min-width:40px;"><%= number_to_currency(order.total_cost) %> </th>
         </tr>
       </table>
-      
+      <div class="center_wrap">
+        <%= button_to "Check Out This Order", order_checkout_path(order), :method => :post , :class => "center"%>
+      </div>
       <% reset_cycle("rows") %>
       <br class="spacer"/>
-            <br class="spacer"/>      
+      <br class="spacer"/>      
     <% end %>
 
     <br class="spacer"/>
@@ -55,7 +56,7 @@
     <br class="spacer"/>    
     <br class="spacer"/>        
     <div class="center_wrap">
-      <%= button_to "Check Out", cart_checkout_path, :method => :post , :class => "center"%>
+
       <%# do this if there are no items in the user's cart%>
     </div>
 

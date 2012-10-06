@@ -1,7 +1,7 @@
 class Mtg::Reservation < ActiveRecord::Base
   self.table_name = 'mtg_reservations'    
 
-  belongs_to :listing,      :class_name => "Mtg::Listing",                          :foreign_key => "listing_id"
+  belongs_to :listing,      :class_name => "Mtg::Cards::Listing",                          :foreign_key => "listing_id"
   belongs_to :order,        :class_name => "Mtg::Order",                            :foreign_key => "order_id"
   has_one    :seller,       :class_name => "User",          :through => :listing
   has_one    :card,         :class_name => "Mtg::Card",     :through => :listing

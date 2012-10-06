@@ -1,13 +1,13 @@
-class AddQuantityAvailableToTransactionItems < ActiveRecord::Migration
+class AddQuantityAvailableToTransactions::Items < ActiveRecord::Migration
   # Create a Faux class so that validations are not run when model is updated... prevents migration conflicts
-  class Mtg::TransactionItem < ActiveRecord::Base
+  class Mtg::Transactions::Item < ActiveRecord::Base
   end
   
   def up
     add_column :mtg_transaction_items, :quantity_available, :integer
     add_column :mtg_transaction_items, :quantity_requested, :integer
-    Mtg::TransactionItem.reset_column_information   # setup faux model
-    Mtg::TransactionItem.all.each do |i|
+    Mtg::Transactions::Item.reset_column_information   # setup faux model
+    Mtg::Transactions::Item.all.each do |i|
       i.update_attributes!(:quantity_available => i.quantity, :quantity_requested => i.quantity)
     end
     remove_column :mtg_transaction_items, :quantity
@@ -15,8 +15,8 @@ class AddQuantityAvailableToTransactionItems < ActiveRecord::Migration
   
   def down
     add_column :mtg_transaction_items, :quantity, :integer
-    Mtg::TransactionItem.reset_column_information   # setup faux model
-    Mtg::TransactionItem.all.each do |i|
+    Mtg::Transactions::Item.reset_column_information   # setup faux model
+    Mtg::Transactions::Item.all.each do |i|
       i.update_attribute(:quantity, i.quantity_available)
     end
     remove_column :mtg_transaction_items, :quantity_available

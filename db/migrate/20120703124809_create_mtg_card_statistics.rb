@@ -17,7 +17,7 @@ class CreateMtgCardStatistics < ActiveRecord::Migration
     add_index :mtg_card_statistics, :card_id
     
     Mtg::Card.all.each do |card|
-      card.statistics = Mtg::CardStatistics.create
+      card.statistics = Mtg::Cards::Statistics.create
     end
   end
 

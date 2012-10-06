@@ -11,12 +11,7 @@
   <% else %>
 
     <h1>
-      <div class="left">
-        <%= "#{current_user.username}" %>   
-      </div>
-	    <div class="right">
-        <%= number_to_currency(current_user.account.balance.dollars) %>
-      </div>
+      <%= "#{current_user.username}" %>   
     </h1>
     <div class="ma-m">
       <div class="mt-s"> 

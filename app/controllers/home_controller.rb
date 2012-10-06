@@ -25,12 +25,12 @@ class HomeController < ApplicationController
         :appid =>     PAYPAL_CONFIG[:appid] )     
 
       recipients = [ {:email => "seller_1348611401_per@mtgbazaar.com",
-                      :primary => false,
+                      :primary => true,
                       :amount => "10.00" },
                       
                       {:email => "seller_1345565383_biz@mtgbazaar.com",
-                       :primary => true,
-                       :amount => "12.00" } ]   
+                       :primary => false,
+                       :amount => "2.00" } ]   
                        
       second_leg =   [ {:email => "seller_1348611401_per@mtgbazaar.com",
                         :primary => false,
@@ -39,7 +39,7 @@ class HomeController < ApplicationController
       refunder     =  [ {:email => "seller_1345565383_biz@mtgbazaar.com",
                          :primary => true,
                          :amount => "5.00" } ]                         
-
+=begin
        @pre_approval = gateway.preapprove_payment(
          :return_url            => root_url(:notice => "return"),
          :cancel_url            => root_url(:notice => "cancel"),
@@ -52,18 +52,17 @@ class HomeController < ApplicationController
          :currency_code        => "USD",
          :max_amount           => "50.00",
          :max_number_of_payments  => "5" )
-
+=end
 
       @purchase = gateway.setup_purchase(
         :action_type          => "PAY",
         :return_url           => root_url(:notice => "return"),
         :cancel_url           => root_url(:notice => "cancel"),
         :memo                 => "TEST",
-#        :sender_email         => "buyer_1348611316_per@mtgbazaar.com",         
         :receiver_list        => recipients,
-#        :fees_payer           => "SECONDARYONLY"
+        :fees_payer           => "PRIMARYRECEIVER"
       )
-      
+  
  
 =begin
       gateway.set_payment_options(
@@ -95,6 +94,8 @@ class HomeController < ApplicationController
       
       # For redirecting the customer to the actual paypal site to finish the payment.
       #redirect_to (gateway.redirect_url_for(@purchase["payKey"]))
+      redirect_to (gateway.embedded_flow_url_for(@purchase["payKey"]))      
+      
       #redirect_to "https://www.paypal.com/webapps/adaptivepayment/flow/pay?paykey=#{@purchase[:payKey]}"
  
       
@@ -103,14 +104,15 @@ class HomeController < ApplicationController
       #@response = gateway.execute_payment(:pay_key => Rails.cache.read("test_paykey"), :receiver_list => second_leg)                               
       #@refund = gateway.refund(:pay_key => Rails.cache.read("test_paykey"), :receiver_list        => second_leg )  
 
-      Rails.logger.info "GATEWAY: #{gateway.debug.to_xml}"  rescue ""
-      Rails.logger.info "PREAPPROVAL: #{@pre_approval.to_xml}"rescue ""
-      Rails.logger.info "PURCHASE: #{@purchase.to_xml}"rescue ""
-      Rails.logger.info "REFUND: #{@refund.to_xml}" rescue ""  
-      Rails.logger.info "RESPONSE: #{@response.to_xml}" rescue ""
-      Rails.logger.info "PERMISSION REQUEST: #{@permission_setup.to_xml}" rescue ""      
-      Rails.logger.info "TOKEN DATA: #{token_data.to_xml}" rescue ""            
-      Rails.logger.info "SCOPES: #{scopes.to_xml}" rescue ""                  
+      Rails.logger.info "GATEWAY: #{gateway.debug.inspect}"  rescue ""
+      Rails.logger.info "PREAPPROVAL: #{@pre_approval.inspect}"rescue ""
+      Rails.logger.info "PURCHASE: #{@purchase.inspect}"rescue ""
+      Rails.logger.info "PAYKEY: #{@purchase["PayKey"] rescue ""}"      
+      Rails.logger.info "REFUND: #{@refund.inspect}" rescue ""  
+      Rails.logger.info "RESPONSE: #{@response.inspect}" rescue ""
+      Rails.logger.info "PERMISSION REQUEST: #{@permission_setup.inspect}" rescue ""      
+      Rails.logger.info "TOKEN DATA: #{token_data.inspect}" rescue ""            
+      Rails.logger.info "SCOPES: #{scopes.inspect}" rescue ""                  
     
     #render :nothing => true
     #return

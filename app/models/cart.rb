@@ -3,7 +3,7 @@ class Cart < ActiveRecord::Base
   belongs_to  :user,          :class_name => "User"
   has_many    :orders,        :class_name => "Mtg::Order",        :dependent => :destroy
   has_many    :reservations,  :class_name => "Mtg::Reservation",  :through => :orders
-  has_many    :listings,      :class_name => "Mtg::Listing" ,     :through => :reservations
+  has_many    :listings,      :class_name => "Mtg::Cards::Listing" ,     :through => :reservations
   has_many    :sellers,       :class_name => "User",              :through => :listings,        :source => :seller
   
   # Implement Money gem for total_price column

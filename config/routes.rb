@@ -17,7 +17,6 @@ MTGBazaar::Application.routes.draw do
   post    "mtg/listings/:id/update_quantity"  => "carts#update_quantity_mtg_cards", :as => 'update_quantity_in_cart_mtg_cards'  
 
   get     'mtg/cart'                          => 'carts#show',                      :as => 'show_cart'
-  post    'mtg/checkout'                      => 'carts#checkout',                  :as => 'cart_checkout'
   
 # TICKETS ------------------- #
 
@@ -26,6 +25,12 @@ MTGBazaar::Application.routes.draw do
   
 # MTG ----------------------- #
 
+  # Orders
+  
+  post  'orders/:id/checkout'                 => 'mtg/orders#checkout',             :as => 'order_checkout'
+  get   'orders/:id/checkout_success'         => 'mtg/orders#checkout_success',     :as => 'order_checkout_success'  
+  get   'orders/:id/checkout_failure'         => 'mtg/orders#checkout_failure',     :as => 'order_checkout_failure'
+  
   # listings
   
   put     "mtg/listings/:id/set_active"       => "mtg/listings#set_active",         :as => 'mtg_listing_set_active'  
@@ -55,6 +60,10 @@ MTGBazaar::Application.routes.draw do
   get   'transactions/:id/shipping_label' => 'mtg/transactions/shipping_labels#create',   :as => 'create_shipping_label'
   get   'transactions/:id/track'          => 'mtg/transactions/shipping_labels#track',    :as => 'track_shipping'  
   
+  # payments
+  
+  get   'transactions/:id/payment_notification' => 'mtg/transactions/payment_notifications#payment_notification', :as => 'payment_notification'
+  
   namespace :mtg do
     
     resources :listings, :except => [:index, :show ] do
@@ -65,7 +74,6 @@ MTGBazaar::Application.routes.draw do
       get "new_bulk_prep", :as => "new_bulk_prep", :on => :collection
       get "new_bulk", :as => "new_bulk", :on => :collection      
       post "create_bulk", :as => "create_bulk", :on => :collection            
-
     end
        
     resources :cards, :only => [:index, :show] do # don't allow users to create/destroy mtg cards by only allowing index and show routes
@@ -101,22 +109,6 @@ MTGBazaar::Application.routes.draw do
   end
   match 'users/:id/(:page)', :controller => 'users', :action => 'show'  #TODO: hack to get pagination to work in user show page... relook at this later
 
-
-  
-# ACCOUNT BALANCE TRANSFERS
-  
-  get 'account/funding'   => 'account_balance_transfers#index',                   :as => 'account_funding_index'
-  get 'account/deposit'   => 'account_balance_transfers#new_account_deposit',     :as => 'new_account_deposit'
-  post 'account/deposit'  => 'account_balance_transfers#create_account_deposit',  :as => 'create_account_deposit'
-  get 'account/withdraw'  => 'account_balance_transfers#new_account_withdraw',    :as => 'new_account_withdraw'
-  post 'account/withdraw' => 'account_balance_transfers#create_account_withdraw', :as => 'create_account_withdraw'
-  
-  # payment notifications
-  post  'payment_notifications/create_deposit_notification'   => 'payment_notifications#create_deposit_notification',   :as => 'create_deposit_notification'
-  post  'payment_notifications/create_withdraw_notification'  => 'payment_notifications#create_withdraw_notification',  :as => 'create_withdraw_notification'  
-  get   'payment_notifications/acknowledge_deposit'           => 'payment_notifications#acknowledge_deposit',           :as => "acknowledge_deposit"
-  get   'payment_notifications/cancel_deposit'                => 'payment_notifications#cancel_deposit',                :as => "cancel_deposit"  
-  
 # NEWS FEEDS
 
   resources :news_feeds, :only => [:show, :index], :path => '/news'
