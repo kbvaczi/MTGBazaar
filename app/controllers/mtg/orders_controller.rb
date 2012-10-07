@@ -24,7 +24,7 @@ class Mtg::OrdersController < ApplicationController
       #TODO: return_url can't display secret code
       :return_url           => order_checkout_success_url(:key => PAYPAL_CONFIG[:secret]),
       :cancel_url           => order_checkout_failure_url,
-      :ipn_notification_url => payment_notification_url(:transaction_id => order.transaction.id, :key => PAYPAL_CONFIG[:secret]),       
+      :ipn_notification_url => payment_notification_url(:id => order.transaction.id, :key => PAYPAL_CONFIG[:secret]),       
       :memo                 => "TEST",
       :receiver_list        => recipients,
       :fees_payer           => "PRIMARYRECEIVER" )

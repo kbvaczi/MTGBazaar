@@ -62,7 +62,7 @@ MTGBazaar::Application.routes.draw do
   
   # payments
   
-  get   'transactions/:id/payment_notification' => 'mtg/transactions/payment_notifications#payment_notification', :as => 'payment_notification'
+  post   'transactions/:id/payment_notification' => 'mtg/transactions/payment_notifications#payment_notification', :as => 'payment_notification'
   
   namespace :mtg do
     
