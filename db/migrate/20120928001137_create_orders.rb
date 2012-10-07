@@ -1,5 +1,5 @@
 class CreateOrders < ActiveRecord::Migration
-  def change
+  def up
     create_table :mtg_orders do |t|
       
       #foreign keys(none)      
@@ -26,5 +26,12 @@ class CreateOrders < ActiveRecord::Migration
     remove_index  :mtg_reservations, :cart_id
     remove_column :mtg_reservations, :cart_id
   
+  end
+  
+  def down
+    drop_table    :mtg_orders
+    remove_column :mtg_reservations, :order_id
+    add_column    :mtg_reservations, :cart_id, :integer
+    
   end
 end
