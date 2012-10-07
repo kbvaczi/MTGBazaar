@@ -1,7 +1,6 @@
 ## SETUP file for unicorn webserver
 
-#preload_app true
-
+preload_app true
 timeout 30 # 30 seconds for production
 worker_processes 3
 

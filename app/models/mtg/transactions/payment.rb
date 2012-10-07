@@ -32,14 +32,13 @@ class Mtg::Transactions::Payment < ActiveRecord::Base
   #attr_accessible :amount, :buyer, :transaction, :status, :commission, :commission_rate, :paypal_paykey, :paypal_purchase_response
 
   # validations
-  validates_presence_of :paypal_paykey, 
-                        :paypal_purchase_response
   validates             :amount,          :numericality => {:greater_than => 0,             :less_than => 5000000, :message => "Must be between $0.01 and $50,000"}   #price must be between $0 and $10,000.00  
   validates             :commission,      :numericality => {:greater_than_or_equal_to => 0, :less_than => 500000,  :message => "Must be between $0.00 and $5,000"}   #price must be between $0 and $10,000.00    
   validates             :commission_rate, :numericality => {:greater_than_or_equal_to => 0, :less_than => 0.15,    :message => "Must be between 0% and 15%"}   #price must be between $0 and $10,000.00      
   validates             :shipping_cost,   :numericality => {:greater_than_or_equal_to => 0, :less_than => 10000}      #quantity must be between 0 and $100  
   validates             :status,          :inclusion =>    {:within => %w(unpaid pending completed refunded partially_refunded) }
-  
+  validates_presence_of :paypal_paykey, :paypal_purchase_response, :on => :update
+    
   # Callbacks
   # before_validation     :calculate_costs
   # before_validation     :setup_purchase

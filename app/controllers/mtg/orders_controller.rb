@@ -3,14 +3,7 @@ class Mtg::OrdersController < ApplicationController
   def checkout
     order = current_cart.orders.includes(:reservations).where(:id => params[:id]).first
     
-    order.setup_transaction_for_checkout                                                                          # saves transaction, items
-    
-    order.transaction.build_payment(:user_id => order.buyer.id, :transaction_id => order.transaction.id)
-    payment = order.transaction.payment
-    payment.amount          = order.total_cost
-    payment.shipping_cost   = order.shipping_cost
-    payment.commission_rate = order.buyer.account.commission_rate || SiteVariable.get("global_commission_rate").to_f       # Calculate commission rate, if neither exist commission is set to 0
-    payment.commission      = Money.new((payment.commission_rate * order.item_price_total.cents).ceil)                # Calculate commision as commission_rate * item value (without shipping), round up to nearest cent
+    order.setup_transaction_for_checkout                                                                          # saves transaction, items, and payment
     
     gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(                                                 # setup gateway, login to Paypal API
       :pem =>       PAYPAL_CONFIG[:paypal_cert_pem],

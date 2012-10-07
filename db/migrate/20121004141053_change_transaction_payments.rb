@@ -1,8 +1,8 @@
 class ChangeTransactionPayments < ActiveRecord::Migration
   def up
-    add_column   (:mtg_transaction_payments,   :paypal_paykey,                   :string)  unless column_exists?(:mtg_transaction_payments, :paypal_paykey)
-    add_column   (:mtg_transaction_payments,   :paypal_transaction_number,       :string)  unless column_exists?(:mtg_transaction_payments, :paypal_transaction_number)
-    add_column   (:mtg_transaction_payments,   :paypal_purchase_response,        :text)    unless column_exists?(:mtg_transaction_payments, :paypal_purchase_response)
+    add_column(:mtg_transaction_payments,   :paypal_paykey,                   :string)  unless column_exists?(:mtg_transaction_payments, :paypal_paykey)
+    add_column(:mtg_transaction_payments,   :paypal_transaction_number,       :string)  unless column_exists?(:mtg_transaction_payments, :paypal_transaction_number)
+    add_column(:mtg_transaction_payments,   :paypal_purchase_response,        :text)    unless column_exists?(:mtg_transaction_payments, :paypal_purchase_response)
     remove_column :mtg_transaction_payments,   :status
     add_column    :mtg_transaction_payments,   :status,                          :string,         :default => "unpaid"
     remove_column :mtg_transaction_payments,   :price    
