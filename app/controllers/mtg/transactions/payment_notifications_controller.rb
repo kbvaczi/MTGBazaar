@@ -9,11 +9,12 @@ class Mtg::Transactions::PaymentNotificationsController < ApplicationController
                                                                                                 :status => params['status'].downcase, 
                                                                                                 :paypal_transaction_id => params[:transaction]['0']['.id'] )
       if params['status'] == "COMPLETED"                              # check to see if payment was successful
-        transaction.payment.update_attributes(:status => "completed")
+        transaction.payment.update_attributes(:status => "completed", :paypal_transaction_number => params[:transaction]['0']['.id'])
         transaction.order.checkout_transaction if transaction.order.present?
-        transaction.update_attribute(:transaction_id, params[:transaction]['0']['.id'])
+        transaction.update_attribute(:transaction_number, params[:transaction]['0']['.id'])
       end
     end
+    
     render :nothing => true    
   end
   
