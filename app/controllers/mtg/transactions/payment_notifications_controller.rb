@@ -4,9 +4,9 @@ class Mtg::Transactions::PaymentNotificationsController < ApplicationController
   
   def payment_notification
     if params[:key] == PAYPAL_CONFIG[:secret]
-      transaction = Mtg::Transaction.find(params[:transaction_id])
+      transaction = Mtg::Transaction.find(params[:id])
       transaction.payment.payment_notification = Mtg::Transactions::PaymentNotification.create!(:response => params, 
-                                                                                                :status => params[:transaction]['0']['.status'], 
+                                                                                                :status => params['status'].downcase, 
                                                                                                 :paypal_transaction_id => params[:transaction]['0']['.id'] )
       if params['status'] == "COMPLETED"                              # check to see if payment was successful
         transaction.payment.update_attribute(:status, "completed")
