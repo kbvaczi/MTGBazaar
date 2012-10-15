@@ -1,11 +1,11 @@
 class Mtg::Transactions::Payment < ActiveRecord::Base
   self.table_name = 'mtg_transaction_payments'    
   
-  belongs_to :transaction,          :class_name => "Mtg::Transaction"
-  belongs_to :buyer,                :class_name => "User",                                              :foreign_key => "user_id"
-  has_one    :payment_notification, :class_name => "Mtg::Transactions::PaymentNotification",            :foreign_key => "payment_id"
+  belongs_to :transaction,            :class_name => "Mtg::Transaction"
+  belongs_to :buyer,                  :class_name => "User",                                              :foreign_key => "user_id"
+  has_many   :payment_notifications,  :class_name => "Mtg::Transactions::PaymentNotification",            :foreign_key => "payment_id"
 
-  serialize  :paypal_purchase_response
+  #serialize  :paypal_purchase_response
 
   # Implement Money gem for price column
   composed_of   :amount,
@@ -52,10 +52,13 @@ class Mtg::Transactions::Payment < ActiveRecord::Base
     self.commission      = Money.new((commission_rate * self.transaction.value.cents).ceil)                # Calculate commision as commission_rate * item value (without shipping), round up to nearest cent
   end
   
-  def compute_key
-    #TODO: encrypt secret and change per order basis
-    return PAYPAL_CONFIG[:secret]
-  end  
+  def calculate_secret
+    "#{PAYPAL_CONFIG[:secret]}".encrypt(:key => self.calculate_key)
+  end
+  
+  def calculate_key
+    "#{self.id} with some salt"
+  end
 
   
 end

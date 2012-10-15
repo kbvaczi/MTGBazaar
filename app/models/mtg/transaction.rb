@@ -27,7 +27,7 @@ class Mtg::Transaction < ActiveRecord::Base
 
   before_validation :update_transaction_costs
 
-  after_create      :set_transaction_number                    
+  #after_create      :set_transaction_number                    
   
 # ---------------- VALIDATIONS ----------------      
 

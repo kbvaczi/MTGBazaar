@@ -100,11 +100,12 @@ class Mtg::Order < ActiveRecord::Base
     #TODO: buyer_confirmed_at now obsolete for transactions
     self.build_transaction(:buyer_confirmed_at => Time.now)
     self.reservations.each { |r| self.transaction.build_item_from_reservation(r) }   # create transaction items based on these reservations
-    self.transaction.build_payment(:user_id => self.buyer.id, :transaction_id => self.transaction.id)
-    self.transaction.payment.amount          = self.total_cost
-    self.transaction.payment.shipping_cost   = self.shipping_cost
-    self.transaction.payment.commission_rate = self.buyer.account.commission_rate || SiteVariable.get("global_commission_rate").to_f       # Calculate commission rate, if neither exist commission is set to 0
-    self.transaction.payment.commission      = Money.new((self.transaction.payment.commission_rate * self.item_price_total.cents).ceil)                # Calculate commision as commission_rate * item value (without shipping), round up to nearest cent
+    calculated_commission_rate = self.buyer.account.commission_rate || SiteVariable.get("global_commission_rate").to_f
+    self.transaction.build_payment( :user_id => self.buyer.id, 
+                                    :amount => self.total_cost, 
+                                    :shipping_cost => self.shipping_cost, 
+                                    :commission_rate => calculated_commission_rate,
+                                    :commission => Money.new((calculated_commission_rate * self.item_price_total.cents).ceil)  )  # Calculate commision as commission_rate * item value (without shipping), round up to nearest cent
     self.transaction.save!
   end
     
@@ -113,7 +114,10 @@ class Mtg::Order < ActiveRecord::Base
     self.transaction.seller = self.seller                                     
     self.transaction.status = "confirmed"                                             # set transaction to confirmed since money has changed hands
     self.transaction.order_id = nil                                                   # disconnect transaction from order so order can be destroyed
-    self.transaction.save
+    if self.transaction.save
+      self.reservations.each { |r| r.purchased! }                                       # update listing quantity and destroy each reservation for this transaction
+      self.update_cache
+    end
   end
   
   ##### ------ PRIVATE METHODS ----- #####          
