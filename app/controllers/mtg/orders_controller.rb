@@ -19,7 +19,7 @@ class Mtg::OrdersController < ApplicationController
                     :primary => false,                                                
                     :amount => order.transaction.payment.commission + order.transaction.payment.shipping_cost } ] # we get commission + shipping on back end
     
-    calculated_secret = order.transaction.payment.calculate_secret
+    calculated_secret = Base64.encode64(order.transaction.payment.calculate_secret).encode('utf-8')               # encryptor uses ascii-8bit encoding, we need to convert to utf-8 to put in parameter... see http://stackoverflow.com/questions/11042657/how-to-encrypt-data-in-a-utf-8-string-using-opensslcipher
     
     purchase = gateway.setup_purchase(
       :action_type          => "PAY",
@@ -49,7 +49,7 @@ class Mtg::OrdersController < ApplicationController
       Rails.logger.debug("PARAMS SECRET: \"#{params[:secret]}\"")
       Rails.logger.debug("UNCRYPTED SECRET: \"#{params[:secret].decrypt(:key => order.transaction.payment.calculate_key)}\"")      
       Rails.logger.debug("CALC   SECRET: \"#{order.transaction.payment.calculate_secret}\"")      
-      if params[:secret].decrypt(:key => order.transaction.payment.calculate_key).encode('utf-8', 'iso-8859-1') != PAYPAL_CONFIG[:secret]
+      if Base64.decode64(params[:secret]).encode('ascii-8bit').decrypt(:key => order.transaction.payment.calculate_key) != PAYPAL_CONFIG[:secret]
         flash[:error] = "There was a problem with your request..."
         redirect_to show_cart_path
         return
