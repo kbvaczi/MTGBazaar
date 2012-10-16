@@ -5,7 +5,7 @@ class Mtg::Transactions::PaymentNotification < ActiveRecord::Base
   serialize  :response
   
   # validations
-  validates_presence_of :payment_id, :response, :status, paypal_transaction_id
+  validates_presence_of :payment_id, :response, :status, :paypal_transaction_id
   
   # callbacks
   after_create :process_transaction
