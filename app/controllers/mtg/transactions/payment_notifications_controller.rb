@@ -4,7 +4,7 @@ class Mtg::Transactions::PaymentNotificationsController < ApplicationController
   
   def payment_notification
     transaction = Mtg::Transaction.find(params[:id])
-    decoded_secret = Base64.decode64(params[:secret]).encode('ascii-8bit').decrypt(:key => order.transaction.payment.calculate_key)
+    decoded_secret = Base64.decode64(params[:secret]).encode('ascii-8bit').decrypt(:key => transaction.payment.calculate_key)
     if decoded_secret == PAYPAL_CONFIG[:secret] # verify our secret which changes with every payment
       transaction.payment.payment_notifications.create(:response => params, 
                                                        :status => params['status'].downcase, 
