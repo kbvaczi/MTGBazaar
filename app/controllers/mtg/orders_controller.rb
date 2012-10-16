@@ -19,14 +19,14 @@ class Mtg::OrdersController < ApplicationController
                     :primary => false,                                                
                     :amount => order.transaction.payment.commission + order.transaction.payment.shipping_cost } ] # we get commission + shipping on back end
     
-    calculated_secret = Base64.encode64(order.transaction.payment.calculate_secret).encode('utf-8')               # encryptor uses ascii-8bit encoding, we need to convert to utf-8 to put in parameter... see http://stackoverflow.com/questions/11042657/how-to-encrypt-data-in-a-utf-8-string-using-opensslcipher
+    encoded_secret = Base64.encode64(order.transaction.payment.calculate_secret).encode('utf-8')               # encryptor uses ascii-8bit encoding, we need to convert to utf-8 to put in parameter... see http://stackoverflow.com/questions/11042657/how-to-encrypt-data-in-a-utf-8-string-using-opensslcipher
     
     purchase = gateway.setup_purchase(
       :action_type          => "PAY",
       #TODO: return_url can't display secret code
-      :return_url           => order_checkout_success_url(:secret => calculated_secret),
+      :return_url           => order_checkout_success_url(:secret => encoded_secret),
       :cancel_url           => order_checkout_failure_url,
-      :ipn_notification_url => payment_notification_url(:id => order.transaction.id, :secret => calculated_secret),       
+      :ipn_notification_url => payment_notification_url(:id => order.transaction.id, :secret => encoded_secret),       
       :memo                 => "TEST",
       :receiver_list        => recipients,
       :fees_payer           => "PRIMARYRECEIVER" )
@@ -46,10 +46,8 @@ class Mtg::OrdersController < ApplicationController
   def checkout_success
     order = current_cart.orders.includes(:reservations).where(:id => params[:id]).first
     if order.present? # has payment notification already checked out the order?
-      Rails.logger.debug("PARAMS SECRET: \"#{params[:secret]}\"")
-      Rails.logger.debug("UNCRYPTED SECRET: \"#{params[:secret].decrypt(:key => order.transaction.payment.calculate_key)}\"")      
-      Rails.logger.debug("CALC   SECRET: \"#{order.transaction.payment.calculate_secret}\"")      
-      if Base64.decode64(params[:secret]).encode('ascii-8bit').decrypt(:key => order.transaction.payment.calculate_key) != PAYPAL_CONFIG[:secret]
+      decoded_secret = Base64.decode64(params[:secret]).encode('ascii-8bit').decrypt(:key => order.transaction.payment.calculate_key)
+      if decoded_secret != PAYPAL_CONFIG[:secret]
         flash[:error] = "There was a problem with your request..."
         redirect_to show_cart_path
         return
