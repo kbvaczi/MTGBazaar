@@ -49,7 +49,7 @@ class Mtg::OrdersController < ApplicationController
       Rails.logger.debug("PARAMS SECRET: \"#{params[:secret]}\"")
       Rails.logger.debug("UNCRYPTED SECRET: \"#{params[:secret].decrypt(:key => order.transaction.payment.calculate_key)}\"")      
       Rails.logger.debug("CALC   SECRET: \"#{order.transaction.payment.calculate_secret}\"")      
-      if params[:secret].decrypt(:key => order.transaction.payment.calculate_key) != PAYPAL_CONFIG[:secret]
+      if params[:secret].encode('utf-8', 'iso-8859-1').decrypt(:key => order.transaction.payment.calculate_key) != PAYPAL_CONFIG[:secret]
         flash[:error] = "There was a problem with your request..."
         redirect_to show_cart_path
         return
