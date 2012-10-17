@@ -84,11 +84,10 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
       postage_created = true      
       from_address = build_address(:user => transaction.seller, :full_name => transaction.seller.username)
       to_address   = build_address(:user => transaction.buyer)    
-      create_stamp(:from           => from_address, 
-                   :to             => to_address, 
-                   :stamps_tx_id => transaction.transaction_number,
-                   :memo => transaction.transaction_number,
-                   :insurance => false,
+      create_stamp(:from          => from_address, 
+                   :to            => to_address, 
+                   :stamps_tx_id  => transaction.transaction_number,
+                   :insurance     => false,
                    :insured_value => '0')               
     end
     #TODO: Code insurance algorithm    
@@ -119,7 +118,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
                :transaction_id  => options[:stamps_tx_id],
                :to              => options[:to],
                :from            => options[:from],
-               :memo            => "MTGBazaar.com\r\n" + options[:memo],
+               :memo            => options[:memo] || "MTGBazaar.com",
                :rate            => {
                  :from_zip_code => options[:from][:zip_code],
                  :to_zip_code   => options[:to][:zip_code],
