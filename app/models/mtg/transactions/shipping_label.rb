@@ -135,7 +135,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
                  }
                }
             })
-    self.options = stamp
+    self.params = stamp
     self.stamps_tx_id = stamp[:stamps_tx_id]
     self.price = stamp[:rate][:amount]
     buy_postage_if_necessary(:current_balance => stamp[:postage_balance][:available_postage].to_i, 
