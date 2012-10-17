@@ -18,7 +18,7 @@ class Mtg::Transactions::ShippingLabelsController < ApplicationController
           return
         end
       rescue Exception => message
-        Rails.logger.debug(message)
+        Rails.logger.debug("STAMPS ERROR MESSAGE: #{message}")
         @error = true
       end 
     end
