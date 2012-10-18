@@ -33,8 +33,8 @@ MTGBazaar::Application.routes.draw do
   
   # listings
   
-  put     "mtg/listings/:id/set_active"       => "mtg/listings#set_active",         :as => 'mtg_listing_set_active'  
-  put     "mtg/listings/:id/set_inactive"     => "mtg/listings#set_inactive",       :as => 'mtg_listing_set_inactive'  
+  put     "mtg/cards/listings/:id/set_active"       => "mtg/cards/listings#set_active",         :as => 'mtg_listing_set_active'  
+  put     "mtg/cards/listings/:id/set_inactive"     => "mtg/cards/listings#set_inactive",       :as => 'mtg_listing_set_inactive'  
 
   # transactions
   get   'transactions/:id'                => 'mtg/transactions#show',                                 :as => 'show_mtg_transaction'
@@ -69,24 +69,24 @@ MTGBazaar::Application.routes.draw do
   
   post   'transactions/:id/payment_notification' => 'mtg/transactions/payment_notifications#payment_notification', :as => 'payment_notification'
   
-  namespace :mtg do
-    
-    resources :listings, :except => [:index, :show ] do
-      get "new_generic", :as => "new_generic", :on => :collection
-      get "new_generic_pricing", :as => "new_generic_pricing", :on => :collection                  
-      get "new_generic_set", :as => "new_generic_set", :on => :collection  
-      post "create_generic", :as => "create_generic", :on => :collection   
-      get "new_bulk_prep", :as => "new_bulk_prep", :on => :collection
-      get "new_bulk", :as => "new_bulk", :on => :collection      
-      post "create_bulk", :as => "create_bulk", :on => :collection            
+  namespace :mtg do 
+    namespace :cards do
+      resources :listings, :except => [:index, :show ] do
+        get "new_generic", :as => "new_generic", :on => :collection
+        get "new_generic_pricing", :as => "new_generic_pricing", :on => :collection                  
+        get "new_generic_set", :as => "new_generic_set", :on => :collection  
+        post "create_generic", :as => "create_generic", :on => :collection   
+        get "new_bulk_prep", :as => "new_bulk_prep", :on => :collection
+        get "new_bulk", :as => "new_bulk", :on => :collection      
+        post "create_bulk", :as => "create_bulk", :on => :collection            
+      end
     end
-       
+    
     resources :cards, :only => [:index, :show] do # don't allow users to create/destroy mtg cards by only allowing index and show routes
       get  "autocomplete_name", :on => :collection
       get  "search", :as => 'search', :on => :collection  # can't figure out how to send autocorrect click link via post so we need get too for now
-      post "search", :as => 'search', :on => :collection       
+      post "search", :as => 'search', :on => :collection      
     end
-    
   end
   
 # USERS -------------------- #

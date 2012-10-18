@@ -1,7 +1,7 @@
 <% title "Sell a Card"%>
 <h1>Sell a Card</h1>
 
-<%= simple_form_for @listing, :url => create_generic_mtg_listings_path, :method => :post, :html => {:multipart => true} do |f| %>
+<%= simple_form_for @listing, :url => create_generic_mtg_cards_listings_path, :method => :post, :html => {:multipart => true} do |f| %>
   <div class="inputs">
     <br class="spacer"/>  
 
@@ -72,7 +72,7 @@
                                   :input_html => { :maxlength => 100 },
                                   :as => :string %>
 
-      <%= f.label "Options" %>
+      <%= f.label "Options",      :style => "height:100px;"%>
 
       <%= f.input :foil,          :label => "Foil stamped",
                                   :default => false %>                                     

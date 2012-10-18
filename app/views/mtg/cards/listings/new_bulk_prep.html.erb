@@ -2,7 +2,7 @@
 
 <h1>Step 1: Prepare Bulk Import</h1>
 
-<%= simple_form_for @listing, :url => new_bulk_mtg_listings_path, :method => :get do |f| %>
+<%= simple_form_for @listing, :url => new_bulk_mtg_cards_listings_path, :method => :get do |f| %>
   <div class="inputs">
     <br class="spacer"/>
     <br class="spacer"/>  
@@ -45,7 +45,7 @@
     </div>                                
 
     <br class="spacer"/>                              
-
+    <%= f.label " " %>
     <%= f.input :foil,          :label => "All cards are foil stamped",
                                 :default => false %>                                     
 
@@ -53,10 +53,12 @@
 
   </div>
   <br class="spacer"/>
-  <div style="width:300px" class="center_wrap">Note: the options above will be used for importing all the cards in step 2.</div>  
-  <br class="spacer"/>
-  <br class="spacer"/>  
+  
   <div class="center_wrap">
+    <div style="width:200px" class="center">Note: the options above will be used for importing all the cards in step 2.</div>  
+    <br class="spacer"/>
+    <br class="spacer"/>    
+    <br class="spacer"/>    
     <%= f.button :submit, "Proceed to Step 2: Complete Bulk Import", :class => "center" %>
   </div>
   <br class="spacer"/>

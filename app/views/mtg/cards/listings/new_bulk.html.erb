@@ -4,14 +4,14 @@
 
 <div class="content">
   
-  <%= form_tag create_bulk_mtg_listings_path do %>
+  <%= form_tag create_bulk_mtg_cards_listings_path do %>
 
     <%= hidden_field_tag 'sort', params[:sort] %>    
-    <%= hidden_field_tag 'mtg_listing[price]', params[:mtg_listing][:price] %>            
-    <%= hidden_field_tag 'mtg_listing[set]', params[:mtg_listing][:set] %>        
-    <%= hidden_field_tag 'mtg_listing[language]', params[:mtg_listing][:language] %>
-    <%= hidden_field_tag 'mtg_listing[condition]', params[:mtg_listing][:condition] %>
-    <%= hidden_field_tag 'mtg_listing[foil]', params[:mtg_listing][:foil] %>
+    <%= hidden_field_tag 'mtg_cards_listing[price]', params[:mtg_cards_listing][:price] %>            
+    <%= hidden_field_tag 'mtg_cards_listing[set]', params[:mtg_cards_listing][:set] %>        
+    <%= hidden_field_tag 'mtg_cards_listing[language]', params[:mtg_cards_listing][:language] %>
+    <%= hidden_field_tag 'mtg_cards_listing[condition]', params[:mtg_cards_listing][:condition] %>
+    <%= hidden_field_tag 'mtg_cards_listing[foil]', params[:mtg_cards_listing][:foil] %>
     
     <%# SETTINGS FOR ALL DATA %>
     <%# SETTINGS FOR ALL DATA %>
@@ -26,15 +26,15 @@
       </tr>      
       <tr class="even">
         <td width="50%">Language</td>
-        <td><%= display_flag_symbol(params[:mtg_listing][:language]) %></td>
+        <td><%= display_flag_symbol(params[:mtg_cards_listing][:language]) %></td>
       </tr>
       <tr class="odd">
         <td width="50%">Condition</td>
-        <td><%= display_condition params[:mtg_listing][:condition] %></td>
+        <td><%= display_condition params[:mtg_cards_listing][:condition] %></td>
       </tr>   
       <tr class="even">
         <td width="50%">Advanced Options</td>
-        <td><%= params[:mtg_listing][:foil] == "1" ? "Foil Stamped" : "None" %></td>
+        <td><%= params[:mtg_cards_listing][:foil] == "1" ? "Foil Stamped" : "None" %></td>
       </tr>
     </table>
     
@@ -69,9 +69,9 @@
             <%
               if params[:sales] && params[:sales]["#{card.id}"]
                 price_selection = params[:sales]["#{card.id}"][:price]
-              elsif params[:mtg_listing][:price] == "low"
+              elsif params[:mtg_cards_listing][:price] == "low"
                 price_selection = card.statistics.price_low
-              elsif params[:mtg_listing][:price] == "high"
+              elsif params[:mtg_cards_listing][:price] == "high"
                 price_selection = card.statistics.price_high
               else                
                 price_selection = card.statistics.price_med

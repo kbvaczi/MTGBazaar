@@ -17,18 +17,18 @@ class HomeController < ApplicationController
     
 
       # setup transaction
-      gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(
+      gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(                                                 # setup gateway, login to Paypal API
         :pem =>       PAYPAL_CONFIG[:paypal_cert_pem],
         :login =>     PAYPAL_CONFIG[:api_login],
         :password =>  PAYPAL_CONFIG[:api_password],
         :signature => PAYPAL_CONFIG[:api_signature],
-        :appid =>     PAYPAL_CONFIG[:appid] )     
+        :appid =>     PAYPAL_CONFIG[:appid] )
 
-      recipients = [ {:email => "seller_1348611401_per@mtgbazaar.com",
+      recipients = [ {:email => "darnovo@gmail.com",
                       :primary => true,
                       :amount => "10.00" },
                       
-                      {:email => "seller_1345565383_biz@mtgbazaar.com",
+                      {:email => "paypal@mtgbazaar.com",
                        :primary => false,
                        :amount => "2.00" } ]   
                        
@@ -94,7 +94,7 @@ class HomeController < ApplicationController
       
       # For redirecting the customer to the actual paypal site to finish the payment.
       #redirect_to (gateway.redirect_url_for(@purchase["payKey"]))
-      redirect_to (gateway.embedded_flow_url_for(@purchase["payKey"]))      
+      #redirect_to (gateway.embedded_flow_url_for(@purchase["payKey"]))      
       
       #redirect_to "https://www.paypal.com/webapps/adaptivepayment/flow/pay?paykey=#{@purchase[:payKey]}"
  

@@ -10,7 +10,7 @@ class Mtg::Cards::ListingsController < ApplicationController
   include Singleton
     
   def new
-    @listing = Mtg::Card.find(params[:card_id]).listings.build(params[:mtg_listing]) 
+    @listing = Mtg::Card.find(params[:card_id]).listings.build(params[:mtg_cards_listing]) 
     respond_to do |format|
       format.html
     end
@@ -18,21 +18,21 @@ class Mtg::Cards::ListingsController < ApplicationController
   
   def create
     card = Mtg::Card.find(params[:card_id])
-    if params[:mtg_listing] && params[:mtg_listing][:price_options] != "other"  # handle price options
-      params[:mtg_listing][:price] = params[:mtg_listing][:price_options]
+    if params[:mtg_cards_listing] && params[:mtg_cards_listing][:price_options] != "other"  # handle price options
+      params[:mtg_cards_listing][:price] = params[:mtg_cards_listing][:price_options]
     end 
-    @listing = Mtg::Cards::Listing.new(params[:mtg_listing])
+    @listing = Mtg::Cards::Listing.new(params[:mtg_cards_listing])
     @listing.card_id = card.id
     @listing.seller_id = current_user.id
     duplicate_listings = Mtg::Cards::Listing.duplicate_listings_of(@listing)
     if duplicate_listings.count > 0 # there is already an identical listing, just add quantity to existing listing
       duplicate_listing = duplicate_listings.first
-      duplicate_listing.increment(:quantity_available, params[:mtg_listing][:quantity].to_i)
-      duplicate_listing.increment(:quantity, params[:mtg_listing][:quantity].to_i)      
+      duplicate_listing.increment(:quantity_available, params[:mtg_cards_listing][:quantity].to_i)
+      duplicate_listing.increment(:quantity, params[:mtg_cards_listing][:quantity].to_i)      
       duplicate_listing.save!
-      redirect_to back_path, :notice => " #{pluralize(params[:mtg_listing][:quantity], "Listing", "Listings")} Created..."
+      redirect_to back_path, :notice => " #{pluralize(params[:mtg_cards_listing][:quantity], "Listing", "Listings")} Created..."
     elsif @listing.save
-      redirect_to back_path, :notice => " #{pluralize(params[:mtg_listing][:quantity], "Listing", "Listings")} Created... Good Luck!"
+      redirect_to back_path, :notice => " #{pluralize(params[:mtg_cards_listing][:quantity], "Listing", "Listings")} Created... Good Luck!"
     else
       flash[:error] = "There were one or more errors while trying to process your request"
       render 'new'
@@ -50,11 +50,11 @@ class Mtg::Cards::ListingsController < ApplicationController
   def update
     @listing = Mtg::Cards::Listing.find(params[:id])
     # handle pricing select options to determine how to update price
-    if params[:mtg_listing] && params[:mtg_listing][:price_options] != "other"
-      params[:mtg_listing][:price] = params[:mtg_listing][:price_options]
+    if params[:mtg_cards_listing] && params[:mtg_cards_listing][:price_options] != "other"
+      params[:mtg_cards_listing][:price] = params[:mtg_cards_listing][:price_options]
     end    
     # handle updating listings before creating/destroying just in case there is a problem with update
-    unless @listing.update_attributes(params[:mtg_listing])
+    unless @listing.update_attributes(params[:mtg_cards_listing])
       flash[:error] = "There were one or more errors while trying to process your request"
       render 'edit'
       return
@@ -88,10 +88,10 @@ class Mtg::Cards::ListingsController < ApplicationController
   
   def new_generic
     set_back_path
-    @listing = Mtg::Cards::Listing.new(params[:mtg_listing])
-    if params[:mtg_listing] && params[:mtg_listing][:set]
-      @sets = Mtg::Set.includes(:cards).where(:active => true).where("mtg_cards.name LIKE ?", "#{params[:mtg_listing][:name]}").order("release_date DESC").to_a
-      @card = Mtg::Card.includes(:set, :statistics).where(:active => true).where("mtg_cards.name LIKE ? AND mtg_sets.code LIKE ?", "#{params[:mtg_listing][:name]}", "#{params[:set]}").first      
+    @listing = Mtg::Cards::Listing.new(params[:mtg_cards_listing])
+    if params[:mtg_cards_listing] && params[:mtg_cards_listing][:set]
+      @sets = Mtg::Set.includes(:cards).where(:active => true).where("mtg_cards.name LIKE ?", "#{params[:mtg_cards_listing][:name]}").order("release_date DESC").to_a
+      @card = Mtg::Card.includes(:set, :statistics).where(:active => true).where("mtg_cards.name LIKE ? AND mtg_sets.code LIKE ?", "#{params[:mtg_cards_listing][:name]}", "#{params[:set]}").first      
     end
     respond_to do |format|
       format.html
@@ -115,23 +115,23 @@ class Mtg::Cards::ListingsController < ApplicationController
   end
   
   def create_generic
-    @card = Mtg::Card.includes(:set, :statistics).where(:active => true).where("mtg_cards.name LIKE ? AND mtg_sets.code LIKE ?", "#{params[:mtg_listing][:name]}", "#{params[:mtg_listing][:set]}").first
-    @sets = Mtg::Set.includes(:cards).where(:active => true).where("mtg_cards.name LIKE ?", params[:mtg_listing][:name]).order("release_date DESC").to_a    
-    if params[:mtg_listing] && params[:mtg_listing][:price_options] != "other"  # handle price options
-      params[:mtg_listing][:price] = params[:mtg_listing][:price_options]
+    @card = Mtg::Card.includes(:set, :statistics).where(:active => true).where("mtg_cards.name LIKE ? AND mtg_sets.code LIKE ?", "#{params[:mtg_cards_listing][:name]}", "#{params[:mtg_cards_listing][:set]}").first
+    @sets = Mtg::Set.includes(:cards).where(:active => true).where("mtg_cards.name LIKE ?", params[:mtg_cards_listing][:name]).order("release_date DESC").to_a    
+    if params[:mtg_cards_listing] && params[:mtg_cards_listing][:price_options] != "other"  # handle price options
+      params[:mtg_cards_listing][:price] = params[:mtg_cards_listing][:price_options]
     end 
-    @listing = Mtg::Cards::Listing.new(params[:mtg_listing])
+    @listing = Mtg::Cards::Listing.new(params[:mtg_cards_listing])
     @listing.card_id = @card.id
     @listing.seller_id = current_user.id
     duplicate_listings = Mtg::Cards::Listing.duplicate_listings_of(@listing)
     if duplicate_listings.count > 0 # there is already an identical listing, just add quantity to existing listing
       duplicate_listing = duplicate_listings.first
-      duplicate_listing.increment(:quantity_available, params[:mtg_listing][:quantity].to_i)
-      duplicate_listing.increment(:quantity, params[:mtg_listing][:quantity].to_i)      
+      duplicate_listing.increment(:quantity_available, params[:mtg_cards_listing][:quantity].to_i)
+      duplicate_listing.increment(:quantity, params[:mtg_cards_listing][:quantity].to_i)      
       duplicate_listing.save!
-      redirect_to back_path, :notice => " #{pluralize(params[:mtg_listing][:quantity], "Listing", "Listings")} Created... Sell More Cards?"
+      redirect_to back_path, :notice => " #{pluralize(params[:mtg_cards_listing][:quantity], "Listing", "Listings")} Created... Sell More Cards?"
     elsif @listing.save
-      redirect_to back_path, :notice => " #{pluralize(params[:mtg_listing][:quantity], "Listing", "Listings")} Created... Sell More Cards?"
+      redirect_to back_path, :notice => " #{pluralize(params[:mtg_cards_listing][:quantity], "Listing", "Listings")} Created... Sell More Cards?"
     else
       flash[:error] = "There were one or more errors while trying to process your request"
       render 'new_generic'
@@ -139,31 +139,31 @@ class Mtg::Cards::ListingsController < ApplicationController
   end
   
   def new_bulk_prep
-    @listing = Mtg::Cards::Listing.new(params[:mtg_listing])
+    @listing = Mtg::Cards::Listing.new(params[:mtg_cards_listing])
   end
   
   def new_bulk
-    @set = Mtg::Set.where(:code => params[:mtg_listing][:set]).first
+    @set = Mtg::Set.where(:code => params[:mtg_cards_listing][:set]).first
     if params[:sort] == "name"
-      @cards = Mtg::Card.joins(:set).includes(:statistics).where("mtg_sets.code LIKE ?", params[:mtg_listing][:set]).order("name ASC")
+      @cards = Mtg::Card.joins(:set).includes(:statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("name ASC")
     else
-      @cards = Mtg::Card.joins(:set).includes(:statistics).where("mtg_sets.code LIKE ?", params[:mtg_listing][:set]).order("card_number ASC")      
+      @cards = Mtg::Card.joins(:set).includes(:statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("card_number ASC")      
     end
   end
   
   def create_bulk
     # we have to declare these @ variables just in case we have form errors and have to render the form again... otherwise we get errors when we render the form without these declared
-    @set = Mtg::Set.where(:code => params[:mtg_listing][:set]).first
+    @set = Mtg::Set.where(:code => params[:mtg_cards_listing][:set]).first
     if params[:sort] == "name"
-      @cards = Mtg::Card.joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_listing][:set]).order("name ASC")
+      @cards = Mtg::Card.joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("name ASC")
     else
-      @cards = Mtg::Card.joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_listing][:set]).order("card_number ASC")      
+      @cards = Mtg::Card.joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("card_number ASC")      
     end
     array_of_listings = Array.new # blank array
     params[:sales].each do |key, value| # iterate through all of our individual listings from the bulk form
       if value[:quantity].to_i > 0 # we only care if they entered quantity > 0 for a specific card
         asking_price = (value[:price] == "other") ? value[:custom_price] : value[:price] # set price either from pre-select options or custom price if they have other selected in price options
-        listing = Mtg::Cards::Listing.new(:foil => params[:mtg_listing][:foil], :condition => params[:mtg_listing][:condition], :language => params[:mtg_listing][:language],
+        listing = Mtg::Cards::Listing.new(:foil => params[:mtg_cards_listing][:foil], :condition => params[:mtg_cards_listing][:condition], :language => params[:mtg_cards_listing][:language],
                                    :price => asking_price, :quantity => value[:quantity].to_i) # create the listing in memory
         listing.seller_id = current_user.id # assign seller manually since it cannot be mass assigned
         listing.card_id = key.to_i # assign card manually since it cannot be mass assigned
@@ -183,7 +183,7 @@ class Mtg::Cards::ListingsController < ApplicationController
     end
     # all listings passed validation, let's go back through our stored listings in the array and save them to database
     array_of_listings.each { |listing| listing.save } # save all the listings
-    redirect_to new_bulk_prep_mtg_listings_path, :notice => "imported #{array_of_listings.count} listing(s) successfully, Bulk Import Again?"
+    redirect_to new_bulk_prep_mtg_cards_listings_path, :notice => "imported #{array_of_listings.count} listing(s) successfully, Bulk Import Again?"
     return #don't display a template
   end
   

@@ -2,37 +2,37 @@ $(document).ready(function() {
 
 /* GENERIC LISTING JAVASCRIPTS */ 
 
-  $('#New_Generic_Name_Block div #mtg_listing_name').bind('railsAutocomplete.select', function(event, data){
-    $.get('/mtg/listings/new_generic_set.json?name=' + $('#mtg_listing_name').val(), function(data) {
+  $('#New_Generic_Name_Block div #mtg_cards_listing_name').bind('railsAutocomplete.select', function(event, data){
+    $.get('/mtg/cards/listings/new_generic_set.json?name=' + $('#mtg_cards_listing_name').val(), function(data) {
       $("#New_Generic_Info_Block").hide();
       $("#New_Generic_Set_Block").show();
       var selection_array = data;
-      $("#mtg_listing_set").empty();
-      $("#mtg_listing_set").append('<option value></option>'); // give null value so label shows
+      $("#mtg_cards_listing_set").empty();
+      $("#mtg_cards_listing_set").append('<option value></option>'); // give null value so label shows
       $(selection_array).each(function(index, item) {
-         $("#mtg_listing_set").append('<option value=' + item[1] + '>' + item[0] + '</option>');
+         $("#mtg_cards_listing_set").append('<option value=' + item[1] + '>' + item[0] + '</option>');
       });
-      $("#mtg_listing_set").removeAttr('disabled');
-      $("#mtg_listing_set").trigger("liszt:updated");
+      $("#mtg_cards_listing_set").removeAttr('disabled');
+      $("#mtg_cards_listing_set").trigger("liszt:updated");
     });      
   });
   
-  $("#New_Generic_Set_Block #mtg_listing_set").chosen().change( function() {
-    $.get('/mtg/listings/new_generic_pricing.json?name=' + $('#mtg_listing_name').val() + '&set=' + $('#mtg_listing_set').chosen().val(), function(data) {
+  $("#New_Generic_Set_Block #mtg_cards_listing_set").chosen().change( function() {
+    $.get('/mtg/cards/listings/new_generic_pricing.json?name=' + $('#mtg_cards_listing_name').val() + '&set=' + $('#mtg_cards_listing_set').chosen().val(), function(data) {
       $("#New_Generic_Info_Block").show();             
       var selection_array = data;
-      $("#mtg_listing_price_options").empty();
-//      $("#mtg_listing_price_options").append('<option value></option>'); // give null value so label shows
+      $("#mtg_cards_listing_price_options").empty();
+//      $("#mtg_cards_listing_price_options").append('<option value></option>'); // give null value so label shows
       $(selection_array).each(function(index, item) {
-         $("#mtg_listing_price_options").append('<option value=' + item[1] + '>' + item[0] + '</option>');
+         $("#mtg_cards_listing_price_options").append('<option value=' + item[1] + '>' + item[0] + '</option>');
       });           
-      $("#mtg_listing_price_options").removeAttr('disabled');     
-      $("#mtg_listing_price_options").trigger("liszt:updated");      
+      $("#mtg_cards_listing_price_options").removeAttr('disabled');     
+      $("#mtg_cards_listing_price_options").trigger("liszt:updated");      
     });        
   });
   
   <%# hide and show custom pricing when user selects other for pricing%>
-  $("#mtg_listing_price_options").chosen().change( function() {
+  $("#mtg_cards_listing_price_options").chosen().change( function() {
     $("#Custom_Pricing_Block").hide();    
     if ($(this).val() == "other") {
       $("#Custom_Pricing_Block").show();

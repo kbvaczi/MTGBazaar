@@ -1,4 +1,4 @@
-<%= link_to "Sell this card", new_mtg_listing_path(:card_id => @mtg_card.id), :class => "right", :style => "margin-top:7px;margin-right:10px;" %>
+<%= link_to "Sell this card", new_mtg_card_listing_path(:card_id => @mtg_card.id), :class => "right", :style => "margin-top:7px;margin-right:10px;" %>
 <h2>
   <%= pluralize(@listings.count, "Listing","Listings") %> 
 </h2>
