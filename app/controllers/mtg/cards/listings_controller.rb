@@ -30,9 +30,9 @@ class Mtg::Cards::ListingsController < ApplicationController
       duplicate_listing.increment(:quantity_available, params[:mtg_cards_listing][:quantity].to_i)
       duplicate_listing.increment(:quantity, params[:mtg_cards_listing][:quantity].to_i)      
       duplicate_listing.save!
-      redirect_to back_path, :notice => " #{pluralize(params[:mtg_cards_listing][:quantity], "Listing", "Listings")} Created..."
+      redirect_to back_path, :notice => "Listing Created..."
     elsif @listing.save
-      redirect_to back_path, :notice => " #{pluralize(params[:mtg_cards_listing][:quantity], "Listing", "Listings")} Created... Good Luck!"
+      redirect_to back_path, :notice => "Listing Created... Good Luck!"
     else
       flash[:error] = "There were one or more errors while trying to process your request"
       render 'new'

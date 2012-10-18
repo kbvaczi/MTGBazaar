@@ -61,7 +61,7 @@ class Mtg::CardsController < ApplicationController
 
   def search
     # SEARCH CARDS
-    
+    set_back_path
     query = SmartTuple.new(" AND ")
     
     query << ["mtg_cards.active LIKE ?", true]

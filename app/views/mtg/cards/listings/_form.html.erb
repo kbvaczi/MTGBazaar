@@ -1,7 +1,6 @@
 <%= simple_form_for @listing, :html => {:multipart => true} do |f| %>
   <div class="inputs">
     <br class="spacer"/>
-    <br class="spacer"/>  
     <%= f.input :card_id,       :as => :hidden,
                                 :input_html => { :value => ( params[:card_id] != "" ? params[:card_id] : @listing.card.id ), 
                                                  :name => :card_id } %>
@@ -71,11 +70,11 @@
 						                                                          
 
     <%= f.input :description,   :label => "Description",
-                                :hint => "Optional",
+                                :placeholder => "Optional",
                                 :as => :string,
                                 :input_html => { :maxlength => 100 } %>
                               
-    <%= f.label "Options" %>
+    <%= f.label "Options",      :style => "height:100px;"%>
 
     <%= f.input :foil,          :label => "Foil stamped",
                                 :default => false %>                                     
@@ -93,7 +92,7 @@
   <br class="spacer"/>
   <br class="spacer"/>  
   <div class="center_wrap">
-    <%= f.button :submit, "Submit Listing", :class => "center" %>
+    <%= f.button :submit, "Create Listing", :class => "center" %>
   </div>
   <br class="spacer"/>
 
