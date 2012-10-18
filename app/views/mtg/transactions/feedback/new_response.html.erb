@@ -1,0 +1,42 @@
+<% title "Feedback Response"%>
+
+<h1>Feedback Response</h1>
+
+<%= simple_form_for @feedback, :url => create_feedback_response_path, :method => :post do |f| %>
+  <table class="data">
+    <tr class="header_row">
+  	  <th>Transaction Number</th>
+  	  <th>Buyer</th>      	    
+  	  <th>Value</th>
+  	  <th>Status</th>      
+  	</tr>
+  	<tr class="even">
+  	  <td><%= link_to @transaction.transaction_number, show_mtg_transaction_path(@transaction) %></td>
+  	  <td><%= link_to @transaction.seller.username, user_path(@transaction.buyer)%> </td>    	  
+  	  <td><%= "#{ number_to_currency(@transaction.total_value) }" %> </td>  
+  	  <td> <%= "#{@transaction.status.capitalize}" %> </td>
+  	</tr>
+  </table>
+
+  <br class="spacer" />
+  <br class="spacer" />  
+  
+  
+  <div class="inputs">
+
+    <%= f.input :seller_response_comment, :label => "Feedback Response",
+                                          :as => :text,
+                                          :hint => "Reminder: all feedback is public",
+                                          :required => true,
+                                          :input_html => {:max_length => '255'} %>
+  </div>
+  
+  <br class="spacer"/>
+  <br class="spacer"/>
+  <br class="spacer"/>  
+
+  <div class="center_wrap">
+    <%= f.button :submit, "Submit Response", :class => "center" %>
+  </div>
+  
+<% end %>

@@ -55,6 +55,11 @@ MTGBazaar::Application.routes.draw do
   get   'transactions/:id/delivery'       => 'mtg/transactions#buyer_delivery_confirmation',          :as => 'buyer_delivery_confirmation'
   put   'transactions/:id/delivery'       => 'mtg/transactions#create_buyer_delivery_confirmation',   :as => 'create_buyer_delivery_confirmation'  
 
+  get   'transactions/:id/feedback'           => 'mtg/transactions/feedback#new',                     :as => 'new_feedback'
+  post  'transactions/:id/feedback'           => 'mtg/transactions/feedback#create',                  :as => 'create_feedback'
+  get   'transactions/:id/feedback/response'  => 'mtg/transactions/feedback#new_response',            :as => 'new_feedback_response'
+  post  'transactions/:id/feedback/response'  => 'mtg/transactions/feedback#create_response',         :as => 'create_feedback_response'
+
   # shipping labels
   
   get   'transactions/:id/shipping_label' => 'mtg/transactions/shipping_labels#create',   :as => 'create_shipping_label'

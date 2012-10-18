@@ -170,7 +170,7 @@ class Mtg::TransactionsController < ApplicationController
     return if not verify_shipment_privileges?(@transaction)    
     if @transaction.ship_sale
       ApplicationMailer.buyer_shipment_confirmation(@transaction).deliver # notify buyer that the sale has been confirmed 
-      redirect_to account_sales_path, :notice => "You have confirmed shipment of this sale..."
+      redirect_to show_mtg_transaction_path(@transaction), :notice => "You have confirmed shipment of this sale..."
     else
       flash[:error] = "There were one or more errors while trying to process your request..."
       render 'seller_shipment_confirmation'

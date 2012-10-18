@@ -8,6 +8,7 @@ class Mtg::Transaction < ActiveRecord::Base
   belongs_to :order,          :class_name => "Mtg::Order"
   has_one    :payment,        :class_name => "Mtg::Transactions::Payment",          :foreign_key => "transaction_id", :dependent => :destroy
   has_one    :shipping_label, :class_name => "Mtg::Transactions::ShippingLabel",    :foreign_key => "transaction_id", :dependent => :destroy
+  has_one    :feedback,       :class_name => "Mtg::Transactions::Feedback",         :foreign_key => "transaction_id", :dependent => :destroy
   has_many   :items,          :class_name => "Mtg::Transactions::Item" ,            :foreign_key => "transaction_id", :dependent => :destroy
 
 
@@ -59,7 +60,6 @@ class Mtg::Transaction < ActiveRecord::Base
       when "0"
         "Neutral"
     end
-    
   end
   
   # check whether seller has confirmed this transaction or not

@@ -1,102 +1,107 @@
-<% title "#{@transaction.transaction_number}" %>
+<% title "Transaction Details" %>
 
-<h1>Transaction <%= @transaction.transaction_number %></h1>
+<h1>Transaction Details</h1>
 
 <div class="ma-m">
 
   <table class="data">
 	  <tr class="header_row">
-  	  <th>Transaction ID</th>      	    
-  	  <th>Value</th>
-  	  <th>Status</th>      
+  	  <th style="width:50%;">Transaction Number</th>      	    
+  	  <th style="width:25%;">Item Value</th>
+  	  <th style="width:25%;">Created On</th>      
   	</tr>
-  	<tr class="even">
+  	<tr class="odd">
   	  <td><%= "#{@transaction.transaction_number}" %></td>
-  	  <td><%= "#{ number_to_currency(@transaction.total_value) }" %> </td>  
-  	  <td> <%= "#{@transaction.status.capitalize}" %> </td>
+  	  <td><%= number_to_currency(@transaction.total_value) %> </td>  
+  	  <td><%= display_time(@transaction.created_at) %> </td>
   	</tr>
 
 	</table>
 
-  <br class="spacer"/>
   <br class="spacer"/>  
   
   <table class="data">
   	<tr class="header_row">
-  	  <th></th>
   	  <th style="width:50%;">Buyer</th>
   	  <th style="width:50%;">Seller</th>      
   	</tr>
-  	<tr class="even">
-  	  <th class="header_row"><div class="mr ml">User</div></th>
-  	  <td>  <%= @transaction.buyer.username %> </td>
-  	  <td>  <%= @transaction.seller.username %> </td>
+  	<tr class="odd">
+  	  <td>  <%= link_to @transaction.buyer.username, user_path(@transaction.buyer) %> </td>
+  	  <td>  <%= link_to @transaction.seller.username, user_path(@transaction.seller) %> </td>
+  	</tr>
+  </table>
+  
+  <br class="spacer"/>
+  
+  <table class="data">
+    <tr class="header_row">
+      <th>Tracking Number</th>
+  	  <th>Shipping Cost</th>
+  	  <th>Shipped On</th>      
   	</tr>
   	<tr class="odd">
-  	  <th class="header_row"><div class="mr ml">Confirmation</div></th>  	  
-  	  <td>  <%= "Confirmed: #{display_time(@transaction.buyer_confirmed_at)}" if @transaction.buyer_confirmed_at.present? %> </td>
-  	  <td>  
-  	    <%= "Confirmed: #{display_time(@transaction.seller_confirmed_at)}" if @transaction.seller_confirmed_at.present? %>  
-    	  <%= "Rejected: #{display_time(@transaction.seller_rejected_at)}" if @transaction.seller_rejected_at.present? %>  
-  	  </td>
-  	</tr>  	
-  	<tr class="even">
-  	  <th class="header_row"><div class="mr ml">Shipment</div></th>  	  
-  	  <td> <%= "Shipped: #{@transaction.seller_shipped_at.strftime("%d-%b-%Y")}" if @transaction.seller_shipped_at.present? %> </td>
-  	  <td> <%= "Delivered: #{@transaction.seller_delivered_at.strftime("%d-%b-%Y")}" if @transaction.seller_delivered_at.present? %> </td>
-  	</tr>	
-	</table>
-
-  <br class="spacer"/>
-  <br class="spacer"/>
-	
-	<% if @transaction.status == "delivered" %>
-	  <table class="data">
-    	<tr class="header_row">
-    	  <th>Buyer Feedback</th>
-    	  <th>Feedback Message</th>    	  
-    	</tr>
-    	<tr class="even">
-    	  <td> <%= @transaction.display_feedback %> </td>
-    	  <td> <%= @transaction.buyer_feedback_text.present? ? @transaction.buyer_feedback_text : "None" %> </td>
-    	</tr>
-    </table>
-	<% end %>
- <div class="center_wrap">
-   <div class="center">
-        <% if current_user.id == @transaction.seller_id && @transaction.status == "pending" && @transaction.seller_confirmed_at == nil %>
-           <%= link_to "Confirm Sale", seller_sale_confirmation_path(@transaction), :class => "button ma" %> 
-           <%= link_to "Reject Sale", seller_sale_rejection_path(@transaction), :class => "button  ma"  %> 
-           <%= link_to "Modify Sale", seller_sale_modification_path(@transaction), :class => "button  ma"  %>                             
-        <% end %>
-
-        <% if current_user.id == @transaction.buyer_id && @transaction.status == "pending" && @transaction.seller_confirmed_at.present? %>
-           <%= link_to "Review Seller's Modifications", buyer_sale_modification_review_path(@transaction), :class => "button  ma"  %> 
-        <% end %>
-        <% if current_user.id == @transaction.seller_id && @transaction.status == "confirmed" %>
-           <div id="shipping_label_change" style="display:inline-block;">
-             <% if not @transaction.shipping_label.present? %>
-               <%= link_to "Create Shipping Label", create_shipping_label_path(@transaction), :class => "button ma", :remote => true, :style => "display:inline-block;" %>          
-             <% else %>             
-               <%= link_to "Download Shipping Label", @transaction.shipping_label.params[:url], :target => "_blank", :class => "button ma" %>          
-               <%= link_to "Confirm Shipment", seller_shipment_confirmation_path(@transaction), :class => "button ma" %> 
-             <% end %>
-           </div>
-        <% end %>
-        <% if @transaction.status == "shipped"%>
-          <%= link_to "Track Shipment", track_shipping_path(@transaction), :remote => true, :class => "button ma" %>
+  	  <td style="width:50%;"> 
+  	    <% if not @transaction.shipping_label.present? && @transaction.seller_id == current_user.id %>
+          <%= link_to "Create Shipping Label", create_shipping_label_path(@transaction), :target => "_blank", :class => "button ma-s", :style => "display:inline-block;" if @transaction.seller_id == current_user.id %>
+  	    <% elsif @transaction.seller_shipped_at.nil? && @transaction.seller_id == current_user.id %>
+          <%= link_to "View Shipping Label", create_shipping_label_path(@transaction), :target => "_blank", :class => "button ma-s", :style => "display:inline-block;" if @transaction.seller_id == current_user.id %>
+  	    <% else @transaction.shipping_label.present? && current_user.id == @transaction.buyer_id %>
+          <%= link_to @transaction.shipping_label.params[:tracking_number], track_shipping_path(@transaction), :remote => true %>
           <%= content_tag(:div, "", :class => "overlay_trigger hidden", :id => "tracking_overlay_trigger", :rel => "#tracking_overlay" ) %>
           <%= content_tag(:div, "", :class => "overlay_window", :id => "tracking_overlay") %>
-          <% if current_user.id == @transaction.buyer_id %>
-            <%= link_to "Complete Purchase", buyer_delivery_confirmation_path(@transaction), :class => "button  ma"  %> 
-          <% end %>
-        <% end %>        
-        <% if @transaction.status != "delivered" && @transaction.status != "rejected" && @transaction.status != "cancelled" && current_user.id == @transaction.buyer.id %>
-           <%= link_to "Cancel Sale", mtg_transaction_buyer_sale_cancellation_path(@transaction), :class => "button  ma" %> 
-        <% end %>  
-    </div>
-  </div>
-  <br class="spacer"/>
+  	    <% end %>
+  	  </td>
+  	  <td style="width:25%;"><%= number_to_currency(@transaction.shipping_cost) %></td>
+  	  <td style="width:25%;"> 
+  	    <% if @transaction.seller_shipped_at.present? %> 
+          <%= display_time(@transaction.seller_shipped_at) %>
+  	    <% elsif @transaction.seller_id == current_user.id && @transaction.shipping_label.present? %>
+  	      <%= link_to "Mark as Shipped", create_seller_shipment_confirmation_path(@transaction), :method => :put, :class => "button ma-s", :confirm => "Are you sure you want to mark this transaction as shipped?"%>
+  	    <% else %>
+          not yet shipped
+  	    <% end %>
+  	  </td>
+  	</tr>  	
+	</table>
+	
+	<br class="spacer"/>
+	
+	<table class="data">
+    <tr class="header_row">
+      <th style="width:50%;">Seller's Rating</th>
+   	  <th>Feedback Left On</th>
+   	</tr>
+   	<tr class="odd">
+   	  <% if @transaction.feedback.present? %>
+     	  <td><%= @transaction.feedback.display_feedback if @transaction.feedback.present? %></td>
+     	<% else %>
+     	  <td><%= link_to "Leave Feedback", create_feedback_path(@transaction), :class => "button ma-s", :style => "display:inline-block;"%></td>
+     	<% end %>
+   	  <td><%= display_time(@transaction.feedback.created_at) if @transaction.feedback.present? %>
+   	</tr>
+   	<tr class="header_row">
+   	  <th colspan=2>Buyer's Comment</th>
+   	</tr>
+   	<tr><td colspan=2 class="odd"><%= @transaction.feedback.comment if @transaction.feedback.present? %></td></tr>
+   	<tr class="header_row">
+   	  <th colspan=2>Seller's Response</th>
+   	</tr>
+   	<tr>
+   	  <td colspan=2 class="odd">
+   	    <% if @transaction.feedback.present? %>
+       	  <% if @transaction.feedback.seller_response_comment.present? %>
+         	  <%= @transaction.feedback.seller_response_comment if @transaction.feedback.present? %>
+       	  <% elsif current_user.id == @transaction.seller.id %>     	  
+            <%= link_to "Leave a Response", new_feedback_response_path(@transaction), :class => "button ma-s", :style => "display:inline-block;" %>
+          <% else %>
+            <i>none</i
+              
+              >
+       	  <% end %>
+       	<% end %>
+   	  </td>
+   	</tr>
+	</table>
  
   <h2> <%= pluralize @transaction.item_count, "Item", "Items" %> </h2>
 	
