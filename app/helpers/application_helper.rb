@@ -10,9 +10,9 @@ module ApplicationHelper
   
   def display_time(time, options = {})
     if options[:day] == false
-      time.strftime("%b %Y")
+      time.strftime("%m/%d/%y")
     else 
-      time.strftime("%b %d, %Y")
+      time.strftime("%m/%d/%y")
     end
   end
   

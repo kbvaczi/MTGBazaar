@@ -1,5 +1,5 @@
 <tr class=<%= cycle("odd","even") %>> 
-	<td><%= transaction.created_at.strftime("%d-%b %Y") %></td>
+	<td><%= transaction.created_at.strftime("%m/%d/%y") %></td>
   <td><%= link_to transaction.transaction_number, show_mtg_transaction_path(transaction) %></td>
  	<td>
  	  <% if current_user.id == transaction.buyer_id %>
