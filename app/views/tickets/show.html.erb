@@ -2,45 +2,75 @@
 
 <h1>Ticket Details</h1>
 <div class="ma">
+ 
+ <h2>Overview</h2>
   
-  <h2>Overview</h2>
-  <div class="ma">
-    <h3>Number</h3>
-    <p><%= @ticket.ticket_number %></p>
-    <h3>Status</h3>
-    <p><%= @ticket.status %></p>
-    <% if @ticket.offender_id.present? %>
-      <h3>Offender</h3>
-      <p><%= @ticket.offender.username %></p>
-    <% end %>
-    <% if @ticket.transaction.present? %>
-      <h3>Transaction</h3>
-      <p><%= @ticket.transaction.transaction_number %></p>
-    <% end %>
-    <h3>Description:</h3>
-    <p><%= @ticket.description %></p>
-  </div>
+	<table class="data">
+  <tr class="header_row">
+  	<th>Number</th>
+  	<th>Status</th>      
+ 		<th>Problem</th>
+		<th>Offender</th>
+ 		<th>Updates</th>
+ 		<th>Last Updated</th>
+  </tr>
+	
+ 
+  <tr class="odd">
+		<td><%= @ticket.ticket_number %></td>
+		<td><%= @ticket.status.capitalize %></td>
+		<td><%= @ticket.problem.capitalize %></td>
+		<td><% if @ticket.offender_id.present? %> 
+				<%= @ticket.offender.username %>
+				<% else %>
+				N/A
+				<% end %>
+			</td>
+		<td><%= @ticket.updates.count %></td>
+		<td><%= display_time(@ticket.updated_at) %></td>
+	</tr>
+	<tr class="header_row">
+		<th colspan=6>Description</th>
+	</tr>
+	<tr>
+		<td colspan=6 class="odd"><%= @ticket.description %></td>
+	</tr>
+	</table>
 
   <h2><%= pluralize @ticket.updates.count, "Update", "Updates" %></h2>
-  <% @ticket.updates.each do |ticket_update| %>
-  <div class="ma">
-    <h3>
-    <% if ticket_update.author.class.name == "User" %>
-      <%= ticket_update.author.username %>
-    <% else %>
-      <%= "Admin" %>
-    <% end %>
-    on <%= display_time(ticket_update.created_at) %>:
-    </h3>
-    <p> <%= ticket_update.description %> </p>
-    <% if ticket_update.complete_ticket? %>    
+  
+	<table class="data">
+		
+		
+		<tr class="header_row">
+			<th>Updated On</th>
+			<th>Updated By</th>
+			<th>Description</th>
+		</tr>
+					<% @ticket.updates.each do |ticket_update| %>
+		<tr class=<%= cycle("odd","even") %>>
+			<td><%= display_time(ticket_update.created_at) %></td>
+			<td><% if ticket_update.author.class.name == "User" %>
+      		<%= ticket_update.author.username %>
+    		<% else %>
+      		<%= "Admin" %>
+    		<% end %>
+			</td>
+			<td width="50%">
+				<div class="ma-s"><%= ticket_update.description %> </p>
+    	<% if ticket_update.complete_ticket? %>    
       <p> This ticket was closed </p>
-    <% end %>
-  </div>
+    		<% end %>
+				</div>
+			</td>
+		</tr>
+		
   <% end %>
+	
+</table>
 
   
-  <h2>Post a new update</h2>
+  <h2>Post a New Update</h2>
   <%= render :partial => "form_update" %>
   
 </div>
