@@ -1,8 +1,8 @@
 
 <br/><br/><br/><br/>
-<form action= "https://www.paypal.com/webapps/adaptivepayment/flow/pay" target="PPDGFrame">  
+<form action= "https://www.sandbox.paypal.com/webapps/adaptivepayment/flow/pay" target="PPDGFrame">  
 		<input id="type" type="hidden" name="expType" value="light">	 
-		<input id="paykey" type="hidden" name="paykey" value= <%= @purchase["payKey"] rescue ""%>>
+		<input id="paykey" type="hidden" name="paykey" value="<%= @purchase["payKey"] rescue ""%>">
 		<input type="submit" id="submitBtn" value="Pay with PayPal"> 	
 </form>
 

@@ -65,14 +65,15 @@
                                   :required => false %>    
 
       <%= f.input :scan,     		  :label => "Upload Scan",
-                                  :as => :file %>
+                                  :as => :file,
+                                  :hint => "Required to use advanced options other than foil" %>
 
       <%= f.input :description,   :label => "Description",
-                                  :hint => "Optional",
+                                  :placeholder => "Optional",
                                   :input_html => { :maxlength => 100 },
                                   :as => :string %>
 
-      <%= f.label "Options",      :style => "height:100px;"%>
+      <%= f.label "Advanced Options",      :style => "height:100px;"%>
 
       <%= f.input :foil,          :label => "Foil stamped",
                                   :default => false %>                                     

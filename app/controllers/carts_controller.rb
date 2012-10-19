@@ -4,6 +4,11 @@ class CartsController < ApplicationController
   
   def show
     set_back_path
+    if cookies[:checkout].present?
+      flash.now[:notice] = "Thanks for your purchase!"      if cookies[:checkout] == "success"
+      flash.now[:error]  = "Your purchase was cancelled..." if cookies[:checkout] == "failure"  
+      cookies[:checkout] = ""
+    end
     @orders = current_cart.orders.includes(:reservations, :listings, :seller)
     
     respond_to do |format|

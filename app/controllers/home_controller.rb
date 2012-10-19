@@ -9,8 +9,6 @@ class HomeController < ApplicationController
       @news_feeds = NewsFeed.where(:id => 1)
     end
     
-    Rails.logger.info(GirlFriday.status)
-    
   end
   
   def test
@@ -24,11 +22,11 @@ class HomeController < ApplicationController
         :signature => PAYPAL_CONFIG[:api_signature],
         :appid =>     PAYPAL_CONFIG[:appid] )
 
-      recipients = [ {:email => "darnovo@gmail.com",
+      recipients = [ {:email => "seller_1348611401_per@mtgbazaar.com",
                       :primary => true,
                       :amount => "10.00" },
                       
-                      {:email => "paypal@mtgbazaar.com",
+                      {:email => "seller_1345565383_biz@mtgbazaar.com",
                        :primary => false,
                        :amount => "2.00" } ]   
                        
@@ -94,7 +92,7 @@ class HomeController < ApplicationController
       
       # For redirecting the customer to the actual paypal site to finish the payment.
       #redirect_to (gateway.redirect_url_for(@purchase["payKey"]))
-      #redirect_to (gateway.embedded_flow_url_for(@purchase["payKey"]))      
+      redirect_to (gateway.embedded_flow_url_for(@purchase["payKey"]))      
       
       #redirect_to "https://www.paypal.com/webapps/adaptivepayment/flow/pay?paykey=#{@purchase[:payKey]}"
  
