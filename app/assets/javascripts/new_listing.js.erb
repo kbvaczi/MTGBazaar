@@ -8,12 +8,18 @@ $(document).ready(function() {
       $("#New_Generic_Set_Block").show();
       var selection_array = data;
       $("#mtg_cards_listing_set").empty();
-      $("#mtg_cards_listing_set").append('<option value></option>'); // give null value so label shows
-      $(selection_array).each(function(index, item) {
-         $("#mtg_cards_listing_set").append('<option value=' + item[1] + '>' + item[0] + '</option>');
-      });
-      $("#mtg_cards_listing_set").removeAttr('disabled');
-      $("#mtg_cards_listing_set").trigger("liszt:updated");
+      $("#mtg_cards_listing_set").removeAttr('disabled');      
+      $("#mtg_cards_listing_set").append('<option value></option>'); // give null value so label shows      
+      if (selection_array.length > 1) {
+        $(selection_array).each(function(index, item) {
+           $("#mtg_cards_listing_set").append('<option value=' + item[1] + '>' + item[0] + '</option>');           
+        });
+        $("#mtg_cards_listing_set").trigger("liszt:updated");
+      } else if (selection_array.length == 1) {
+        $("#mtg_cards_listing_set").append('<option selected=selected value=' + selection_array[0][1] + '>' + selection_array[0][0] + '</option>');
+        $("#mtg_cards_listing_set").trigger("liszt:updated");
+        $("#mtg_cards_listing_set").trigger("change");
+      }
     });      
   });
   

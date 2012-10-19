@@ -6,7 +6,7 @@
       
   <% if params[:set] %>
     <%#= link_to("<<back", mtg_cards_path)%>
-    <%= back_link(:path => url_for(params.merge(:set => nil)), :message => "Back to sets") %>         
+    <%= back_link(:path => url_for(params.merge(:set => nil, :page => nil)), :message => "Back to sets") %>         
     <table class="data">
       <tr class="header_row">
         <td>Set</td>
@@ -15,7 +15,7 @@
         <td>Cards</td>
       </tr>
       <tr class=<%= cycle("even","odd") %>>
-        <td style="text-align:left;width:150px;padding-left:10px;"><%= @set.name %></td>
+        <td><%= @set.name %></td>
         <td><%= display_time(@set.release_date) rescue ""%> </td>
         <td><%= display_set_symbol(@set) %></td>
         <td><%= @set.cards.count %></td>
@@ -23,11 +23,11 @@
 
     </table>
     
-    <br class="spacer" />  
-    
+
+
     <%= render :partial => "teaser", :collection => @mtg_cards, :as => "mtg_card" %>
     
-    <div class="paginator right">
+    <div class="paginator center_wrap">
       <%= paginate @mtg_cards, :method => :get %>
     </div>
     
@@ -41,8 +41,8 @@
       </tr>
       <% @sets.each do |set| %>
         <tr class=<%= cycle("even","odd") %>>
-          <td style="text-align:left;padding-left:10px;"><%= link_to "#{set.name}", mtg_cards_path(:set => set.code) %></td>
-          <td><%= display_time(set.release_date) rescue ""%> </td>
+          <td><%= link_to "#{set.name}", mtg_cards_path(:set => set.code) %></td>
+          <td><%= display_time(set.release_date, :day => false) rescue ""%> </td>
           <td><%= display_set_symbol(set) %></td>
         </tr>
       <% end %>  

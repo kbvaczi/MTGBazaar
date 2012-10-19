@@ -12,9 +12,9 @@ MTGBazaar::Application.routes.draw do
  
 # SHOPPING CART ------------- #
 
-  post    "mtg/listings/:id/add_to_cart"      => "carts#add_mtg_cards",             :as => 'add_to_cart_mtg_listing'      
-  delete  "mtg/listings/:id/remove_from_cart" => "carts#remove_mtg_cards",          :as => 'remove_from_cart_mtg_listing'
-  post    "mtg/listings/:id/update_quantity"  => "carts#update_quantity_mtg_cards", :as => 'update_quantity_in_cart_mtg_cards'  
+  post    "mtg/cards/listings/:id/add_to_cart"      => "carts#add_mtg_cards",             :as => 'add_to_cart_mtg_listing'      
+  delete  "mtg/cards/listings/:id/remove_from_cart" => "carts#remove_mtg_cards",          :as => 'remove_from_cart_mtg_listing'
+  post    "mtg/cards/listings/:id/update_quantity"  => "carts#update_quantity_mtg_cards", :as => 'update_quantity_in_cart_mtg_cards'  
 
   get     'mtg/cart'                          => 'carts#show',                      :as => 'show_cart'
   
@@ -33,8 +33,8 @@ MTGBazaar::Application.routes.draw do
   
   # listings
   
-  put     "mtg/cards/listings/:id/set_active"       => "mtg/cards/listings#set_active",         :as => 'mtg_listing_set_active'  
-  put     "mtg/cards/listings/:id/set_inactive"     => "mtg/cards/listings#set_inactive",       :as => 'mtg_listing_set_inactive'  
+  put     "mtg/cards/listings/:id/set_active"       => "mtg/cards/listings#set_active",         :as => 'mtg_cards_listing_set_active'  
+  put     "mtg/cards/listings/:id/set_inactive"     => "mtg/cards/listings#set_inactive",       :as => 'mtg_cards_listing_set_inactive'  
 
   # transactions
   get   'transactions/:id'                => 'mtg/transactions#show',                                 :as => 'show_mtg_transaction'

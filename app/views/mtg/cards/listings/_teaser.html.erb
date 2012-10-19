@@ -44,10 +44,10 @@
     </div>
     <div class="teaser_row_actions_list" style="display:none">
       <ul>
-        <li> <%= link_to "Edit", edit_mtg_listing_path(listing)%> </li>
-        <li> <%= link_to "Set as Active", mtg_listing_set_active_path(listing), :method => :put if not listing.active %> </li>  
-        <li> <%= link_to "Set as Inactive", mtg_listing_set_inactive_path(listing), :method => :put if listing.active %> </li>          
-        <li> <%= link_to "Remove", mtg_listing_path(listing), :method => :delete , :confirm => "Are you sure you want to permanently delete this listing?"%> </li>
+        <li> <%= link_to "Edit", edit_mtg_cards_listing_path(listing)%> </li>
+        <li> <%= link_to "Set as Active", mtg_cards_listing_set_active_path(listing), :method => :put if not listing.active %> </li>  
+        <li> <%= link_to "Set as Inactive", mtg_cards_listing_set_inactive_path(listing), :method => :put if listing.active %> </li>          
+        <li> <%= link_to "Remove", mtg_cards_listing_path(listing), :method => :delete , :confirm => "Are you sure you want to permanently delete this listing?"%> </li>
       </ul>
     </div>
   </td>

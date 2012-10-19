@@ -11,7 +11,7 @@
                                   :required => true %>
     </div>
     
-    <% if not (params[:mtg_listing] && params[:mtg_listing][:set].present?) %>
+    <% if not (params[:mtg_cards_listing] && params[:mtg_cards_listing][:set].present?) %>
       <div id="New_Generic_Set_Block" style="display:none;">        
         <%= f.input :set,           :label => "Set",
                                     :as => :select,                                  
@@ -28,7 +28,7 @@
       </div>    
     <% end %>
     
-    <div id="New_Generic_Info_Block" <%= "style=display:none;" if not params[:mtg_listing].present? %>>                      
+    <div id="New_Generic_Info_Block" <%= "style=display:none;" if not params[:mtg_cards_listing].present? %>>                      
       <%= f.input :condition,     :label => "Condition",
                                   :as => :select,
                                   :collection => condition_list,
@@ -43,17 +43,17 @@
 
       <%= f.input :price_options, :label => "Asking Price",
                                   :as => :select,
-                                  :collection =>  params[:mtg_listing].present? ? [["Low (#{number_to_currency @card.statistics.price_low.dollars})", @card.statistics.price_low.dollars],
+                                  :collection =>  params[:mtg_cards_listing].present? ? [["Low (#{number_to_currency @card.statistics.price_low.dollars})", @card.statistics.price_low.dollars],
                                                   ["Average (#{number_to_currency @card.statistics.price_med.dollars})", @card.statistics.price_med.dollars], 
                                                   ["High (#{number_to_currency @card.statistics.price_high.dollars})", @card.statistics.price_high.dollars], 
                                                   ["Other", "other"]] : [],
                                   :input_html => { :class => "chzn-select chzn-nosearch" },                                  
                                   :required => 'true' %>
 
-      <div id="Custom_Pricing_Block" <%= "style=display:none;" unless (params[:mtg_listing] && params[:mtg_listing][:price_options] == "other") %>> 
+      <div id="Custom_Pricing_Block" <%= "style=display:none;" unless (params[:mtg_cards_listing] && params[:mtg_cards_listing][:price_options] == "other") %>> 
         <%= f.input :price,         :label => "Custom Pricing",
                                     :as => :string,
-                                    :input_html => {:class => "currency_input", :maxlength => 9, :value => params[:mtg_listing].present? ? params[:mtg_listing][:price] : "$ 1.00"},
+                                    :input_html => {:class => "currency_input", :maxlength => 9, :value => params[:mtg_cards_listing].present? ? params[:mtg_cards_listing][:price] : "$ 1.00"},
                                     :required => true %>                                  
       </div>
 

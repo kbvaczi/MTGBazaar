@@ -14,9 +14,6 @@ ActiveAdmin.register Mtg::Cards::Listing do
   scope :inactive do |listings|
     listings.inactive
   end
-  scope :reserved do |listings|
-    listings.reserved
-  end
   
   # ------ INDEX PAGE CUSTOMIZATIONS ------ #
   # Customize columns displayed on the index screen in the table

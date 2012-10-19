@@ -42,13 +42,13 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   end
   
   def update_statistics_cache_on_save
-    statistics.listings_available(:overwrite => true)
-    statistics.price_min(:overwrite => true) if price <= statistics.price_min
+    self.statistics.listings_available(:overwrite => true)
+    self.statistics.price_min(:overwrite => true) if self.price <= statistics.price_min || statistics.price_min == 0
   end
   
   def update_statistics_cache_on_delete
-    statistics.listings_available(:overwrite => true)
-    statistics.price_min(:overwrite => true) if price <= statistics.price_min
+    self.statistics.listings_available(:overwrite => true)
+    self.statistics.price_min(:overwrite => true) if self.price <= statistics.price_min || statistics.price_min == 0
   end
   
   # --------------------------------------- #

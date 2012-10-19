@@ -9,7 +9,9 @@
     </ul>
   </div>
 
+  <%= link_to "Create a New Listing", new_generic_mtg_cards_listings_path, :class => "right", :style => "margin-top:23px;margin-right:10px;" %>
   <h2><%="#{@listings.total_count} #{(params[:status] || "").capitalize} Listings"%></h2>
+
 
   <%= form_tag account_listings_path, :method => :get, :id => "account_listings_filters", :remote => false do %>   
     <%= hidden_field_tag :status, params[:status] %>
@@ -25,8 +27,8 @@
       </div>      
     </div>
   <% end %>
-  <br class="spacer"/>
-  
+
+  <br class="spacer"/>  
   <br class="spacer"/>
   
   <table class="data">
@@ -40,7 +42,7 @@
     		<th>Qty.</th>
     		<th>Menu</th>
     	</tr>
-      <%= render :partial => "mtg/listings/teaser" , :collection => @listings, :as => "listing" %>      
+      <%= render :partial => "mtg/cards/listings/teaser" , :collection => @listings, :as => "listing" %>      
   </table>
   
   <div class="center_wrap">
