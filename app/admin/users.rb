@@ -33,10 +33,10 @@ ActiveAdmin.register User do
     column "Name", :sortable => :'accounts.last_name' do |user|
       "#{user.account.last_name}, #{user.account.first_name} "
     end  
-    column :email    
-    column "balance", :sortable => :'accounts.balance' do |user|
-      number_to_currency user.account.balance.dollars #balance is in cents
-    end
+    column :email
+    column "Paypal Email", :sortable => :'accounts.paypal_username' do |user|
+      user.account.paypal_username
+    end 
     column "Current Sign-in", :current_sign_in_at
     column "Last Sign-in", :last_sign_in_at
     column "Banned?", :sortable => :banned do |user|
@@ -85,11 +85,6 @@ ActiveAdmin.register User do
       row :state
       row :city
       row :zipcode
-      row :balance
-      row :number_sales
-      row :number_purchases
-      row :vacation
-      row :average_rating
     end    
   end
   

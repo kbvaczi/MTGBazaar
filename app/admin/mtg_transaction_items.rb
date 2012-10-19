@@ -15,12 +15,14 @@ ActiveAdmin.register Mtg::Transactions::Item do
   # Customize columns displayed on the index screen in the table
   index :title => "test" do
     column :id, :sortable => :id do |l|
-      link_to l.id, admin_mtg_transaction_item_path(l)
+      link_to l.id, admin_mtg_transactions_item_path(l)
     end
     column 'Transaction', :sortable => :'transaction.transaction_number'  do |item|
       link_to item.transaction.transaction_number, admin_mtg_transaction_path(item.transaction)
     end
-    column :seller
+    column :seller, :sortable => false do |i|
+      i.seller.username rescue "ERROR"
+    end
     column "Card", :sortable => false do |l|
       link_to display_name(l.card.name), admin_mtg_card_path(l.card.id)
     end

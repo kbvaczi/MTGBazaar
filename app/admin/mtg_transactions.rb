@@ -41,7 +41,7 @@ ActiveAdmin.register Mtg::Transaction do
     column :buyer
     column :seller
     column "Items", :sortable => false do |transaction|
-       link_to transaction.items.sum(:quantity_requested), admin_mtg_transaction_items_path("q[transaction_id_eq]" => transaction.id)
+       link_to transaction.items.sum(:quantity_requested), admin_mtg_transactions_items_path("q[transaction_id_eq]" => transaction.id)
     end
     column :value
     column :shipping_cost

@@ -78,7 +78,7 @@ class Mtg::CardsController < ApplicationController
       query << ["card_type LIKE ?", "#{cookies[:search_type]}"] if cookies[:search_type].present?
       query << ["card_subtype LIKE ?", "%#{cookies[:search_subtype]}%"] if cookies[:search_subtype].present?
       query << ["artist LIKE ?", "#{cookies[:search_artist]}"] if cookies[:search_artist].present?
-      query << SmartTuple.new(" AND ").add_each(cookies[:search_abilities]) {|v| ["mtg_cards.description LIKE ?", "%#{v}%"]} if cookies[:search_abilities].present?
+      query << SmartTuple.new(" AND ").add_each(cookies[:search_abilities].split(",")) {|v| ["mtg_cards.description LIKE ?", "%#{v}%"]} if cookies[:search_abilities].present?
       if cookies[:search_language].present? or cookies[:search_options].present? or cookies[:search_seller_id].present? or params[:show] == "listed"
         params[:show] = "listed" unless params[:show] == "all"
         # language filters
