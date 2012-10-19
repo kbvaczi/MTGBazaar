@@ -12,7 +12,7 @@
   	</tr>
   	<tr class="odd">
   	  <td><%= "#{@transaction.transaction_number}" %></td>
-  	  <td><%= number_to_currency(@transaction.total_value) %> </td>  
+  	  <td><%= number_to_currency(@transaction.value) %> </td>  
   	  <td><%= display_time(@transaction.created_at) %> </td>
   	</tr>
 
@@ -74,7 +74,7 @@
    	<tr class="odd">
    	  <% if @transaction.feedback.present? %>
      	  <td><%= @transaction.feedback.display_feedback if @transaction.feedback.present? %></td>
-     	<% else %>
+     	<% elsif if current_user.id == @transaction.buyer.id %>
      	  <td><%= link_to "Leave Feedback", create_feedback_path(@transaction), :class => "button ma-s", :style => "display:inline-block;"%></td>
      	<% end %>
    	  <td><%= display_time(@transaction.feedback.created_at) if @transaction.feedback.present? %>
