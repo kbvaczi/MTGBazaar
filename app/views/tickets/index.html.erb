@@ -10,54 +10,31 @@
   </div>
   
   <h2><%="#{@tickets.count} #{(params[:status] || "").capitalize} Tickets"%></h2>
-  
-  <%# header Row %>
-  <div class="teaser_row">
-    <div style="width:15%;text-align:left;">
-      <u>Number</u>
-    </div>
-    <div style="width:15%">
-      <u>Status</u>
-    </div>
-    <div style="width:25%">  
-      <u>Problem</u>
-    </div>
-    <div style="width:10%">
-      <u>Updates</u>
-    </div>    
-    <div style="width:25%">
-      <u>Last Updated</u>
-    </div>    
-    <%# width: 15 percent %>
-    <div style="width:10%">
-    </div>
-  </div>
-
-  <%# Data Rows %>
+	
+	<table class="data">
+  <tr class="header_row">
+  	<th>Number</th>
+  	<th>Status</th>      
+ 		<th>Problem</th>
+ 		<th>Updates</th>
+ 		<th>Last Updated</th>
+		<th> </th>
+  </tr>
+	
   <% @tickets.each do |ticket| %>
-  
-    <div class="teaser_row <%= cycle("odd","even")%>">
-      <div style="width:15%;text-align:left;">
-        <%= ticket.ticket_number %>
-      </div>
-      <div style="width:15%">
-        <%= ticket.status.capitalize %>
-      </div>
-      <div style="width:25%">  
-        <%= ticket.problem.capitalize %>
-      </div>
-      <div style="width:10%">
-        <%= ticket.updates.count %>
-      </div>
-      <div style="width:25%">
-        <%= display_time(ticket.updated_at) %>
-      </div> 
-      <div style="width:10%">
-        <%= link_to "Details", ticket_path(ticket) %>
-      </div>
-    </div>
-  <% end %> <%#data rows %>
-  
+  <tr class=<%= cycle("odd","even") %>>
+		<td><%= ticket.ticket_number %></td>
+		<td><%= ticket.status.capitalize %></td>
+		<td><%= ticket.problem.capitalize %></td>
+		<td><%= ticket.updates.count %></td>
+		<td><%= display_time(ticket.updated_at) %></td>
+		<td><%= link_to "Details", ticket_path(ticket) %></td>
+	</tr>
+     
+  <% end %> 
+	
+	</table>
+
   <div class="paginator">
     <%= paginate @tickets, :method => :get %>
   </div>

@@ -1,6 +1,6 @@
-<% title 'Sign up' %>
+<% title 'Sign Up' %>
 
-<h1>Sign up</h1>
+<h1>Sign Up</h1>
 
 
 <%# use @user instance variable to capture changes in @account for incorrect form entry%>
@@ -18,13 +18,20 @@
   <%= f.input :email ,                :required => true,
                                       :placeholder => "name@domain.com" %>
 
+	  <%= f.simple_fields_for :account do |a| %>
+																				
+	<%= a.input :paypal_username, 			:label => "Paypal Email", 
+																			:required => false,
+																			:placeholder => "paypal@domain.com",
+																			:hint => "Verified PayPal required for sellers" %> 
+
   <%= f.input :password,              :required => true, 
                                       :hint => "must be at least 8 characters"  %>
 
   <%= f.input :password_confirmation, :label => "Confirm Password", 
                                       :required => true %>
 
-  <%= f.simple_fields_for :account do |a| %>
+  
     <%= a.input :security_question,   :label => "Security Question", 
                                       :collection => [  "What was the make of your first car?",
                                                         "What is your mother's maiden name?",

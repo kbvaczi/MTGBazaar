@@ -66,7 +66,8 @@
                                 :required => false %>    
 
    	<%= f.input :scan,     		  :label => "Upload Scan",
-  							                :as => :file %>
+  							                :as => :file,
+																:hint => "Required for Signed, Misprints and Altered" %>
 						                                                          
 
     <%= f.input :description,   :label => "Description",
