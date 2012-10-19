@@ -1,5 +1,5 @@
 class CreatePaymentNotifications < ActiveRecord::Migration
-  def change
+  def up
     create_table :payment_notifications do |t|
       t.text :params
       t.string :status
@@ -8,5 +8,9 @@ class CreatePaymentNotifications < ActiveRecord::Migration
 
       t.timestamps
     end
+  end
+  
+  def down
+    drop_table :payment_notifications if ActiveRecord::Base.connection.table_exists? 'payment_notifications' 
   end
 end

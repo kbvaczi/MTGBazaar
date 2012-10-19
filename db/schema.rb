@@ -210,7 +210,7 @@ ActiveRecord::Schema.define(:version => 20121017185632) do
     t.integer  "block_id"
     t.string   "name",         :default => "",           :null => false
     t.string   "code",         :default => "",           :null => false
-    t.date     "release_date", :default => '2012-09-22'
+    t.date     "release_date", :default => '2012-10-19'
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.boolean  "active",       :default => false,        :null => false
@@ -399,13 +399,6 @@ ActiveRecord::Schema.define(:version => 20121017185632) do
   add_index "tickets", ["offender_id"], :name => "index_tickets_on_offender_id"
   add_index "tickets", ["transaction_id"], :name => "index_tickets_on_transaction_id"
   add_index "tickets", ["transaction_type"], :name => "index_tickets_on_transaction_type"
-
-  create_table "transactions", :force => true do |t|
-    t.integer  "test1_id"
-    t.integer  "test2_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
 
   create_table "user_statistics", :force => true do |t|
     t.integer  "user_id"

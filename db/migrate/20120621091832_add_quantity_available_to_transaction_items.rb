@@ -1,4 +1,4 @@
-class AddQuantityAvailableToTransactions::Items < ActiveRecord::Migration
+class AddQuantityAvailableToTransactionItems < ActiveRecord::Migration
   # Create a Faux class so that validations are not run when model is updated... prevents migration conflicts
   class Mtg::Transactions::Item < ActiveRecord::Base
   end

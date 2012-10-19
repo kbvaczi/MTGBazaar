@@ -38,7 +38,7 @@ class AddValueAndShippingToTransactions < ActiveRecord::Migration
     remove_column :mtg_transactions, :value
     remove_column :mtg_transactions, :shipping_cost
     
-    drop_table :mtg_transaction_payments
-    drop_table :mtg_transaction_credits  
+    drop_table :mtg_transaction_payments if ActiveRecord::Base.connection.table_exists? 'mtg_transaction_payments' 
+    drop_table :mtg_transaction_credits  if ActiveRecord::Base.connection.table_exists? 'mtg_transaction_credits' 
   end
 end

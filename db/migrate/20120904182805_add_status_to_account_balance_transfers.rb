@@ -15,7 +15,7 @@ class AddStatusToAccountBalanceTransfers < ActiveRecord::Migration
   end
   
   def down
-    remove_column :account_balance_transfers, :status
+    remove_column :account_balance_transfers, :status if ActiveRecord::Base.connection.table_exists? 'account_balance_transfers' 
   end
 
 end

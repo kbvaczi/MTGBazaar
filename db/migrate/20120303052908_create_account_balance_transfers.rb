@@ -19,6 +19,6 @@ class CreateAccountBalanceTransfers < ActiveRecord::Migration
   end
   
   def down
-    drop_table :account_balance_transfers
+    drop_table :account_balance_transfers if ActiveRecord::Base.connection.table_exists? 'account_balance_transfers' 
   end
 end
