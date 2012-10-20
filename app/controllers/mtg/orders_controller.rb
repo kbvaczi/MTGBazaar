@@ -57,8 +57,8 @@ class Mtg::OrdersController < ApplicationController
         return
       end
       order.checkout_transaction
-      #ApplicationMailer.seller_sale_notification(transaction).deliver # send sale notification email to seller
-      #ApplicationMailer.buyer_checkout_confirmation(transaction).deliver # send sale notification email to seller        
+      ApplicationMailer.seller_sale_notification(transaction).deliver # send sale notification email to seller
+      ApplicationMailer.buyer_checkout_confirmation(transaction).deliver # send sale notification email to seller        
       current_cart.update_cache # empty the shopping cart
     end
     cookies[:checkout] = "success"
