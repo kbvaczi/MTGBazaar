@@ -1,5 +1,5 @@
 <div class="card_image_wrapper">
-  <%= content_tag(:div, "", :class => "mtg_card_image #{"mtg_card_image_horizontal" if mtg_card.card_type == "Plane"}", :style => "background-image:url('#{mtg_card.image_path}');background-size:180px 258px;")    %>
+  <%= content_tag(:div, "", :class => "mtg_card_image #{"mtg_card_image_horizontal" if mtg_card.card_type == "Plane"}", :style => "background-image:url('#{mtg_card.image_path}');")    %>
   <%#= image_tag(mtg_card.image_path, :class => "mtg_card_image #{"mtg_card_image_horizontal" if mtg_card.card_type == "Plane"}") %>
   <% if mtg_card.dual_sided_card? %>
     <div>

@@ -10,6 +10,7 @@ protected
       flash[:notice] = nil #erase any notice so that error can be displayed
       root_path
     elsif resource.is_a?(User)
+      flash[:notice] = "Welcome back #{resource.username}"
       back_path
     else
       super

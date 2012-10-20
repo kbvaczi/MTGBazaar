@@ -43,15 +43,35 @@ class ApplicationController < ActionController::Base
   
   # sets the current page as the back path for following pages to return to when back_path is redirected to
   def set_back_path
-    session[:return_to] = request.fullpath
+    unless @new_back_path_queue.present?                                                                              # prevents this from breaking if called multiple times during one request
+      current_back_path_queue = session[:back_path] || Array.new
+      @new_back_path_queue    = current_back_path_queue.dup                                                           # create a copy so the two aren't linked to the same memory address
+      current_path            = request.fullpath
+      if current_back_path_queue.include?(current_path)                                                               # if we are revisiting an old link in the queue, let's clean up the queue (prevents infinite loops)
+        @new_back_path_queue.pop(@new_back_path_queue.length - @new_back_path_queue.index(current_path))              # remove everyting in the queue visited after this link in the queue
+      end                                                                 
+      @new_back_path_queue.push(current_path)
+      @new_back_path_queue.shift if @new_back_path_queue.length > 10                                                  # manage queue size maximum
+      session[:back_path]     = @new_back_path_queue unless @new_back_path_queue == current_back_path_queue           # don't hit database again if back path queue hasn't changed
+      Rails.logger.debug("BACK_PATH_LENGTH #{session[:back_path].length}")
+      Rails.logger.debug("BACK_PATH #{session[:back_path]}")    
+    end
   end
   
   # returns to the url where set_back_path has last been set and clears back_path
   helper_method :back_path
   def back_path
-    return_path = session[:return_to] || root_path
-    session[:return_to] = nil
-    return return_path
+    unless @back_path.present?
+      current_path = request.fullpath
+      current_back_path_queue = @new_back_path_queue || session[:back_path] || [root_path]                      
+      if current_back_path_queue.include?(current_path)
+        @back_path = current_back_path_queue[@new_back_path_queue.index(current_path) -1] || root_path  
+      else
+        @back_path = current_back_path_queue.last
+      end
+      Rails.logger.debug("BACK_PATH \"#{@back_path}\"")    
+    end
+    @back_path
   end
   
   # returns the current users's cart model 

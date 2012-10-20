@@ -54,9 +54,12 @@
 
                           
         </div>
-        <div id="center_bar">
-          <%= yield %>
-        </div>        
+        <div id="center_bar_wrapper">
+          <%= back_link(:message => "Back", :path => back_path) unless request.fullpath == root_path %>       
+          <div id="center_bar">
+            <%= yield %>
+          </div>        
+        </div>
         <div id="right_bar">
           <%= render :partial => 'shared/right_bar' %>
         </div>                

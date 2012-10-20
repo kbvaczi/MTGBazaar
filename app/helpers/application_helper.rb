@@ -28,7 +28,7 @@ module ApplicationHelper
   end
   
   def back_link(options)
-    content_tag :div, link_to("back", options[:path] || request.referer, :class => "bx-prev", :style => "top:6px;") + content_tag(:div, options[:message] || "Back", :class => "t-s", :style => "position:absolute;top:10px;left:28px;")
+    content_tag :div, link_to("back", options[:path] || back_path) + content_tag(:div, options[:message] || "Back", :class => "t-s"), :id => "back_link"
   end
 
   def table_sort_header(title, options = {:value => nil, :remote => false, :params => nil})

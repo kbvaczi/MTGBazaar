@@ -1,6 +1,6 @@
 class Mtg::CardsController < ApplicationController
   
-  after_filter :set_back_path, :only => [:index, :show, :search]
+  before_filter :set_back_path, :only => [:index, :show, :search]
   
   include ApplicationHelper
   
@@ -61,7 +61,6 @@ class Mtg::CardsController < ApplicationController
 
   def search
     # SEARCH CARDS
-    set_back_path
     query = SmartTuple.new(" AND ")
     
     query << ["mtg_cards.active LIKE ?", true]
@@ -95,7 +94,7 @@ class Mtg::CardsController < ApplicationController
     else
       params[:search_type] = "" # clear search type after an exact search to prevent ajax from continuing exact searches
     end
-    cookies[:search_page] = params[:page] if params[:page] # set page number if this was a search request, otherwise we keep the old one for return paths
+    cookies[:search_page] = params[:page] || 1 # if params[:page] # set page number if this was a search request, otherwise we keep the old one for return paths
     
     @mtg_cards = Mtg::Card.includes(:set, {:listings => :seller}, :statistics).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(cookies[:search_page]).per(20)
     

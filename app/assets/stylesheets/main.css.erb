@@ -402,11 +402,9 @@ textarea {
   box-shadow:         0px 1px 1px 0px #bbb;
 }
 .right_bar2 {
-	
 	cursor:pointer;
 	background-size:100% 100%;
 	background-repeat:no-repeat;
-
 }
 #center_bar {
   position:relative;
@@ -422,6 +420,34 @@ textarea {
   -moz-box-shadow:    0px 1px 1px 0px #bbb;
   -webkit-box-shadow: 0px 1px 1px 0px #bbb;
   box-shadow:         0px 1px 1px 0px #bbb;  
+}
+#center_bar_wrapper {
+  position:relative;
+  float:left;
+  display:inline-block;
+}
+#back_link {
+  position:absolute;
+  z-index:1;
+  left:10px;
+}
+#back_link a {
+	position:absolute;
+	top:16px;
+	left:10px;
+	z-index:0;
+	width: 15px;
+	height: 15px;
+	text-indent: -999999px;
+  background: url('https://s3.amazonaws.com/mtgbazaar/images/gray_prev.png') no-repeat 0 -15px;
+}
+#back_link a:hover {
+	background-position: 0 0;
+}
+#back_link div {
+  position:relative;
+  top:20px;
+  left:28px;
 }
 #cta {
   background: #FFF;
