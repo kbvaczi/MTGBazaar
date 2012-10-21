@@ -9,6 +9,8 @@ class HomeController < ApplicationController
       @news_feeds = NewsFeed.where(:id => 1)
     end
     
+    Rails.logger.debug "GirlFriday STATUS: #{GirlFriday.status}"
+    
   end
   
   def test
@@ -23,34 +25,12 @@ class HomeController < ApplicationController
         :appid =>     PAYPAL_CONFIG[:appid] )
 
       recipients = [ {:email => "seller_1348611401_per@mtgbazaar.com",
-                      :primary => true,
+                      :primary => false,
                       :amount => "10.00" },
                       
                       {:email => "seller_1345565383_biz@mtgbazaar.com",
-                       :primary => false,
-                       :amount => "2.00" } ]   
-                       
-      second_leg =   [ {:email => "seller_1348611401_per@mtgbazaar.com",
-                        :primary => false,
-                        :amount => "8.00" } ]
-                         
-      refunder     =  [ {:email => "seller_1345565383_biz@mtgbazaar.com",
-                         :primary => true,
-                         :amount => "5.00" } ]                         
-=begin
-       @pre_approval = gateway.preapprove_payment(
-         :return_url            => root_url(:notice => "return"),
-         :cancel_url            => root_url(:notice => "cancel"),
-         :displayMaxTotalAmount => "TRUE", 
-         :memo                  => "<br/>$52 dollars total split among 5 transactions. <br/>Note: Your account will be charged when seller confirms sale",
-         :start_date            => Time.now,
-         :end_date              => Time.now + 30.days,
-        # :sender_email         => "buyer_1348611316_per@mtgbazaar.com",
-
-         :currency_code        => "USD",
-         :max_amount           => "50.00",
-         :max_number_of_payments  => "5" )
-=end
+                       :primary => true,
+                       :amount => "20.00" } ]   
 
       @purchase = gateway.setup_purchase(
         :action_type          => "PAY",

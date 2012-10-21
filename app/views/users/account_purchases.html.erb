@@ -6,10 +6,8 @@
   <div class="group center_wrap">
     <ul class="tabs center">
         <li <%= "class=selected" if request.fullpath ==  account_purchases_path %>> <%= link_to "All (#{current_user.mtg_purchases.count})", account_purchases_path %> </li>
-        <li <%= "class=selected" if params[:status] == "pending" %>> <%= link_to "Pending (#{current_user.mtg_purchases.where(:status => "pending").count})", account_purchases_path(:status => "pending")%> </li>
-        <li <%= "class=selected" if params[:status] == "confirmed" %>> <%= link_to "Confirmed (#{current_user.mtg_purchases.where(:status => "confirmed").count})", account_purchases_path(:status => "confirmed") %> </li>      
+        <li <%= "class=selected" if params[:status] == "confirmed" %>> <%= link_to "Awaiting Shipment (#{current_user.mtg_purchases.where(:status => "confirmed").count})", account_purchases_path(:status => "confirmed") %> </li>      
         <li <%= "class=selected" if params[:status] == "shipped" %>> <%= link_to "Shipped (#{current_user.mtg_purchases.where(:status => "shipped").count})", account_purchases_path(:status => "shipped") %> </li>
-        <li <%= "class=selected" if params[:status] == "delivered" %>> <%= link_to "Delivered (#{current_user.mtg_purchases.where(:status => "delivered").count})", account_purchases_path(:status => "delivered") %> </li>        
     </ul>
   </div>
   
@@ -27,6 +25,12 @@
   
   <% @sales.each do |t| %>
     <%= render :partial => "mtg/transactions/teaser" , :locals => {:transaction => t} %>      
+  <% end %>
+  
+  <% if @sales.count == 0 %>
+    <tr>
+      <td colspan=6 class="odd"><i>None</i></td>
+    </tr>
   <% end %>
 
 </table>

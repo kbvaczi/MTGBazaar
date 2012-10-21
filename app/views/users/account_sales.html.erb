@@ -6,28 +6,32 @@
   <div class="group center_wrap">
     <ul class="tabs center">
         <li <%= "class=selected" if request.fullpath ==  account_sales_path %>> <%= link_to "All (#{current_user.mtg_sales.count})", account_sales_path %> </li>
-        <li <%= "class=selected" if params[:status] == "pending" %>> <%= link_to "Pending (#{current_user.mtg_sales.where(:status => "pending").count})", account_sales_path(:status => "pending")%> </li>
-        <li <%= "class=selected" if params[:status] == "confirmed" %>> <%= link_to "Confirmed (#{current_user.mtg_sales.where(:status => "confirmed").count})", account_sales_path(:status => "confirmed") %> </li>      
+        <li <%= "class=selected" if params[:status] == "confirmed" %>> <%= link_to "Ready to Ship (#{current_user.mtg_sales.where(:status => "confirmed").count})", account_sales_path(:status => "confirmed") %> </li>      
         <li <%= "class=selected" if params[:status] == "shipped" %>> <%= link_to "Shipped (#{current_user.mtg_sales.where(:status => "shipped").count})", account_sales_path(:status => "shipped") %> </li>
-        <li <%= "class=selected" if params[:status] == "delivered" %>> <%= link_to "Delivered (#{current_user.mtg_sales.where(:status => "delivered").count})", account_sales_path(:status => "delivered") %> </li>        
     </ul>
   </div>
   
 <h2><%= pluralize @sales.total_count, "#{params[:status].capitalize if params[:status].present?} Sale", "#{params[:status].capitalize if params[:status].present?} Sales" %></h2>
 
 <table class="data">
- <tr class="header_row">
- 	<th>Date</th>
- 	<th>Transaction ID</th>      
-  <th>Buyer</th>
-	<th>Status</th>
-	<th>Items</th>
-	<th>Value</th>
- </tr>
+  <tr class="header_row">
+    <th>Date</th>
+    <th>Transaction ID</th>      
+    <th>Buyer</th>
+    <th>Status</th>
+    <th>Items</th>
+    <th>Value</th>
+  </tr>
   
-<% @sales.each do |t| %>
+  <% @sales.each do |t| %>
     <%= render :partial => "mtg/transactions/teaser" , :locals => {:transaction => t} %>      
-<% end %>
+  <% end %>
+
+  <% if @sales.count == 0 %>
+    <tr>
+      <td colspan=6 class="odd"><i>None</i></td>
+    </tr>
+  <% end %>
 
 </table>
 

@@ -1,4 +1,4 @@
-$('#center_bar').html("<%= escape_javascript render :template => "carts/show.html" %>");
+$('#center_bar').html("<%= escape_javascript render :template => "carts/show", :handlers => [:html] %>");
 $('#right_bar').html("<%= escape_javascript render :partial => "shared/right_bar.html" %>");
 $.activateChosenSelect();
 

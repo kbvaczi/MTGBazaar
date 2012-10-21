@@ -24,7 +24,7 @@
       </tr>
       <tr class="even">
         <td>State</td>
-        <td><%= capitalize_first_word(@user.account.state.upcase) %></td>
+        <td><%= @user.account.state.upcase %></td>
       </tr>
       <tr class="odd">
         <td>City</td>
@@ -53,10 +53,6 @@
         <td>Number of Sales</td>
         <td><%=  @user.statistics.number_sales.to_s  %></td>
       </tr> 
-      <tr class="odd">
-        <td>Average time to confirm a sale</td>
-        <td><%= @user.statistics.display_average_confirm_time %></td>
-      </tr>                
       <tr class="even">
         <td>Average time to ship a sale</td>
         <td><%= @user.statistics.display_average_ship_time  %></td>
@@ -106,6 +102,7 @@
   
   <%# MTG_CARDS SECTION %>
   <% if params[:section] == "mtg_cards" %>
+  
     <h2><%= pluralize(@listings.total_count, "Listing", "Listings") %></h2>
     <table class="data">
       <tr class="header_row">
@@ -115,7 +112,7 @@
         <th>Options</th>
         <th>  <%= table_sort_header("Price") %> </th>
         <th>  <%= table_sort_header("Qty", :value => "quantity") %> </td>
-        <th>Purchase</th>
+        <th>Add to Cart</th>
       </tr>
       <% @listings.each do |listing| %>
         <tr class=<%= cycle("odd","even") %>>  
@@ -147,16 +144,16 @@
           <%= listing_option_scan_overlay(listing) %>
           <td style="text-align:right;"><%= number_to_currency(listing.price)%></td>
           <td><%= listing.quantity_available %></td>
-          <td style="text-align:right;">
-
-              <%= form_tag add_to_cart_mtg_listing_path(listing.id), :method => :post do %>
-                  <div class="left" style="width:30px;">
-                    <%= text_field_tag "quantity", 1, :id => nil, :style => "width:30px;text-align:center;", :maxlength => 4%>            
-                  </div>
-                  <%#= text_field_tag "quantity", 1, :id => nil, :style => "width:30px;text-align:center;display:none;"%>            
-                  <%= submit_tag "Buy" %>
-              <% end %>
-
+          <td>
+            <%= form_tag add_to_cart_mtg_listing_path(listing.id), :method => :post do %>
+              <div style="width:80px;display:inline-block;">
+                <div class="left" style="width:30px;">
+                  <%= text_field_tag "quantity", 1, :id => nil, :style => "width:30px;text-align:center;", :maxlength => 4%>            
+                </div>
+                <%#= text_field_tag "quantity", 1, :id => nil, :style => "width:30px;text-align:center;display:none;"%>            
+                <%= submit_tag "Buy", :class =>  "right"%>
+              </div>
+            <% end %>
           </td>         
         </tr>
       <% end %>

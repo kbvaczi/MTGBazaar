@@ -41,8 +41,8 @@ class Mtg::OrdersController < ApplicationController
 
     respond_to do |format|
       format.html do
-        redirect_to @gateway.embedded_flow_url_for(@purchase["payKey"])
-        #redirect_to @gateway.redirect_url_for(@purchase["payKey"])
+        #redirect_to @gateway.embedded_flow_url_for(@purchase["payKey"])
+        redirect_to @gateway.redirect_url_for(@purchase["payKey"])
       end
       format.js {}
     end
@@ -58,8 +58,8 @@ class Mtg::OrdersController < ApplicationController
         return
       end
       order.checkout_transaction
-      ApplicationMailer.seller_sale_notification(transaction).deliver # send sale notification email to seller
-      ApplicationMailer.buyer_checkout_confirmation(transaction).deliver # send sale notification email to seller        
+      ApplicationMailer.seller_sale_notification(order.transaction).deliver # send sale notification email to seller
+      ApplicationMailer.buyer_checkout_confirmation(order.transaction).deliver # send sale notification email to seller        
       current_cart.update_cache # empty the shopping cart
     end
     cookies[:checkout] = "success"

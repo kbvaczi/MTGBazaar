@@ -7,16 +7,17 @@ class Mtg::Transactions::ShippingLabelsController < ApplicationController
     
   def create
     if current_transaction.shipping_label.present?
-      label = current_transaction.shipping_label
+      @label = current_transaction.shipping_label
     else
       begin
-        label = Mtg::Transactions::ShippingLabel.new(:transaction => current_transaction)
-        if not label.save
+        @label = Mtg::Transactions::ShippingLabel.new(:transaction => current_transaction)
+        if not @label.save 
           Rails.logger.info("label.errors.full_messages")
           flash[:error] = "There was a problem retreiving your shipping label.  Please try again later..."
           redirect_to back_path
           return
         end
+        Rails.logger.debug("STAMP CREATED")
       rescue Exception => message
         Rails.logger.debug("STAMPS ERROR MESSAGE: #{message}")
         @error = true
@@ -25,11 +26,7 @@ class Mtg::Transactions::ShippingLabelsController < ApplicationController
     
     respond_to do |format|
       format.html do 
-        redirect_to label.params[:url]
-      #  data = open(label.params[:url])
-      #  if data.present?
-      #    send_data data.read, :type => data.content_type, :x_sendfile=>true, :filename => "Shipping Label - #{current_transaction.transaction_number}.png"
-      #  end
+        redirect_to @label.params[:url]
       end
       format.js  { }
     end

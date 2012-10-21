@@ -23,8 +23,10 @@ class Account < ActiveRecord::Base
                         :zipcode,
                         :security_question,
                         :security_answer
-
-  validates_uniqueness_of :paypal_username, :case_sensitive => false                        
+                        
+  if Rails.env.production?                        
+    validates_uniqueness_of :paypal_username, :case_sensitive => false
+  end
 
   validates             :state, :format => { :with => /\A[A-Z]{2}\z/, :message => "Please enter a valid State Abbreviation" }
 

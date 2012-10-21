@@ -5,7 +5,7 @@ class Mtg::TransactionsController < ApplicationController
   def show
     set_back_path
     @transaction = Mtg::Transaction.includes(:items => {:card => :set}).find(params[:id])
-    @items = @transaction.items.includes(:card => :set).order("mtg_cards.name").page(params[:page]).per(16)
+    @items = @transaction.items.includes(:card => :set).order("mtg_cards.name").page(params[:page]).per(16) if params[:section] == "items"
   end
   
 ##### ---------- SELLER SALE CONFIRMATION ------------- #####
