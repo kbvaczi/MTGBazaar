@@ -13,7 +13,8 @@
     <br class = "spacer"/>
     
     <%= f.input :email , :required => true %>
-    <%= a.input :paypal_username, :label => "Paypal Email", :required => false %>    
+    <%= a.input :paypal_username, :label => "Paypal Email", :required => false,
+			 																											:hint => "Verified PayPal required for sellers"%>    
     
     <%= f.input :password, :label => "New password", :hint => "leave empty to keep existing password" %>
     <%= f.input :password_confirmation, :label => "Confirm password" %>
