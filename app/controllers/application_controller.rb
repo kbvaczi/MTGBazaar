@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
     unless @new_back_path_queue.present?                                                                              # prevents this from breaking if called multiple times during one request
       current_back_path_queue = session[:back_path] || Array.new
       @new_back_path_queue    = current_back_path_queue.dup                                                           # create a copy so the two aren't linked to the same memory address
-      current_path            = request.fullpath
+      current_path = url_for(params.merge(:authenticity_token => nil, :utf8 => nil))
       if current_back_path_queue.include?(current_path)                                                               # if we are revisiting an old link in the queue, let's clean up the queue (prevents infinite loops)
         @new_back_path_queue.pop(@new_back_path_queue.length - @new_back_path_queue.index(current_path))              # remove everyting in the queue visited after this link in the queue
       end                                                                 
@@ -62,10 +62,14 @@ class ApplicationController < ActionController::Base
   helper_method :back_path
   def back_path
     unless @back_path.present?
-      current_path = request.fullpath
+      current_path = url_for(params.merge(:authenticity_token => nil, :utf8 => nil))
       current_back_path_queue = @new_back_path_queue || session[:back_path] || [root_path]                      
       if current_back_path_queue.include?(current_path)
-        @back_path = current_back_path_queue[@new_back_path_queue.index(current_path) -1] || root_path  
+        if current_back_path_queue.length > 1
+          @back_path = current_back_path_queue[@new_back_path_queue.index(current_path) - 1] || root_path  
+        else
+          @back_path = root_path
+        end
       else
         @back_path = current_back_path_queue.last
       end

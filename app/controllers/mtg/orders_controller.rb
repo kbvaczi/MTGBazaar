@@ -12,12 +12,14 @@ class Mtg::OrdersController < ApplicationController
       :signature => PAYPAL_CONFIG[:api_signature],
       :appid =>     PAYPAL_CONFIG[:appid] )
     
-    recipients = [ {:email => order.seller.account.paypal_username,                                               # setup recipients            
-                    :primary => true,                                                                             # seller is primary receiver
-                    :amount => order.total_cost },                                                                # all the money goes through primary
-                   {:email => PAYPAL_CONFIG[:account_email],                                        
-                    :primary => false,                                                
-                    :amount => order.transaction.payment.commission + order.transaction.payment.shipping_cost } ] # we get commission + shipping on back end
+    recipients = [ {:email        => order.seller.account.paypal_username,                                               # setup recipients            
+                    :payment_type => "GOODS",                                                                     # tell paypal this payment is for non-digital goods 
+                    :primary      => true,                                                                             # seller is primary receiver
+                    :amount       => order.total_cost },                                                                # all the money goes through primary
+                   {:email        => PAYPAL_CONFIG[:account_email],                                        
+                    :payment_type => "SERVICE",                                                                   # second leg of the payment is for service
+                    :primary      => false,                                                
+                    :amount       => order.transaction.payment.commission + order.transaction.payment.shipping_cost } ] # we get commission + shipping on back end
     
     encoded_secret = Base64.encode64(order.transaction.payment.calculate_secret).encode('utf-8')               # encryptor uses ascii-8bit encoding, we need to convert to utf-8 to put in parameter... see http://stackoverflow.com/questions/11042657/how-to-encrypt-data-in-a-utf-8-string-using-opensslcipher
     
@@ -26,7 +28,7 @@ class Mtg::OrdersController < ApplicationController
       :return_url           => order_checkout_success_url(:secret => encoded_secret),
       :cancel_url           => order_checkout_failure_url,
       :ipn_notification_url => payment_notification_url(:id => order.transaction.id, :secret => encoded_secret),       
-      :memo                 => "TEST",
+      :memo                 => "Purchase of #{order.item_count} item(s) from user #{order.seller.username} on MTGBazaar.com",
       :receiver_list        => recipients,
       :fees_payer           => "PRIMARYRECEIVER" )
 
@@ -39,7 +41,6 @@ class Mtg::OrdersController < ApplicationController
 
     respond_to do |format|
       format.html do
-        #redirect_to "https://www.sandbox.paypal.com/webscr?cmd=_ap-payment&paykey=#{order.transaction.payment.paypal_paykey}"    
         redirect_to @gateway.embedded_flow_url_for(@purchase["payKey"])
         #redirect_to @gateway.redirect_url_for(@purchase["payKey"])
       end
