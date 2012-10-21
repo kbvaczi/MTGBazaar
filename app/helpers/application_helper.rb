@@ -10,7 +10,7 @@ module ApplicationHelper
   
   def display_time(time, options = {})
     if options[:day] == false
-      time.strftime("%m/%d/%y")
+      time.strftime("%m/%Y")
     else 
       time.strftime("%m/%d/%y")
     end

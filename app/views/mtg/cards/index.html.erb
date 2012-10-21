@@ -14,7 +14,7 @@
       </tr>
       <tr class=<%= cycle("even","odd") %>>
         <td><%= @set.name %></td>
-        <td><%= display_time(@set.release_date) rescue ""%> </td>
+        <td><%= display_time(@set.release_date, :day => false) rescue ""%> </td>
         <td><%= display_set_symbol(@set) %></td>
         <td><%= @set.cards.count %></td>
       </tr>
