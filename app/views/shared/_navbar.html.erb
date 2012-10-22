@@ -49,8 +49,18 @@
   			</ul>
 			</div>
 	  </li>
-	  
-		<li><%= link_to "MTG Cards", mtg_cards_path %></li>
+		
+		<li class="navbar_drop">
+			<%= link_to "Products", mtg_cards_path %>
+			<div class="navbar_drop_child">
+  			<ul>
+  		    <li><%= link_to "Cards", mtg_cards_path %></li>
+          <li class="heading"> Other Products </li>
+          <li><%= link_to "Coming Soon", root_path %></li>
+  			</ul>
+			</div>
+	  </li>
+		
 		<li><%= link_to "About", about_path %></li>	
 		<li><%#= link_to "News", news_feeds_path %></li>		   			
 		<li><%= link_to "Home", root_path %></li>
