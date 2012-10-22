@@ -71,6 +71,10 @@ MTGBazaar::Application.routes.draw do
   
   namespace :mtg do 
     namespace :cards do
+      post   "listings/multiple/set_active"       => "edit_multiple_listings#set_active",         :as => 'listings_multiple_set_active'  
+      post   "listings/multiple/set_inactive"     => "edit_multiple_listings#set_inactive",       :as => 'listings_multiple_set_inactive'        
+      post   "listings/multiple/delete"           => "edit_multiple_listings#delete",             :as => 'listings_multiple_delete'              
+      post   "listings/multiple/process_request"  => "edit_multiple_listings#process_request",    :as => 'listings_multiple_process_request'                    
       resources :listings, :except => [:index, :show ] do
         get "new_generic", :as => "new_generic", :on => :collection
         get "new_generic_pricing", :as => "new_generic_pricing", :on => :collection                  
@@ -78,8 +82,9 @@ MTGBazaar::Application.routes.draw do
         post "create_generic", :as => "create_generic", :on => :collection   
         get "new_bulk_prep", :as => "new_bulk_prep", :on => :collection
         get "new_bulk", :as => "new_bulk", :on => :collection      
-        post "create_bulk", :as => "create_bulk", :on => :collection            
+        post "create_bulk", :as => "create_bulk", :on => :collection        
       end
+      
     end
     
     resources :cards, :only => [:index, :show] do # don't allow users to create/destroy mtg cards by only allowing index and show routes
@@ -87,6 +92,7 @@ MTGBazaar::Application.routes.draw do
       get  "search", :as => 'search', :on => :collection  # can't figure out how to send autocorrect click link via post so we need get too for now
       post "search", :as => 'search', :on => :collection      
     end
+    
   end
   
 # USERS -------------------- #

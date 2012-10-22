@@ -1,5 +1,8 @@
 <tr class=<%= cycle("odd","even") %>>
   <td>
+    <%= check_box "edit_listings_ids", listing.id, {:class => "listing_check_box"}, 1, nil %>
+  </td>
+  <td>
     <%= link_to display_name(listing.card.name), mtg_card_path(listing.card) %>
   </td>
   <td>
@@ -38,18 +41,8 @@
   <td>
     <%= listing.quantity %>
   </td>
-  <td class="teaser_row_actions">
-    <div class="teaser_row_actions_icon">
-     <%= menu_icon %>
-    </div>
-    <div class="teaser_row_actions_list" style="display:none">
-      <ul>
-        <li> <%= link_to "Edit", edit_mtg_cards_listing_path(listing)%> </li>
-        <li> <%= link_to "Set as Active", mtg_cards_listing_set_active_path(listing), :method => :put if not listing.active %> </li>  
-        <li> <%= link_to "Set as Inactive", mtg_cards_listing_set_inactive_path(listing), :method => :put if listing.active %> </li>          
-        <li> <%= link_to "Remove", mtg_cards_listing_path(listing), :method => :delete , :confirm => "Are you sure you want to permanently delete this listing?"%> </li>
-      </ul>
-    </div>
+  <td>
+    <%= link_to menu_icon, edit_mtg_cards_listing_path(listing)%>
   </td>
   
 </tr>     

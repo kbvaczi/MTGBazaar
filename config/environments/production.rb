@@ -8,6 +8,11 @@ MTGBazaar::Application.configure do
   
   # STANDARD OPTIONS -------------------------------------------------------------------------------------------------- #
 
+  # Serving static assets and setting cache headers 
+  # which will be used by cloudfront as well
+  config.serve_static_assets = true
+  config.static_cache_control = "public, max-age=11536000"
+
   # Code is not reloaded between requests
   config.cache_classes = true
 

@@ -1,0 +1,27 @@
+$(document).ready(function() {
+
+/* GENERIC LISTING JAVASCRIPTS */ 
+  
+  $("#multiple_listings_actions").chosen().change( function() {
+    if ($(this).val() != "delete") {
+      $(this).closest('form').submit();
+    } else if (confirm('Are you sure you want to permenantly delete these listings?')) {
+      $(this).closest('form').submit();
+    } else {
+      $(this).val("");
+      $(this).trigger("liszt:updated");
+    }
+  });
+
+  $("#check_all_listings").change( function() {
+    if ($(this).is(":checked")){
+      $('.listing_check_box').prop('checked', true);
+    }
+    else {
+      $('.listing_check_box').prop('checked', false);
+    }
+  });
+    
+});
+
+

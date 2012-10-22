@@ -39,7 +39,6 @@ class UsersController < ApplicationController
   
   def account_listings
     set_back_path
-
     query = SmartTuple.new(" AND ")
     query << ["mtg_sets.code  LIKE ?", "#{params[:filters][:set] }"] if params[:filters] && params[:filters][:set].present?
     query << ["mtg_cards.name LIKE ?", "#{params[:filters][:name]}"] if params[:filters] && params[:filters][:name].present?   
@@ -56,24 +55,24 @@ class UsersController < ApplicationController
   def account_sales
     set_back_path
     if params[:status].present?
-      @sales = current_user.mtg_sales.where(:status => params[:status]).order("created_at DESC").page(params[:page]).per(15)
+      @sales = current_user.mtg_sales.where(:status => params[:status]).order("created_at DESC").page(params[:page]).per(12)
     else
-      @sales = current_user.mtg_sales.order("created_at DESC").page(params[:page]).per(15)
+      @sales = current_user.mtg_sales.order("created_at DESC").page(params[:page]).per(12)
     end
   end
   
   def account_purchases
     set_back_path    
     if params[:status].present?
-      @sales = current_user.mtg_purchases.where(:status => params[:status]).order("created_at DESC").page(params[:page]).per(15)
+      @sales = current_user.mtg_purchases.where(:status => params[:status]).order("created_at DESC").page(params[:page]).per(12)
     else
-      @sales = current_user.mtg_purchases.order("created_at DESC").page(params[:page]).per(15)
+      @sales = current_user.mtg_purchases.order("created_at DESC").page(params[:page]).per(12)
     end
   end  
   
   # autocomplete name handler for filtering cards by seller
   def autocomplete_name
-    @users = User.where("username LIKE ?", "%#{params[:term]}%").limit(10).where(:banned => false).order("username ASC") # give me 15 users then filter by banned ones (no index on banned column)
+    @users = User.where("username LIKE ?", "%#{params[:term]}%").active.limit(10).order("username ASC") # give me 15 users then filter by banned ones (no index on banned column)
     respond_to do |format|
       format.json {}  #loads view autocomplete_name.json.erb which returns json hash array of information
     end

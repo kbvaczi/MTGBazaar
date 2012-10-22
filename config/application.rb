@@ -52,11 +52,6 @@ module MTGBazaar
     config.assets.initialize_on_precompile = false
     #forcing your application to not access the DB or load models when precompiling your assets.
     
-    # Serving static assets and setting cache headers 
-    # which will be used by cloudfront as well
-    config.serve_static_assets = true
-    config.static_cache_control = "public, max-age=11536000"
-    
     #config.action_mailer.delivery_method = :smtp
     #config.action_mailer.delivery_method = :queued
 

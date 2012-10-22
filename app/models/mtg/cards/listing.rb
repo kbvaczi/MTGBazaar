@@ -28,7 +28,7 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   # ------------ Callbacks ==-------------- #
   # --------------------------------------- #
 
-  before_validation :set_quantity_available, :on => :create
+  before_validation :set_quantity_available, :only => [:create, :update]
   after_save :update_statistics_cache_on_save, :if => "price_changed? || quantity_available_changed? || self.new_record?"
   after_save :delete_if_empty
   before_destroy :update_statistics_cache_on_delete
@@ -90,7 +90,7 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   end
   
   def in_cart?
-    not (self.quantity_available == self.quantity and quantity_available > 0)
+    not (self.quantity_available == self.quantity and self.quantity_available > 0)
   end
     
   def mark_as_active!

@@ -13,6 +13,7 @@ class Mtg::Transactions::FeedbackController < ApplicationController
   def create
     @feedback = current_transaction.build_feedback(params[:mtg_transactions_feedback])
     if @feedback.save
+      current_transaction.update_attribute(:status, "completed")
       redirect_to show_mtg_transaction_path(current_transaction), :notice => "Your feedback was created..."
     else
       flash[:error] = @feedback.errors.full_messages #"There was an error with your request..."

@@ -2,7 +2,7 @@ class ApplicationMailer < ActionMailer::Base
   
   helper "mtg::cards"
   
-  default :from => "\"MTGBazaar Notifications\" <admin@mtgbazaar.com>"
+  default :from => "\"MTGBazaar Notifications\" <noreply@mtgbazaar.com>"
 
   def account_update_notification(user)
     @user = user

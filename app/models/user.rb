@@ -93,7 +93,7 @@ class User < ActiveRecord::Base
   end
   
   def self.active
-    where(:banned => false)
+    where(:banned => false, :active => true)
   end
 
 end
