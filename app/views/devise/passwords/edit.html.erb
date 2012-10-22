@@ -1,18 +1,25 @@
-<h2>Change your password</h2>
+<h1>Change your password</h1>
+<br class="spacer" />
+<br class="spacer" />
+
 
 <%= simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put }, :honeypot => true) do |f| %>
+    
   <%= devise_error_messages! %>
   <%= f.hidden_field :reset_password_token %>
 
-  <div><%= f.label :password, "New password" %><br />
-  <%= f.password_field :password %></div>
+  <%#= f.label :password, "New password" %>
+  <%= f.input :password,              :label => "New Password" %>
 
-  <div><%= f.label :password_confirmation, "Confirm new password" %><br />
-  <%= f.password_field :password_confirmation %></div>
+  <%#= f.label :password_confirmation, "Confirm new password" %>
+  <%= f.input :password_confirmation, :label => "Confirm New Password" %>
 
+  <br class="spacer" />
+  <br class="spacer" />  
   <div class="center_wrap">
     <%= f.submit "Change my password" , :class => 'center' %>
   </div>
+  
 <% end %>
 
 <%= render :partial => "devise/shared/links" %>
