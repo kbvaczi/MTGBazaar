@@ -35,7 +35,7 @@ class Mtg::Cards::EditMultipleListingsController < ApplicationController
   def set_inactive
     @listings.each {|l| l.mark_as_inactive!}
     respond_to do |format|
-      format.html { redirect_to back_path, :notice => "#{pluralize(@listings.length, "Listing", "Listings")} set as active!" }
+      format.html { redirect_to back_path, :notice => "#{pluralize(@listings.length, "Listing", "Listings")} set as inactive!" }
     end
     return
   end
