@@ -76,6 +76,7 @@ ActiveAdmin.register User do
       row :locked_at
       row :banned
     end
+    
     attributes_table_for user.account do 
       row :first_name
       row :last_name
@@ -85,6 +86,10 @@ ActiveAdmin.register User do
       row :state
       row :city
       row :zipcode
+    end
+        
+    attributes_table_for user.statistics do 
+      row :number_strikes
     end    
   end
   
