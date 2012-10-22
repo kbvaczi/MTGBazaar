@@ -44,7 +44,7 @@ class ApplicationController < ActionController::Base
   # sets the current page as the back path for following pages to return to when back_path is redirected to
   def set_back_path
     unless @new_back_path_queue.present?                                                                              # prevents this from breaking if called multiple times during one request
-      current_back_path_queue = session[:back_path] || Array.new
+      current_back_path_queue = session[:back_path] || [root_path]
       @new_back_path_queue    = current_back_path_queue.dup                                                           # create a copy so the two aren't linked to the same memory address
       current_path = url_for(params.merge(:authenticity_token => nil, :utf8 => nil))
       if current_back_path_queue.include?(current_path)                                                               # if we are revisiting an old link in the queue, let's clean up the queue (prevents infinite loops)

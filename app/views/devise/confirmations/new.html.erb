@@ -5,13 +5,21 @@
 <%= simple_form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post }, :honeypot => true) do |f| %>
 
   <% flash[:error] = "There were one or more errors while trying to process your request" if !devise_error_messages!.empty? %>
-  <h2>Check your spam box</h2>
-  <p style="margin:0 50px 50px 50px;">If you did not receive an email from us including account confirmation instructions, please check to verify your email service did not classify the message as spam.</p>
-  <h2>Resend confirmation</h2>
-  <p style="margin:0 50px 50px 50px;">If you would like us to resend confirmation instructions, please fill out your email address below and click "Resend". </p>
-  <br class="spacer"/>
 
-  <%= f.input :email ,                :required => 'true' %>
+  <h2>Check your spam box</h2>
+  <p style="margin:0 50px 0 50px;">If you did not receive an email from us including account confirmation instructions, please check to verify your email service did not classify the message as spam.</p>
+
+  <br class="spacer"/>
+  <br class="spacer"/>  
+
+  <h2>Resend confirmation</h2>
+  <p style="margin:0 50px 0 50px;">If you would like us to resend confirmation instructions, please fill out your email address below and click "Resend". </p>
+
+  <br class="spacer"/>
+  <br class="spacer"/>  
+
+  <%= f.input :email,                 :label => "Email Address", 
+                                      :required => true %>
   
   <br class="spacer"/>
   <br class="spacer"/>

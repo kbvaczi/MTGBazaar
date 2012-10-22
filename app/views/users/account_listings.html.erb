@@ -43,7 +43,13 @@
     		<th>Menu</th>
     	</tr>
       <%= render :partial => "mtg/cards/listings/teaser" , :collection => @listings, :as => "listing" %>      
+      <% if @listings.count == 0 %>
+        <tr>
+          <td colspan=8 class="odd"><i>None</i></td>
+        </tr>
+      <% end %>
   </table>
+  
   
   <div class="center_wrap">
     <div class="paginator center">
