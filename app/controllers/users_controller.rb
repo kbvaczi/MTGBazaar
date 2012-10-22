@@ -5,10 +5,8 @@ class UsersController < ApplicationController
   include ApplicationHelper
   
   def index
-    #@users = User.all
-    respond_to do |format|
-      format.html {render :nothing => true} # index.html.erb
-    end
+    @users = User.active.order("username DESC").page(params[:page]).per(15)
+    
   end
   
   # GET /users/1
