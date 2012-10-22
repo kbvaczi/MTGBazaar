@@ -33,9 +33,15 @@
       <div class="">
         <div class="left">Seller Status:</div>
         <% if current_user.active %>
-          <div class="right"><%= link_to "Active", seller_status_toggle_users_path, :remote => true, :method => :post %></div>
+          <div id="active" class="right">
+						<span id="a"><%= link_to "Active", seller_status_toggle_users_path, :remote => true, :method => :post %> </span>
+						<span id="b"><%= link_to "Set to Inactive", seller_status_toggle_users_path, :remote => true, :method => :post %></span>
+					</div>
         <% else %>
-          <div class="right"><%= link_to "Inactive", seller_status_toggle_users_path, :remote => true, :method => :post %></div>
+          <div id="inactive" class="right">
+						<span id="c"><%= link_to "Inactive", seller_status_toggle_users_path, :remote => true, :method => :post %> </span>
+						<span id="d"><%= link_to "Set to Active", seller_status_toggle_users_path, :remote => true, :method => :post %></span>
+					</div>
         <% end %>
       </div>
     </div>
