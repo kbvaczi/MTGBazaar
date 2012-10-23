@@ -11,11 +11,11 @@ class Mtg::Cards::EditMultipleListingsController < ApplicationController
   #include Singleton  
   
   def process_request
-    if params[:multiple_listing_action] == 'active'
+    if params[:action_input] == 'active'
       set_active
-    elsif params[:multiple_listing_action] == 'inactive'
+    elsif params[:action_input] == 'inactive'
       set_inactive
-    elsif params[:multiple_listing_action] == 'delete'
+    elsif params[:action_input] == 'delete'
       delete
     else
       flash[:error] = "You don't have permission to perform this action..."

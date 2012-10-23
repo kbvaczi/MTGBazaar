@@ -129,9 +129,9 @@ class Mtg::Cards::ListingsController < ApplicationController
       duplicate_listing.increment(:quantity_available, params[:mtg_cards_listing][:quantity].to_i)
       duplicate_listing.increment(:quantity, params[:mtg_cards_listing][:quantity].to_i)      
       duplicate_listing.save!
-      redirect_to back_path, :notice => " #{pluralize(params[:mtg_cards_listing][:quantity], "Listing", "Listings")} Created... Sell More Cards?"
+      redirect_to account_listings_path, :notice => "Listing Created!"
     elsif @listing.save
-      redirect_to back_path, :notice => " #{pluralize(params[:mtg_cards_listing][:quantity], "Listing", "Listings")} Created... Sell More Cards?"
+      redirect_to account_listings_path, :notice => "Listing Created!"
     else
       flash[:error] = "There were one or more errors while trying to process your request"
       render 'new_generic'
@@ -145,9 +145,9 @@ class Mtg::Cards::ListingsController < ApplicationController
   def new_bulk
     @set = Mtg::Set.where(:code => params[:mtg_cards_listing][:set]).first
     if params[:sort] == "name"
-      @cards = Mtg::Card.joins(:set).includes(:statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("name ASC")
+      @cards = Mtg::Card.joins(:set).includes(:statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("mtg_cards.name ASC")
     else
-      @cards = Mtg::Card.joins(:set).includes(:statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("card_number ASC")      
+      @cards = Mtg::Card.joins(:set).includes(:statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("card_number ASC")
     end
   end
   
@@ -157,7 +157,7 @@ class Mtg::Cards::ListingsController < ApplicationController
     if params[:sort] == "name"
       @cards = Mtg::Card.joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("name ASC")
     else
-      @cards = Mtg::Card.joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("card_number ASC")      
+      @cards = Mtg::Card.joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("card_number ASC")
     end
     array_of_listings = Array.new # blank array
     params[:sales].each do |key, value| # iterate through all of our individual listings from the bulk form
@@ -183,7 +183,7 @@ class Mtg::Cards::ListingsController < ApplicationController
     end
     # all listings passed validation, let's go back through our stored listings in the array and save them to database
     array_of_listings.each { |listing| listing.save } # save all the listings
-    redirect_to new_bulk_prep_mtg_cards_listings_path, :notice => "imported #{array_of_listings.count} listing(s) successfully, Bulk Import Again?"
+    redirect_to account_listings_path, :notice => "#{pluralize(array_of_listings.count, "Listing", "Listings")} Created!"
     return #don't display a template
   end
   

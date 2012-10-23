@@ -29,10 +29,11 @@
   <%= link_to "Create a New Listing", new_generic_mtg_cards_listings_path, :class => "right", :style => "margin-top:23px;margin-right:10px;" %>
   <h2><%="#{@listings.total_count} #{(params[:status] || "").capitalize} Listings"%></h2>
 
-	<%= form_tag mtg_cards_listings_multiple_process_request_path, :method => :post do %>
-    
+	<%= form_tag mtg_cards_listings_multiple_process_request_path, :id => "multiple_listing_edit_form", :method => :post do %>
+    <%= submit_tag "Delete", :id => "delete_submit_button", :style => "display:none;", :confirm => "Are you sure you want to permanently delete selected listing(s)?"%>
+    <%= hidden_field_tag "action_input" %>
     <div class="right mr mb">
-      <%= select_tag "multiple_listing_action" , options_for_select([["Set checked items to active", "active"], ["Set checked items to inactive", "inactive"], ["Delete checked items","delete"]], :selected => ""), {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Actions...", :id => "multiple_listings_actions", :class => "chzn-select"} %> 
+      <%= select_tag "action_selector" , options_for_select([["Set checked items to active", "active"], ["Set checked items to inactive", "inactive"], ["Delete checked items","delete"]], :selected => ""), {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Actions...", :id => "multiple_listings_actions", :class => "chzn-select"} %> 
     </div>
     
     <table class="data">
@@ -57,6 +58,7 @@
         <% end %>
     </table>
     
+
   <% end %>
   
   <div class="center_wrap">
