@@ -36,25 +36,25 @@
     </div>
     
     <table class="data">
-      	<tr class="header_row">
-      	  <th><%= check_box_tag "listings", 1, false, {:id => "check_all_listings"} %></th>
-      		<th>Card Name</th>
-      		<th>Set</th>      
-      		<th>Price</th>
-      		<th>Cond.</th>
-      		<th>Lang.</th>
-      		<th>Options</th>
-      		<th>Qty.</th>
-      		<th>Edit</th>
-      	</tr>
-    	
-        <%= render :partial => "mtg/cards/listings/teaser" , :collection => @listings, :as => "listing" %>
-      
-        <% if @listings.count == 0 %>
-          <tr>
-            <td colspan=9 class="odd"><i>None</i></td>
-          </tr>
-        <% end %>
+      <tr class="header_row">
+    	  <th><%= check_box_tag "listings", 1, false, {:id => "check_all_listings"} %></th>
+    		<th>Card Name</th>
+    		<th>Set</th>      
+    		<th>Price</th>
+    		<th>Cond.</th>
+    		<th>Lang.</th>
+    		<th>Options</th>
+    		<th>Qty.</th>
+    		<th>Edit</th>
+    	</tr>
+  	
+      <%= render :partial => "mtg/cards/listings/teaser" , :collection => @listings, :as => "listing" %>
+    
+      <% if @listings.count == 0 %>
+        <tr>
+          <td colspan=9 class="odd"><i>None</i></td>
+        </tr>
+      <% end %>
     </table>
     
   <% end %>
