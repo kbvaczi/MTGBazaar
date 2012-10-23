@@ -19,7 +19,7 @@ ActiveAdmin.register Mtg::Cards::Listing do
   # Customize columns displayed on the index screen in the table
   index do
     column :id, :sortable => :id do |l|
-      link_to l.id, admin_mtg_listing_path(l)
+      link_to l.id, admin_mtg_cards_listing_path(l)
     end
     column :seller
     column "Card", :sortable => false do |l|
