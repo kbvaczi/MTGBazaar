@@ -10,6 +10,7 @@ class Mtg::Cards::ListingsController < ApplicationController
   include Singleton
     
   def new
+    set_back_path
     @listing = Mtg::Card.find(params[:card_id]).listings.build(params[:mtg_cards_listing]) 
     respond_to do |format|
       format.html
@@ -40,15 +41,14 @@ class Mtg::Cards::ListingsController < ApplicationController
   end
   
   def edit
-    session[:return_to] = request.referer #set backlink    
-    @listing = Mtg::Cards::Listing.find(params[:id])
+    @listing = Mtg::Cards::Listing.includes(:card => :statistics).find(params[:id])
     respond_to do |format|
       format.html
     end
   end  
   
   def update
-    @listing = Mtg::Cards::Listing.find(params[:id])
+    @listing = Mtg::Cards::Listing.includes(:card => :statistics).find(params[:id])
     # handle pricing select options to determine how to update price
     if params[:mtg_cards_listing] && params[:mtg_cards_listing][:price_options] != "other"
       params[:mtg_cards_listing][:price] = params[:mtg_cards_listing][:price_options]
@@ -186,7 +186,7 @@ class Mtg::Cards::ListingsController < ApplicationController
     redirect_to account_listings_path, :notice => "#{pluralize(array_of_listings.count, "Listing", "Listings")} Created!"
     return #don't display a template
   end
-  
+
   # CONTROLLER FUNCTIONS
     
   def verify_owner?
