@@ -6,8 +6,7 @@
   <div class="group center_wrap">
     <ul class="tabs center">
         <li <%= "class=selected" if not params[:section].present? %>> <%= link_to "Profile", user_path(@user) %> </li>
-        <li <%= "class=selected" if params[:section] == "feedback" %>> <%= link_to "Feedback", user_path(@user, :section => "feedback") %> </li>        
-        <li <%= "class=selected" if params[:section] == "mtg_cards" %>> <%= link_to "MTG Cards", user_path(@user, :section => "mtg_cards") %> </li>        
+        <li <%= "class=selected" if params[:section] == "feedback" %>> <%= link_to "Feedback", user_path(@user, :section => "feedback") %> </li>                
     </ul>
   </div>
   
@@ -53,7 +52,7 @@
         <td>Number of Sales</td>
         <td><%=  @user.statistics.number_sales.to_s  %></td>
       </tr> 
-      <tr class="even">
+      <tr class="odd">
         <td>Average time to ship a sale</td>
         <td><%= @user.statistics.display_average_ship_time  %></td>
       </tr>      
@@ -98,70 +97,4 @@
 
   
   <% end %>
-  
-  
-  <%# MTG_CARDS SECTION %>
-  <% if params[:section] == "mtg_cards" %>
-  
-    <h2><%= pluralize(@listings.total_count, "Listing", "Listings") %></h2>
-    <table class="data">
-      <tr class="header_row">
-        <th> <%= table_sort_header("Name") %> </th>
-        <th> <%= table_sort_header("Set") %> </th>      
-        <th> <%= table_sort_header("Lang", :value => "language") %> </th>
-        <th>Options</th>
-        <th>  <%= table_sort_header("Price") %> </th>
-        <th>  <%= table_sort_header("Qty", :value => "quantity") %> </td>
-        <th>Add to Cart</th>
-      </tr>
-      <% @listings.each do |listing| %>
-        <tr class=<%= cycle("odd","even") %>>  
-          <td><%= link_to listing.card.name, mtg_card_path(listing.card) %></td>
-          <td><div><%= display_set_symbol(listing.card.set) %></div></td>          
-          <td><%= display_flag_symbol(listing.language) %></td>
-          <td>
-            <div style="width:60px;">
-              <% if listing.foil %>
-                <%= listing_option_foil_icon %>
-              <% end %>
-              <% if listing.misprint %>
-                <%= listing_option_misprint_icon %>
-              <% end %>
-              <% if listing.signed %>
-                <%= listing_option_signed_icon %>
-              <% end %>
-              <% if listing.altart %>
-                <%= listing_option_altart_icon %>
-              <% end %>    
-              <% if listing.description != "" %>
-                <%= listing_option_description_icon(listing) %>
-              <% end %>
-          		<% if listing.scan.present? %>
-                <%= listing_option_scan_icon(listing) %>
-              <% end %>
-            <div>     
-          </td>
-          <%= listing_option_scan_overlay(listing) %>
-          <td style="text-align:right;"><%= number_to_currency(listing.price)%></td>
-          <td><%= listing.quantity_available %></td>
-          <td>
-            <%= form_tag add_to_cart_mtg_listing_path(listing.id), :method => :post do %>
-              <div style="width:80px;display:inline-block;">
-                <div class="left" style="width:30px;">
-                  <%= text_field_tag "quantity", 1, :id => nil, :style => "width:30px;text-align:center;", :maxlength => 4%>            
-                </div>
-                <%#= text_field_tag "quantity", 1, :id => nil, :style => "width:30px;text-align:center;display:none;"%>            
-                <%= submit_tag "Buy", :class =>  "right"%>
-              </div>
-            <% end %>
-          </td>         
-        </tr>
-      <% end %>
-    </table>
-    
-    <div class="paginator center_wrap">
-      <%= paginate @listings, :method => :get %>
-    </div>
-  <% end %>
-  
 </div>

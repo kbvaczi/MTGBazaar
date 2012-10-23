@@ -19,7 +19,7 @@ ActiveAdmin.register Cart do
       end
     end
     column "MTG Cards", :sortable => :item_count do |cart|
-      link_to cart.item_count, admin_mtg_listings_path("q[cart_id_eq]" => cart.id) if cart.item_count > 0
+      link_to cart.item_count, admin_mtg_cards_listings_path("q[cart_id_eq]" => cart.id) if cart.item_count > 0
     end
     column "Total Price", :sortable => :total_price do |cart|
       number_to_currency(cart.total_price.dollars)

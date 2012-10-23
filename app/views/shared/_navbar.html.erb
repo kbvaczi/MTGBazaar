@@ -8,7 +8,7 @@
     		<%= link_to "Account", user_path(current_user), :class => 'round_right' %>        
     		<div class="navbar_drop_child">
       		<ul>
-            <li><%= link_to "Public Profile", user_path(current_user) %></li>          
+            <li><%= link_to "My Profile", user_path(current_user) %></li>          
             <li class="heading"> Setup </li>                                          
             <li><%= link_to "Edit Account Info", edit_user_registration_path %></li>
             <li class="heading"> E-Commerce </li>
@@ -42,6 +42,7 @@
      		    <li><%= link_to "View Ticket History", tickets_path %></li>                   
    		    <% end %>
           <li class="heading"> Documentation </li>
+					<li><%= link_to "Member List", users_index_path %></li>
           <li><%= link_to "FAQ", faq_path %></li>
           <li><%= link_to "Terms of Service", terms_path %></li>  
           <li><%= link_to "Privacy Policy", privacy_path %></li>
