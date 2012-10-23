@@ -31,15 +31,6 @@ class ApplicationController < ActionController::Base
       reset_session # give them a new session
     end
   end
-
-  # checks to see if the current logged in user is banned.  logs out and flashes warning if so.
-  def user_banned?                              
-    if user_signed_in? && current_user.banned?
-      sign_out current_user
-      flash[:error] = "This account has been suspended..."
-      root_path
-    end
-  end
   
   # sets the current page as the back path for following pages to return to when back_path is redirected to
   def set_back_path
