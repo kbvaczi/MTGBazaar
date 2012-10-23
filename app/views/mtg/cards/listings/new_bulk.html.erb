@@ -6,12 +6,12 @@
   
   <%= form_tag create_bulk_mtg_cards_listings_path do %>
 
-    <%= hidden_field_tag 'sort', params[:sort] %>    
-    <%= hidden_field_tag 'mtg_cards_listing[price]', params[:mtg_cards_listing][:price] %>            
-    <%= hidden_field_tag 'mtg_cards_listing[set]', params[:mtg_cards_listing][:set] %>        
-    <%= hidden_field_tag 'mtg_cards_listing[language]', params[:mtg_cards_listing][:language] %>
-    <%= hidden_field_tag 'mtg_cards_listing[condition]', params[:mtg_cards_listing][:condition] %>
-    <%= hidden_field_tag 'mtg_cards_listing[foil]', params[:mtg_cards_listing][:foil] %>
+    <%= hidden_field_tag 'sort',                          params[:sort] %>    
+    <%= hidden_field_tag 'mtg_cards_listing[price]',      params[:mtg_cards_listing][:price] %>            
+    <%= hidden_field_tag 'mtg_cards_listing[set]',        params[:mtg_cards_listing][:set] %>        
+    <%= hidden_field_tag 'mtg_cards_listing[language]',   params[:mtg_cards_listing][:language] %>
+    <%= hidden_field_tag 'mtg_cards_listing[condition]',  params[:mtg_cards_listing][:condition] %>
+    <%= hidden_field_tag 'mtg_cards_listing[foil]',       params[:mtg_cards_listing][:foil] %>
     
     <%# SETTINGS FOR ALL DATA %>
     <%# SETTINGS FOR ALL DATA %>
@@ -53,14 +53,7 @@
         <th>Asking Price</th>
         <th>Quantity</th>
       </tr>
-      <% previous_card = Mtg::Card.new(:mana_color => "fake") %>
       <% @cards.each do |card| %>
-        <% if (card.mana_color != previous_card.mana_color) && params[:sort] ==  "color"%>
-          <th colspan=4 class="header_row">
-            <%= display_color(card.mana_color) %>
-          </td>
-          <% previous_card = card %>
-        <% end %>
         <tr class=<%= cycle("odd", "even") %>>
           <td><%= card.card_number.to_i %></td>
           <td><%= link_to card.name, mtg_card_path(card), :target => "_blank", :alt => "click to see card details" %></td>
@@ -85,7 +78,7 @@
                                                  :style => "width:150px;" %>
               <br/>           
               <div style="margin-top:5px;<%= "#{(params[:sales] && params[:sales]["#{card.id}"] && params[:sales]["#{card.id}"][:price] == "other") ? "" : "display:none;"}"%>" class="bulk_price_custom">     
-                Custom Pricing: <%= text_field_tag "sales[#{card.id}][custom_price]", (params[:sales] && params[:sales]["#{card.id}"]) ? params[:sales]["#{card.id}"][:custom_price] : "$#{price_selection}", :style => "width:55px;text-align:center;", :class => "currency_input", :maxlength => 9 %>
+                Custom Pricing: <%= text_field_tag "sales[#{card.id}][custom_price]", (params[:sales] && params[:sales]["#{card.id}"]) ? params[:sales]["#{card.id}"][:custom_price] : nil, :style => "width:55px;text-align:center;", :class => "currency_input", :maxlength => 9 %>
               </div>
           </td>
           <td>

@@ -112,9 +112,8 @@ MTGBazaar::Application.routes.draw do
   get 'account/sales' => 'users#account_sales', :as => 'account_sales'
   post 'account/sales' => 'users#account_sales', :as => 'account_sales'   # for pagination
   get 'account/purchases' => 'users#account_purchases', :as => 'account_purchases'
-  post 'account/purchases' => 'users#account_purchases', :as => 'account_purchases'   # for pagination  
-
-
+  post 'account/purchases' => 'users#account_purchases', :as => 'account_purchases'   # for pagination
+  get 'users' => 'users#index', :as => 'users_index'
 
   devise_for :users, :controllers => { :registrations => 'users/registrations', :sessions => 'users/sessions', :passwords => 'users/passwords' } 
   devise_scope :user do

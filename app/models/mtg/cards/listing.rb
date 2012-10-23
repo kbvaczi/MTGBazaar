@@ -28,7 +28,7 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   # ------------ Callbacks ==-------------- #
   # --------------------------------------- #
 
-  before_validation :set_quantity_available, :only => [:create, :update]
+  before_validation :set_quantity_available, :if => "self.new_record? || self.quantity_changed?"
   after_save :update_statistics_cache_on_save, :if => "price_changed? || quantity_available_changed? || self.new_record?"
   after_save :delete_if_empty
   before_destroy :update_statistics_cache_on_delete
@@ -38,7 +38,11 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   end
   
   def set_quantity_available
-    self.quantity_available = self.quantity    
+    if self.new_record?
+      self.quantity_available = self.quantity
+    elsif self.quantity_changed?
+      self.quantity_available += (self.quantity - self.quantity_was)
+    end
   end
   
   def update_statistics_cache_on_save

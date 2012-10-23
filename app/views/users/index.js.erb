@@ -1,0 +1,2 @@
+var template = $("<%= escape_javascript render :template => "users/index", :formats => [:html] %>");
+$('#content').html(template.nextAll('#content').html());

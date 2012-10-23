@@ -47,14 +47,14 @@
                                                 ["Average ($#{@listing.card.statistics.price_med})",  @listing.card.statistics.price_med], 
                                                 ["High ($#{@listing.card.statistics.price_high})",    @listing.card.statistics.price_high],
                                                 ["Other", "other"]],
-                                :default => "#{@listing.card.statistics.price_med}",
+                                :selected => @listing.new_record? ? "#{@listing.card.statistics.price_med}" : "other",
                                 :input_html => { :class => "chzn-select chzn-nosearch" },                                  
                                 :required => 'true' %>
 
-    <div id="Custom_Pricing_Block" style="display:none;"> 
+    <div id="Custom_Pricing_Block" style=<%="display:none;" if @listing.new_record? %>> 
       <%= f.input :price,         :label => "Custom Pricing",
                                   :as => :string,
-                                  :input_html => { :class => "currency_input", :maxlength => 9, :value => "$ #{@listing.card.statistics.price_med}" },   
+                                  :input_html => { :class => "currency_input", :maxlength => 9, :value => "$ #{@listing.price}" },   
                                   :required => true %>                                  
     </div>
 
@@ -66,8 +66,7 @@
                                 :required => false %>    
 
    	<%= f.input :scan,     		  :label => "Upload Scan",
-  							                :as => :file,
-																:hint => "Required for Signed, Misprints and Altered" %>
+  							                :as => :file %>
 						                                                          
 
     <%= f.input :description,   :label => "Description",
@@ -93,7 +92,7 @@
   <br class="spacer"/>
   <br class="spacer"/>  
   <div class="center_wrap">
-    <%= f.button :submit, "Create Listing", :class => "center" %>
+    <%= f.button :submit, "Submit", :class => "center" %>
   </div>
   <br class="spacer"/>
 
