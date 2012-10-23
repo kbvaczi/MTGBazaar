@@ -1,17 +1,17 @@
 <% title "members"%>
 
 <h1>Member List</h1>
-<div class="ma">
+<div id="content">
   
 	<table class="data">
 		<tr class="header_row">
-			<th>Member Since</th>
-			<th>Username</th>
-			<th># Sales</th>
-			<th># Purchases</th>
-			<th>Feedback Rating</th>
+			<th> <%= table_sort_header("Member Since", :params => {}, :value => "member_since", :remote => true) %> </th>
+			<th> <%= table_sort_header("Username", :params => {}, :value => "user", :remote => true) %> </th>
+			<th> <%= table_sort_header("Sales", :params => {}, :value => "sales", :remote => true) %> </th>			
+			<th> <%= table_sort_header("Purchases", :params => {}, :value => "purchases", :remote => true) %> </th>						
+			<th> <%= table_sort_header("Feedback Rating", :params => {}, :value => "feedback", :remote => true) %> </th>
 		</tr>
-		
+				
 	  <% @users.each do |user| %>
 	    <tr class=<%= cycle("even","odd") %>>
 	      <td><%= user.created_at.strftime("%B %Y") %></td>

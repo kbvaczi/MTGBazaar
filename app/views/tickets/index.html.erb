@@ -4,8 +4,9 @@
   <div class="group center_wrap">
     <ul class="tabs center">
         <li <%= "class=selected" if request.fullpath == tickets_path %>> <%= link_to "All (#{current_user.tickets.count})", tickets_path %> </li>
-        <li <%= "class=selected" if request.fullpath == tickets_path(:status => "active") %>> <%= link_to "Active (#{current_user.tickets.active.count})", tickets_path(:status => "active") %> </li>      
-        <li <%= "class=selected" if request.fullpath == tickets_path(:status => "resolved") %>> <%= link_to "Resolved (#{current_user.tickets.where(:status => "resolved").count})", tickets_path(:status => "resolved") %> </li>              
+        <li <%= "class=selected" if request.fullpath == tickets_path(:status => "open") %>> <%= link_to "Open (#{current_user.tickets.active.count})", tickets_path(:status => "active") %> </li>
+				<li <%= "class=selected" if request.fullpath == tickets_path(:status => "resolved") %>> <%= link_to "Resolved (#{current_user.tickets.active.count})", tickets_path(:status => "active") %> </li>      
+        <li <%= "class=selected" if request.fullpath == tickets_path(:status => "closed") %>> <%= link_to "Closed (#{current_user.tickets.where(:status => "resolved").count})", tickets_path(:status => "resolved") %> </li>              
     </ul>
   </div>
   

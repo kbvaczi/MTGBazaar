@@ -1,11 +1,17 @@
 class UsersController < ApplicationController
 
-  before_filter :authenticate_user!, :except => [:new, :create, :show, :autocomplete_name]
+  before_filter :authenticate_user!, :except => [:index, :new, :create, :show, :autocomplete_name]
   
   include ApplicationHelper
   
   def index
-    @users = User.active.order("username DESC").page(params[:page]).per(15)
+    users_sort_string = table_sort(:default => "username", :member_since => "created_at", :user => "username", :sales => "user_statistics.number_sales",
+                                   :purchases => "user_statistics.number_purchases", :feedback => "user_statistics.positive_feedback_count + user_statistics.neutral_feedback_count / user_statistics.number_sales")
+    
+    
+    @users = User.includes(:statistics).active.order(users_sort_string).page(params[:page]).per(15)
+    
+    
     
   end
   
