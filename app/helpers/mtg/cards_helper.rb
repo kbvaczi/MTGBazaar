@@ -163,9 +163,9 @@ module Mtg::CardsHelper
   
   def active_set_list(options = {})
     if options[:sort] == "name"
-      sort = "name ASC"       
+      sort = "name DESC"       
     else
-      sort = "release_date DESC" 
+      sort = "name ASC" 
     end
     sets = Mtg::Set.where(:active => true).order("#{sort}").to_a
     return sets.collect(&:name).zip(sets.collect(&:code))
