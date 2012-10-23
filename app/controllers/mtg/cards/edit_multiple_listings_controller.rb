@@ -8,7 +8,7 @@ class Mtg::Cards::EditMultipleListingsController < ApplicationController
   
   include ActionView::Helpers::NumberHelper  # needed for number_to_currency  
   include ActionView::Helpers::TextHelper
-  #include Singleton  
+  #include Singleton
   
   def process_request
     if params[:action_input] == 'active'
