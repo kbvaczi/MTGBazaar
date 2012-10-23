@@ -23,6 +23,13 @@ MTGBazaar::Application.routes.draw do
   resources :tickets, :only => [:index, :show, :new, :create] 
   post    "tickets/:id/update"                => "tickets#create_update",            :as => 'ticket_update'
   
+  
+# COMMUNICATIONS ------------ #
+
+  get     'communications'                => 'communications#new',            :as => 'new_communication'
+  post    'communications'                => 'communications#create',         :as => 'create_communication'  
+
+
 # MTG ----------------------- #
 
   # Orders
