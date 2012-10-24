@@ -76,7 +76,7 @@ class Mtg::CardsController < ApplicationController
       query << ["card_type LIKE ?", "#{params[:type]}"] if params[:type].present?
       query << ["card_subtype LIKE ?", "%#{params[:subtype]}%"] if params[:subtype].present?
       query << ["artist LIKE ?", "#{params[:artist]}"] if params[:artist].present?
-      query << SmartTuple.new(" AND ").add_each(params[:abilities].split(",")) {|v| ["mtg_cards.description LIKE ?", "%#{v}%"]} if params[:abilities].present?
+      query << SmartTuple.new(" AND ").add_each(params[:abilities]) {|v| ["mtg_cards.description LIKE ?", "%#{v}%"]} if params[:abilities].present?
       if params[:language].present? or params[:options].present? or params[:seller_id].present? or params[:show] == "listed"
         params[:show] = "listed" unless params[:show] == "all"
         # language filters
