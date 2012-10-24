@@ -1,7 +1,5 @@
 MTGBazaar::Application.routes.draw do
 
-  mount Ckeditor::Engine => '/ckeditor'
-
 # ACTIVE ADMIN SETUP ------- #
 
   ActiveAdmin.routes(self)

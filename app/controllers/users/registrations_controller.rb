@@ -53,7 +53,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       params[:user][:account_attributes][:state] = address_info[:state] || ""
       params[:user][:account_attributes][:zipcode] = address_info[:zip_code] || ""
       params[:user][:account_attributes][:address_verification] = { :cleanse_hash => address_info[:cleanse_hash], :override_hash => address_info[:override_hash] } || ""
-      session[:address_info] == ""
+      session[:address_info] = nil
     end
   end
   
