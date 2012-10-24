@@ -253,11 +253,11 @@ class Mtg::TransactionsController < ApplicationController
   end
   
   def verify_shipment_privileges?(transaction)
-    if (not transaction.present?) or (transaction.status != "confirmed") # user inputted invalid transaction_id or transction cannot be shipped at its current stage
+    if not transaction.present? # user inputted invalid transaction_id or transction cannot be shipped at its current stage
       flash[:error] = "There was a problem trying to process your request..."
       redirect_to back_path
       return false
-    elsif transaction.status == "shipped" # this transaction has already been shipped
+    elsif transaction.seller_shipped_at != nil # this transaction has already been shipped
       flash[:error] = "You have already confirmed shipment of this sale..."
       redirect_to back_path
       return false

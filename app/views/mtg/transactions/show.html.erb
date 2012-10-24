@@ -99,7 +99,7 @@
       	  <td colspan=3>
         	  <div id="shipping_label_button">
       	      <% if not @transaction.shipping_label.present? %>
-                <%= link_to "Create Shipping Label", create_shipping_label_path(@transaction), :remote => true, :class => "button ma-s", :style => "display:inline-block;" %>  	      
+                <%= link_to "Create Shipping Label", create_shipping_label_path(@transaction), :remote => true, :class => "button ma-s", :style => "display:inline-block;", :confirm => "To avoid issues with USPS, Package should be shipped within 24-hours after creating label. Please mark package as shipped once sent." %>  	      
       	      <% else @transaction.seller_shipped_at.nil? %>
                 <%= link_to "View Shipping Label", create_shipping_label_path(@transaction), :target => "_blank", :class => "button ma-s", :style => "display:inline-block;" %>              
       	      <% end %>
@@ -127,7 +127,7 @@
     	    <% if @transaction.seller_shipped_at.present? %> 
             <%= display_time(@transaction.seller_shipped_at) %>
     	    <% elsif @transaction.seller_id == current_user.id && @transaction.shipping_label.present? %>
-    	      <%= link_to "Mark as Shipped", create_seller_shipment_confirmation_path(@transaction), :method => :put, :class => "button ma-s", :confirm => "Are you sure you want to mark this transaction as shipped? You will be unable to view shipping label once shipped." %>
+    	      <%= link_to "Mark as Shipped", create_seller_shipment_confirmation_path(@transaction), :method => :put, :class => "button ma-s", :confirm => "Buyer will be notified of your shipment" %>
     	    <% else %>
             not yet shipped
     	    <% end %>
