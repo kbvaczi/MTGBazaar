@@ -5,10 +5,10 @@ class Mtg::Card < ActiveRecord::Base
   include ActionView::Helpers::NumberHelper  # needed for number_to_currency  
 
   belongs_to  :set,                         :class_name => "Mtg::Set"
-  has_one     :statistics,                  :class_name => "Mtg::Cards::Statistics",   :foreign_key => "card_id"
-  has_one     :block,     :through => :set, :class_name => "Mtg::Block",            :foreign_key => "block_id"
-  has_many    :listings,                    :class_name => "Mtg::Cards::Listing",          :foreign_key => "card_id"
-  has_many    :sales,                       :class_name => "Mtg::Transactions::Item",  :foreign_key => "card_id"  
+  has_one     :block,     :through => :set, :class_name => "Mtg::Block",               :foreign_key => "block_id"
+  has_one     :statistics,                  :class_name => "Mtg::Cards::Statistics",   :foreign_key => "card_id",     :dependent => :destroy
+  has_many    :listings,                    :class_name => "Mtg::Cards::Listing",      :foreign_key => "card_id",     :dependent => :destroy
+  has_many    :sales,                       :class_name => "Mtg::Transactions::Item",  :foreign_key => "card_id",     :dependent => :destroy
 
   after_create :create_card_statistics
   

@@ -51,6 +51,17 @@ class Mtg::Cards::Statistics < ActiveRecord::Base
   #validates :number_sales_rejected, :number_sales, :number_sales_cancelled, :positive_feedback_count, :neutral_feedback_count, :negative_feedback_count,
   #          :numericality => {:only_integer => true, :greater_than_or_equal_to => 0, :less_than => 1000000}
 
+  # --------------------------------------- #
+  # ------------ Callbacks ---------------- #
+  # --------------------------------------- #
+
+  before_save :set_default_card_pricing_if_no_pricing, :on => :create
+  
+  def set_default_card_pricing_if_no_pricing
+    self.price_low = 0.50 if self.price_low == 0
+    self.price_med = 1.00 if self.price_med == 0
+    self.price_high = 1.50 if self.price_high == 0    
+  end
 
   # --------------------------------------- #
   # ------------ Accessors ---------------- #

@@ -9,9 +9,6 @@
     <%= display_set_symbol(listing.card.set) %>
   </td> 
   <td>
-    <%= number_to_currency(listing.price) %>
-  </td> 
-  <td>
     <%= display_condition(listing.condition) %>
   </td>
   <td>
@@ -38,6 +35,9 @@
         <%= listing_option_scan_overlay(listing) %>
       <% end %> 
   </td>
+  <td>
+    <%= number_to_currency(listing.price) %>
+  </td>  
   <td>
     <%= listing.quantity %>
   </td>

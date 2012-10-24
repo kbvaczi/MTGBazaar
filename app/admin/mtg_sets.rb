@@ -9,7 +9,7 @@ ActiveAdmin.register Mtg::Set do
       link_to 'Edit Set', edit_admin_mtg_set_path(mtg_set)
     end    
     action_item :only => :show do
-      link_to 'Delete Set', delete_set_admin_mtg_set_path(mtg_set), :confirm => "Warning! Deleting this set will also delete the #{Mtg::Set.find(params[:id]).cards.count} cards that belong to this set.  Are you sure you want to do this?"
+      link_to 'Delete Set', delete_set_admin_mtg_set_path(mtg_set), :confirm => "Warning! Deleting this set will also delete the #{Mtg::Set.find(params[:id]).cards.count} cards that belong to this set.  Are you sure you want to do this?" if !mtg_set.active?
     end
     action_item :only => :show do
       link_to 'Activate all Cards', activate_all_cards_admin_mtg_set_path(mtg_set), :confirm => "Are you sure you want to activate all cards?"
