@@ -12,7 +12,7 @@ class Mtg::Transactions::ShippingLabelsController < ApplicationController
       begin
         @label = Mtg::Transactions::ShippingLabel.new(:transaction => current_transaction)
         if not @label.save 
-          Rails.logger.info("label.errors.full_messages")
+          Rails.logger.info("@label.errors.full_messages")
           flash[:error] = "There was a problem retreiving your shipping label.  Please try again later..."
           redirect_to back_path
           return
