@@ -47,6 +47,10 @@ class Mtg::Transaction < ActiveRecord::Base
   def self.active
     where("mtg_transactions.status <> \'completed\'")
   end
+  
+  def self.recent
+    where("mtg_transactions.created_at > \'#{1.month.ago}\'")
+  end
 
   def self.ready_to_ship
     where(:seller_shipped_at => nil, :status => "confirmed")

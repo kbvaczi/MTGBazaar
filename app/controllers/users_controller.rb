@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   include ApplicationHelper
   
   def index
-    users_sort_string = table_sort(:default => "username", :member_since => "created_at", :user => "username", :sales => "user_statistics.number_sales",
+    users_sort_string = table_sort(:default => "LOWER(username)", :member_since => "created_at", :user => "LOWER(username)", :sales => "user_statistics.number_sales",
                                    :purchases => "user_statistics.number_purchases", :feedback => "user_statistics.positive_feedback_count + user_statistics.neutral_feedback_count / user_statistics.number_sales")
     
     
@@ -21,7 +21,7 @@ class UsersController < ApplicationController
     @user = User.includes(:statistics, :account).find(params[:id])
     @sales = @user.mtg_sales.includes(:items => {:card => :set}).where(:status => "delivered").order("created_at DESC").page(params[:page]).per(10) if params[:section] == "feedback"
     
-    listings_sort_string = table_sort(:default => "mtg_cards.name", :price => "price", :condition => "mtg_listings.condition", :language => "mtg_listings.language",
+    listings_sort_string = table_sort(:default => "LOWER(mtg_cards.name)", :price => "price", :condition => "mtg_listings.condition", :language => "mtg_listings.language",
                                       :quantity => "mtg_listings.quantity", :name => "mtg_cards.name", :set => "mtg_sets.release_date")
     
     @listings = @user.mtg_listings.includes(:card => :set).available.order(listings_sort_string).page(params[:page]).per(20) if params[:section] == "mtg_cards"
