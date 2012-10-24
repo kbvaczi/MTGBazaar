@@ -42,6 +42,16 @@ class Mtg::Transaction < ActiveRecord::Base
     self.errors[:base] << "You cannot buy from yourself..." if seller_id == buyer_id && buyer_id != nil
   end
 
+# ---------------- SCOPES ---------------------------
+
+  def self.active
+    where("mtg_transactions.status <> \'completed\'")
+  end
+
+  def self.ready_to_ship
+    where(:seller_shipped_at => nil, :status => "confirmed")
+  end
+
 # ---------------- PUBLIC MEMBER METHODS -------------
   
   def total_value

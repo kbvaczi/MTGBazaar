@@ -6,9 +6,6 @@
     <%= display_set_symbol(item.card.set) %>
   </td>  
   <td>
-    <%= number_to_currency(item.price) %>
-  </td> 
-  <td>
     <%= display_condition(item.condition) %>
   </td>
   <td>
@@ -30,6 +27,9 @@
     <% if item.description != "" %>
       <%= listing_option_description_icon(item) %>
     <% end %>
+  </td>
+  <td>
+    <%= number_to_currency(item.price) %>
   </td>
   <td> 
     <%= item.quantity_available %>

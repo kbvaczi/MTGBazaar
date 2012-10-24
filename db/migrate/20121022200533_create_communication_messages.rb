@@ -9,7 +9,7 @@ class CreateCommunicationMessages < ActiveRecord::Migration
 
       #table data
       t.text      :message
-      t.boolean   :new,                 :default => true
+      t.boolean   :unread,                 :default => true
 
       t.timestamps      
     end

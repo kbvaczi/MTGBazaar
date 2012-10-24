@@ -26,9 +26,7 @@ MTGBazaar::Application.routes.draw do
   
 # COMMUNICATIONS ------------ #
 
-  get     'communications'                => 'communications#new',            :as => 'new_communication'
-  post    'communications'                => 'communications#create',         :as => 'create_communication'  
-
+  resources :communications, :only => [:index, :show, :create]
 
 # MTG ----------------------- #
 

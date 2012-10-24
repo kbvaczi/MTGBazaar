@@ -6,9 +6,9 @@
 
   <div class="group center_wrap">
     <ul class="tabs center">
-        <li <%= "class=selected" if not params[:section].present? %>> <%= link_to "Details", url_for(params.merge(:section => nil)) %> </li>
-        <li <%= "class=selected" if params[:section] == "items" %>> <%= link_to "Items", url_for(params.merge(:section => "items")) %> </li>        
-        <li <%= "class=selected" if params[:section] == "communication" %>> <%= link_to "Communication", url_for(params.merge(:section => "communication")) %> </li>                
+        <li <%= "class=selected" if not params[:section].present? %>> <%= link_to "Details", url_for(params.merge(:section => nil, :message => nil)) %> </li>
+        <li <%= "class=selected" if params[:section] == "items" %>> <%= link_to "Items", url_for(params.merge(:section => "items", :message => nil)) %> </li>        
+        <li <%= "class=selected" if params[:section] == "communication" %>> <%= link_to "Communication", url_for(params.merge(:section => "communication", :message => nil)) %> </li>                
     </ul>
   </div>
 
@@ -17,18 +17,8 @@
   <% if params[:section] == "items" %>
 
   	<table class="data">
-  	  <tr class="header_row">
-    	  <th>Name</th>
-    	  <th>Set</th>      
-    	  <th>Price</th>
-    		<th>Cond.</th>
-    		<th>Lang.</th>
-    		<th>Options</th>
-    		<th>Qty.</th>
-    	</tr>
-
+      <%= render :partial => "mtg/transaction_items/teaser_header" %>
       <%= render :partial => "mtg/transaction_items/teaser", :collection => @items, :as => "item" %>  
-
   	</table>
 
     <div class="center_wrap paginator">
@@ -40,16 +30,16 @@
 
     <table class="data">
   	  <tr class="header_row">
-    	  <th style="width:25%">Sent On</th>
+    	  <th style="width:15%">Sent On</th>
     	  <th style="width:25%">Sender</th>      
-    	  <th style="width:50%">Message</th>
+    	  <th style="width:60%">Message</th>
     	</tr>
 
       <% @communications.each do |communication| %>  
         <tr class="<%= communication.sender.id == @transaction.buyer.id ? "odd" : "even" %>">
           <td><%= display_time(communication.created_at) %></td>
           <td><%= communication.sender.username %></td>          
-          <td><%= communication.message %></td>
+          <td><div><%= communication.message %></div></td>
         </tr>
       <% end %>
       

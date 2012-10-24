@@ -100,7 +100,7 @@ ActiveRecord::Schema.define(:version => 20121022200533) do
     t.integer  "receiver_id"
     t.integer  "mtg_transaction_id"
     t.text     "message"
-    t.boolean  "new",                :default => true
+    t.boolean  "unread",             :default => true
     t.datetime "created_at",                           :null => false
     t.datetime "updated_at",                           :null => false
   end

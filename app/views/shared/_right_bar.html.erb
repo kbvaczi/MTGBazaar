@@ -20,15 +20,17 @@
         <div class="right"><%= number_to_currency(current_cart.total_price) %></div>  
       </div>
       <br/>
-      <div class="mt-m"> <div class="left">Pending Purchases:</div> <div class="right"><%= current_user.pending_purchases.count %></div>  </div>
+      <div class="mt-m"> <div class="left">Active Purchases:</div>  <div class="right"><%= current_user.mtg_purchases.active.count %></div> </div>
       <br/>
-      <div class=""> <div class="left">Active Purchases:</div>  <div class="right"><%= current_user.active_purchases.count %></div>  </div>
+      <div class=""> <div class="left">Purchases Awaiting Shipment:</div> <div class="right"><%= current_user.mtg_purchases.ready_to_ship.count %></div> </div>
       <br/>
-	    <div class="mt-m"> <div class="left">Orders to Ship:</div> <div class="right"><%= current_user.pending_sales.count %></div>  </div>
+      <div class="mt-m"> <div class="left">Active Sales:</div>  <div class="right"><%= current_user.mtg_sales.active.count %></div>  </div>
       <br/>
-      <div class=""> <div class="left">Active Sales:</div>  <div class="right"><%= current_user.active_sales.count %></div>  </div>
+	    <div class=""> <div class="left">Orders to Ship:</div> <div class="right"><%= current_user.mtg_sales.ready_to_ship.count %></div>  </div>
       <br/>
-      <div class="mt-m"><div class="left">Active Listings:</div><div class="right"><%= current_user.mtg_listings.active.count %></div></div>
+      <div class=""><div class="left">Active Listings:</div><div class="right"><%= current_user.mtg_listings.active.count %></div></div>
+      <br/>
+      <div class=""><div class="left">New Messages:</div><div class="right"><%= current_user.communications_received.unread.count %></div></div>
       <br/>        
       <div class="">
         <div class="left">Seller Status:</div>

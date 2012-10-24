@@ -1,0 +1,40 @@
+<% title "View Message" %>
+
+<h1>View Message</h1>
+
+<div class="content">
+  
+  <table class="data">
+	  <tr class="header_row">
+  	  <th style="width:20%">Sent On</th>
+  	  <th style="width:30%">Sender</th>
+  	  <th style="width:40%">Transaction</th>
+  	</tr>
+    <tr class="odd">
+      <td><%= display_time(@communication.created_at) %></td>
+      <td><%= @communication.sender.username %></td>
+      <% if @communication.transaction.present? %>
+        <td><%= link_to @communication.transaction.transaction_number, show_mtg_transaction_path(:id => @communication.transaction.id, :section => "communication") %></td>
+      <% else %>
+        <td><i>None</i></td>
+      <% end %>
+    </tr>
+	</table>
+	
+	<br class="spacer"/>
+	
+	<table class="data">
+	  <tr class="header_row">
+  	  <th>Message</th>
+  	</tr>
+    <tr class="odd">
+      <td>
+        <div class="ma">
+          <%= @communication.message %>
+        </div>
+      </td>
+    </tr>
+	</table>
+	
+</div>
+

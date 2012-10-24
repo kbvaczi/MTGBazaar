@@ -69,6 +69,8 @@ class UsersController < ApplicationController
     set_back_path    
     if params[:status].present?
       @sales = current_user.mtg_purchases.where(:status => params[:status]).order("created_at DESC").page(params[:page]).per(12)
+    elsif params[:section].present?
+      @sales = current_user.mtg_purchases.includes(:communications).where("communications.receiver_id IS #{current_user.id} AND communications.new IS ?", true).order("created_at DESC").page(params[:page]).per(12)
     else
       @sales = current_user.mtg_purchases.order("created_at DESC").page(params[:page]).per(12)
     end
