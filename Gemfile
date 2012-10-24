@@ -35,7 +35,7 @@ gem "honeypot-captcha", "~> 0.0.2"                                  # alternativ
 gem "taps", "~> 0.3.24"                                             # ability to pull and push databases from development to production
 
 gem "valium", "~> 0.5.0"                                            # improved activerecord queries?
-#gem "hirefireapp", "~> 0.0.8"                                       # auto-scaling dynos
+gem "hirefireapp", "~> 0.0.8"                                       # auto-scaling dynos
 
 # -------------
 # STANDARD GEMS

@@ -10,7 +10,7 @@ class HomeController < ApplicationController
     end
     
     Rails.logger.debug "GirlFriday STATUS: #{GirlFriday.status}"
-    
+    Rails.logger.debug "Current Cart: #{current_cart.inspect}"
   end
   
   def test

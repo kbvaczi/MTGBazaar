@@ -42,9 +42,9 @@ class Cart < ActiveRecord::Base
   end
   
   def update_cache
-    res = reservations.joins(:listing)
-    self.item_count = res.sum("mtg_reservations.quantity")
-    self.total_price = res.sum("mtg_listings.price * mtg_reservations.quantity").to_f / 100
+    res = self.reservations.joins(:listing)
+    self.item_count  = (res.sum("mtg_reservations.quantity")) rescue 0
+    self.total_price = (res.sum("mtg_listings.price * mtg_reservations.quantity").to_f / 100) rescue 0
     self.save
   end
 

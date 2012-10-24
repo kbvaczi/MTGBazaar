@@ -1,6 +1,8 @@
 class Mtg::Cards::ListingsController < ApplicationController
   
   before_filter :authenticate_user! # must be logged in to make or edit listings
+  before_filter :verify_user_paypal_account, :only => [:new, :create, :new_generic, :new_generic_set, :new_generic_pricing, :create_generic, 
+                                                       :new_bulk_prep, :new_bulk, :create_bulk]
   before_filter :verify_owner?, :except => [:new, :create, :new_generic, :new_generic_set, :new_generic_pricing, :create_generic, 
                                             :new_bulk_prep, :new_bulk, :create_bulk]  # prevent a user from editing another user's listings
   before_filter :verify_not_in_cart?, :only => [:edit, :update, :destroy, :set_inactive]  # don't allow users to change listings when they're in someone's cart or when they're in a transaction.
@@ -191,6 +193,14 @@ class Mtg::Cards::ListingsController < ApplicationController
   end
 
   # CONTROLLER FUNCTIONS
+
+  def verify_user_paypal_account
+    unless current_user.account.paypal_username.present?
+       flash[:error] = "A verified PayPal account is required to sell on MTGBazaar..."
+       redirect_to :root
+       return false
+     end
+  end    
     
   def verify_owner?
     @listing = Mtg::Cards::Listing.find(params[:id])

@@ -34,7 +34,7 @@ ActiveAdmin.register User do
       "#{user.account.last_name}, #{user.account.first_name} "
     end  
     column :email
-    column "Paypal Email", :sortable => :'accounts.paypal_username' do |user|
+    column "PayPal Email", :sortable => :'accounts.paypal_username' do |user|
       user.account.paypal_username
     end 
     column "Current Sign-in", :current_sign_in_at

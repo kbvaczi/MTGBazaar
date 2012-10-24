@@ -137,6 +137,7 @@ GEM
     heroku-api (0.2.1)
       excon (~> 0.13.3)
     hike (1.2.1)
+    hirefireapp (0.0.8)
     honeypot-captcha (0.0.2)
     hooves (0.7)
       unicorn (> 0)
@@ -291,6 +292,7 @@ DEPENDENCIES
   formtastic (~> 2.1.1)
   girl_friday (~> 0.10.0)
   heroku
+  hirefireapp (~> 0.0.8)
   honeypot-captcha (~> 0.0.2)
   hooves
   jquery-rails
