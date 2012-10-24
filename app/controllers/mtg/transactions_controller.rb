@@ -6,6 +6,11 @@ class Mtg::TransactionsController < ApplicationController
     set_back_path
     @transaction = Mtg::Transaction.includes(:items => {:card => :set}).find(params[:id])
     @items = @transaction.items.includes(:card => :set).order("mtg_cards.name").page(params[:page]).per(16) if params[:section] == "items"
+    if params[:section] == "communication"    
+      @communications    = @transaction.communications.order("created_at DESC").page(params[:page]).per(5)
+      @communications.each {|c| c.update_attribute(:unread, false) if c.unread?}  # set messages to read so they no longer show up in communication center
+      @new_communication = Communication.new(:mtg_transaction_id => @transaction.id)
+    end
   end
   
 ##### ---------- SELLER SALE CONFIRMATION ------------- #####

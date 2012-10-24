@@ -6,10 +6,11 @@ class Mtg::Transaction < ActiveRecord::Base
   belongs_to :seller,         :class_name => "User"
   belongs_to :buyer,          :class_name => "User"
   belongs_to :order,          :class_name => "Mtg::Order"
-  has_one    :payment,        :class_name => "Mtg::Transactions::Payment",          :foreign_key => "transaction_id", :dependent => :destroy
-  has_one    :shipping_label, :class_name => "Mtg::Transactions::ShippingLabel",    :foreign_key => "transaction_id", :dependent => :destroy
-  has_one    :feedback,       :class_name => "Mtg::Transactions::Feedback",         :foreign_key => "transaction_id", :dependent => :destroy
-  has_many   :items,          :class_name => "Mtg::Transactions::Item" ,            :foreign_key => "transaction_id", :dependent => :destroy
+  has_many   :communications, :class_name => "Communication",                       :foreign_key => "mtg_transaction_id", :dependent => :destroy
+  has_one    :payment,        :class_name => "Mtg::Transactions::Payment",          :foreign_key => "transaction_id",     :dependent => :destroy
+  has_one    :shipping_label, :class_name => "Mtg::Transactions::ShippingLabel",    :foreign_key => "transaction_id",     :dependent => :destroy
+  has_one    :feedback,       :class_name => "Mtg::Transactions::Feedback",         :foreign_key => "transaction_id",     :dependent => :destroy
+  has_many   :items,          :class_name => "Mtg::Transactions::Item" ,            :foreign_key => "transaction_id",     :dependent => :destroy
 
 
   # Implement Money gem for price column
@@ -41,6 +42,20 @@ class Mtg::Transaction < ActiveRecord::Base
     self.errors[:base] << "You cannot buy from yourself..." if seller_id == buyer_id && buyer_id != nil
   end
 
+# ---------------- SCOPES ---------------------------
+
+  def self.active
+    where("mtg_transactions.status <> \'completed\'")
+  end
+  
+  def self.recent
+    where("mtg_transactions.created_at > \'#{1.month.ago}\'")
+  end
+
+  def self.ready_to_ship
+    where(:seller_shipped_at => nil, :status => "confirmed")
+  end
+
 # ---------------- PUBLIC MEMBER METHODS -------------
   
   def total_value
@@ -60,6 +75,10 @@ class Mtg::Transaction < ActiveRecord::Base
       when "0"
         "Neutral"
     end
+  end
+  
+  def valid_for_communication?
+    return self.created_at >= 30.days.ago && (not self.feedback.present?)
   end
   
   # check whether seller has confirmed this transaction or not

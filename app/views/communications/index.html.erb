@@ -1,0 +1,50 @@
+<% title "Communication Center" %>
+
+<h1>Communication Center</h1>
+
+<div class="content">
+  
+  <div class="group center_wrap">
+    <ul class="tabs">
+      <li <%= "class=selected" if params[:section] != "recent" %>> <%= link_to "New Messages", url_for(params.merge(:section => "new")) %> </li>
+      <li <%= "class=selected" if params[:section] == "recent" %>> <%= link_to "Recent Messages", url_for(params.merge(:section => "recent")) %> </li>
+    </ul>
+  </div>
+
+  <table class="data">
+	  <tr class="header_row">
+  	  <th style="width:15%">Sent On</th>
+  	  <th style="width:30%">Sender</th>
+  	  <th style="width:45%">Message</th>
+  	</tr>
+
+    <% @communications.each do |communication| %>  
+      <tr class="<%= cycle("odd","even")%>">
+        <td><%= display_time(communication.created_at) %></td>
+        <% if communication.sender.present? %>
+          <td><%= communication.sender.username %></td>
+        <% else %>
+          <td> MTGBazaar </td>
+        <% end %>
+        <% if communication.transaction.present? %>
+          <td><%= link_to communication.message.truncate(40, :omission => "..."), show_mtg_transaction_path(:id => communication.transaction.id, :section => "communication")%></td>
+        <% else %>
+          <td><%= link_to communication.message.truncate(40, :omission => "..."), communication_path(communication) %></td>
+        <% end %>
+
+      </tr>
+    <% end %>
+
+    <% if @communications.length == 0 %>
+      <tr><td colspan=3 class="odd"><i>None</i></td></tr>
+    <% end %>
+
+	</table>
+  <br class="spacer"/>
+
+  <div class="center_wrap paginator">
+    <%= paginate @communications, :collection => @communications %>
+  </div>
+  
+</div>
+

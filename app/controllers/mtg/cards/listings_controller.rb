@@ -52,8 +52,11 @@ class Mtg::Cards::ListingsController < ApplicationController
     # handle pricing select options to determine how to update price
     if params[:mtg_cards_listing] && params[:mtg_cards_listing][:price_options] != "other"
       params[:mtg_cards_listing][:price] = params[:mtg_cards_listing][:price_options]
-    end    
-    # handle updating listings before creating/destroying just in case there is a problem with update
+    end 
+    # if quantity has changed, set parameter to update quantity_available accordingly
+    if params[:mtg_cards_listing] && params[:mtg_cards_listing][:quantity].to_i != @listing.quantity
+      params[:mtg_cards_listing][:quantity_available] = @listing.quantity_available + (params[:mtg_cards_listing][:quantity].to_i - @listing.quantity)
+    end
     unless @listing.update_attributes(params[:mtg_cards_listing])
       flash[:error] = "There were one or more errors while trying to process your request"
       render 'edit'

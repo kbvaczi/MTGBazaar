@@ -14,15 +14,15 @@
 <h2><%= pluralize @sales.total_count, "#{params[:status].capitalize if params[:status].present?} Purchase", "#{params[:status].capitalize if params[:status].present?} Purchases" %></h2>
 
  <table class="data">
- <tr class="header_row">
- 	<th>Date</th>
- 	<th>Transaction ID</th>      
-	<th>Seller</th>
-	<th>Status</th>
-	<th>Items</th>
-	<th>Value</th>
- </tr>
-  
+   <tr class="header_row">
+   	<th>Date</th>
+   	<th>Transaction ID</th>      
+  	<th>Seller</th>
+  	<th>Status</th>
+  	<th>Items</th>
+  	<th>Value</th>
+   </tr>
+
   <% @sales.each do |t| %>
     <%= render :partial => "mtg/transactions/teaser" , :locals => {:transaction => t} %>      
   <% end %>

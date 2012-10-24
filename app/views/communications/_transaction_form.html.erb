@@ -1,0 +1,21 @@
+
+<%= simple_form_for @new_communication, :url => communications_path(@new_communication), :method => :post do |f| %>
+  
+  
+  <div class="inputs">
+    <%= f.input :message,                   :label => "New Message",
+                                            :as => :text,
+                                            :required => true, 
+                                            :hint => "500 Characters Maximum",
+                                            :input_html => {:maxlength => "500", :value => params[:message]} %>                                      
+                                            
+    <%= f.input :mtg_transaction_id,        :as => :hidden %>
+
+  </div>
+  
+  <br class="spacer"/>
+  <div class="center_wrap">
+    <%= f.button :submit, "Send New Message", :class => "center" %>
+  </div>
+  
+<% end %>

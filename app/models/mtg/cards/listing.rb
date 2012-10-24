@@ -4,7 +4,7 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   belongs_to :card,         :class_name => "Mtg::Card"
   belongs_to :seller,       :class_name => "User"
   has_one    :statistics,   :class_name => "Mtg::Cards::Statistics",   :through => :card
-  has_many   :reservations, :class_name => "Mtg::Reservation"
+  has_many   :reservations, :class_name => "Mtg::Reservation",      :dependent => :destroy
   has_many   :orders,       :class_name => "Mtg::Order",            :through => :reservations,      :foreign_key => :order_id  
   has_many   :carts,        :class_name => "Cart",                  :through => :reservations,      :source => :cart
   
@@ -28,7 +28,7 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   # ------------ Callbacks ==-------------- #
   # --------------------------------------- #
 
-  before_validation :set_quantity_available, :if => "self.new_record? || self.quantity_changed?"
+  before_validation :set_quantity_available, :on => :create
   after_save :update_statistics_cache_on_save, :if => "price_changed? || quantity_available_changed? || self.new_record?"
   after_save :delete_if_empty
   before_destroy :update_statistics_cache_on_delete
@@ -38,11 +38,7 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   end
   
   def set_quantity_available
-    if self.new_record?
-      self.quantity_available = self.quantity
-    elsif self.quantity_changed?
-      self.quantity_available += (self.quantity - self.quantity_was)
-    end
+    self.quantity_available = self.quantity
   end
   
   def update_statistics_cache_on_save
@@ -51,8 +47,8 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   end
   
   def update_statistics_cache_on_delete
-    self.statistics.listings_available(:overwrite => true)
-    self.statistics.price_min(:overwrite => true) if self.price <= statistics.price_min || statistics.price_min == 0
+    self.statistics.listings_available(:overwrite => true) if self.statistics.present?
+    self.statistics.price_min(:overwrite => true) if self.price <= statistics.price_min || statistics.price_min == 0 if self.statistics.present?
   end
   
   # --------------------------------------- #
