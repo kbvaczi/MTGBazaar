@@ -103,8 +103,8 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
       :city          => options[:user].account.city,
       :state         => options[:user].account.state,
       :zip_code      => options[:user].account.zipcode,
-      :cleanse_hash  => (options[:user].account.address_verification[:cleanse_hash] || ""),
-      :override_hash => (options[:user].account.address_verification[:override_hash] || "")   
+      :cleanse_hash  => (options[:user].account.address_verification[:cleanse_hash] rescue ""),
+      :override_hash => (options[:user].account.address_verification[:override_hash] rescue "")   
     }
     options[:clean] == true ? Stamps.clean_address(:address => a)[:address] : a
   end
