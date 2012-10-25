@@ -83,6 +83,7 @@ MTGBazaar::Application.configure do
   
   # Logging configuration for logs in heroku as per http://stackoverflow.com/questions/8098429/heroku-logging-not-working
   config.logger = Logger.new(STDOUT)
+  config.logger.level = 0
   config.log_level = :debug
 
   ### NOTE: Be sure to comment out these:

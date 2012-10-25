@@ -1,8 +1,8 @@
 $(document).ready(function() {
 
   $('#loader').bind('ajaxStart', function(){
-      $(this).centerScreen2();
-      $(this).show();
+      $(this).centerScreen();
+      $(this).fadeIn(200);
   }).bind('ajaxStop', function(){
       $(this).hide();
   });
