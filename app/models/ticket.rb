@@ -13,15 +13,15 @@ class Ticket < ActiveRecord::Base
   attr_accessible :problem, :offender_username, :transaction_number, :description
   
   # form accepts these parameters which are not actually in the model itself
-  attr_accessor :transaction_number, :offender_username
+  attr_accessor :transaction_number, :offender_username, :current_user
   
   # requires user to either 1) submit blank transaction number, or 2) submit correct transaction number which is associated with themselves
   def verify_transaction_number
     if (not AdminUser.current_admin_user.present?) and (self.transaction_number.present? or self.transaction_id.present?) # user is not admin, and has entered a transaction number
       if self.problem == "delivery confirmation"
-        transaction = Mtg::Transaction.where(:seller_id => User.current_user.id, :transaction_number => self.transaction_number).first
+        transaction = Mtg::Transaction.where(:seller_id => self.current_user.id, :transaction_number => self.transaction_number).first
       else
-        transaction = Mtg::Transaction.where(:buyer_id => User.current_user.id, :transaction_number => self.transaction_number).first #find the transaction corresponding to transaction number entered and which belongs to current user
+        transaction = Mtg::Transaction.where(:buyer_id => self.current_user.id, :transaction_number => self.transaction_number).first #find the transaction corresponding to transaction number entered and which belongs to current user
       end
       if not transaction.present? # did we find the transaction?
         errors.add(:transaction_number, "invalid transaction number") # transaction number was entered wrong, or this transaction doesn't belong to current user

@@ -8,10 +8,10 @@ class TicketsController < ApplicationController
   end
 
   # ticket is created based on submitted information
-  def create 
-    @ticket = Ticket.new(params[:ticket])
+  def create
+    @ticket = Ticket.new(params[:ticket].merge(:status => "open"))
     @ticket.author = current_user # if no admin is logged in, set to current user...
-    User.current_user = current_user # set current User.current_user to be used in model validations
+    @ticket.current_user = current_user # set current current_user to be used in model validations
     if @ticket.save
       redirect_to tickets_path, :notice => "Your ticket was created and will be reviewed shortly"
     else
@@ -52,7 +52,7 @@ class TicketsController < ApplicationController
     @ticket_update = TicketUpdate.new(params[:ticket_update]) 
     @ticket_update.ticket_id = @ticket.id
     @ticket_update.author = current_user # if no admin is logged in, set to current user...
-    User.current_user = current_user # set current User.current_user to be used in model validations
+    @ticket.current_user = current_user # set current_user to be used in model validations...
     if @ticket_update.save
       redirect_to ticket_path(@ticket), :notice => "Ticket updated"
     else
