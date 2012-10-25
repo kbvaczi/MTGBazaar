@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  before_filter :authenticate_user!, :except => [:index, :new, :create, :show, :autocomplete_name]
+  before_filter :authenticate_user!, :except => [:index, :new, :create, :show, :autocomplete_name, :validate_username_ajax]
   
   include ApplicationHelper
   
@@ -88,6 +88,14 @@ class UsersController < ApplicationController
     current_user.update_attribute(:active, !current_user.active)
     respond_to do |format|
       format.js {}
+    end
+  end
+    
+  def validate_username_ajax
+    hypothetical_user = User.new(:username => params[:desired_username].downcase)
+    hypothetical_user.valid?
+    respond_to do |format|
+      format.json {render :json => hypothetical_user.errors[:username].first.to_json}
     end
   end
     

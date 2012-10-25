@@ -1,0 +1,24 @@
+<% environment.context_class.instance_eval { include Rails.application.routes.url_helpers } %> //access to URL helpers
+
+$(document).ready(function() {
+  
+  $("#user_username").change(function(){  
+		var error = $.ajax({
+			url: "<%= validate_username_ajax_path %>?desired_username="+$(this).val(),
+			type: "GET",
+			dataType: "json",
+			success: function(data) {
+				$("#user_username").siblings('span.error').remove();
+				$("#user_username").siblings('span.hint').remove();
+				if(data != null){
+					$("#user_username").parent().append('<span class="error">'+ data +'</span>');
+				}
+				
+				else {
+					$("#user_username").parent().append('<span class="hint" style="color:green;">This username is available!</span>');
+					
+				}
+		  }
+		}); 		
+  });
+});

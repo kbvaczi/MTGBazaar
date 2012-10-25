@@ -110,6 +110,7 @@ MTGBazaar::Application.routes.draw do
   get 'account/purchases' => 'users#account_purchases', :as => 'account_purchases'
   post 'account/purchases' => 'users#account_purchases', :as => 'account_purchases'   # for pagination
   get 'users' => 'users#index', :as => 'users_index'
+  get 'users/validate_username_ajax' => 'users#validate_username_ajax', :as => 'validate_username_ajax' #checking username taken?
 
   devise_for :users, :controllers => { :registrations => 'users/registrations', :sessions => 'users/sessions', :passwords => 'users/passwords' } 
   devise_scope :user do
