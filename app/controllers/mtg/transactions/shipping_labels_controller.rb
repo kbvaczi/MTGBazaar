@@ -25,10 +25,8 @@ class Mtg::Transactions::ShippingLabelsController < ApplicationController
     end
     
     respond_to do |format|
-      format.html do 
-        redirect_to @label.params[:url]
-      end
-      format.js  { }
+      format.html { redirect_to @label.params[:url] } 
+      format.js  { current_transaction.reload }
     end
   end
   
