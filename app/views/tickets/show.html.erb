@@ -1,7 +1,7 @@
 <% title "Ticket Details" %>
 
 <h1>Ticket Details</h1>
-<div class="ma">
+<div class="content">
  
  <h2>Overview</h2>
   
@@ -33,7 +33,7 @@
 		<th colspan=6>Description</th>
 	</tr>
 	<tr>
-		<td colspan=6 class="odd"><%= @ticket.description %></td>
+		<td colspan=6 class="odd" width="100%"><%= @ticket.description %></td>
 	</tr>
 	</table>
 
@@ -47,25 +47,25 @@
 			<th>Updated By</th>
 			<th>Description</th>
 		</tr>
-					<% @ticket.updates.each do |ticket_update| %>
-		<tr class=<%= cycle("odd","even") %>>
-			<td><%= display_time(ticket_update.created_at) %></td>
-			<td><% if ticket_update.author.class.name == "User" %>
-      		<%= ticket_update.author.username %>
-    		<% else %>
-      		<%= "Admin" %>
-    		<% end %>
-			</td>
-			<td width="55%">
-				<div class="ma-s"><%= ticket_update.description %> </p>
-    	<% if ticket_update.complete_ticket? %>    
-      <p> This ticket was closed </p>
-    		<% end %>
-				</div>
-			</td>
-		</tr>
-		
-  <% end %>
+		<% @ticket.updates.each do |ticket_update| %>
+  		<tr class=<%= cycle("odd","even") %>>
+  			<td width="18%"><%= display_time(ticket_update.created_at) %></td>
+  			<td><% if ticket_update.author.class.name == "User" %>
+        		<%= ticket_update.author.username %>
+      		<% else %>
+        		<%= "Admin" %>
+      		<% end %>
+  			</td>
+			  <td width="55%">
+  				<div class="ma-s"><%= ticket_update.description %> </p>
+          	<% if ticket_update.complete_ticket? %>
+          	  <br class="spacer"/>
+              <p> <i>This ticket has been closed </i></p>
+        		<% end %>
+  				</div>
+  			</td>
+  		</tr>		
+    <% end %>
 	
 </table>
 

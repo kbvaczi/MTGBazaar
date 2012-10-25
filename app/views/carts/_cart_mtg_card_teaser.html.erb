@@ -1,6 +1,7 @@
 <tr class=<%= cycle("odd","even", :name => "rows") %>>
   <td style="max-width:120px;">
-    <div class="mr-s ml-s" style="white-space: nowrap; overflow:hidden;text-overflow: clip;"><%= link_to display_name(reservation.card.name), mtg_card_path(reservation.card), :title => reservation.card.name %></div>
+
+    <%= link_to display_name(reservation.card.name), mtg_card_path(reservation.card), :title => reservation.card.name %>
 	</td>
   <td>
     <%= display_set_symbol(reservation.card.set)%>
@@ -37,10 +38,10 @@
   </td>                          
   <td>
     <div class="center_wrap">
-      <div class="center mr-s">
+      <div class="center">
         <%= form_tag update_quantity_in_cart_mtg_cards_path(reservation), :method => :post, :remote => true do %>
           <%#= text_field_tag "quantity", 1, :class => "quantity_in_cart", :id => nil, :value => reservation.quantity, :style => "width:30px;text-align:center;"%>
-          <%= select_tag "quantity", options_for_select(update_quantity_in_cart_selection(reservation), :selected => reservation.quantity), :class => "quantity_in_cart chzn-select chzn-nosearch", :id => nil, :style => "width:#{reservation.quantity > 900 ? "65px" : "55px"};"%>  
+          <%= select_tag "quantity", options_for_select(update_quantity_in_cart_selection(reservation), :selected => reservation.quantity), :class => "quantity_in_cart chzn-select chzn-nosearch", :id => nil, :style => "width:55px"%>  
           <%# This form is automatically submitted when changed per cart.js.erb no need for submit tag %>
           <%#= submit_tag "Update" , :style => "display:none;"%>
         <% end %>

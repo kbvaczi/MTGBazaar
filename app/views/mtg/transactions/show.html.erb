@@ -28,18 +28,18 @@
   
   <% elsif params[:section] == "communication" # end of section listings %> 
 
-    <table class="data">
+    <table class="data fixed">
   	  <tr class="header_row">
-    	  <th style="width:15%">Sent On</th>
-    	  <th style="width:25%">Sender</th>      
-    	  <th style="width:60%">Message</th>
+    	  <th width="15%">Sent On</th>
+    	  <th width="25%">Sender</th>      
+    	  <th width="60%">Message</th>
     	</tr>
 
       <% @communications.each do |communication| %>  
         <tr class="<%= communication.sender.id == @transaction.buyer.id ? "odd" : "even" %>">
           <td><%= display_time(communication.created_at) %></td>
           <td><%= communication.sender.username %></td>          
-          <td><div><%= communication.message %></div></td>
+          <td><p class="ma-s"><%= communication.message %></p></td>
         </tr>
       <% end %>
       
@@ -90,7 +90,7 @@
   
     <br class="spacer"/>
   
-    <table class="data">
+    <table class="data fixed">
       <% if current_user.id == @transaction.seller_id %>
         <tr class="header_row">
           <th colspan=3>Shipping</th>
@@ -137,7 +137,7 @@
 	
   	<br class="spacer"/>
 	
-  	<table class="data">
+  	<table class="data fixed">
   	  <tr class="header_row">
   	    <th colspan=2>Feedback</th>
   	  </tr>

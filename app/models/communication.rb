@@ -10,7 +10,7 @@ class Communication < ActiveRecord::Base
   ##### ------ VALIDATIONS ----- #####
 
   validates_presence_of         :sender_id, :receiver_id
-  validates                     :message,  :length => { :minimum => 10, :maximum => 500 }
+  validates                     :message,  :length => { :minimum => 1, :maximum => 500 }
 
     
   ##### ------ CALLBACKS ----- #####  

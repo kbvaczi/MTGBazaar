@@ -13,16 +13,16 @@
 
     <% @orders.each do |order| %>
       <h2><%= "#{order.item_count} Items from #{order.seller.username}" %></h2>
-   		<table class="data">
+   		<table class="data fixed">
         <tr class="header_row">
-          <th>Name</th>
-          <th>Set</th>      
-          <th>Cond</th>
-          <th>Lang</th>
-          <th>Options</th>
-          <th>Price<br/>Each</th>
-          <th>Quantity</th>
-          <th>Price</th>
+          <th width="22%">Name</th>
+          <th width="7%">Set</th>      
+          <th width="7%">Cond</th>
+          <th width="7%">Lang</th>
+          <th width="10%">Options</th>
+          <th width="12%">Price<br/>Each</th>
+          <th >Quantity</th>
+          <th width="15%">Price</th>
         </tr>
         <% order.reservations.each do |reservation| %>
           <%= render :partial => "cart_mtg_card_teaser", :locals => {:reservation => reservation} %>          

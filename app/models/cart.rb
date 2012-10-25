@@ -46,6 +46,21 @@ class Cart < ActiveRecord::Base
     self.item_count  = (res.sum("mtg_reservations.quantity")) rescue 0
     self.total_price = (res.sum("mtg_listings.price * mtg_reservations.quantity").to_f / 100) rescue 0
     self.save
+    res = self.reservations.includes(:listing)
+    Rails.logger.debug("Cart.update_cache Called!!")
+    Rails.logger.debug("Reservations: #{res.inspect}")
+    Rails.logger.debug("Cart BEFORE Update: #{self.inspect}")    
+    if res.count > 0
+      Rails.logger.debug("More than 0 reservations found")    
+      self.item_count  = res.to_a.inject(0) {|sum, res| sum + res[:quantity] }
+      self.total_price = Money.new(res.to_a.inject(0) {|sum, res| sum + res[:quantity] * res.listing[:price]})
+    else
+      Rails.logger.debug("0 reservations found")          
+      self.item_count  = 0
+      self.total_price = 0
+    end
+    Rails.logger.debug("Cart AFTER Update: #{self.inspect}")
+    self.save
   end
 
   def empty

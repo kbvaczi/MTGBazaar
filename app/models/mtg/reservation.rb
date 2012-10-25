@@ -29,7 +29,6 @@ class Mtg::Reservation < ActiveRecord::Base
   
   def purchased!
     listing.decrement(:quantity, self.quantity).save
-    self.quantity = 0
     self.destroy
   end
 

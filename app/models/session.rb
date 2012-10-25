@@ -1,12 +1,12 @@
 class Session < ActiveRecord::Base
   
-  before_destroy :clear_cart, :if => :cart
+  before_destroy :clear_cart, :if => "self.cart.present?"
   
   # clear associated cart before destroying session
   def clear_cart
     Rails.logger.info "  - session ID:#{self.id} destroyed with cart ID:#{cart.id}"
-    cart.empty
-    cart.destroy
+    self.cart.empty
+    self.cart.destroy
   end
   
   # finds associated cart returns cart object.
