@@ -61,7 +61,7 @@ class User < ActiveRecord::Base
   
   # username must be between 3 and 15 characters and can only have letters, numbers, dash, period, or underscore (no other special characters)
   validates             :username,  :length    => { :minimum => 3, :maximum   => 15 },
-                                    :format    => { :with    => /\A[\w]+\z/, :message => "No special characters please"}
+                                    :format    => { :with    => /\A[\w]+\z/, :message => "No spaces or special characters please"}
   validates             :username,  :format    => { :with    => /\A[[A-Z][a-z]]{3,}/, :message => "Must start with at least 3 letters"}
   validates             :username,  :exclusion => { :in      => eval("["+SiteVariable.get("reserved_usernames")+"]"),
                                                     :message => "is reserved, please contact us for details" }, :on => :create
