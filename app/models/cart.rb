@@ -42,14 +42,13 @@ class Cart < ActiveRecord::Base
   end
   
   def update_cache
-    res = self.reservations.joins(:listing)
-    self.item_count  = (res.sum("mtg_reservations.quantity")) rescue 0
-    self.total_price = (res.sum("mtg_listings.price * mtg_reservations.quantity").to_f / 100) rescue 0
-    self.save
-    res = self.reservations.includes(:listing)
     Rails.logger.debug("Cart.update_cache Called!!")
-    Rails.logger.debug("Reservations: #{res.inspect}")
-    Rails.logger.debug("Cart BEFORE Update: #{self.inspect}")    
+    Rails.logger.debug("Cart BEFORE RELOAD: #{self.inspect}")
+    Rails.logger.debug("Reservations BEFORE RELOAD: #{res.inspect}")
+    self.reload # make sure all the data we're using is new from the database to prevent stale data errors
+    res = self.reservations.includes(:listing)
+    Rails.logger.debug("Reservations BEFORE UPDATE: #{res.inspect}")
+    Rails.logger.debug("Cart BEFORE UPDATE: #{self.inspect}")    
     if res.count > 0
       Rails.logger.debug("More than 0 reservations found")    
       self.item_count  = res.to_a.inject(0) {|sum, res| sum + res[:quantity] }
