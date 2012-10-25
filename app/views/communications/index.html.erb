@@ -24,7 +24,7 @@
         <% if communication.sender.present? %>
           <td><%= communication.sender.username %></td>
         <% else %>
-          <td> MTGBazaar </td>
+          <td><b> MTGBazaar </b></td>
         <% end %>
         <% if communication.transaction.present? %>
           <td><%= link_to communication.message.truncate(40, :omission => "..."), show_mtg_transaction_path(:id => communication.transaction.id, :section => "communication")%></td>

@@ -19,7 +19,7 @@ class UsersController < ApplicationController
   def show
     set_back_path    
     @user = User.includes(:statistics, :account).find(params[:id])
-    @sales = @user.mtg_sales.includes(:items => {:card => :set}).where(:status => "delivered").order("created_at DESC").page(params[:page]).per(10) if params[:section] == "feedback"
+    @sales = @user.mtg_sales.includes(:feedback).where("mtg_transactions_feedback.id > 0").order("mtg_transactions_feedback.created_at DESC").page(params[:page]).per(10) if params[:section] == "feedback"
     
     listings_sort_string = table_sort(:default => "LOWER(mtg_cards.name)", :price => "price", :condition => "mtg_listings.condition", :language => "mtg_listings.language",
                                       :quantity => "mtg_listings.quantity", :name => "mtg_cards.name", :set => "mtg_sets.release_date")

@@ -148,7 +148,7 @@
      	<tr class="odd">
      	  <td>
      	  <% if @transaction.feedback.present? %>
-       	  <%= @transaction.feedback.display_feedback if @transaction.feedback.present? %>
+       	  <%= @transaction.feedback.display_rating if @transaction.feedback.present? %>
        	<% elsif current_user.id == @transaction.buyer.id %>
        	  <%= link_to "Leave Feedback", create_feedback_path(@transaction), :class => "button ma-s", :style => "display:inline-block;"%>
        	<% end %>
@@ -158,7 +158,7 @@
      	<tr class="header_row">
      	  <th colspan=2>Buyer's Comment</th>
      	</tr>
-     	<tr><td colspan=2 class="odd"><%= @transaction.feedback.comment if @transaction.feedback.present? %></td></tr>
+     	<tr><td colspan=2 class="odd"><p><%= @transaction.feedback.comment if @transaction.feedback.present? %></p></td></tr>
      	<tr class="header_row">
      	  <th colspan=2>Seller's Response</th>
      	</tr>
@@ -166,11 +166,11 @@
      	  <td colspan=2 class="odd">
      	    <% if @transaction.feedback.present? %>
          	  <% if @transaction.feedback.seller_response_comment.present? %>
-           	  <%= @transaction.feedback.seller_response_comment if @transaction.feedback.present? %>
+           	  <p><%= @transaction.feedback.seller_response_comment %></p>
          	  <% elsif current_user.id == @transaction.seller.id %>     	  
               <%= link_to "Respond to Comment", new_feedback_response_path(@transaction), :class => "button ma-s", :style => "display:inline-block;" %>
             <% else %>
-              <i>none</i>
+              <p><i>None</i></p>
          	  <% end %>
          	<% end %>
      	  </td>
