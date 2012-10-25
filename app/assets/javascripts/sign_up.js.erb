@@ -4,7 +4,7 @@ $(document).ready(function() {
   
   $("#user_username").change(function(){  
 		var error = $.ajax({
-			url: "<%= validate_username_ajax_path %>?desired_username="+$(this).val(),
+			url: "<%= escape_javascript validate_username_ajax_path %>?desired_username=" + $(this).val(),
 			type: "GET",
 			dataType: "json",
 			success: function(data) {
