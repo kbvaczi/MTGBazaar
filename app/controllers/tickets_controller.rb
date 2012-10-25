@@ -8,10 +8,11 @@ class TicketsController < ApplicationController
   end
 
   # ticket is created based on submitted information
-  def create 
+  def create
     @ticket = Ticket.new(params[:ticket])
+    @ticket.status = "open"
     @ticket.author = current_user # if no admin is logged in, set to current user...
-    User.current_user = current_user # set current User.current_user to be used in model validations
+    @ticket.current_user = current_user # set current current_user to be used in model validations
     if @ticket.save
       redirect_to tickets_path, :notice => "Your ticket was created and will be reviewed shortly"
     else
@@ -36,6 +37,7 @@ class TicketsController < ApplicationController
   # show details for a specific ticket authored by current logged in user
   def show
     @ticket = Ticket.includes(:updates).where(:author_id => current_user.id, :author_type => "User", :id => params[:id]).first
+    @ticket_updates = @ticket.updates.order("created_at DESC")
     @ticket_update = TicketUpdate.new(params[:ticket_update])
     if not @ticket.present?
       flash[:error] = "there was a problem with your request"
@@ -52,11 +54,15 @@ class TicketsController < ApplicationController
     @ticket_update = TicketUpdate.new(params[:ticket_update]) 
     @ticket_update.ticket_id = @ticket.id
     @ticket_update.author = current_user # if no admin is logged in, set to current user...
-    User.current_user = current_user # set current User.current_user to be used in model validations
-    if @ticket_update.save
-      redirect_to ticket_path(@ticket), :notice => "Ticket updated"
+    @ticket.current_user = current_user # set current_user to be used in model validations...
+    if @ticket.status == "closed"
+      flash[:error] = "Communication has been closed for this ticket..."
+      render "show"     
+    elsif @ticket_update.save
+      @ticket.update_attribute(:status, "open") if @ticket.status == "resolved"
+      redirect_to ticket_path(@ticket), :notice => "Ticket updated..."
     else
-      flash[:error] = "There were one or more problems with your request"
+      flash[:error] = "There were one or more problems with your request..."
       render "show"
     end
   end

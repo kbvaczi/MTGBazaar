@@ -5,7 +5,7 @@
  
  <h2>Overview</h2>
   
-	<table class="data">
+	<table class="data fixed">
   <tr class="header_row">
   	<th>Number</th>
   	<th>Status</th>      
@@ -33,44 +33,47 @@
 		<th colspan=6>Description</th>
 	</tr>
 	<tr>
-		<td colspan=6 class="odd" width="100%"><%= @ticket.description %></td>
+		<td colspan=6 class="odd"><div class="ml-m" style="text-align:left"><%= @ticket.description %></div></td>
 	</tr>
 	</table>
 
   <h2><%= pluralize @ticket.updates.count, "Update", "Updates" %></h2>
   
-	<table class="data">
-		
+	<table class="data fixed">
 		
 		<tr class="header_row">
-			<th>Updated On</th>
-			<th>Updated By</th>
-			<th>Description</th>
+			<th width="18%">Updated On</th>
+			<th> Updated By </th>
+			<th width="55%">Description</th>
 		</tr>
-		<% @ticket.updates.each do |ticket_update| %>
+		
+		<% @ticket_updates.each do |ticket_update| %>
   		<tr class=<%= cycle("odd","even") %>>
-  			<td width="18%"><%= display_time(ticket_update.created_at) %></td>
+  			<td><%= display_time(ticket_update.created_at) %></td>
   			<td><% if ticket_update.author.class.name == "User" %>
         		<%= ticket_update.author.username %>
       		<% else %>
         		<%= "Admin" %>
       		<% end %>
   			</td>
-			  <td width="55%">
+			  <td >
   				<div class="ma-s"><%= ticket_update.description %> </p>
-          	<% if ticket_update.complete_ticket? %>
-          	  <br class="spacer"/>
-              <p> <i>This ticket has been closed </i></p>
-        		<% end %>
   				</div>
   			</td>
   		</tr>		
     <% end %>
+    
+    <% if @ticket.status == "closed" %>
+      <tr class="header_row"><td colspan=3><i>This ticket has been closed</i></td></tr>
+    <% end %>
 	
-</table>
+  </table>
 
-  
-  <h2>Post a New Update</h2>
-  <%= render :partial => "form_update" %>
+  <% if @ticket.status != "closed" %>
+    <h2>Post a New Update</h2>
+    <%= render :partial => "form_update" %>
+  <% end %>
+  <br class="spacer"/>
+
   
 </div>
