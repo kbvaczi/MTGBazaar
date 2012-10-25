@@ -1,10 +1,11 @@
-<% environment.context_class.instance_eval { include Rails.application.routes.url_helpers } %> //access to URL helpers
+<%# environment.context_class.instance_eval { include Rails.application.routes.url_helpers } %> //access to URL helpers
+<% url = MyRailsApp::Application.routes.url_helpers %>
 
 $(document).ready(function() {
   
   $("#user_username").change(function(){  
 		var error = $.ajax({
-			url: "<%= escape_javascript validate_username_ajax_path %>?desired_username=" + $(this).val(),
+			url: "<%= url.validate_username_ajax_path %>?desired_username=" + $(this).val(),
 			type: "GET",
 			dataType: "json",
 			success: function(data) {
