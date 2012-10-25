@@ -9,14 +9,14 @@ ActiveAdmin.register Ticket do
     scope :all do |tickets|
       tickets
     end  
-    scope :new, :default => true do |tickets|
-      tickets.where(:status => "new")
+    scope "Open", :default => true do |tickets|
+      tickets.where(:status => "open")
     end
-    scope "Under Review" do |tickets|
-      tickets.where(:status => "under review")
+    scope "Resolved" do |tickets|
+      tickets.where(:status => "resolved")
     end    
-    scope :complete do |tickets|
-      tickets.where(:status => "complete")
+    scope "Closed" do |tickets|
+      tickets.where(:status => "closed")
     end    
   end   
   
@@ -28,9 +28,15 @@ ActiveAdmin.register Ticket do
         link_to ticket.ticket_number, admin_ticket_path(ticket)
       end
       column :status, :sortable => :status do |ticket|
-        status_tag "Complete", :ok if ticket.status == "complete"
-        status_tag "Under Review", :warning if ticket.status == "under review"
-        status_tag "New!", :error if ticket.status == "new"
+        if ticket.status == "closed" 
+          status_tag "Closed", :error 
+        elsif ticket.status == "resolved"
+          status_tag "Resolved", :warning
+        elsif ticket.status == "open"
+          status_tag "Open", :ok
+        else
+          "ERROR"
+        end
       end
       column :author, :sortable => false 
       column :problem
@@ -68,12 +74,14 @@ ActiveAdmin.register Ticket do
       end
       row :description
       row :status do
-        if ticket.status == "complete" 
-          status_tag "Complete", :ok 
-        elsif ticket.status == "under review"
-          status_tag "Under Review", :warning
+        if ticket.status == "closed" 
+          status_tag "Closed", :error 
+        elsif ticket.status == "resolved"
+          status_tag "Resolved", :warning
+        elsif ticket.status == "open"
+          status_tag "Open", :ok
         else
-          status_tag "New!", :error if ticket.status == "new"
+          "ERROR"
         end
       end
       row :created_at
@@ -138,12 +146,11 @@ ActiveAdmin.register Ticket do
   member_action :add_update, :method => :post do
     @ticket = Ticket.find(params[:id])
     @update = TicketUpdate.new
-    @update.ticket = @ticket
-    @update.author = current_admin_user
-    AdminUser.current_admin_user = current_admin_user #set AdminUser.current_admin_user so model can see it
-    @update.description = params[:ticket_update][:description]
+    @update.ticket          = @ticket
+    @update.author          = current_admin_user
+    @update.description     = params[:ticket_update][:description]
     @update.complete_ticket = params[:ticket_update][:complete_ticket]
-    @update.strike = params[:ticket_update][:strike]
+    @update.strike          = params[:ticket_update][:strike]
     if @update.save
       flash[:notice] = "Update Created"
       redirect_to admin_ticket_path(@ticket)

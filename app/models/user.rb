@@ -56,9 +56,6 @@ class User < ActiveRecord::Base
   # validates that age and terms have been checked on user sign-up only
   validates :terms, :inclusion => {:in => [["","1"]]}, :on => :create
   
-  # validations
-  validates_presence_of   :username, :email
-  
   # multiple users cannot have the same username
   validates_uniqueness_of :username, :email, :case_sensitive => false
   
