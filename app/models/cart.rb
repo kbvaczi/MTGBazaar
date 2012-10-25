@@ -43,6 +43,7 @@ class Cart < ActiveRecord::Base
   
   def update_cache
     Rails.logger.debug("Cart.update_cache Called!!")
+    res = self.reservations.includes(:listing)
     Rails.logger.debug("Cart BEFORE RELOAD: #{self.inspect}")
     Rails.logger.debug("Reservations BEFORE RELOAD: #{res.inspect}")
     self.reload # make sure all the data we're using is new from the database to prevent stale data errors
