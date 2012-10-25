@@ -9,7 +9,10 @@ class Mtg::Transactions::PaymentNotificationsController < ApplicationController
       transaction.payment.payment_notifications.create(:response => params, 
                                                        :status => params['status'].downcase, 
                                                        :paypal_transaction_id => params[:transaction]['0']['.id'] )
+      ApplicationMailer.seller_sale_notification(transaction).deliver # send sale notification email to seller
+      ApplicationMailer.buyer_checkout_confirmation(transaction).deliver # send sale notification email to buyer                                                       
     else
+      # this will send someone to the "page not found" error page if they dont have the right secret... making it look like this page doesn't exist
       raise ActionController::RoutingError.new('Not Found')
     end
     render :nothing => true

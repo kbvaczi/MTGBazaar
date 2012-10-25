@@ -58,8 +58,7 @@ class Mtg::OrdersController < ApplicationController
         return
       end
       order.checkout_transaction
-      ApplicationMailer.seller_sale_notification(order.transaction).deliver # send sale notification email to seller
-      ApplicationMailer.buyer_checkout_confirmation(order.transaction).deliver # send sale notification email to seller        
+      # Emails are sent from payment notifications controller so they have the proper paypal transaction ID
       current_cart.update_cache # empty the shopping cart
     end
     cookies[:checkout] = "success"
