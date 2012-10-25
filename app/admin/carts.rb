@@ -25,7 +25,7 @@ ActiveAdmin.register Cart do
       number_to_currency(cart.total_price.dollars)
     end
     #column :created_at
-    #column :updated_at
+    column :updated_at
   end
 
 end
