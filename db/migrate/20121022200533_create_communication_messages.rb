@@ -4,6 +4,8 @@ class CreateCommunicationMessages < ActiveRecord::Migration
     create_table  :communications do |t|
       #foreign keys      
       t.integer   :sender_id
+      t.string    :sender_type
+      
       t.integer   :receiver_id
       t.integer   :mtg_transaction_id
 

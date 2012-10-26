@@ -20,7 +20,7 @@ class CommunicationsController < ApplicationController
   
   def create
     @communication = Communication.new(params[:communication])
-    @communication.sender_id   = current_user.id
+    @communication.sender      = current_user # can't set ID directly due to polymorphic model... need ID and type...
     @communication.receiver_id = current_user.id == @transaction.buyer.id ? @transaction.seller.id : @transaction.buyer.id
     unless @communication.save
       flash[:error] = "There was a problem with your request"

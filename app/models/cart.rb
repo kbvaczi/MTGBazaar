@@ -43,15 +43,13 @@ class Cart < ActiveRecord::Base
   
   def update_cache
     Rails.logger.info("Cart.update_cache Called!!")
-    Rails.logger.info("Cart BEFORE RELOAD: #{self.inspect}")
-    self.reload # make sure all the data we're using is new from the database to prevent stale data errors
-    res = self.reservations.includes(:listing)
-    Rails.logger.info("Reservations BEFORE UPDATE: #{res.inspect}")
+    reservations_with_listing = self.reservations.reload.includes(:listing)  # reload to prevent stale data
+    Rails.logger.info("Reservations BEFORE UPDATE: #{reservations_with_listing.inspect}")
     Rails.logger.info("Cart BEFORE UPDATE: #{self.inspect}")    
-    if res.count > 0
+    if reservations_with_listing.count > 0
       Rails.logger.info("More than 0 reservations found")    
-      self.item_count  = res.to_a.inject(0) {|sum, res| sum + res[:quantity] }
-      self.total_price = Money.new(res.to_a.inject(0) {|sum, res| sum + res[:quantity] * res.listing[:price]})
+      self.item_count  = reservations_with_listing.to_a.inject(0) {|sum, reservation| sum + reservation[:quantity] }
+      self.total_price = Money.new(reservations_with_listing.to_a.inject(0) {|sum, reservation| sum + reservation[:quantity] * reservation.listing[:price]})
     else
       Rails.logger.info("0 reservations found")          
       self.item_count  = 0
