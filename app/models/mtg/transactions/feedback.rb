@@ -6,7 +6,7 @@ class Mtg::Transactions::Feedback < ActiveRecord::Base
   # validations
   validates_presence_of :transaction, :rating, :comment
   
-  def display_feedback
+  def display_rating
     case self.rating
       when "1"
         "Positive"

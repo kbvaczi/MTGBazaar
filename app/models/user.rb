@@ -57,16 +57,26 @@ class User < ActiveRecord::Base
   validates :terms, :inclusion => {:in => [["","1"]]}, :on => :create
   
   # multiple users cannot have the same username
-  validates_uniqueness_of :username, :email, :case_sensitive => false
+  validates_uniqueness_of :username, :email, :case_sensitive => false, :message => "This username has already been taken"
   
   # username must be between 3 and 15 characters and can only have letters, numbers, dash, period, or underscore (no other special characters)
-  validates             :username,  :length    => { :minimum => 3, :maximum   => 15 },
+  validates             :username,  :length    => { :minimum => 3, :maximum   => 15, :message => "Username must be at least 3 characters" },
                                     :format    => { :with    => /\A[\w]+\z/, :message => "No spaces or special characters please"}
-  validates             :username,  :format    => { :with    => /\A[[A-Z][a-z]]{3,}/, :message => "Must start with at least 3 letters"}
-  validates             :username,  :exclusion => { :in      => eval("["+SiteVariable.get("reserved_usernames")+"]"),
-                                                    :message => "is reserved, please contact us for details" }, :on => :create
+  validates             :username,  :format    => { :with    => /\A[[A-Z][a-z]]{3,}/, :message => "Username must start with at least 3 letters"}
+  
+  validate              :username_not_reserved, :on => :create
+  #validates             :username,  :exclusion => { :in      => eval("["+SiteVariable.get("reserved_usernames")+"]"), :message => "is reserved, please contact us for details" }, :on => :create
+  
   # validates account model when user model is saved
   validates_associated :account, :statistics
+  
+  def username_not_reserved
+    reserved_usernames_string = SiteVariable.get("reserved_usernames") + "\'mtgbazaar\', \'mtg_bazaar\'" # default reserved usernames
+    reserved_usernames = eval("[" + reserved_usernames_string + "]")
+    reserved_usernames.each do |reserved_username| 
+      errors.add(:username, "Username is reserved, please contact us for details") if self.username.include? reserved_username
+    end
+  end
   
 # ---------------- MEMBER METHODS -------------
 

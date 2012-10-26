@@ -55,6 +55,10 @@ class Mtg::Transaction < ActiveRecord::Base
   def self.ready_to_ship
     where(:seller_shipped_at => nil, :status => "confirmed")
   end
+  
+  def self.with_feedback
+    includes(:feedback).where("mtg_transactions_feedback.id > 0")
+  end
 
 # ---------------- PUBLIC MEMBER METHODS -------------
   

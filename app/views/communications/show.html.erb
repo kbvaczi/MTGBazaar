@@ -12,7 +12,11 @@
   	</tr>
     <tr class="odd">
       <td><%= display_time(@communication.created_at) %></td>
-      <td><%= @communication.sender.username %></td>
+      <% if @communication.sender.present? && @communication.sender_id == "User"%>
+        <td><%= @communication.sender.username %></td>
+      <% else %>
+        <td><b><i> MTGBazaar </i></b></td>
+      <% end %>
       <% if @communication.transaction.present? %>
         <td><%= link_to @communication.transaction.transaction_number, show_mtg_transaction_path(:id => @communication.transaction.id, :section => "communication") %></td>
       <% else %>
