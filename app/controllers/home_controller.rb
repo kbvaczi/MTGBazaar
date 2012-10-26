@@ -14,8 +14,11 @@ class HomeController < ApplicationController
   end
   
   def test
+    transaction = Mtg::Transaction.last
     
-
+    ApplicationMailer.seller_sale_notification(transaction).deliver # send sale notification email to seller
+    ApplicationMailer.buyer_checkout_confirmation(transaction).deliver # send sale notification email to buyer   
+=begin
       # setup transaction
       gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(                                                 # setup gateway, login to Paypal API
         :pem =>       PAYPAL_CONFIG[:paypal_cert_pem],
@@ -42,7 +45,7 @@ class HomeController < ApplicationController
       )
   
  
-=begin
+
       gateway.set_payment_options(
         :display_options => {
           :business_name    => "MTGBazaar",
@@ -59,7 +62,7 @@ class HomeController < ApplicationController
           }
         ]
       )
-=end
+
 
       #Rails.cache.write "test_paykey", @purchase['payKey']
 
@@ -94,6 +97,7 @@ class HomeController < ApplicationController
     
     #render :nothing => true
     #return
+=end
   end
-  
+
 end
