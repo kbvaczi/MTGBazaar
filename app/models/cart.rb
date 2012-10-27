@@ -43,7 +43,7 @@ class Cart < ActiveRecord::Base
   
   def update_cache
     Rails.logger.info("Cart.update_cache Called!!")
-    fresh_orders = Mtg::Order.where("mtg_orders.cart_id = ?", self.id)  # reload to prevent stale data
+    fresh_orders = self.orders
     Rails.logger.info("Cart BEFORE UPDATE: #{self.inspect}")    
     Rails.logger.info("Current Orders: #{fresh_orders.inspect}")
     if fresh_orders.count > 0

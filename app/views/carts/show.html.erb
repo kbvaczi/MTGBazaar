@@ -51,8 +51,6 @@
 
   <% end %>  
   
-  <%#= content_tag(:div, "", :class => "overlay_trigger hidden", :id => "checkout_overlay_trigger", :rel => "#checkout_overlay" ) %>
-  <%#= content_tag(:div, content_tag(:div, "yeehaw", :id => "checkout_overlay_content"), :class => "overlay_window", :id => "checkout_overlay") %>
   <form id="checkout_form" action="<%= PAYPAL_CONFIG[:embedded_pay_url] %>" target="PPDGFrame">  
 		<input id="checkout_type" type="hidden" name="expType" value="light">	 
 		<input id="checkout_paykey" type="hidden" name="paykey" value="">
@@ -64,24 +62,16 @@
 <script src="https://www.paypalobjects.com/js/external/dg.js"> </script>
 
 <script type="text/javascript" charset="utf-8">
-  //PAYPAL MINI EMBEDDED FLOW
- /*
-	var returnFromPayPal = function(){
-    location.reload();
-	}
-	
-  var dgFlowMini = new PAYPAL.apps.DGFlowMini({ trigger: 'checkout_submit', expType: 'mini', callbackFunction: 'returnFromPayPal'});
-*/
+  //PAYPAL Lightbox EMBEDDED FLOW
+
 	var dgFlow = new PAYPAL.apps.DGFlow({ trigger: 'checkout_submit'});
 
   if (window != top) {
-//    top.location.replace(document.location);
     location.reload(true);
   }
   dgFlow = top.dgFlow || top.opener.top.dgFlow; 
 	dgFlow.closeFlow(); 
 	top.close();
-	
 
 </script>
 

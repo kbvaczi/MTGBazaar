@@ -121,7 +121,7 @@ class Mtg::Order < ActiveRecord::Base
   protected
   
   def update_cache
-    fresh_reservations = Mtg::Reservation.includes(:listing).where("mtg_reservations.order_id = ?", self.id)
+    fresh_reservations = self.reservations.includes(:listing)
     if fresh_reservations.count > 0
       self.item_count       = fresh_reservations.to_a.inject(0) {|sum, res| sum + res[:quantity] }
       self.item_price_total = Money.new(fresh_reservations.to_a.inject(0) {|sum, res| sum + res[:quantity] * res.listing[:price]})

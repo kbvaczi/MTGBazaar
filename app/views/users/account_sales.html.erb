@@ -23,9 +23,7 @@
     <th>Value</th>
   </tr>
   
-  <% @sales.each do |t| %>
-    <%= render :partial => "mtg/transactions/teaser" , :locals => {:transaction => t} %>      
-  <% end %>
+  <%= render :partial => "mtg/transactions/teaser", :collection => @sales, :as => "transaction" %>
 
   <% if @sales.count == 0 %>
     <tr>

@@ -12,7 +12,7 @@ class Mtg::Transactions::PaymentNotification < ActiveRecord::Base
   
   def process_transaction  
     if self.status == "completed"                              # check to see if payment was successful
-      # self.payment.transaction.order.checkout_transaction if self.payment.transaction.order.present?
+      self.payment.transaction.order.checkout_transaction if self.payment.transaction.order.present?
       self.payment.transaction.update_attribute(:transaction_number, self.paypal_transaction_id)
       self.payment.update_attributes(:status => "completed")      
     end

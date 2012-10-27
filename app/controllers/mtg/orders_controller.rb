@@ -41,36 +41,30 @@ class Mtg::OrdersController < ApplicationController
 
     respond_to do |format|
       format.html do
-        #redirect_to @gateway.embedded_flow_url_for(@purchase["payKey"])
-        redirect_to @gateway.redirect_url_for(@purchase["payKey"])
+        #TODO: find some way to send mobile payments here
+        redirect_to @gateway.embedded_flow_url_for(@purchase["payKey"])
+        #redirect_to @gateway.redirect_url_for(@purchase["payKey"])
       end
       format.js {}
     end
   end
   
   def checkout_success
-    order = current_cart.orders.includes(:reservations).where(:id => params[:id]).first
+    order = current_cart.orders.includes(:reservations, :transaction => :payment).where(:id => params[:id]).first
     if order.present? # has payment notification already checked out the order?
-      decoded_secret = Base64.decode64(params[:secret]).encode('ascii-8bit').decrypt(:key => order.transaction.payment.calculate_key)
-      if decoded_secret != PAYPAL_CONFIG[:secret]
-        flash[:error] = "There was a problem with your request..."
-        redirect_to show_cart_path
-        return
+      decoded_secret = Base64.decode64(params[:secret]).encode('ascii-8bit').decrypt(:key => order.transaction.payment.calculate_key) rescue nil
+      if decoded_secret == PAYPAL_CONFIG[:secret]
+        order.checkout_transaction
       end
-      order.checkout_transaction
-      # Emails are sent from payment notifications controller so they have the proper paypal transaction ID
-      current_cart.update_cache # empty the shopping cart
     end
+    current_cart.update_cache # update the shopping cart
     cookies[:checkout] = "success"
-    #redirect_to show_cart_path
-    #return # stop method, don't display a view
     render :layout => false
   end
   
   def checkout_failure
     cookies[:checkout] = "failure"
     render :layout => false
-#    redirect_to show_cart_path    
   end
   
 end
