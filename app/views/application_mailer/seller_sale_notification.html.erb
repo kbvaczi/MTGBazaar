@@ -1,26 +1,25 @@
 <div style="width:550px;">
   <h2>Congratulations!</h2>
-  <h3>You have received an order from <%= link_to @transaction.buyer.username, user_url(@transaction.buyer) %> for the following items:</h3>
-  <h3>Transaction number: <%= @transaction.transaction_number %></h3><br/>
-  
-  <table class="data">
-    <%= render :partial => "mtg/transaction_items/teaser_header" %>
-    <%= render :partial => "mtg/transaction_items/teaser" , :collection => @transaction.items, :as => "item"   %> 
+  <h3>You have received an order from <%= link_to @transaction.buyer.username, user_url(@transaction.buyer) %></h3>
+	
+  <table style="width: 100%;">
+		<tr style="background-color: rgb(235,235,235); ">
+			<th>Buyer</th>
+			<th>Transaction ID</th>
+			<th>Item(s)</th>
+			<th>Value</th>
+		</tr>
+		<tr>
+			<td><%= @transaction.buyer.username %></td>
+			<td><%= link_to @transaction.transaction_number, show_mtg_transaction_path(transaction) %></td>
+			<td><%= @transaction.items.to_a.sum(&:quantity_available) %></td>
+			<td><%= number_to_currency(@transaction.total_value) %></td>
+		</tr>
   </table>
-
   <br class="spacer"/>
-  <p>
-    Please confirm that these items are still in your possession and are ready to be shipped to buyer.
-    <br/>
-    Shipping information will be provided upon confirmation.  
-  </p>
-  <%= link_to "Confirm Sale", seller_sale_confirmation_url(@transaction.id) %>
-  <br class="spacer"/>
-  <br class="spacer"/>
-  <%= link_to "Reject Sale", seller_sale_rejection_url(@transaction.id) %>
-  <br class="spacer"/>
-  <br class="spacer"/>
-
+	
   <p>Cheers!</p>
+	
   <%= image_tag 'logo_sm.png', :alt => "MTGBazaar Logo" %>
+	
 </div>
