@@ -57,7 +57,7 @@ class Mtg::Transaction < ActiveRecord::Base
   end
   
   def self.with_feedback
-    includes(:feedback).where("mtg_transactions_feedback.id > 0")
+    includes(:feedback).where("mtg_transactions_feedback.id > 0 AND mtg_transactions.seller_shipped_at <> ?", nil)
   end
 
 # ---------------- PUBLIC MEMBER METHODS -------------

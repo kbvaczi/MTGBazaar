@@ -20,7 +20,7 @@ class Cart < ActiveRecord::Base
   validates :item_count,  :numericality => {:greater_than_or_equal_to => 0, :less_than => 10000}  #quantity must be between 0 and 10,000
                     
   def add_mtg_listing(listing, quantity = 1)
-    order = self.orders.where(:seller_id => listing.seller.id).first || self.orders.build(:seller_id => listing.seller.id, :total_cost => 0, :item_count => 0) # add listing to existing order, or create a new order if one doesn't exist for this seller
+    order = self.orders.where(:seller_id => listing.seller.id).first || self.orders.create(:seller_id => listing.seller.id, :total_cost => 0, :item_count => 0) # add listing to existing order, or create a new order if one doesn't exist for this seller
     if order.valid? && order.add_mtg_listing(listing, quantity) #add listing to order
       self.update_cache
       return true
@@ -59,8 +59,15 @@ class Cart < ActiveRecord::Base
 
   def empty
     self.orders.each {|o| o.empty} if self.item_count > 0
-    self.update_cache
-  end  
+    self.item_count  = 0
+    self.total_price = 0
+    self.save
+  end
+  
+  def empty_and_destroy
+    self.orders.each {|o| o.empty} if self.item_count > 0
+    self.destroy
+  end
 
   def mtg_listing_ids   #returns array of ids of mtg_listings in cart
    self.listings.collect { |l| l.id }

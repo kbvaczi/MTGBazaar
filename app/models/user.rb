@@ -44,13 +44,6 @@ class User < ActiveRecord::Base
     "#{id}-#{username}".parameterize 
   end
   
-  # create an IP log under user statistics
-  Warden::Manager.after_authentication do |record, auth, opts|
-    if record.class.to_s == "User" and record.statistics.updated_at < 1.minutes.ago
-      record.statistics.update_attribute(:ip_log, eval(record.statistics.ip_log).push([record.current_sign_in_at.to_s, record.current_sign_in_ip]).last(20).to_s )
-    end
-  end
-
 # ---------------- VALIDATIONS ----------------      
   
   # validates that age and terms have been checked on user sign-up only

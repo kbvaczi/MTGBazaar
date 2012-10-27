@@ -47,13 +47,8 @@ class Mtg::Order < ActiveRecord::Base
   end
   
   ##### ------ CALLBACKS ----- #####  
-  
-  after_save :delete_if_empty
-  
-  def delete_if_empty
-    self.destroy if item_count == 0
-  end
-  
+
+
   ##### ------ PUBLIC METHODS ----- #####  
   
   def add_mtg_listing(listing, quantity = 1, update = true)
@@ -82,6 +77,7 @@ class Mtg::Order < ActiveRecord::Base
           reservation.save
           reservation.listing.save
           self.update_cache if update
+          self.destroy if self.item_count == 0
           return true # success          
         end  
       end
@@ -91,7 +87,7 @@ class Mtg::Order < ActiveRecord::Base
   
   def empty
     reservations.each {|r| remove_mtg_listing(r,r.quantity, false)} if item_count > 0
-    self.update_cache
+    self.destroy
   end
   
   # creates a transaction and transaction items in preparation for checkout.
@@ -126,9 +122,6 @@ class Mtg::Order < ActiveRecord::Base
   
   def update_cache
     fresh_reservations = Mtg::Reservation.includes(:listing).where("mtg_reservations.order_id = ?", self.id)
-    Rails.logger.debug("Order.update_cache Called")
-    Rails.logger.debug("Reservations: #{fresh_reservations.inspect}")
-    Rails.logger.debug("Order BEFORE Update: #{self.inspect}")    
     if fresh_reservations.count > 0
       self.item_count       = fresh_reservations.to_a.inject(0) {|sum, res| sum + res[:quantity] }
       self.item_price_total = Money.new(fresh_reservations.to_a.inject(0) {|sum, res| sum + res[:quantity] * res.listing[:price]})
@@ -140,7 +133,6 @@ class Mtg::Order < ActiveRecord::Base
       self.shipping_cost    = 0
       self.total_cost       = 0
     end
-    Rails.logger.debug("Order AFTER Update: #{self.inspect}")
     self.save
   end
   

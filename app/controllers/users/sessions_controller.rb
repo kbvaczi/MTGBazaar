@@ -4,14 +4,17 @@ protected
 
   # do this after a user signs in
   def after_sign_in_path_for(resource) 
-    if resource.is_a?(User) && resource.banned?
-      sign_out resource
-      flash[:error] = "This account has been suspended..."
-      flash[:notice] = nil #erase any notice so that error can be displayed
-      root_path
-    elsif resource.is_a?(User)
-      flash[:notice] = "Welcome back #{resource.username}"
-      back_path
+    if resource.is_a?(User)
+      if resource.banned?
+        sign_out resource
+        flash[:error]  = "This account has been suspended..."
+        flash[:notice] = nil # erase any notice so that error can be displayed
+        root_path
+      else
+        flash[:notice] = "Welcome back #{resource.username}"
+        resource.statistics.update_ip_log(resource.current_sign_in_ip) # update IP Log
+        back_path         
+      end
     else
       super
     end

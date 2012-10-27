@@ -3,16 +3,10 @@ class UserStatistics < ActiveRecord::Base
   # ------------ Configuration ------------ #
 
   self.table_name = 'user_statistics'  
-  serialize :ip_log  
+  serialize :ip_log
   
   # ------------ Callbacks ---------------- #
   
-  before_create :set_ip_log
-  
-  # text types cannot have default values in mysql so we must manually set ip_log before creation
-  def set_ip_log
-    self.ip_log = "[]"
-  end
   
   # ------------ Database Relationships --- #
 
@@ -29,11 +23,11 @@ class UserStatistics < ActiveRecord::Base
   # ------------ Model Methods ------------ #
   
   def update_seller_statistics!
+    self.number_sales             = self.user.mtg_sales.count
     completed_sales               = self.user.mtg_sales.includes(:feedback).with_feedback
-    self.number_sales             = completed_sales.count
     self.positive_feedback_count  = completed_sales.where("mtg_transactions_feedback.rating = ?", "1").count
     self.neutral_feedback_count   = completed_sales.where("mtg_transactions_feedback.rating = ?", "0").count
-    self.negative_feedback_count  = self.number_sales - self.positive_feedback_count - self.negative_feedback_count
+    self.negative_feedback_count  = completed_sales.count - self.positive_feedback_count - self.negative_feedback_count
     self.average_ship_time        = ( ( completed_sales.sum(&:seller_shipped_at) - completed_sales.sum(&:created_at) ) / 1.day / completed_sales.count ).round(2) rescue 0 # handle divide by 0 error
     self.save
   end
@@ -74,6 +68,15 @@ class UserStatistics < ActiveRecord::Base
       self.average_ship_time.to_s + " days"
     else
       "No Sales Yet"
+    end
+  end
+  
+  def update_ip_log(current_ip)
+    Rails.logger.debug "CALLING USER_STATISTICS.update_ip_log"
+    if current_ip.present?
+      current_ip_log  = self.ip_log || Array.new
+      self.ip_log     = current_ip_log.push( { :time => Time.now, :ip => current_ip } ).last(20)
+      self.save
     end
   end
   

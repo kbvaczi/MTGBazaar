@@ -45,7 +45,7 @@ class ApplicationController < ActionController::Base
       @new_back_path_queue.shift if @new_back_path_queue.length > 10                                                  # manage queue size maximum
       session[:back_path]     = @new_back_path_queue unless @new_back_path_queue == current_back_path_queue           # don't hit database again if back path queue hasn't changed
       Rails.logger.debug("BACK_PATH_LENGTH #{session[:back_path].length}")
-      Rails.logger.debug("BACK_PATH #{session[:back_path]}")    
+      Rails.logger.debug("BACK_PATH #{session[:back_path]}")
     end
   end
   
