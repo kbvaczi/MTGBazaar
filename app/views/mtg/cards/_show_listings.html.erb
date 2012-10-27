@@ -16,19 +16,19 @@
       <%= link_to "Remove search filters", params.merge(:filter => false), :remote => true, :id => "filter_link", :class => "right mr", :style => "font-weight:normal;" %>
     <% end %>
   </div>
-  <table class="data">
+  <table class="data fixed">
     <tr class="header_row">
-      <th> <%= table_sort_header("Seller", :params => {:update_card_info => false}, :remote => true) %> (<%= table_sort_header("Sales", :params => {:update_card_info => false}, :remote => true) %>, <%= table_sort_header("Feedback", :params => {:update_card_info => false}, :remote => true) %>) </th>
-      <th> <%= table_sort_header("Lang", :params => {:update_card_info => false}, :value => "language", :remote => true) %> </th>      
-      <th> <%= table_sort_header("Cond", :params => {:update_card_info => false}, :value => "condition", :remote => true) %> </th>
-      <th> Options </th>
-      <th> <%= table_sort_header("Price", :params => {:update_card_info => false}, :remote => true) %> </th>
+      <th width="30%"> <%= table_sort_header("Seller", :params => {:update_card_info => false}, :remote => true) %> (<%= table_sort_header("Sales", :params => {:update_card_info => false}, :remote => true) %>, <%= table_sort_header("Feedback", :params => {:update_card_info => false}, :remote => true) %>) </th>
+      <th width="10%"> <%= table_sort_header("Lang", :params => {:update_card_info => false}, :value => "language", :remote => true) %> </th>      
+      <th width="10%"> <%= table_sort_header("Cond", :params => {:update_card_info => false}, :value => "condition", :remote => true) %> </th>
+      <th width="10%"> Options </th>
+      <th width="12%"> <%= table_sort_header("Price", :params => {:update_card_info => false}, :remote => true) %> </th>
       <th> <%= table_sort_header("Qty", :params => {:update_card_info => false}, :value => "quantity", :remote => true) %> </th>
-      <th> Add to Cart </th>
+      <th width="19%"> Add to Cart </th>
     </tr>
     <% @listings.each do |listing| %>  
   		<tr class=<%= cycle("odd","even") %>> 
-    		<td style="text-align:left;width:150px;padding-left:10px;">
+    		<td style="width:150px;padding-left:10px;">
           <%=  link_to "#{listing.seller.username}", user_path(listing.seller) %>
           </br>
           <div>
@@ -60,7 +60,7 @@
         </td>
     		<td><%= number_to_currency(listing.price) %></td>
     		<td><%= listing.quantity_available %></td>
-    		<td style="text-align:right;width:80px">
+    		<td>
     		  <%= form_tag add_to_cart_mtg_listing_path(listing.id), :method => :post do %>
             <%= text_field_tag "quantity", 1, :id => nil, :style => "width:30px;text-align:center;"%>            
             <%= submit_tag "Buy" %>

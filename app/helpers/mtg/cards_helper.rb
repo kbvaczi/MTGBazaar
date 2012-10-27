@@ -173,22 +173,26 @@ module Mtg::CardsHelper
 
   # displays set symbol for a given set code
   def display_set_symbol(set, options = {})
-    if options[:width].present?
-      dimension = "width:#{options[:width]}"
+    if options.present?
+      dimension = ""
+      dimension += "width:#{options[:width]};"   if options[:width].present?
+      dimension += "height:#{options[:height]};" if options[:height].present?
     else
-      dimension = "height:#{options[:height] || "15px"}"
+      dimension = "max-height:15px;max-width:30px;"
     end
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/set_symbols/#{set.code}.png", :title => "#{set.name}", :style => "#{dimension};vertical-align:text-top;")         
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/set_symbols/#{set.code}.png", :title => "#{set.name}", :style => "#{dimension}vertical-align:text-top;")         
   end
   
   # displays set symbol for a given set code
   def display_set_symbol_by_id(set_name, set_code, options = {})
-    if options[:width].present?
-      dimension = "width:#{options[:width]}"
+    if options.present?
+      dimension = ""
+      dimension += "width:#{options[:width]};"   if options[:width].present?
+      dimension += "height:#{options[:height]};" if options[:height].present?
     else
-      dimension = "height:#{options[:height] || "15px"}"
+      dimension = "max-height:15px;max-width:30px;"
     end
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/set_symbols/#{set_code}.png", :title => "#{set_name}", :style => "#{dimension};vertical-align:text-top;")         
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/set_symbols/#{set_code}.png", :title => "#{set_name}", :style => "#{dimension}vertical-align:text-top;")         
   end
   
   # displays set symbol for a given set code

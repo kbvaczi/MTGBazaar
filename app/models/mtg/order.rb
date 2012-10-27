@@ -113,6 +113,7 @@ class Mtg::Order < ActiveRecord::Base
     self.transaction.buyer = self.buyer                                               # setup buyer and seller for transaction
     self.transaction.seller = self.seller                                     
     self.transaction.status = "confirmed"                                             # set transaction to confirmed since money has changed hands
+    self.transaction.transaction_number = "TBD"                                       # we will get the transaction number later from IPN
     self.transaction.order_id = nil                                                   # disconnect transaction from order so order can be destroyed
     if self.transaction.save
       self.reservations.each { |r| r.purchased! }                                       # update listing quantity and destroy each reservation for this transaction
@@ -124,22 +125,20 @@ class Mtg::Order < ActiveRecord::Base
   protected
   
   def update_cache
-    res = self.reservations.includes(:listing)
+    fresh_reservations = Mtg::Reservation.includes(:listing).where("mtg_reservations.order_id = ?", self.id)
     Rails.logger.debug("Order.update_cache Called")
-    Rails.logger.debug("Reservations: #{res.inspect}")
+    Rails.logger.debug("Reservations: #{fresh_reservations.inspect}")
     Rails.logger.debug("Order BEFORE Update: #{self.inspect}")    
-    if res.count > 0
-      Rails.logger.debug("More than 0 reservations found")    
-      self.item_count = res.to_a.inject(0) {|sum, res| sum + res[:quantity] }
-      self.item_price_total = Money.new(res.to_a.inject(0) {|sum, res| sum + res[:quantity] * res.listing[:price]})
-      self.shipping_cost = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:item_count => item_count)[:user_charge]        
-      self.total_cost = (item_price_total + shipping_cost)
+    if fresh_reservations.count > 0
+      self.item_count       = fresh_reservations.to_a.inject(0) {|sum, res| sum + res[:quantity] }
+      self.item_price_total = Money.new(fresh_reservations.to_a.inject(0) {|sum, res| sum + res[:quantity] * res.listing[:price]})
+      self.shipping_cost    = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:item_count => item_count)[:user_charge]        
+      self.total_cost       = item_price_total + shipping_cost
     else
-      Rails.logger.debug("0 reservations found")          
-      self.item_count = 0
+      self.item_count       = 0
       self.item_price_total = 0
-      self.shipping_cost = 0
-      self.total_cost = 0
+      self.shipping_cost    = 0
+      self.total_cost       = 0
     end
     Rails.logger.debug("Order AFTER Update: #{self.inspect}")
     self.save

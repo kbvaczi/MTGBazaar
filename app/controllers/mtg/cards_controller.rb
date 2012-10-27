@@ -42,7 +42,7 @@ class Mtg::CardsController < ApplicationController
     end
     
     sort_string = table_sort(:price => "mtg_listings.price", :condition => "mtg_listings.condition", :language => "mtg_listings.language",
-                             :quantity => "mtg_listings.quantity_available", :seller => "users.username", :sales => "user_statistics.number_sales",
+                             :quantity => "mtg_listings.quantity_available", :seller => "LOWER(users.username)", :sales => "user_statistics.number_sales",
                              :feedback => "user_statistics.positive_feedback_count + user_statistics.neutral_feedback_count / user_statistics.number_sales")                      
     
     @listings = @mtg_card.listings.includes(:seller => :statistics).available.where(query.compile).order(sort_string)

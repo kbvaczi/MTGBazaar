@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
     unless @new_back_path_queue.present?                                                                              # prevents this from breaking if called multiple times during one request
       current_back_path_queue = session[:back_path] || [root_path]
       @new_back_path_queue    = current_back_path_queue.dup                                                           # create a copy so the two aren't linked to the same memory address
-      current_path = url_for(params.merge(:authenticity_token => nil, :utf8 => nil))
+      current_path = url_for(params.merge(:authenticity_token => nil, :utf8 => nil, :sort => nil, :sort_order => nil))
       if current_back_path_queue.include?(current_path)                                                               # if we are revisiting an old link in the queue, let's clean up the queue (prevents infinite loops)
         @new_back_path_queue.pop(@new_back_path_queue.length - @new_back_path_queue.index(current_path))              # remove everyting in the queue visited after this link in the queue
       end                                                                 
@@ -74,7 +74,7 @@ class ApplicationController < ActionController::Base
   def current_cart(force = false)
     if user_signed_in?
       if session[:cart_id] && !force # current session already has a cart, let's link to it
-        @current_cart ||= Cart.find(session[:cart_id]) 
+        @current_cart ||= Cart.find(session[:cart_id])
         @current_cart.update_attribute(:user_id, current_user.id) if current_user # assign user to cart when they log in
       else # there is no cart for current session, let's create one
         @current_cart ||= Cart.create(:user_id => current_user.id) # create a cart if there isn't one already

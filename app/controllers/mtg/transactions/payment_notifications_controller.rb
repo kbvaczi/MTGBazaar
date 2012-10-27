@@ -9,8 +9,8 @@ class Mtg::Transactions::PaymentNotificationsController < ApplicationController
       transaction.payment.payment_notifications.create(:response => params, 
                                                        :status => params['status'].downcase, 
                                                        :paypal_transaction_id => params[:transaction]['0']['.id'] )
-      transaction.transaction_number = params[:transaction]['0']['.id'] # this has already been done in the database, but we're setting it to our transaction variable just so we don't have to reload the transaction from the database again
-      ApplicationMailer.seller_sale_notification(transaction).deliver # send sale notification email to seller
+      transaction.transaction_number = params[:transaction]['0']['.id']  # this has already been done in the database, but we're setting it to our transaction variable just so we don't have to reload the transaction from the database again
+      ApplicationMailer.seller_sale_notification(transaction).deliver    # send sale notification email to seller
       ApplicationMailer.buyer_checkout_confirmation(transaction).deliver # send sale notification email to buyer                                                       
     else
       # this will send someone to the "page not found" error page if they dont have the right secret... making it look like this page doesn't exist

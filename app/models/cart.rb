@@ -43,15 +43,13 @@ class Cart < ActiveRecord::Base
   
   def update_cache
     Rails.logger.info("Cart.update_cache Called!!")
-    reservations_with_listing = self.reservations.reload.includes(:listing)  # reload to prevent stale data
-    Rails.logger.info("Reservations BEFORE UPDATE: #{reservations_with_listing.inspect}")
+    fresh_orders = Mtg::Order.where("mtg_orders.cart_id = ?", self.id)  # reload to prevent stale data
     Rails.logger.info("Cart BEFORE UPDATE: #{self.inspect}")    
-    if reservations_with_listing.count > 0
-      Rails.logger.info("More than 0 reservations found")    
-      self.item_count  = reservations_with_listing.to_a.inject(0) {|sum, reservation| sum + reservation[:quantity] }
-      self.total_price = Money.new(reservations_with_listing.to_a.inject(0) {|sum, reservation| sum + reservation[:quantity] * reservation.listing[:price]})
+    Rails.logger.info("Current Orders: #{fresh_orders.inspect}")
+    if fresh_orders.count > 0
+      self.item_count  = fresh_orders.to_a.inject(0) {|sum, order| sum + order[:item_count] }
+      self.total_price = Money.new(fresh_orders.to_a.inject(0) {|sum, order| sum + order[:item_price_total] })
     else
-      Rails.logger.info("0 reservations found")          
       self.item_count  = 0
       self.total_price = 0
     end
