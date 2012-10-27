@@ -81,10 +81,13 @@ MTGBazaar::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
   
-  # Logging configuration for logs in heroku as per http://stackoverflow.com/questions/8098429/heroku-logging-not-working
-  config.logger = Logger.new(STDOUT)
-  config.logger.level = 0
-  config.log_level = :debug
+  STDOUT.sync = true
+
+  logger = Logger.new(STDOUT)
+  logger.level = 0 # Must be numeric here - 0 :debug, 1 :info, 2 :warn, 3 :error, and 4 :fatal
+  # NOTE:   with 0 you're going to get all DB calls, etc.
+
+  Rails.logger = Rails.application.config.logger = logger
 
   ### NOTE: Be sure to comment out these:
   #   See everything in the log (default is :info)

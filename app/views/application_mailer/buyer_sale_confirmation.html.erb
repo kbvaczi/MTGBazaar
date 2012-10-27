@@ -4,14 +4,6 @@
   
   <h3>Transaction number: <%= @transaction.transaction_number %></h3><br/>
   
-  <% if not @transaction.response_message.empty? %>
-    <h3>Seller's Message:</h3>
-    <p>
-      <%= @transaction.response_message %>
-    </p>
-    <br class="spacer"/>
-  <% end %>
-  
   <table>
     <%= render :partial => "mtg/transaction_items/teaser_header" %>
     <%= render :partial => "mtg/transaction_items/teaser" , :collection => @transaction.items, :as => "item"   %> 
@@ -22,7 +14,6 @@
     <b>Next Steps:</b>
     <ul>
       <li>The seller will be packaging up your order and will ship the items shortly.</li>
-      <li>Once shipped, you will receive a shipping notification including estimated delivery date.</li>
       <li>When the package arrives please take the time to inspect items and confirm everything arrived as anticipated.</li>
       <li>To finalize the transaction, please fill out the seller feedback form.</li>
     </ul>

@@ -11,7 +11,7 @@
 		</tr>
 		<tr>
 			<td><%= @transaction.buyer.username %></td>
-			<td><%= link_to @transaction.transaction_number, show_mtg_transaction_path(transaction) %></td>
+			<td><%= link_to @transaction.transaction_number, show_mtg_transaction_path(@transaction) %></td>
 			<td><%= @transaction.items.to_a.sum(&:quantity_available) %></td>
 			<td><%= number_to_currency(@transaction.total_value) %></td>
 		</tr>
