@@ -77,9 +77,9 @@ class CartsController < ApplicationController
     end  
     # once we've verified everything in the cart we can save everything to the database
     transaction.save # save each transaction        
-    order.reservations.each { |r| r.purchased! } # update listing quantity and destroy each reservation for this transaction
+    order.checkout_transaction    
     current_cart.update_cache # empty the shopping cart
-    redirect_to root_path, :notice => "Your purchase request has been submitted."  
+    redirect_to root_path, :notice => "Thanks for your purchase!"  
     return #stop method, don't display a view
   end
 
