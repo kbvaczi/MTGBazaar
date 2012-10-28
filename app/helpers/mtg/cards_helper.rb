@@ -114,7 +114,13 @@ module Mtg::CardsHelper
   def thumbnail_image_path(card)
     return card.image_path.gsub(".jpg", "_thumb.jpg")
   end
-     
+  
+  def abilities_list
+    Rails.cache.fetch 'abilities_list' do
+      Mtg::Cards::Ability.pluck(:name).sort
+    end
+  end
+  
   # Defines an array containing all the card types for select boxes
   def card_type_list
     Rails.cache.fetch 'card_type_list' do

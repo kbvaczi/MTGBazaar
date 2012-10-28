@@ -1,7 +1,9 @@
 <%= title "Shopping Cart"%>
-<h1><%="Your Cart (#{pluralize(current_cart.item_count,"item","items")})"%></h1>
+<h1><%="Your Cart (#{pluralize(current_cart.orders.to_a.count,"order","orders")})"%></h1>
 <div class="content">
+
   <%# Do this if the user's cart is not empty %>
+  
   <% if current_cart.item_count <= 0 %>
     <br class="spacer"/>
     <br class="spacer"/>    
@@ -10,86 +12,109 @@
     </div>
     
   <% else %>
-
-    <% @orders.each do |order| %>
-      <h2><%= "#{order.item_count} Items from #{order.seller.username}" %></h2>
-   		<table class="data fixed">
-        <tr class="header_row">
-          <th width="22%">Name</th>
-          <th width="8%">Set</th>      
-          <th width="7%">Cond</th>
-          <th width="7%">Lang</th>
-          <th width="10%">Options</th>
-          <th width="12%">Price<br/>Each</th>
-          <th>Quantity</th>
-          <th width="15%">Price</th>
-        </tr>
-        <% order.reservations.each do |reservation| %>
-          <%= render :partial => "cart_mtg_card_teaser", :locals => {:reservation => reservation} %>          
-        <% end %>
-        <tr class="header_row">
-        	<td colspan=7>Subtotal</td>
-          <td><%= number_to_currency(order.item_price_total) %> </td>      
-        </tr>
-        <tr class="header_row">
-        	<td colspan=7>Shipping (includes delivery confirmation)</td>
-          <td><%= number_to_currency(order.shipping_cost) %> </td>      
-        </tr>          
-        <tr class="header_row">
-        	<th colspan=7 >Total cost for this order</th>
-          <th><%= number_to_currency(order.total_cost) %> </th>
-        </tr>
-      </table>
-      <br class="spacer"/>
-      <div class="center_wrap">
-        <%= button_to "Check Out This Order", order_checkout_path(order), :method => :post, :remote => true, :class => "center"%>
+  
+    <%# cart has items in it so let's display information %>
+    <% if @orders.to_a.length > 1 %>
+      <div class="group center_wrap">
+        <ul class="tabs">
+          <% @orders.each do |order| %>        
+            <li <%= "class=selected" if order.id == @selected_order_id %>> <%= link_to "#{order.seller.username} (#{order.item_count})", url_for(params.merge(:order => order.id)) %> </li>
+          <% end %>
+        </ul>
       </div>
-      <% reset_cycle("rows") %>
-      <br class="spacer"/>
-      <br class="spacer"/>      
     <% end %>
 
-  <% end %>  
+    <h2><%= "Your order for #{@selected_order.seller.username}" %></h2>
+ 		<table class="data fixed">
+      <tr class="header_row">
+        <th width="22%">Name</th>
+        <th width="8%">Set</th>      
+        <th width="7%">Cond</th>
+        <th width="7%">Lang</th>
+        <th width="10%">Options</th>
+        <th width="12%">Price<br/>Each</th>
+        <th>Quantity</th>
+        <th width="15%">Price</th>
+      </tr>
   
-  <form id="checkout_form" action="<%= PAYPAL_CONFIG[:embedded_pay_url] %>" target="PPDGFrame">  
-		<input id="checkout_type" type="hidden" name="expType" value="light">	 
-		<input id="checkout_paykey" type="hidden" name="paykey" value="">
-		<input type="submit" id="checkout_submit" style="display:none;"> 	
-  </form>
+      <%= render :partial => "cart_mtg_card_teaser", :collection => @reservations, :as => 'reservation' %>          
+      <% if @reservations.num_pages > 1 %>
+        <tr class=<%=cycle "odd", "even" %>>
+          <td colspan=8>
+            <div class="paginator right"><%= paginate @reservations, :window => 3, :remote => true ,:collection => @mtg_cards %></div>
+          </td>
+        </tr>
+      <% end %>
+      
+      <tr class="header_row">
+      	<td colspan=6>Subtotal</td>
+        <td><%= @selected_order.item_count %> </td>            	
+        <td><%= number_to_currency(@selected_order.item_price_total) %> </td>      
+      </tr>
+      <tr class="header_row">
+      	<td colspan=6>Shipping (includes delivery confirmation)</td>
+      	<td></td>
+        <td><%= number_to_currency(@selected_order.shipping_cost) %> </td>      
+      </tr>          
+      <tr class="header_row">
+      	<th colspan=6>Total Cost</th>
+      	<td></td>
+        <th><%= number_to_currency(@selected_order.total_cost) %> </th>
+      </tr>
+    </table>
+    <br class="spacer"/>
+    <div class="center_wrap">
+      <%= button_to "Check Out This Order", order_checkout_path(@selected_order), :method => :post, :remote => true, :class => "center"%>
+    </div>
+    <% reset_cycle("rows") %>
+    <br class="spacer"/>
+    <br class="spacer"/>      
+
+    <div class="center_wrap">
+
+    </div>
+
+    <form id="checkout_form" action="<%= PAYPAL_CONFIG[:embedded_pay_url] %>" target="PPDGFrame">  
+  		<input id="checkout_type" type="hidden" name="expType" value="light">	 
+  		<input id="checkout_paykey" type="hidden" name="paykey" value="">
+  		<input type="submit" id="checkout_submit" style="display:none;"> 	
+    </form>
+    
+    <script src="https://www.paypalobjects.com/js/external/dg.js"> </script>
+
+    <script type="text/javascript" charset="utf-8">
+      //PAYPAL Lightbox EMBEDDED FLOW
+
+    	var dgFlow = new PAYPAL.apps.DGFlow({ trigger: 'checkout_submit'});
+
+      if (window != top) {
+        location.reload(true);
+      }
+      dgFlow = top.dgFlow || top.opener.top.dgFlow; 
+    	dgFlow.closeFlow(); 
+    	top.close();
+
+    </script>
+
+    <script type="text/javascript" charset="utf-8">
+      // UPDATE QUANTITY IN CART WHEN CHANGED
+      // If ajax is not working properly, the value of the select box won't change to avoid confusion
+
+      $('.quantity_in_cart').each(function() {
+        $(this).data('lastSelected', $(this).find('option:selected'));
+      });
+      $('.quantity_in_cart').click(function() {
+        $(this).data('lastSelected', $(this).find('option:selected'));
+      });
+      $(".quantity_in_cart").change(function() {
+        $(this).closest("form").submit();
+        $(this).data('lastSelected').attr('selected', true);    
+        $(this).trigger("liszt:updated");
+      });
+
+    </script>
+
+  <% end # of display items %> 
   
 </div>
-
-<script src="https://www.paypalobjects.com/js/external/dg.js"> </script>
-
-<script type="text/javascript" charset="utf-8">
-  //PAYPAL Lightbox EMBEDDED FLOW
-
-	var dgFlow = new PAYPAL.apps.DGFlow({ trigger: 'checkout_submit'});
-
-  if (window != top) {
-    location.reload(true);
-  }
-  dgFlow = top.dgFlow || top.opener.top.dgFlow; 
-	dgFlow.closeFlow(); 
-	top.close();
-
-</script>
-
-<script type="text/javascript" charset="utf-8">
-  // UPDATE QUANTITY IN CART WHEN CHANGED
-  // If ajax is not working properly, the value of the select box won't change to avoid confusion
-  
-  $('.quantity_in_cart').each(function() {
-    $(this).data('lastSelected', $(this).find('option:selected'));
-  });
-  $('.quantity_in_cart').click(function() {
-    $(this).data('lastSelected', $(this).find('option:selected'));
-  });
-  $(".quantity_in_cart").change(function() {
-    $(this).closest("form").submit();
-    $(this).data('lastSelected').attr('selected', true);    
-    $(this).trigger("liszt:updated");
-  });
-  
-</script>
 

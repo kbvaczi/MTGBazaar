@@ -4,20 +4,29 @@ class CartsController < ApplicationController
   
   def show
     set_back_path
-    if cookies[:checkout].present?
-      flash.now[:notice] = "Thanks for your purchase!"      if cookies[:checkout] == "success"
-      flash.now[:error]  = "Your purchase was cancelled..." if cookies[:checkout] == "failure"  
-      cookies[:checkout] = ""
-    end
-    @orders = current_cart.orders.includes(:reservations, :listings, :seller)
+    @orders            = current_cart.orders.includes(:seller)
+    @selected_order_id = @orders.to_a.collect {|o| o.id}.include?(params[:order].to_i) ? params[:order].to_i : @orders.first.id
+    @selected_order    = current_cart.orders.includes(:reservations, :seller).where("mtg_orders.id" => @selected_order_id).first
+    @reservations      = @selected_order.reservations.includes(:listing => {:card => :set}).page(params[:page]).per(25)
     
     respond_to do |format|
-      format.html {}
-      format.js {}
+      format.html do
+        if cookies[:checkout].present?
+          flash.now[:notice] = "Thanks for your purchase!"      if cookies[:checkout] == "success"
+          flash.now[:error]  = "Your purchase was cancelled..." if cookies[:checkout] == "failure"  
+          cookies[:checkout] = ""
+        end
+      end
+      format.js
     end
   end
   
   def add_mtg_cards
+    if current_cart.orders.count >= 5
+      flash[:error] = "You can only buy from 5 different users at a time..." # ERROR - max 5 orders at a time?
+      redirect_to back_path
+      return      
+    end
     listing = Mtg::Cards::Listing.find(params[:id])
     unless current_cart.add_mtg_listing(listing, params[:quantity].to_i) # add this listing to cart, this returns false if there is a problem
       flash[:error] = "there was a problem processing your request" # ERROR - problem while adding listing to cart?

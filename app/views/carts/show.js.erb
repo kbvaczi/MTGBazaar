@@ -1,5 +1,5 @@
 $('#center_bar').html("<%= escape_javascript render :template => "carts/show", :formats => [:html] %>");
-$('#right_bar').html("<%= escape_javascript render :partial => "shared/right_bar.html" %>");
+$('#right_bar').html("<%= escape_javascript render  :partial => "shared/right_bar.html" %>");
 $.activateChosenSelect();
 
 $(".overlay_trigger[rel]").overlay({

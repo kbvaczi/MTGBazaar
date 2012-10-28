@@ -1,10 +1,9 @@
 <tr class=<%= cycle("odd","even", :name => "rows") %>>
-  <td style="max-width:120px;">
-
-    <%= link_to display_name(reservation.card.name), mtg_card_path(reservation.card), :title => reservation.card.name %>
+  <td>
+    <%= link_to display_name(reservation.listing.card.name), mtg_card_path(reservation.listing.card), :title => reservation.listing.card.name %>
 	</td>
   <td>
-    <%= display_set_symbol(reservation.card.set)%>
+    <%= display_set_symbol(reservation.listing.card.set)%>
   </td>
   <td>
     <%= display_condition(reservation.listing.condition) %>

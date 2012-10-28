@@ -34,7 +34,8 @@ class Mtg::CardsController < ApplicationController
     end
     @card_variants = Mtg::Card.includes(:set).where("mtg_cards.name LIKE ?", @mtg_card.name).order("mtg_sets.release_date DESC")  
 
-    query = SmartTuple.new(" AND ")
+    query = mtg_filters_query(:card_filters => false, :activate_filters => params[:filter])
+=begin    SmartTuple.new(" AND ")
     unless params[:filter] == "false"
       query << ["mtg_listings.foil LIKE ?", true] if cookies[:search_foil].present?
       query << ["mtg_listings.misprint LIKE ?", true] if cookies[:search_miscut].present?
@@ -43,12 +44,12 @@ class Mtg::CardsController < ApplicationController
       query << ["mtg_listings.seller_id LIKE ?", cookies[:search_seller_id]] if cookies[:search_seller_id].present?    
       query << ["mtg_listings.language LIKE ?", cookies[:search_language]] if cookies[:search_language].present?          
     end
-    
+=end    
     sort_string = table_sort(:price => "mtg_listings.price", :condition => "mtg_listings.condition", :language => "mtg_listings.language",
                              :quantity => "mtg_listings.quantity_available", :seller => "LOWER(users.username)", :sales => "user_statistics.number_sales",
                              :feedback => "user_statistics.positive_feedback_count + user_statistics.neutral_feedback_count / user_statistics.number_sales")                      
     
-    @listings = @mtg_card.listings.includes(:seller => :statistics).available.where(query.compile).order(sort_string)
+    @listings = @mtg_card.listings.includes(:seller => :statistics).available.where(query).order(sort_string)
     
     if not (@mtg_card.active or current_admin_user) # normal users cannot see inactive cards
       redirect_to back_path
