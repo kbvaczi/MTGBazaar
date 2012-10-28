@@ -2,12 +2,13 @@ class Mtg::CardsController < ApplicationController
   
   include ApplicationHelper
   
-  caches_action :search, :layout => false, :cache_path => Proc.new { current_path }, :expires_in => 15.minutes
-  caches_action :show,   :layout => false, :cache_path => Proc.new { current_path }, :expires_in => 24.hours
+  #caches_action :search, :layout => false, :cache_path => Proc.new { current_path }, :expires_in => 15.minutes
+  #caches_action :index,  :layout => false, :cache_path => Proc.new { current_path }, :expires_in => 24.hours
+  
+  before_filter :set_back_path, :only => [:index, :show]
   
   # GET /mtg_cards
   def index
-    set_back_path
     @title = "MTG Cards"
     # LIST ALL CARDS BY SET    
     if params[:set]
@@ -26,7 +27,6 @@ class Mtg::CardsController < ApplicationController
 
   # GET /mtg/cards/:id
   def show
-    set_back_path
     @mtg_card = Mtg::Card.includes(:set, :listings => [:seller => :statistics]).where(:id => params[:id].to_i).first
     if @mtg_card.dual_sided_card?
       @mtg_card = @mtg_card.dual_sided_card_front if @mtg_card.dual_sided_card_back?

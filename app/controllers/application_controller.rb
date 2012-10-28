@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
       current_back_path_queue = @new_back_path_queue || session[:back_path] || [root_path]                      
       if current_back_path_queue.include?(current_path)
         if current_back_path_queue.length > 1
-          @back_path = current_back_path_queue[@new_back_path_queue.index(current_path) - 1] || root_path  
+          @back_path = current_back_path_queue[current_back_path_queue.index(current_path) - 1] || root_path  
         else
           @back_path = root_path
         end
