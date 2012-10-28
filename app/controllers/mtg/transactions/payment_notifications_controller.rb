@@ -15,7 +15,7 @@ class Mtg::Transactions::PaymentNotificationsController < ApplicationController
       
       # now perform a few maintenance items
       transaction.buyer.update_buyer_statistics!                              # add a purchase to user statistics      
-      Cart.find(params[:cart_id]).update_cache if params[:cart_id].present?   # update cart in case user doesn't visit checkout_success_path (i.e. user closes browser or changes pages prior to closing paypal lightbox)      
+      Cart.find(params[:cart_id]).update_cache if params[:cart_id].present? rescue nil # update cart in case user doesn't visit checkout_success_path (i.e. user closes browser or changes pages prior to closing paypal lightbox)      
     else
       # this will send someone to the "page not found" error page if they dont have the right secret... making it look like this page doesn't exist
       raise ActionController::RoutingError.new('Not Found')

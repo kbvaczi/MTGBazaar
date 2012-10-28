@@ -2,6 +2,9 @@ class Mtg::CardsController < ApplicationController
   
   include ApplicationHelper
   
+  caches_action :search, :layout => false, :cache_path => Proc.new { current_path }, :expires_in => 15.minutes
+  caches_action :show,   :layout => false, :cache_path => Proc.new { current_path }, :expires_in => 24.hours
+  
   # GET /mtg_cards
   def index
     set_back_path

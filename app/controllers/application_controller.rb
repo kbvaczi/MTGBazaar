@@ -37,23 +37,18 @@ class ApplicationController < ActionController::Base
     unless @new_back_path_queue.present?                                                                              # prevents this from breaking if called multiple times during one request
       current_back_path_queue = session[:back_path] || [root_path]
       @new_back_path_queue    = current_back_path_queue.dup                                                           # create a copy so the two aren't linked to the same memory address
-      current_path = url_for(params.merge(:authenticity_token => nil, :utf8 => nil, :sort => nil, :sort_order => nil))
       if current_back_path_queue.include?(current_path)                                                               # if we are revisiting an old link in the queue, let's clean up the queue (prevents infinite loops)
         @new_back_path_queue.pop(@new_back_path_queue.length - @new_back_path_queue.index(current_path))              # remove everyting in the queue visited after this link in the queue
       end                                                                 
       @new_back_path_queue.push(current_path)
       @new_back_path_queue.shift if @new_back_path_queue.length > 10                                                  # manage queue size maximum
       session[:back_path]     = @new_back_path_queue unless @new_back_path_queue == current_back_path_queue           # don't hit database again if back path queue hasn't changed
-      Rails.logger.debug("BACK_PATH_LENGTH #{session[:back_path].length}")
-      Rails.logger.debug("BACK_PATH #{session[:back_path]}")
     end
   end
-  
+    
   # returns to the url where set_back_path has last been set and clears back_path
-  helper_method :back_path
   def back_path
     unless @back_path.present?
-      current_path = url_for(params.merge(:authenticity_token => nil, :utf8 => nil))
       current_back_path_queue = @new_back_path_queue || session[:back_path] || [root_path]                      
       if current_back_path_queue.include?(current_path)
         if current_back_path_queue.length > 1
@@ -62,15 +57,19 @@ class ApplicationController < ActionController::Base
           @back_path = root_path
         end
       else
-        @back_path = current_back_path_queue.last
+        @back_path = current_back_path_queue.last || root_path
       end
-      Rails.logger.debug("BACK_PATH \"#{@back_path}\"")    
     end
     @back_path
   end
+  helper_method :back_path  
+  
+  def current_path
+    @current_path ||= url_for(params.merge(:authenticity_token => nil, :utf8 => nil, :sort => nil, :sort_order => nil))
+  end
+  helper_method :current_path  
   
   # returns the current users's cart model 
-  helper_method :current_cart
   def current_cart(force = false)
     if user_signed_in?
       if session[:cart_id] && !force # current session already has a cart, let's link to it
@@ -83,6 +82,7 @@ class ApplicationController < ActionController::Base
       @current_cart
     end
   end
+  helper_method :current_cart
   
   def build_mtg_query(options = {})
     query = SmartTuple.new(" AND ")
