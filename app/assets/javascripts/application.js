@@ -15,6 +15,7 @@
 //= require autocomplete-rails
 //= require jquery-cookie
 //= require jquery.maskMoney
+//= require paypal_embedded_flow_lightbox
 
 
 

@@ -10,12 +10,11 @@ class Mtg::Transactions::PaymentNotificationsController < ApplicationController
                                                        :status => params['status'].downcase, 
                                                        :paypal_transaction_id => params[:transaction]['0']['.id'] )
       transaction.transaction_number = params[:transaction]['0']['.id']       # this has already been done in the database, but we're setting it to our transaction variable just so we don't have to reload the transaction from the database again
-      ApplicationMailer.seller_sale_notification(transaction).deliver         # send sale notification email to seller
-      ApplicationMailer.buyer_checkout_confirmation(transaction).deliver      # send sale notification email to buyer                                                       
-      
       # now perform a few maintenance items
-      transaction.buyer.update_buyer_statistics!                              # add a purchase to user statistics      
-      Cart.find(params[:cart_id]).update_cache if params[:cart_id].present? rescue nil # update cart in case user doesn't visit checkout_success_path (i.e. user closes browser or changes pages prior to closing paypal lightbox)      
+      transaction.buyer.statistics.update_buyer_statistics!                             # add a purchase to user statistics      
+      Cart.find(params[:cart_id]).update_cache if params[:cart_id].present? rescue nil  # update cart in case user doesn't visit checkout_success_path (i.e. user closes browser or changes pages prior to closing paypal lightbox)      
+      ApplicationMailer.seller_sale_notification(transaction).deliver                   # send sale notification email to seller
+      ApplicationMailer.buyer_checkout_confirmation(transaction).deliver                # send sale notification email to buyer      
     else
       # this will send someone to the "page not found" error page if they dont have the right secret... making it look like this page doesn't exist
       raise ActionController::RoutingError.new('Not Found')

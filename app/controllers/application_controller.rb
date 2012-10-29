@@ -19,6 +19,13 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  private
+  
+  def mobile_device?
+    request.user_agent =~ /Mobile|webOS/
+  end
+  helper_method :mobile_device?
+  
   def clear_expired_sessions
     unless Rails.cache.read "clear_expired_sessions" # check timer
       Rails.cache.write "clear_expired_sessions", true, :expires_in => 10.minutes #reset timer
@@ -115,6 +122,11 @@ class ApplicationController < ActionController::Base
     end
     query.compile
   end
+  
+  def minimum_price_for_checkout
+    5.00
+  end
+  helper_method :minimum_price_for_checkout
     
   def table_sort(options = {})
     selected_sort = options[params[:sort].parameterize.underscore.to_sym] rescue nil

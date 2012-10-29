@@ -2,18 +2,15 @@
 <h1><%="Your Cart (#{pluralize(current_cart.orders.to_a.count,"order","orders")})"%></h1>
 <div class="content">
 
-  <%# Do this if the user's cart is not empty %>
-  
-  <% if current_cart.item_count <= 0 %>
+  <% if current_cart.item_count <= 0 # Do this if the user's cart is not empty %>
     <br class="spacer"/>
     <br class="spacer"/>    
     <div class="center_wrap">
       <%= "Your cart is currently empty" %>
     </div>
     
-  <% else %>
+  <% else # Do this if there are items in the cart %>
   
-    <%# cart has items in it so let's display information %>
     <% if @orders.to_a.length > 1 %>
       <div class="group center_wrap">
         <ul class="tabs">
@@ -51,55 +48,63 @@
         <td><%= @selected_order.item_count %> </td>            	
         <td><%= number_to_currency(@selected_order.item_price_total) %> </td>      
       </tr>
-      <tr class="header_row">
-      	<td colspan=6>Shipping (includes delivery confirmation)</td>
-      	<td></td>
-        <td><%= number_to_currency(@selected_order.shipping_cost) %> </td>      
-      </tr>          
-      <tr class="header_row">
-      	<th colspan=6>Total Cost</th>
-      	<td></td>
-        <th><%= number_to_currency(@selected_order.total_cost) %> </th>
-      </tr>
+      <% if @selected_order.item_price_total >= minimum_price_for_checkout %>
+        <tr class="header_row">
+        	<td colspan=6>Shipping (includes delivery confirmation)</td>
+        	<td></td>
+          <td><%= number_to_currency(@selected_order.shipping_cost) %> </td>      
+        </tr>          
+        <tr class="header_row">
+        	<th colspan=6>Total Cost</th>
+        	<td></td>
+          <th><%= number_to_currency(@selected_order.total_cost) %> </th>
+        </tr>
+      <% end %>
     </table>
-    <br class="spacer"/>
-    <div class="center_wrap">
-      <%= button_to "Check Out This Order", order_checkout_path(@selected_order), :method => :post, :remote => true, :class => "center"%>
-    </div>
-    <% reset_cycle("rows") %>
-    <br class="spacer"/>
-    <br class="spacer"/>      
+
+    <br class="spacer"/>    
 
     <div class="center_wrap">
 
-    </div>
+      <% if @selected_order.item_price_total < minimum_price_for_checkout %>
+      
+        <p><i>Minimum order value for checkout is $5.00</i></p>
+        
+      <% elsif mobile_device? %>
 
-    <form id="checkout_form" action="<%= PAYPAL_CONFIG[:embedded_pay_url] %>" target="PPDGFrame">  
-  		<input id="checkout_type" type="hidden" name="expType" value="light">	 
-  		<input id="checkout_paykey" type="hidden" name="paykey" value="">
-  		<input type="submit" id="checkout_submit" style="display:none;"> 	
-    </form>
+        <%= button_to "Check Out This Order", order_checkout_path(@selected_order), :method => :post, :format => :mobile, :class => "center"%>
+
+      <% else %>
+      
+        <%= button_to "Check Out This Order", order_checkout_path(@selected_order), :method => :post, :remote => true, :class => "center"%>
+        
+        <form id="checkout_form" action="<%= PAYPAL_CONFIG[:embedded_pay_url] %>" target="PPDGFrame">  
+      		<input id="checkout_type" type="hidden" name="expType" value="light">	 
+      		<input id="checkout_paykey" type="hidden" name="paykey" value="">
+      		<input type="submit" id="checkout_submit" style="display:none;"> 	
+        </form>
+        
+        <%# This script source is now included in vendor/paypal_embedded_flow_lightbox.js %>
+        <%# <script src="https://www.paypalobjects.com/js/external/dg.js"></script>%>
+
+        <%# PAYPAL Lightbox embedded flow activate %>
+        <script type="text/javascript" charset="utf-8">
+        	var dgFlow = new PAYPAL.apps.DGFlow({ trigger: 'checkout_submit'});
+          //dgFlow = top.dgFlow || top.opener.top.dgFlow; 
+        	//dgFlow.closeFlow(); 
+        	//top.close();
+        </script>
+        
+      <% end %>
+
+    </div>
     
-    <script src="https://www.paypalobjects.com/js/external/dg.js"> </script>
+    <br class="spacer"/>
+    <br class="spacer"/>
 
+    <%# UPDATE QUANTITY IN CART WHEN CHANGED %>
+    <%# If ajax is not working properly, the value of the select box won't change to avoid confusion %>
     <script type="text/javascript" charset="utf-8">
-      //PAYPAL Lightbox EMBEDDED FLOW
-
-    	var dgFlow = new PAYPAL.apps.DGFlow({ trigger: 'checkout_submit'});
-
-      if (window != top) {
-        location.reload(true);
-      }
-      dgFlow = top.dgFlow || top.opener.top.dgFlow; 
-    	dgFlow.closeFlow(); 
-    	top.close();
-
-    </script>
-
-    <script type="text/javascript" charset="utf-8">
-      // UPDATE QUANTITY IN CART WHEN CHANGED
-      // If ajax is not working properly, the value of the select box won't change to avoid confusion
-
       $('.quantity_in_cart').each(function() {
         $(this).data('lastSelected', $(this).find('option:selected'));
       });
@@ -111,7 +116,6 @@
         $(this).data('lastSelected').attr('selected', true);    
         $(this).trigger("liszt:updated");
       });
-
     </script>
 
   <% end # of display items %> 

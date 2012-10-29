@@ -4,10 +4,14 @@ class CartsController < ApplicationController
   
   def show
     set_back_path
-    @orders            = current_cart.orders.includes(:seller)
-    @selected_order_id = @orders.to_a.collect {|o| o.id}.include?(params[:order].to_i) ? params[:order].to_i : @orders.first.id
-    @selected_order    = current_cart.orders.includes(:reservations, :seller).where("mtg_orders.id" => @selected_order_id).first
-    @reservations      = @selected_order.reservations.includes(:listing => {:card => :set}).page(params[:page]).per(25)
+    @orders                 = current_cart.orders.includes(:seller)
+    
+    # don't do this if the cart is empty
+    if @orders.present?   
+      @selected_order_id    = @orders.to_a.collect {|o| o.id}.include?(params[:order].to_i) ? params[:order].to_i : @orders.first.id
+      @selected_order       = current_cart.orders.includes(:reservations, :seller).where("mtg_orders.id" => @selected_order_id).first
+      @reservations         = @selected_order.reservations.includes(:listing => {:card => :set}).page(params[:page]).per(25)
+    end
     
     respond_to do |format|
       format.html do
@@ -17,7 +21,7 @@ class CartsController < ApplicationController
           cookies[:checkout] = ""
         end
       end
-      format.js
+      format.js # for updating cart quantity
     end
   end
   
@@ -74,23 +78,5 @@ class CartsController < ApplicationController
     redirect_to back_path, :notice => "Item quantity updated..."
     return #stop method, don't display a view
   end
-  
-  def checkout_successful
-    order = current_cart.orders.includes(:reservations).where(:id => params[:id]).first
-    transaction = Mtg::Transaction.new(:buyer => current_user, :seller_id => order.seller_id, :status => "pending", :buyer_confirmed_at => Time.now) #create the transaction
-    order.reservations.each { |r| transaction.build_item_from_reservation(r) } # create transaction items based on these reservations
-    if not transaction.valid?
-      flash[:error] = "There was a problem processing your request" 
-      redirect_to back_path
-      return
-    end  
-    # once we've verified everything in the cart we can save everything to the database
-    transaction.save # save each transaction        
-    order.checkout_transaction    
-    current_cart.update_cache # empty the shopping cart
-    redirect_to root_path, :notice => "Thanks for your purchase!"  
-    return #stop method, don't display a view
-  end
-
 
 end
