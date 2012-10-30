@@ -14,8 +14,8 @@ class UserStatistics < ActiveRecord::Base
 
   # ------------ Validations -------------- #
 
-  validates_presence_of :number_sales_rejected, :number_sales, :number_sales_cancelled, :positive_feedback_count, :neutral_feedback_count,
-                        :negative_feedback_count
+  validates_presence_of     :number_sales, :number_sales_cancelled, :positive_feedback_count, :neutral_feedback_count,
+                            :negative_feedback_count
   
   validates :number_sales, :positive_feedback_count, :neutral_feedback_count, :negative_feedback_count,
             :numericality => {:only_integer => true, :greater_than_or_equal_to => 0, :less_than => 1000000}
@@ -23,17 +23,24 @@ class UserStatistics < ActiveRecord::Base
   # ------------ Model Methods ------------ #
   
   def update_seller_statistics!
-    self.number_sales             = self.user.mtg_sales.count
-    completed_sales               = self.user.mtg_sales.includes(:feedback).with_feedback
-    self.positive_feedback_count  = completed_sales.where("mtg_transactions_feedback.rating = ?", "1").count
-    self.neutral_feedback_count   = completed_sales.where("mtg_transactions_feedback.rating = ?", "0").count
-    self.negative_feedback_count  = completed_sales.count - self.positive_feedback_count - self.negative_feedback_count
-    self.average_ship_time        = ( ( completed_sales.sum(&:seller_shipped_at) - completed_sales.sum(&:created_at) ) / 1.day / completed_sales.count ).round(2) rescue 0 # handle divide by 0 error
+    self.number_sales               = self.user.mtg_sales.count
+
+    sales_with_feedback             = self.user.mtg_sales.includes(:feedback).with_feedback        
+    self.number_sales_with_feedback = sales_with_feedback.to_a.length
+    self.positive_feedback_count    = sales_with_feedback.where("mtg_transactions_feedback.rating = ?", "1").count
+    self.neutral_feedback_count     = sales_with_feedback.where("mtg_transactions_feedback.rating = ?", "0").count
+    self.negative_feedback_count    = self.number_sales_with_feedback - self.positive_feedback_count - self.negative_feedback_count
+    percent                         = ( ( ( self.positive_feedback_count + self.neutral_feedback_count ).to_f / self.number_sales_with_feedback ) * 100 ) rescue 0
+    self.approval_percent           = percent.nan? ? 0 : percent # handle divide by 0 error
+
+    shipped_sales                   = self.user.mtg_sales.shipped
+    self.average_ship_time          = ( ( shipped_sales.sum(&:seller_shipped_at) - shipped_sales.sum(&:created_at) ) / 1.day / shipped_sales.count ).round(2) rescue 0
+    
     self.save
   end
   
   def update_buyer_statistics!
-    self.number_purchases = self.user.mtg_purchases.where(:status => "completed").count
+    self.number_purchases = self.user.mtg_purchases.count
     self.save
   end
   
@@ -41,14 +48,10 @@ class UserStatistics < ActiveRecord::Base
     self.number_strikes = self.user.tickets_about.where(:strike => true).count
     self.save
   end
-  
-  def approval_percent
-    ( ( ( self.positive_feedback_count + self.neutral_feedback_count ).to_f / self.number_sales.to_f ) * 100 ) rescue 0 # handle divide by 0 error
-  end
-  
+
   def display_approval_percent
-    if self.number_sales > 0
-      "#{self.approval_percent.round(0)}%" 
+    if self.number_sales_with_feedback > 0
+      "#{self.approval_percent.round(0)}%" rescue "0%"
     else
       "0%"
     end

@@ -12,7 +12,7 @@
   	</tr>
     <tr class="odd">
       <td><%= display_time(@communication.created_at) %></td>
-      <% if @communication.sender.present? && @communication.sender_id == "User"%>
+      <% if @communication.sender.present? && @communication.sender_type == "User"%>
         <td><%= @communication.sender.username %></td>
       <% else %>
         <td><b><i> MTGBazaar </i></b></td>

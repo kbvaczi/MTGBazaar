@@ -25,7 +25,7 @@
 
     <%= f.input :rating,              :label => "Seller Feedback",
                                       :as => :select,
-                                      :collection => [["Postive","1"], ["Negative","-1"], ["Neutral","0"]],
+                                      :collection => [["Postive (+)","1"], ["Neutral ( )","0"], ["Negative (-)","-1"]], 
                                       :default => "+",
                                       :include_blank => false,
                                       :hint => "Do you recommend this seller?",                                      

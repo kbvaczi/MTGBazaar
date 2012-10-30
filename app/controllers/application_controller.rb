@@ -3,8 +3,9 @@ class ApplicationController < ActionController::Base
   helper :all
 
   before_filter :production_authenticate        # simple HTTP authentication for production (TEMPORARY)
-  before_filter :update_current_session_to_prevent_expiration
-  before_filter :clear_expired_sessions
+
+  #after_filter  :update_current_session_to_prevent_expiration
+  after_filter  :clear_expired_sessions
   
   include Mtg::CardsHelper
   
@@ -42,9 +43,9 @@ class ApplicationController < ActionController::Base
       Rails.logger.info "CLEARING SESSIONS COMPLETE"
     end
     # if we cleared your session
-    unless request.session_options[:id] && ActiveRecord::SessionStore::Session.find_by_session_id(request.session_options[:id]) 
-      reset_session # give them a new session
-    end
+    #unless request.session_options[:id] && ActiveRecord::SessionStore::Session.find_by_session_id(request.session_options[:id]) 
+    #  reset_session # give them a new session
+    #end
   end
   
   # sets the current page as the back path for following pages to return to when back_path is redirected to

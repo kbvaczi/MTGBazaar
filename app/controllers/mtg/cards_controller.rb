@@ -13,7 +13,7 @@ class Mtg::CardsController < ApplicationController
     # LIST ALL CARDS BY SET    
     if params[:set]
       @set = Mtg::Set.includes(:cards => :listings).where(:code => params[:set], :active => true).first
-      @mtg_cards = @set.cards.includes(:listings).page(params[:page]).per(25)
+      @mtg_cards = @set.cards.includes(:listings).page(params[:page]).per(15)
       @title = @title + " - #{@set.name}"
     else
       @sets = Mtg::Set.order("release_date DESC").where(:active => true)
@@ -99,7 +99,7 @@ class Mtg::CardsController < ApplicationController
     end
     params[:page] = params[:page] || 1 # if params[:page] # set page number if this was a search request, otherwise we keep the old one for return paths
     
-    @mtg_cards = Mtg::Card.includes(:set, {:listings => :seller}, :statistics).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(20)
+    @mtg_cards = Mtg::Card.includes(:set, {:listings => :seller}, :statistics).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(15)
 
     respond_to do |format|
       format.html do

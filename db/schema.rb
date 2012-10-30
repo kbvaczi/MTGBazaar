@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121022200533) do
+ActiveRecord::Schema.define(:version => 20121030184511) do
 
   create_table "accounts", :force => true do |t|
     t.integer  "user_id"
@@ -97,6 +97,7 @@ ActiveRecord::Schema.define(:version => 20121022200533) do
 
   create_table "communications", :force => true do |t|
     t.integer  "sender_id"
+    t.string   "sender_type"
     t.integer  "receiver_id"
     t.integer  "mtg_transaction_id"
     t.text     "message"
@@ -224,7 +225,7 @@ ActiveRecord::Schema.define(:version => 20121022200533) do
     t.integer  "block_id"
     t.string   "name",         :default => "",           :null => false
     t.string   "code",         :default => "",           :null => false
-    t.date     "release_date", :default => '2012-08-20'
+    t.date     "release_date", :default => '2012-10-19'
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.boolean  "active",       :default => false,        :null => false
@@ -317,6 +318,7 @@ ActiveRecord::Schema.define(:version => 20121022200533) do
     t.datetime "updated_at",              :null => false
   end
 
+  add_index "mtg_transactions_feedback", ["rating"], :name => "index_mtg_transactions_feedback_on_rating"
   add_index "mtg_transactions_feedback", ["transaction_id"], :name => "index_mtg_transactions_feedback_on_transaction_id"
 
   create_table "mtg_transactions_payment_notifications", :force => true do |t|
@@ -332,17 +334,17 @@ ActiveRecord::Schema.define(:version => 20121022200533) do
 
   create_table "mtg_transactions_shipping_labels", :force => true do |t|
     t.integer  "transaction_id"
-    t.string   "url"
     t.string   "stamps_tx_id"
     t.integer  "price"
-    t.boolean  "status",         :default => false
+    t.string   "status",         :default => "active"
     t.text     "params"
     t.text     "tracking"
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
+    t.text     "refund"
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
   end
 
-  add_index "mtg_transactions_shipping_labels", ["transaction_id"], :name => "index_mtg_transactions_shipping_labels_on_transaction_id"
+  add_index "mtg_transactions_shipping_labels", ["transaction_id"], :name => "shipping_labels_transactions_id"
 
   create_table "news_feeds", :force => true do |t|
     t.integer  "author_id"
@@ -416,21 +418,24 @@ ActiveRecord::Schema.define(:version => 20121022200533) do
 
   create_table "user_statistics", :force => true do |t|
     t.integer  "user_id"
-    t.integer  "number_purchases",        :default => 0
-    t.integer  "number_sales",            :default => 0
-    t.integer  "number_sales_rejected",   :default => 0
-    t.integer  "number_sales_cancelled",  :default => 0
-    t.float    "average_confirm_time"
+    t.integer  "number_purchases",           :default => 0
+    t.integer  "number_sales",               :default => 0
+    t.integer  "number_sales_cancelled",     :default => 0
     t.float    "average_ship_time"
-    t.integer  "positive_feedback_count", :default => 0
-    t.integer  "negative_feedback_count", :default => 0
-    t.integer  "neutral_feedback_count",  :default => 0
+    t.integer  "positive_feedback_count",    :default => 0
+    t.integer  "negative_feedback_count",    :default => 0
+    t.integer  "neutral_feedback_count",     :default => 0
     t.text     "ip_log"
-    t.integer  "number_strikes",          :default => 0
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.integer  "number_strikes",             :default => 0
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
+    t.float    "approval_percent"
+    t.integer  "completed_sales"
+    t.integer  "number_sales_with_feedback"
   end
 
+  add_index "user_statistics", ["approval_percent"], :name => "index_user_statistics_on_approval_percent"
+  add_index "user_statistics", ["number_sales"], :name => "index_user_statistics_on_number_sales"
   add_index "user_statistics", ["user_id"], :name => "index_user_statistics_on_user_id"
 
   create_table "users", :force => true do |t|

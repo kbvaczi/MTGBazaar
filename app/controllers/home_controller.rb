@@ -8,14 +8,12 @@ class HomeController < ApplicationController
     else
       @news_feeds = NewsFeed.where(:id => 1)
     end
-    
-    Rails.logger.debug "GirlFriday STATUS: #{GirlFriday.status}"
-    Rails.logger.debug "Current Cart: #{current_cart.inspect}"
   end
   
   def test
-
-    ApplicationMailer.account_update_notification(User.first).deliver
+    #Rails.logger.debug "GirlFriday STATUS: #{GirlFriday.status}"
+    
+    Rails.logger.debug "Tracking response: #{Stamps.track("9400111201080149108965")}"
 
 =begin
       # setup transaction

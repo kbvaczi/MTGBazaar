@@ -68,7 +68,7 @@
         <th colspan=3>Details</th>
       </td>
   	  <tr class="header_row">
-    	  <th style="width:50%;">Transaction Number</th>      	    
+    	  <th style="width:50%;">Transaction ID</th>      	    
     	  <th style="width:25%;">Item Value</th>
     	  <th style="width:25%;">Creation Date</th>      
     	</tr>
@@ -97,7 +97,8 @@
       	</tr>    
       	<tr class="odd">
       	  <td colspan=3>
-        	  <div id="shipping_label_button">
+      	    <%= link_to 'Show / Print Invoice', show_invoice_path(@transaction), :class => "button", :target => "_blank" %>
+        	  <div id="shipping_label_button" class="center">
       	      <% if not @transaction.shipping_label.present? %>
                 <%= link_to "Create Shipping Label", create_shipping_label_path(@transaction), :remote => true, :class => "button ma-s", :style => "display:inline-block;", :confirm => "To avoid issues with USPS, Package should be shipped within 24-hours after creating label. Please mark package as shipped once sent." %>  	      
       	      <% else @transaction.seller_shipped_at.nil? %>
@@ -177,7 +178,7 @@
      	</tr>
   	</table>
  
-		<%= link_to 'Show Invoice', show_invoice_path(@transaction), :target => "_blank" %>
+
  
  <% end # end of sections if statement %>
 

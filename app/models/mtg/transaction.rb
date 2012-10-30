@@ -56,8 +56,16 @@ class Mtg::Transaction < ActiveRecord::Base
     where(:seller_shipped_at => nil, :status => "confirmed")
   end
   
+  def self.shipped
+    where("mtg_transactions.seller_shipped_at <> \'nil\'")
+  end
+  
   def self.with_feedback
-    includes(:feedback).where("mtg_transactions_feedback.id > 0 AND mtg_transactions.seller_shipped_at <> ?", nil)
+    includes(:feedback).where("mtg_transactions_feedback.id > 0")
+  end
+  
+  def self.completed
+    where(:status => "completed")
   end
 
 # ---------------- PUBLIC MEMBER METHODS -------------
