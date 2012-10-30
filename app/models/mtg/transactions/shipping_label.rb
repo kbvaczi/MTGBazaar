@@ -143,9 +143,9 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
   
   # buy postage if balance is below minimum (only works in STAMPS_CONFIG[:mode] = production)
   def buy_postage_if_necessary(options = {:current_balance => 9999, :control_total => 0})
-    min_postage_balance = 80 # buy postage if balance is under this amount
-    max_control_total = 1000 # max amount to spend per month?
-    postage_purchase_amount = 50 # amount to purchase at a time
+    min_postage_balance     = 20  # buy postage if balance is under this amount
+    max_control_total       = 300 # max amount to spend per month?
+    postage_purchase_amount = 30  # amount to purchase at a time
     if STAMPS_CONFIG[:mode] == "production"
       if options[:current_balance] < min_postage_balance && options[:control_total] < max_control_total
           Rails.logger.info("STAMPS: Postage below #{min_postage_balance}, attempting to purchase #{postage_purchase_amount} in postage")
