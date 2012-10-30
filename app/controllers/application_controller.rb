@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   helper :all
 
   before_filter :production_authenticate        # simple HTTP authentication for production (TEMPORARY)
+  before_filter :update_current_session_to_prevent_expiration
   before_filter :clear_expired_sessions
   
   include Mtg::CardsHelper
@@ -26,11 +27,18 @@ class ApplicationController < ActionController::Base
   end
   helper_method :mobile_device?
   
+  # session only updates when changed (not accessed)... this keeps session updated if it hasn't been recently changed
+  def update_current_session_to_prevent_expiration
+    current_session = ActiveRecord::SessionStore::Session.find_by_session_id(request.session_options[:id])
+    current_session.touch if current_session && current_session.updated_at < 10.minutes.ago
+  end
+
+  # clear expired sessions, empty their carts
   def clear_expired_sessions
     unless Rails.cache.read "clear_expired_sessions" # check timer
       Rails.cache.write "clear_expired_sessions", true, :expires_in => 10.minutes #reset timer
       Rails.logger.info "CLEARING SESSIONS"
-      Session.where(["updated_at < ? OR created_at < ?", 30.minutes.ago, 12.hours.ago]).each {|s| s.destroy}
+      Session.where("updated_at < ? OR created_at < ?", 30.minutes.ago, 6.hours.ago).destroy_all
       Rails.logger.info "CLEARING SESSIONS COMPLETE"
     end
     # if we cleared your session

@@ -11,9 +11,16 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
   
   def update
+    user_before_update    = resource.attributes.merge!("updated_at" => nil)
+    #account_before_update = resource.account.attributes.merge!("updated_at" => nil)
     set_address_info
     super
-    ApplicationMailer.account_update_notification(resource).deliver
+    user_after_update     = resource.attributes.merge!("updated_at" => nil)
+    #account_after_update  = resource.account.attributes.merge!("updated_at" => nil)
+    Rails.logger.info "#{user_before_update},  #{user_after_update}"
+    if resource.updated_at > 10.seconds.ago || resource.account.updated_at > 10.seconds.ago #account_before_update != account_after_update || user_before_update != user_after_update
+      ApplicationMailer.account_update_notification(resource).deliver
+    end
   end
   
   def create

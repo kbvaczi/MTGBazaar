@@ -4,8 +4,7 @@
 
 <%# use @user instance variable to capture changes in @account for incorrect form entry%>
 <%= simple_form_for(@user.with_account, :as => @user, :url => registration_path(@user)) do |f| %>
-  <%# flash[:error] = "There were one or more errors while trying to process your request" if !devise_error_messages!.empty? %>
-  <% flash[:error] = devise_error_messages! if !devise_error_messages!.empty? %>  
+  <% flash[:error] = "There were one or more errors while trying to process your request" if !devise_error_messages!.empty? %>  
   <%# flash[:error] = devise_error_messages! if !devise_error_messages!.empty? %>
   <%= f.simple_fields_for :account do |a| %>
     <br class = "spacer"/>

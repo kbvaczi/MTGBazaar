@@ -1,11 +1,14 @@
 <%= provide :heading, "Notice of Account Information Change" %>
 
-<h3>Your account information for <%= @user.email %> has been changed.</h3>
+<h3>Your account information for <%= @user.username %> has been changed.</h3>
+
 <p>Please ignore this message if you made these changes yourself.</p>
-<p>If you didn't recently update your account information, your account might have been hijacked.</p>
 <p>If you think your account was hijacked, or if you are unsure whether the account changes were made by yourself, please reset your password by using the following link:</p>
 <br/>
 <p style="text-align:center;"><%= link_to "I want to reset my password", new_password_url(@user), :method => :post %></p>
+<% if @user.unconfirmed_email.present? %>
+<p>Someone requested the new email address for this account be changed to <%= @user.unconfirmed_email %>. If this change was confirmed from the new email, you will need to use the new email address to reset your password.</p>
+<% end %>
 <br/>
 <h3>MTGBazaar security tips:</h3>
   <p>Never give out your password</p>
