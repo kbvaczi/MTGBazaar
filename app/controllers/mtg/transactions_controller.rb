@@ -5,6 +5,10 @@ class Mtg::TransactionsController < ApplicationController
   def show
     set_back_path
     @transaction = Mtg::Transaction.includes(:items => {:card => :set}).find(params[:id])
+    if current_user.id != @transaction.buyer_id && current_user.id != @transaction.seller_id
+      flash[:error] = "You do not have privileges to perform this action..."
+      redirect_to back_path
+    end
     @items = @transaction.items.includes(:card => :set).order("mtg_cards.name").page(params[:page]).per(16) if params[:section] == "items"
     if params[:section] == "communication"    
       @communications    = @transaction.communications.order("created_at DESC").page(params[:page]).per(5)

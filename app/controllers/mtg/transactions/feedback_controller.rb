@@ -17,7 +17,7 @@ class Mtg::Transactions::FeedbackController < ApplicationController
       current_transaction.seller.statistics.update_seller_statistics!
       redirect_to show_mtg_transaction_path(current_transaction), :notice => "Your feedback was created..."
     else
-      flash[:error] = @feedback.errors.full_messages #"There was an error with your request..."
+      flash[:error] = "There was an error with your request..."
       render 'new'
     end
     
