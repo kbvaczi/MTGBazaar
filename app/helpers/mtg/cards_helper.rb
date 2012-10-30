@@ -162,6 +162,10 @@ module Mtg::CardsHelper
     end
   end
   
+  def display_language(language_abbreviation)
+    language_list.each { |l| return l[0] if l[1] == language_abbreviation }
+  end
+  
   # lists all available languages for select boxes
   def language_list
     return [["English","EN"], ["Russian","RU"], ["French","FR"], ["Japanese","JN"], ["Chinese","CN"], ["Korean","KO"], ["German","GN"], ["Portuguese", "PG"], ["Spanish", "SP"], ["Italian", "IT"]]

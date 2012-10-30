@@ -1,16 +1,21 @@
 
 <%= simple_form_for @contact, :url => { :action => "create" }, :html => { :method => :post, :honeypot => true } do |f| %>
   
-  <%= f.input :sender_name,   :label => "Your name", :required => true%>
+<%= f.input :sender_name,   :label => "Your Name", :required => true%>
   
   <%= f.input :email,         :required => true %>
   
-  <%= f.input :support_type,  :label => "Reason for contact", 
+  <%= f.input :support_type,  :label => "Reason for Contact", 
                               :include_blank => false , 
-                              :collection => [["Give us kudos","kudos"], ["General feedback","general"], ["Report a bug","bug"], ["Ask a question","question"], ["Give a suggestion", "suggestion"], ["File a complaint", "complaint"], ["Inquire about advertising", "ad"]], 
+                              :collection => [["Give us Kudos","Kudos"],
+																							["Ask a Question","Question"], 
+																							["Give a Suggestion", "Suggestion"],
+																							["Inquire About Advertising", "Ads"],
+																							["The Username I Requested is Reserved", "Reserved Username"],
+																						  ["MTGBazaar is Missing a Product on the Site", "Missing Product"]],
                               :input_html => { :class => "chzn-select" } %>
                               
-  <%= f.input :content,       :label => "Your message", 
+  <%= f.input :content,       :label => "Your Message", 
                               :as => :text, 
                               :required => true, 
                               :input_html => {:maxlength => "500"} %>
