@@ -29,7 +29,7 @@ class UserStatistics < ActiveRecord::Base
     self.number_sales_with_feedback = sales_with_feedback.to_a.length
     self.positive_feedback_count    = sales_with_feedback.where("mtg_transactions_feedback.rating = ?", "1").count
     self.neutral_feedback_count     = sales_with_feedback.where("mtg_transactions_feedback.rating = ?", "0").count
-    self.negative_feedback_count    = self.number_sales_with_feedback - self.positive_feedback_count - self.negative_feedback_count
+    self.negative_feedback_count    = self.number_sales_with_feedback - self.positive_feedback_count - self.neutral_feedback_count
     percent                         = ( ( ( self.positive_feedback_count + self.neutral_feedback_count ).to_f / self.number_sales_with_feedback ) * 100 ) rescue 0
     self.approval_percent           = percent.nan? ? 0 : percent # handle divide by 0 error
 
