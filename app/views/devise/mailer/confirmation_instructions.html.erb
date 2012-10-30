@@ -1,5 +1,7 @@
-<p>Welcome <%= @resource.email %>!</p>
+<%= provide :heading, "Welcome to MTGBazaar!" %>
 
-<p>You can confirm your account through the link below:</p>
+<p>Hello <%= @resource.username %></p>
 
-<p><%= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %></p>
+<p>Please confirm your account through the link below:</p>
+
+<p style="text-align:center;"><%= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %></p>

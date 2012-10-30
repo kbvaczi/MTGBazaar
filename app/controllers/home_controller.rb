@@ -14,10 +14,9 @@ class HomeController < ApplicationController
   end
   
   def test
-    transaction = Mtg::Transaction.last
-    
-    ApplicationMailer.seller_sale_notification(transaction).deliver # send sale notification email to seller
-    ApplicationMailer.buyer_checkout_confirmation(transaction).deliver # send sale notification email to buyer   
+
+    ApplicationMailer.account_update_notification(User.first).deliver
+
 =begin
       # setup transaction
       gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(                                                 # setup gateway, login to Paypal API

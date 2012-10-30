@@ -55,6 +55,9 @@ module MTGBazaar
     #config.action_mailer.delivery_method = :smtp
     #config.action_mailer.delivery_method = :queued
 
+    config.to_prepare do
+      Devise::Mailer.layout "email" # use email layout for devise emails
+    end
     
 
   end

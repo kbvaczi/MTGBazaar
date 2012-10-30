@@ -1,7 +1,9 @@
-<p>Hello <%= @resource.email %>!</p>
+<%= provide :heading, "Locked Account" %>
 
-<p>Your account has been locked due to an excessive amount of unsuccessful sign in attempts.</p>
+<p>Hello <%= @resource.username %></p>
+
+<p>Your account has been locked due to excessive incorrect sign in attempts.</p>
 
 <p>Click the link below to unlock your account:</p>
 
-<p><%= link_to 'Unlock my account', unlock_url(@resource, :unlock_token => @resource.unlock_token) %></p>
+<p style="text-align:center;"><%= link_to 'Unlock my account', unlock_url(@resource, :unlock_token => @resource.unlock_token) %></p>

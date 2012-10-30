@@ -1,0 +1,75 @@
+<% 
+
+style_for_text  =       "font-family:Calibri,Helvetica Nuve,Arial,sans-serif;"
+
+style_for_background =  "background:#CFD5D7;"
+
+style_for_mail_main =   "font-size:12px;width:100%;background:#CFD5D7;"
+
+style_for_heading =     "background:#edf1f2;height:25px;font-size:14px;font-weight:bold;line-height:2.4;text-align:center;padding:0 10px 0 10px;margin: 0px 0px 10px 0px;border-bottom: 2px solid #eee;" #white-space: nowrap;overflow: hidden;text-shadow: 0px 1px white;"
+
+style_for_content =     "background:#fff;text-align:center;word-wrap:break-word;"
+                        
+style_for_footer =      "font-size:11px;color:#bbb;text-align:center;"
+
+style_for_link =        "font-size:11px;color: #688AC1;"
+
+border_radius =         "10px"
+
+%>
+
+<table cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;width:600px;table-layout:fixed;"><tbody>
+  <tr>
+    <th style="padding-left:15px;"></th>
+    <th style="width:570px;padding-bottom:3px;text-align:right;">
+      <%= link_to image_tag("https://s3.amazonaws.com/mtgbazaar_public/images/facebook.png", :height => "30px"), "http://www.facebook.com/mtgbazaar", :target => '_blank', :alt => "MTGBazaar on Facebook"  %>
+		  <%= link_to image_tag("https://s3.amazonaws.com/mtgbazaar_public/images/twitter.png",  :height => "30px"), "http://www.twitter.com/mtgbazaar",  :target => '_blank', :alt => "MTGBazaar on Twitter"  %>
+    </th>
+    <th style="padding-left:15px;"></th>
+  </tr>
+  <tr style="<%= style_for_background %>">
+    <td style="border-top-left-radius:<%= border_radius %>;padding-left:15px;<%= style_for_background %>"> </th>
+    <td style="text-align:center;width:570px;padding:10px;<%= style_for_background %>"> <%= link_to image_tag('https://s3.amazonaws.com/mtgbazaar_public/images/logo_md.png', :alt => "MTGBazaar Logo"), root_url %> </th>
+    <td style="border-top-right-radius:<%= border_radius %>;padding-left:15px;<%= style_for_background %>"> </th>
+  </tr>
+  <tr>
+    <td style="padding-left:15px;<%= style_for_background %>"> </th>
+    <td style="<%= style_for_background %>"> 
+      <table cellspacing="0" cellpadding="0" border="0" style="width:100%;"><tbody>
+        <tr>
+          <td style="border-top-left-radius:<%= border_radius %>;border-top-right-radius:<%= border_radius %>;<%= style_for_heading + style_for_text %>" > <%= yield :heading || "Notification" %> </td>
+        </tr>
+      </tbody></table>
+    </td>    
+    <td style="padding-left:15px;<%= style_for_background %>"> </th>
+  </tr>
+  <tr>
+    <td style="padding-left:15px;<%= style_for_background %>"> </th>
+    <td style="<%= style_for_background %>"> 
+      <table cellspacing="0" cellpadding="0" border="0" style="width:100%;"><tbody>
+        <tr>
+          <td style="padding:15px;border-bottom-left-radius:<%= border_radius %>;border-bottom-right-radius:<%= border_radius %>;<%= style_for_content + style_for_text %>" > <%= yield %> </td>
+        </tr>
+      </tbody></table>
+    </td>
+    <td style="padding-left:15px;<%= style_for_background %>"> </th>
+  </tr>
+  <tr>
+    <td colspan=3 style="border-bottom-left-radius:<%= border_radius %>;border-bottom-right-radius:<%= border_radius %>;padding-bottom:15px;<%= style_for_background %>"> </td>
+  </tr>
+  <tr>
+    <td colspan=3 style="padding:10px;<%= style_for_footer %>" >  
+      <%= link_to 'About MTGBazaar',    about_url,      :style => style_for_link %> | 
+      <%= link_to 'Terms of Service',   terms_url,      :style => style_for_link %> | 
+      <%= link_to 'Privacy Policy',     privacy_url,    :style => style_for_link %> |
+      <%= link_to 'Copyright Notice',   copyright_url,  :style => style_for_link %> |  
+      <%= link_to 'Contact Us',         contact_url,    :style => style_for_link %>
+    </td>
+  </tr>
+  <tr>
+    <td colspan=3 style="padding:10px;<%= style_for_footer %>" > Please do not reply to this e-mail because this inbox is not monitored.  <br/> To contact us, please use the link above...  Cheers! </td>
+  </tr>
+  <tr>
+    <td colspan=3 style="padding:10px;<%= style_for_footer %>" > &copy; 2012 MTGBazaar.com </td>
+  </tr>
+</tbody></table>

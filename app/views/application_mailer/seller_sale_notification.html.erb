@@ -1,25 +1,46 @@
-<div style="width:550px;">
-  <h2>Congratulations!</h2>
-  <h3>You have received an order from <%= link_to @transaction.buyer.username, user_url(@transaction.buyer) %></h3>
-	
-  <table style="width: 100%;">
-		<tr style="background-color: rgb(235,235,235); ">
-			<th>Buyer</th>
-			<th>Transaction ID</th>
-			<th>Item(s)</th>
-			<th>Value</th>
-		</tr>
-		<tr>
-			<td><%= @transaction.buyer.username %></td>
-			<td><%= link_to @transaction.transaction_number, show_mtg_transaction_path(@transaction) %></td>
-			<td><%= @transaction.items.to_a.sum(&:quantity_available) %></td>
-			<td><%= number_to_currency(@transaction.total_value) %></td>
-		</tr>
-  </table>
-  <br class="spacer"/>
-	
-  <p>Cheers!</p>
-	
-  <%= image_tag 'logo_sm.png', :alt => "MTGBazaar Logo" %>
-	
-</div>
+<%= provide :heading, "Sale Confirmation" %>
+
+<h3>Congratulations! You received an order from <%= link_to @transaction.buyer.username, user_url(@transaction.buyer) rescue ""%>:</h3>
+
+<br/>
+
+<table width="400px" align="center">
+  <tbody>
+    <tr>
+      <td align="left">Transaction number:</td>
+      <td align="right"> <%= @transaction.transaction_number %></td>  
+    </tr>
+    <tr>
+      <td align="left">Number of Items:</td>
+      <td align="right"><%= @transaction.items.count %></td>  
+    </tr>
+    <tr>
+      <td align="left">Item Value:</td>
+      <td align="right"><%= number_to_currency @transaction.value %></td>  
+    </tr>    
+    <tr>
+      <td align="left" style="border-bottom:1px;">MTGBazaar Commission:</td>
+      <td align="right" style="border-bottom:1px;color:#d33;"><%= number_to_currency @transaction.payment.commission %></td>  
+    </tr>
+    <tr><td colspan=2><hr></td></tr>
+    <tr>
+      <td align="left" style="font-weight:bold;">TOTAL:</td>
+      <td align="right" style="font-weight:bold;"><%= number_to_currency(@transaction.value - @transaction.payment.commission) %></td>  
+    </tr>    
+  </tbody>
+</table>
+
+<br/>
+
+<p style="text-align:center;"> <%= link_to "Click here for more details", show_mtg_transaction_url(@transaction) %> </p>
+
+<br/>
+
+<p>
+  <b>Next Steps:</b>
+  <p>Print out an invoice to include with your package and to verify package contents</p>
+  <p>Any issues can be resolved directly with the buyer using the communication tab for this transaction</p>    
+  <p>Locate your items for sale and package them according to our packaging guidelines</p>
+  <p>When you are ready to ship, print out a shipping label <%= link_to "here", show_mtg_transaction_url(@transaction) %></p>    
+  <p>After items are shipped, please mark your sale as shipped</p>
+</p>

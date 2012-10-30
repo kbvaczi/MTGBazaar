@@ -68,7 +68,7 @@
 
       <% if @selected_order.item_price_total < minimum_price_for_checkout %>
       
-        <p><i>Minimum order value for checkout is $5.00</i></p>
+        <p><i>Minimum order value for checkout is <%= number_to_currency(minimum_price_for_checkout)%></i></p>
         
       <% elsif mobile_device? %>
 
