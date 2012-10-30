@@ -40,7 +40,7 @@
   	<% cache("top_sellers", :expires_in => 1.days) do %>  	
   	  <div class="right_bar3">	
     	  <h1>Top Sellers</h1>
-    	  <% top_sellers = User.active.includes(:statistics).order("user_statistics.number_sales DESC").limit(7) %>
+    	  <% top_sellers = User.active.includes(:statistics).where("user_statistics.approval_percent > \'90.0\'").order("user_statistics.number_sales DESC").limit(7) %>
     	  <div class="mt-s mr-s ml-s">
           <table class="data">
             <% top_sellers.each do |seller| %>

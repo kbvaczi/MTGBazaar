@@ -28,7 +28,8 @@ class Mtg::Reservation < ActiveRecord::Base
   end
   
   def purchased!
-    listing.decrement(:quantity, self.quantity).save
+    self.listing.decrement(:quantity, self.quantity).save       # update listing quantities
+    self.listing.card.statistics.update!                        # update card statistics
     self.destroy
   end
 

@@ -92,28 +92,48 @@ class Mtg::Cards::Statistics < ActiveRecord::Base
   # --------------------------------------- #
 
 
-  def update!
+  def update!        
     #gather all sales of this card
-    sales = Mtg::Transactions::Item.includes(:transaction).where(:card_id => self.card_id).where("mtg_transactions.status LIKE ?", "delivered").order("created_at DESC")
-    self.number_sales = sales.count
-    #get the latest 20 "normal" completed sales to compute pricing
-    latest_sold_items = sales.where(:foil => false, :altart => false, :misprint => false, :signed => false).limit(20)
-    if latest_sold_items.present?
-      min = latest_sold_items.minimum("price").to_f / 100
-      avg = latest_sold_items.average("price").to_f / 100
-      max = latest_sold_items.maximum("price").to_f / 100
-      if min == avg 
-        self.price_low = (0.8 * avg).to_money
-      else
-        self.price_low = ( (min + min + avg) / 3 ).to_money
+    self.number_sales = Mtg::Transactions::Item.where(:card_id => self.card_id).count
+
+    #get the latest "normal" completed sales to compute pricing
+    selection_size = 21
+    latest_sold_items_pricing = Mtg::Transactions::Item.where(:card_id => self.card_id).where(:foil => false, :altart => false, :misprint => false, :signed => false).order("created_at DESC").limit(selection_size).pluck(:price).sort!
+    latest_sold_items_count   = latest_sold_items_pricing.length rescue 0
+    Rails.logger.debug "listing price array = #{latest_sold_items_pricing}"
+
+    if latest_sold_items_count > 0 # there are sales, let's recalculate pricing
+      low_third_pricing  = latest_sold_items_pricing[0..(latest_sold_items_count / 3).ceil]
+      med_third_pricing  = latest_sold_items_pricing[(latest_sold_items_count / 3)..((latest_sold_items_count / 3) * 2).ceil]
+      high_third_pricing = latest_sold_items_pricing[((latest_sold_items_count / 3) * 2)...latest_sold_items_count]
+      
+      Rails.logger.debug "low price array  = #{low_third_pricing}"
+      Rails.logger.debug "med price array  = #{med_third_pricing}"      
+      Rails.logger.debug "high price array = #{high_third_pricing}"            
+      low_third_average  = Money.new(low_third_pricing.inject(0.0)  {|sum, price| sum + price } / low_third_pricing.length)
+      med_third_average  = Money.new(med_third_pricing.inject(0.0)  {|sum, price| sum + price } / med_third_pricing.length)
+      high_third_average = Money.new(high_third_pricing.inject(0.0) {|sum, price| sum + price } / high_third_pricing.length)
+      
+      Rails.logger.debug "low price average  = #{low_third_average}"
+      Rails.logger.debug "med price average  = #{med_third_average}"      
+      Rails.logger.debug "high price average = #{high_third_average}"
+      if latest_sold_items_count < selection_size # not enough sales for valid data, weight recent sales against prevous data
+        weight_factor_for_sales = latest_sold_items_count.to_f / selection_size.to_f
+        Rails.logger.debug "weight_factor = #{weight_factor_for_sales}"
+
+        self.price_low  = (low_third_average  * weight_factor_for_sales + self.price_low  * (1-weight_factor_for_sales))
+        self.price_med  = (med_third_average  * weight_factor_for_sales + self.price_med  * (1-weight_factor_for_sales))
+        self.price_high = (high_third_average * weight_factor_for_sales + self.price_high * (1-weight_factor_for_sales))
+      else # there are enough recent sales for valid data
+        self.price_low  = low_third_average
+        self.price_med  = med_third_average
+        self.price_high = high_third_average
       end
-      self.price_med = avg.to_money
-      if min == avg 
-        self.price_high = (1.2 * avg).to_money
-      else
-        self.price_high = ( (max + max + avg) / 3 ).to_money
-      end 
+      Rails.logger.debug "final low     = #{self.price_low}"
+      Rails.logger.debug "final average = #{self.price_med}"      
+      Rails.logger.debug "final high    = #{self.price_high}"
     end
+    
     self.save
   end
 
