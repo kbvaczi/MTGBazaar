@@ -179,7 +179,16 @@ class Mtg::TransactionsController < ApplicationController
       flash[:error] = "There were one or more errors while trying to process your request..."
       render 'seller_shipment_confirmation'
     end
-  end    
+  end
+  
+##### ------ ORDER INVOICE PAGE ----- #####    
+
+def show_invoice
+   @transaction = Mtg::Transaction.includes(:seller, :buyer, :items => {:card => :set}).find(params[:id])
+   respond_to do |format|
+     format.html { render :layout => false }
+   end
+end
     
     
 ##### ------ BUYER DELIVERY CONFIRMATION ----- #####    

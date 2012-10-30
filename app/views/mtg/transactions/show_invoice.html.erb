@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <link rel="shortcut icon" href="/favicon.ico" />            
+    <title><%= 'Invoice' %></title>
+
+    <meta name="description" content="MTG Bazaar: A marketplace for buying and selling Magic the Gathering cards">
+    <meta name="keywords" content="MTG Bazaar: A marketplace for buying and selling Magic the Gathering cards">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <%= javascript_include_tag "application" %>
+    <%= stylesheet_link_tag    "application", :media => "all" %>    
+
+    <%# cross site forgery protection %>
+    <%= csrf_meta_tags %>  
+  </head>
+
+  <body style="background:#FFF;">
+		
+		<center><%= image_tag "https://s3.amazonaws.com/mtgbazaar_public/images/logo_new.png", :width => "300px;" %></center>
+		<br/>
+		<center>
+		
+		<style>
+		table.invoice {
+			border-collapse:collapse;
+		}
+		table.invoice tr td, 		table.invoice tr th {
+			border: 1px solid #777;
+		}
+		</style>
+		
+		<div class="left" style="margin-left:5%; text-align:left;">
+			<strong>Transaction Number:</strong> <%= @transaction.transaction_number %><br/>
+			<strong>Buyer:</strong> <%= @transaction.buyer.username %><br/>
+			<strong>Seller:</strong> <%= @transaction.seller.username %><br/>
+			<strong>Purchase Date:</strong> <%= display_time @transaction.created_at %><br/>
+		</div><br/><br/><br/><br/><br/>
+		<center><p><strong>PLEASE USE THIS INVOICE TO VERIFY THE CONTENTS OF YOUR ORDER AND INCLUDE IT WITH YOUR SHIPMENT</strong></p></center><br/><br/>
+		<div class="right" style="margin-right:7%;vertical-align:bottom;" >*F= Foil, M= Miscut, S= Signed, A= Altered</div>
+		<table style="width:95%; " class="data invoice">
+			  <tr class="header_row">
+					<th colspan=9>Invoice</th>
+				</tr>
+				<tr class="header_row">
+			  <th>Name</th>
+			  <th>Set</th>
+				<th>Symbol</th>      
+				<th>Condition</th>
+				<th>Language</th>
+				<th>Options*</th>   		
+				<th>Price</th>
+				<th>Quantity</th>
+				<th>Total</th> 
+			</tr>
+			
+			<% @transaction.items.each do |item| %>
+			<tr> 
+			  <td><%= link_to display_name(item.card.name), mtg_card_path(item.card) %></td>
+			  <td><%= display_name(item.card.set.name) %></td>
+				<td><%= display_set_symbol(item.card.set) %></td>
+			  <td><%= display_condition(item.condition) %></td>
+			  <td><%= display_language item.language %></td>
+			  <td class="mtg_options_cell">
+			    <% if item.foil %>
+					  F &nbsp;
+			    <% end %>
+			    <% if item.misprint %>
+						M &nbsp;
+			    <% end %>
+			    <% if item.signed %>
+			      S &nbsp;
+			    <% end %>
+			    <% if item.altart %>
+			      A &nbsp;
+			    <% end %>    
+			  </td>
+				<td><%= number_to_currency(item.price) %>
+			  <td><%= item.quantity_available %></td>
+				<td><%= number_to_currency(item.price) * item.quantity_available %> </td> 
+			</tr>   
+		   
+			<% end %>
+			
+			<tr>
+				<td colspan=7 style="text-align:right; border: 0px; padding-right:5px; ";><strong>Subtotal:</strong></td>
+				<td><%= @transaction.items.count %></td>
+		    <td><%= number_to_currency @transaction.value %></td>				
+			</tr>
+			<tr>
+				<td colspan=7 style="text-align:right; border: 0px; padding-right:5px;"><strong>Shipping:</strong></td>
+				<td> - </td><td><%= number_to_currency @transaction.shipping_cost %></td>
+			</tr>	
+			<tr>
+				<td colspan=7 style="text-align:right; border: 0px; padding-right:5px;"><strong>Total:</strong></td>
+				<td> - </td><td><%= number_to_currency (@transaction.shipping_cost + @transaction.value)%></td>
+						
+			</tr>				
+			 
+		</table>
+		</center>
+	
+		
+  </body>
+
+</html>
+
+
+
+
+

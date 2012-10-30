@@ -88,6 +88,13 @@
 		</tr>
 
       <% end %>
+			
+		  <% if @sales.count == 0 %>
+		    <tr>
+		      <td colspan=4 class="odd"><i>None</i></td>
+		    </tr>
+		  <% end %>
+			
   </table>
       
       <br class="spacer">

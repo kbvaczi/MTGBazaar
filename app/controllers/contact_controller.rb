@@ -5,7 +5,7 @@ class ContactController < ApplicationController
 
   def index
     
-    @reason = params[:reason] ||= "kudos"
+    @reason = params[:reason] ||= "Kudos"
     
     @contact = Contact.new(:id => 1)
     
@@ -22,7 +22,7 @@ class ContactController < ApplicationController
   def create
     @contact = Contact.new(params[:contact].merge!({"ip"=>request.remote_ip})) #add IP address
     if @contact.save
-      redirect_to root_path, :notice => "Thanks for the feedback! Your comments were sent."
+      redirect_to root_path, :notice => "Thanks for contacting us! Your message was sent."
     else
       render 'show'
     end
