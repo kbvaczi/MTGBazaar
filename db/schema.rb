@@ -225,7 +225,7 @@ ActiveRecord::Schema.define(:version => 20121030184511) do
     t.integer  "block_id"
     t.string   "name",         :default => "",           :null => false
     t.string   "code",         :default => "",           :null => false
-    t.date     "release_date", :default => '2012-10-19'
+    t.date     "release_date", :default => '2012-10-31'
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.boolean  "active",       :default => false,        :null => false
@@ -430,7 +430,6 @@ ActiveRecord::Schema.define(:version => 20121030184511) do
     t.datetime "created_at",                                :null => false
     t.datetime "updated_at",                                :null => false
     t.float    "approval_percent"
-    t.integer  "completed_sales"
     t.integer  "number_sales_with_feedback"
   end
 

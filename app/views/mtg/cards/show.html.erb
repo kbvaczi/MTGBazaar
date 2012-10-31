@@ -5,20 +5,16 @@
 
 <div id="content">
 
-  <%# cache card info but not listings %>
-  <% cache "mtg_card_show_#{@mtg_card.id}", :expires_in => 1.days do %>
-    <div>
-      <div class="card_info_wrapper group">
-        <%= render :partial => "show_card_info", :locals => { :mtg_card => @mtg_card }%>
+  <div>
+    <div class="card_info_wrapper group">
+      <%= render :partial => "show_card_info", :locals => { :mtg_card => @mtg_card }%>
+    </div> <!-- card_info_wrapper -->
+    <% if @mtg_card.dual_sided_card? && @mtg_card_back.present? %>
+      <div class="card_info_wrapper_back group">
+        <%= render :partial => "show_card_info", :locals => { :mtg_card => @mtg_card_back }%>
       </div> <!-- card_info_wrapper -->
-      <% if @mtg_card.dual_sided_card? && @mtg_card_back.present? %>
-        <div class="card_info_wrapper_back group">
-          <%= render :partial => "show_card_info", :locals => { :mtg_card => @mtg_card_back }%>
-        </div> <!-- card_info_wrapper -->
-      <% end %>
-    </div>
-  <% end %>
-
+    <% end %>
+  </div>
 
   <div id="card_listings">
     <%= render :partial => "show_listings", :locals => { :listings => @listings }%>

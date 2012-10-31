@@ -1,0 +1,5 @@
+TAPS PUSHING DATABASE
+  Mysql Break Error:
+    http://stackoverflow.com/questions/6383310/python-mysqldb-library-not-loaded-libmysqlclient-18-dylib
+    Type this to create a link to mysql: sudo ln -s /usr/local/mysql/lib/libmysqlclient.18.dylib /usr/lib/libmysqlclient.18.dylib
+    Command to push database: heroku db:push "mysql2://b9942ad0e6b42e:5a24ed16@us-cdbr-east.cleardb.com/heroku_34f243af7c5ae8d?sslca=certs/cleardb-ca-cert.pem&sslcert=certs/cleardb-cert.pem&sslkey=certs/cleardb-key.pem&reconnect=true" --confirm mtgbazaar

@@ -22,6 +22,12 @@ production:
   adapter: mysql2
   encoding: utf8
   reconnect: true
+  username: b9942ad0e6b42e
+  password: 5a24ed16
+  sslkey: /certs/cleardb-key.pem
+  sslcert: /certs/cleardb-cert.pem
+  sslca: /certs/cleardb-ca-cert.pem
+  sslcapath: /certs
   pool: 20
   timeout: 5000
 
