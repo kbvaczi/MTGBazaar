@@ -11,6 +11,8 @@
     </ul>
   </div>
 
+  <br class="spacer"/>  
+
   <table class="data">
 	  <tr class="header_row">
   	  <th style="width:15%">Sent On</th>
@@ -21,7 +23,7 @@
     <% @communications.each do |communication| %>  
       <tr class="<%= cycle("odd","even")%>">
         <td><%= display_time(communication.created_at) %></td>
-        <% if communication.sender.present? && communication.sender_id == "User"%>
+        <% if communication.sender.present? && communication.sender_type == "User"%>
           <td><%= communication.sender.username %></td>
         <% else %>
           <td><b><i> MTGBazaar </i></b></td>

@@ -62,7 +62,7 @@ class Mtg::OrdersController < ApplicationController
   
   def verify_minimum_order_amount
     @order ||= current_cart.orders.includes(:reservations).where(:id => params[:id]).first    
-    if @order.item_price_total <= minimum_price_for_checkout
+    if @order.item_price_total < minimum_price_for_checkout
       flash[:error] = "Minimum order value $5.00 for checkout..."
       redirect_to back_path
       return
