@@ -6,15 +6,15 @@
     <th>Event</th>    
   </tr>
 
-  <% @response[:tracking_events][:tracking_event].each do |event| %>
+  <% @response[:tracking_events].each do |event| %>
     <tr>
-      <td> <%= event[:timestamp] %> </td>
-      <% if event[:city]  %>      
-        <td> <%= "#{event[:city]}, #{event[:state]} #{event[:zipcode]}" %> </td>            
+      <td> <%= event[1][:timestamp] %> </td>
+      <% if event[1][:city]  %>      
+        <td> <%= "#{event[1][:city]}, #{event[1][:state]} #{event[1][:zip]}" %> </td>            
       <% else %>
-        <td> <%= "#{event[:zipcode]}" %> </td>            
+        <td> <%= "#{event[1][:zip]}" %> </td>            
       <% end %>
-      <td> <%= event[:event] %> </td>
+      <td> <%= event[1][:event] %> </td>
     </tr>
   <% end %>
 

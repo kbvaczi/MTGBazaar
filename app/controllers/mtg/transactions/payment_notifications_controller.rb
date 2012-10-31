@@ -23,3 +23,4 @@ class Mtg::Transactions::PaymentNotificationsController < ApplicationController
   end
   
 end
+
