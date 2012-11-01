@@ -64,8 +64,7 @@ class User < ActiveRecord::Base
   validates_associated :account, :statistics
   
   def username_not_reserved
-    reserved_usernames_string = SiteVariable.get("reserved_usernames") + "\'mtgbazaar\', \'mtg_bazaar\'" # default reserved usernames
-    reserved_usernames = eval("[" + reserved_usernames_string + "]")
+    reserved_usernames = eval("[" + SiteVariable.get("reserved_usernames") + "]")
     reserved_usernames.each do |reserved_username| 
       errors.add(:username, "Username is reserved, please contact us for details") if self.username.include? reserved_username
     end
