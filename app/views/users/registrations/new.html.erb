@@ -33,12 +33,15 @@
 
   
     <%= a.input :security_question,   :label => "Security Question", 
-                                      :collection => [  "What was the make of your first car?",
+                                      :collection => [  "Who is your favorite Magic player?",
+                                                        "Who taught you to play Magic?",
+                                                        "What is your favorite Magic card?",
+                                                        "What was the make of your first car?",
                                                         "What is your mother's maiden name?",
                                                         "What was your childhood nickname?",
                                                         "What is your oldest sibling's name?",
                                                         "Who was your childhood hero?",
-                                                        "What is your grandmother's name?" ] , 
+                                                        "What is your grandfather's name?" ] , 
                                       :include_blank => false,
                                       :required => true,
                                       :input_html => { :class => 'chzn-select'} %>

@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   
   def index
     users_sort_string = table_sort(:default => "LOWER(username)", :member_since => "created_at", :user => "LOWER(username)", :sales => "user_statistics.number_sales",
-                                   :purchases => "user_statistics.number_purchases", :feedback => "user_statistics.positive_feedback_count + user_statistics.neutral_feedback_count / user_statistics.number_sales")
+                                   :purchases => "user_statistics.number_purchases", :feedback => "user_statistics.approval_percent")
     
     
     @users = User.includes(:statistics).active.order(users_sort_string).page(params[:page]).per(15)

@@ -1,7 +1,7 @@
 class AddPercentApprovalToUserStatistics < ActiveRecord::Migration
   def up
-    add_column(   :user_statistics,   :approval_percent,            :float)    unless column_exists?(:user_statistics, :approval_percent)
-    add_column(   :user_statistics,   :number_sales_with_feedback,  :integer)  unless column_exists?(:user_statistics, :number_sales_with_feedback)
+    add_column(   :user_statistics,   :approval_percent,            :float,           :default => 0)    unless column_exists?(:user_statistics, :approval_percent)
+    add_column(   :user_statistics,   :number_sales_with_feedback,  :integer,         :default => 0)  unless column_exists?(:user_statistics, :number_sales_with_feedback)
         
     remove_column :user_statistics,   :number_sales_rejected                   if     column_exists?(:user_statistics, :number_sales_rejected)
     remove_column :user_statistics,   :average_confirm_time                    if     column_exists?(:user_statistics, :average_confirm_time )    
