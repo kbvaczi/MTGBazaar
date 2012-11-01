@@ -12,9 +12,7 @@ class HomeController < ApplicationController
   
   def test
     #Rails.logger.debug "GirlFriday STATUS: #{GirlFriday.status}"
-    
-    Rails.logger.debug "Tracking response: #{Stamps.track("9400111201080149108965")}"
-
+  
 =begin
       # setup transaction
       gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(                                                 # setup gateway, login to Paypal API

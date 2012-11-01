@@ -101,8 +101,7 @@ MTGBazaar::Application.routes.draw do
   
 # USERS -------------------- #
 
-  # resources :users must be declared after devise_for because earlier declarations take precedence 
-  # see http://stackoverflow.com/questions/5051487/combining-devise-with-resources-users-in-rails
+
 
   get 'account' => 'users#show_account_info', :as => 'show_account_info'  
   get 'account/listings' => 'users#account_listings', :as => 'account_listings'
@@ -117,6 +116,9 @@ MTGBazaar::Application.routes.draw do
   devise_scope :user do
     get 'users/sign_up/verify_address' => 'users/registrations#verify_address', :as => "sign_up_verify_address"
   end
+
+  # resources :users must be declared after devise_for because earlier declarations take precedence 
+  # see http://stackoverflow.com/questions/5051487/combining-devise-with-resources-users-in-rails
   resources :users, :only => [:index, :show], :controllers => { :users => "users/users"} do
     get "autocomplete_name", :on => :collection
     get :autocomplete_user_username, :on => :collection

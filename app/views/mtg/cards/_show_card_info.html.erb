@@ -16,7 +16,7 @@
       Set
     </div>
     <div class="card_show_info_value">
-      <%= mtg_card.set.name %>
+      <%= link_to mtg_card.set.name, mtg_cards_path(:set => mtg_card.set.code) %>
     </div>   
   </div>
   <!-- COST -->    
@@ -71,7 +71,7 @@
       Artist
     </div>
     <div class="card_show_info_value">
-      <%= mtg_card.artist %>
+      <%= link_to mtg_card.artist, search_mtg_cards_path(:artist => mtg_card.artist) %>
     </div>      
   </div>
   <!-- PRICE -->        
