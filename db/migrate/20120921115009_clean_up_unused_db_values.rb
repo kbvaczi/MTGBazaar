@@ -1,8 +1,10 @@
 class CleanUpUnusedDbValues < ActiveRecord::Migration
   def up
-    remove_column :mtg_listings, :sold_at # listings are no longer sold
-    remove_column :mtg_listings, :rejected_at # listings are no longer sold    
-    remove_column :mtg_listings, :cart_id # this is handled through reservations now
+    remove_column( :mtg_listings, :sold_at)    if column_exists?(:mtg_listings, :sold_at)# listings are no longer sold
+    remove_column(:mtg_listings, :rejected_at) if column_exists?(:mtg_listings, :rejected_at)# listings are no longer sold
+
+    remove_index(:mtg_listings, :cart_id)      if index_exists?(:mtg_listings, :cart_id)    
+    remove_column(:mtg_listings, :cart_id)     if column_exists?(:mtg_listings, :cart_id)# this is handled through reservations now
     
     remove_index  :mtg_listings, :transaction_id
     remove_column :mtg_listings, :transaction_id # transaction ids are no longer in listings.  created transaction items         
