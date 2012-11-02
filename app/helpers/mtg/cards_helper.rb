@@ -117,21 +117,21 @@ module Mtg::CardsHelper
   
   def abilities_list
     Rails.cache.fetch 'abilities_list' do
-      Mtg::Cards::Ability.pluck(:name).sort
+      Mtg::Cards::Ability.pluck(:name).sort rescue []
     end
   end
   
   # Defines an array containing all the card types for select boxes
   def card_type_list
     Rails.cache.fetch 'card_type_list' do
-      Mtg::Card.pluck(:card_type).each {|t| t.gsub!(/[ ][\/][\/][ ](.*)/,"")}.uniq.sort
+      Mtg::Card.pluck(:card_type).each {|t| t.gsub!(/[ ][\/][\/][ ](.*)/,"")}.uniq.sort rescue []
     end
   end
   
   # Defines an array containing all the card types for select boxes
   def card_subtype_list
     Rails.cache.fetch 'card_subtype_list' do
-      Mtg::Card.pluck(:card_subtype).uniq.sort
+      Mtg::Card.pluck(:card_subtype).uniq.sort rescue []
     end
   end  
 
@@ -172,13 +172,17 @@ module Mtg::CardsHelper
   end
   
   def active_set_list(options = {})
-    if options[:sort] == "name"
-      sort = "name DESC"       
-    else
-      sort = "name ASC" 
+    begin
+      if options[:sort] == "name"
+        sort = "name DESC"       
+      else
+        sort = "name ASC" 
+      end
+      sets = Mtg::Set.where(:active => true).order("#{sort}").to_a
+      return sets.collect(&:name).zip(sets.collect(&:code))
+    rescue
+      []
     end
-    sets = Mtg::Set.where(:active => true).order("#{sort}").to_a
-    return sets.collect(&:name).zip(sets.collect(&:code))
   end
 
   # displays set symbol for a given set code
