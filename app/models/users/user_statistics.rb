@@ -50,7 +50,7 @@ class UserStatistics < ActiveRecord::Base
   end
 
   def display_approval_percent
-    if self.number_sales_with_feedback > 0
+    if (self.number_sales_with_feedback > 0 rescue false)
       "#{self.approval_percent.round(0)}%" rescue "0%"
     else
       "0%"

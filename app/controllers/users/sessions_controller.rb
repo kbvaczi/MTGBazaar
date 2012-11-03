@@ -12,7 +12,7 @@ protected
         root_path
       else
         flash[:notice] = "Welcome back #{resource.username}"
-        resource.statistics.update_ip_log(resource.current_sign_in_ip) # update IP Log
+        resource.statistics.update_ip_log(resource.current_sign_in_ip) if resource.updated_at > 5.minutes.ago # update IP Log
         back_path         
       end
     else

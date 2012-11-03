@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
     unless Rails.cache.read "clear_expired_sessions" # check timer
       Rails.cache.write "clear_expired_sessions", true, :expires_in => 10.minutes #reset timer
       Rails.logger.info "CLEARING SESSIONS"
-      Session.where("updated_at < ? OR created_at < ?", 30.minutes.ago, 6.hours.ago).destroy_all
+      Session.where("updated_at < ? OR created_at < ?", 1.hours.ago, 6.hours.ago).destroy_all
       Rails.logger.info "CLEARING SESSIONS COMPLETE"
     end
     # if we cleared your session
