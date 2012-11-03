@@ -1,4 +1,4 @@
-mtgbazaar-staging::Application.configure do
+MTGBazaar::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # CUSTOM OPTIONS -------------------------------------------------------------------------------------------------- #
