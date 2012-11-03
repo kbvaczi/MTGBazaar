@@ -47,10 +47,14 @@ gem "rails", "~> 3.2.8"
 gem 'json'
 
 
-group :production do
+group :production, :staging do
   gem "mysql2"                                                      # allows application to use a mysql database  
-  gem "newrelic_rpm", "~> 3.3.2"                                    # performance monitoring
-  gem "dalli", "~> 2.2"                                               # memcache for heroku
+  gem "newrelic_rpm"                                                # performance monitoring
+  gem "dalli"                                                       # memcache for heroku
+end
+
+group :staging do
+  gem 'memcachier'
 end
 
 group :development do
