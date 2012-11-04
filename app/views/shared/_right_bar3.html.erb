@@ -10,8 +10,8 @@
   		    <table class="data fixed">
   		      <% top_cards.each do |card| %>
   		        <tr style="margin:0;padding:0;">
-  		          <td width="35px" style="padding:0;vertical-align:top;"> <%= display_set_symbol(card.set) %> </td>
-  		          <td              style="padding:1px;text-align:left;text-overflow:ellipsis;max-width:150px;white-space:nowrap;overflow:hidden;"> <%= link_to display_name(card.name), mtg_card_path(card) %> </td>
+  		          <td width="35px" style="padding:0;"> <%= display_set_symbol(card.set) %> </td>
+  		          <td              style="margin:0;padding:1px;text-align:left;text-overflow:ellipsis;max-width:150px;white-space:nowrap;overflow:hidden;"> <%= link_to display_name(card.name), mtg_card_path(card) %> </td>
   		          <td width="50px" style="padding:1px;text-align:right;"> <%= number_to_currency(card.statistics.price_med) %> </td>          
   		        </tr>        
   		      <% end %>
@@ -28,8 +28,8 @@
           <table class="data fixed">
             <% recent_added.each do |set| %>
               <tr style="margin:0px;padding:0;">
-  		          <td width="35px" style="padding:1px;"> <%= display_set_symbol(set) %> </td>
-                <td style="margin:0;padding:1px;text-align:left;text-overflow: ellipsis;max-width:150px;white-space: nowrap;overflow:hidden;"> <%= link_to set.name, mtg_cards_path(:set => set.code) %> </td>          
+  		          <td width="35px" style="padding:0px;"> <%= display_set_symbol(set) %> </td>
+                <td              style="margin:0;padding:1px;text-align:left;text-overflow:ellipsis;max-width:150px;white-space:nowrap;overflow:hidden;"> <%= link_to set.name, mtg_cards_path(:set => set.code) %> </td>          
               </tr>
            	<% end %>
           </table>
