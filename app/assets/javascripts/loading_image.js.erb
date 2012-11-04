@@ -2,9 +2,9 @@ $(document).ready(function() {
 
   $('#loader').bind('ajaxStart', function(){
       $(this).centerScreen();
-      $(this).fadeIn(200);
+      $(this).delay(1000).fadeIn(200);
   }).bind('ajaxStop', function(){
-      $(this).hide();
+      $(this).stop(1).hide();
   });
           
 });

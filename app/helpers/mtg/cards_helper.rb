@@ -34,7 +34,8 @@ module Mtg::CardsHelper
           if letter == "t" #if the letters are t, create tap image
             image_tag('https://s3.amazonaws.com/mtgbazaar/images/mtg/various_symbols/tap.jpg', :class => "mtg_symbol")         
           else #else the symbol must be a mana symbol, create corresponding mana symbol 
-            image_tag("https://mtgbazaar.s3.amazonaws.com/images/mtg/mana_symbols/mana_#{letter}.jpg", :class => "mtg_symbol")
+            #image_tag("https://mtgbazaar.s3.amazonaws.com/images/mtg/mana_symbols/mana_#{letter}.jpg", :class => "mtg_symbol")
+            content_tag(:span, "", :class => "mana_symbol_sprite mana_#{letter}", :title => "#{set.name}")
           end
       end.html_safe
     end
@@ -202,6 +203,7 @@ module Mtg::CardsHelper
   
   # displays set symbol for a given set code
   def display_set_symbol_by_id(set_name, set_code, options = {})
+=begin
     if options.present?
       dimension = ""
       dimension += "width:#{options[:width]};"   if options[:width].present?
@@ -210,34 +212,15 @@ module Mtg::CardsHelper
       dimension = "max-height:15px;max-width:30px;"
     end
     image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/set_symbols/#{set_code}.png", :title => "#{set_name}", :style => "#{dimension}vertical-align:text-top;")         
+=end
+    content_tag(:span, "", :class => "set_symbol_sprite set_symbol_#{set_code}", :title => "#{set_name}")
   end
   
   # displays set symbol for a given set code
   def display_flag_symbol(language_code, options = {})
-    case language_code
-      when "EN"
-        language = "English"
-      when "RU"
-        language = "Russian"
-      when "FR"
-        language = "French"
-      when "JN"
-        language = "Japanese"
-      when "CN"
-        language = "Chinese"
-      when "KO"
-        language = "Korean"
-      when "GN"
-        language = "German"                              
-      when "PG"
-        language = "Portuguese"        
-      when "SP"
-        language = "Spanish"
-      when "IT"
-        language = "Italian"                
-    end
-    height = options[:height] || "20px"
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/flags/#{language.downcase}.png", :title => "#{language}", :style => "display:inline-block;height:#{height};vertical-align:text-top;")         
+    language = display_language(language_code)
+    height   = options[:height] || "20px"
+    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/flags/#{language.downcase}.png", :title => "#{language}", :style => "display:inline-block;height:#{height};width:#{height};vertical-align:text-top;")         
   end  
   
   def listing_option_foil_icon
