@@ -187,6 +187,7 @@ module Mtg::CardsHelper
 
   # displays set symbol for a given set code
   def display_set_symbol(set, options = {})
+=begin
     if options.present?
       dimension = ""
       dimension += "width:#{options[:width]};"   if options[:width].present?
@@ -195,6 +196,8 @@ module Mtg::CardsHelper
       dimension = "max-height:15px;max-width:30px;"
     end
     image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/set_symbols/#{set.code}.png", :title => "#{set.name}", :style => "#{dimension}vertical-align:text-top;")         
+=end
+    content_tag(:span, "", :class => "set_symbol_sprite set_symbol_#{set.code}", :title => "#{set.name}")
   end
   
   # displays set symbol for a given set code

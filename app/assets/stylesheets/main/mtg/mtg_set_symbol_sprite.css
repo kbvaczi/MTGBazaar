@@ -1,0 +1,155 @@
+/* ----------------------------------------------------
+   created with http://www.set_symbol_texturepacker.set_symbol_com 
+   ----------------------------------------------------
+   $TexturePacker:SmartUpdate:3428885aa7f2d912cf384c69164f3442$
+   ----------------------------------------------------
+
+   usage: <span class="{-spritename-} sprite"></span>
+
+   replace {-spritename-} with the sprite you like to use
+
+*/
+
+.set_symbol_sprite {
+  display:inline-block; 
+  overflow:hidden; 
+  background-repeat: no-repeat;
+  margin-bottom: 3px;
+  vertical-align:middle;
+  background-image:url(https://mtgbazaar.s3.amazonaws.com/images/mtg/set_symbols/set_symbols.png);
+  /* default image is M */ width:15px; height:15px; background-position: -72px -206px
+}
+
+
+.set_symbol_10E {width:19px; height:15px; background-position: -89px -206px}
+.set_symbol_15A {width:15px; height:15px; background-position: -72px -206px}
+.set_symbol_2HG {width:15px; height:15px; background-position: -72px -206px}
+.set_symbol_4E {width:15px; height:15px; background-position: -72px -206px}
+.set_symbol_5E {width:16px; height:15px; background-position: -110px -206px}
+.set_symbol_6E {width:21px; height:15px; background-position: -49px -206px}
+.set_symbol_6X9 {width:30px; height:15px; background-position: -2px -206px}
+.set_symbol_7E {width:13px; height:15px; background-position: -2px -223px}
+.set_symbol_8E {width:18px; height:15px; background-position: -66px -223px}
+.set_symbol_9E {width:18px; height:15px; background-position: -22px -240px}
+.set_symbol_A {width:18px; height:15px; background-position: -2px -240px}
+.set_symbol_A4E {width:11px; height:15px; background-position: -42px -240px}
+.set_symbol_AL {width:30px; height:15px; background-position: -86px -223px}
+.set_symbol_ALA {width:15px; height:15px; background-position: -49px -223px}
+.set_symbol_AN {width:30px; height:15px; background-position: -17px -223px}
+.set_symbol_AP {width:13px; height:15px; background-position: -34px -206px}
+.set_symbol_AQ {width:27px; height:15px; background-position: -71px -189px}
+.set_symbol_ARB {width:13px; height:15px; background-position: -2px -172px}
+.set_symbol_ARC {width:13px; height:15px; background-position: -110px -155px}
+.set_symbol_ARE {width:30px; height:15px; background-position: -17px -172px}
+.set_symbol_ARS {width:13px; height:15px; background-position: -110px -155px}
+.set_symbol_AVB {width:15px; height:15px; background-position: -93px -155px}
+.set_symbol_AVR {width:15px; height:15px; background-position: -57px -155px}
+.set_symbol_B {width:18px; height:15px; background-position: -49px -172px}
+.set_symbol_BD {width:30px; height:15px; background-position: -86px -172px}
+.set_symbol_BOK {width:15px; height:15px; background-position: -36px -189px}
+.set_symbol_BR {width:15px; height:15px; background-position: -19px -189px}
+.set_symbol_CFX {width:16px; height:15px; background-position: -53px -189px}
+.set_symbol_CH {width:15px; height:15px; background-position: -2px -189px}
+.set_symbol_CHA {width:15px; height:15px; background-position: -72px -206px}
+.set_symbol_CHK {width:15px; height:15px; background-position: -69px -172px}
+.set_symbol_CMD {width:15px; height:15px; background-position: -55px -240px}
+.set_symbol_CS {width:15px; height:15px; background-position: -90px -240px}
+.set_symbol_Copy-of-WRL {width:15px; height:15px; background-position: -72px -206px}
+.set_symbol_DCI {width:30px; height:15px; background-position: -54px -291px}
+.set_symbol_DIS {width:15px; height:15px; background-position: -37px -291px}
+.set_symbol_DK {width:15px; height:15px; background-position: -86px -291px}
+.set_symbol_DKA {width:20px; height:15px; background-position: -15px -291px}
+.set_symbol_DM {width:22px; height:20px; background-position: -49px -325px}
+.set_symbol_DRG {width:19px; height:15px; background-position: -107px -274px}
+.set_symbol_DS {width:15px; height:15px; background-position: -103px -291px}
+.set_symbol_DVD {width:21px; height:15px; background-position: -20px -308px}
+.set_symbol_EVE {width:21px; height:15px; background-position: -92px -308px}
+.set_symbol_EVG {width:28px; height:15px; background-position: -2px -325px}
+.set_symbol_EVT {width:15px; height:15px; background-position: -43px -308px}
+.set_symbol_EX {width:30px; height:15px; background-position: -60px -308px}
+.set_symbol_EXL {width:16px; height:15px; background-position: -2px -308px}
+.set_symbol_FAL {width:11px; height:15px; background-position: -2px -291px}
+.set_symbol_FD {width:15px; height:15px; background-position: -90px -274px}
+.set_symbol_FE {width:18px; height:15px; background-position: -34px -257px}
+.set_symbol_FNM {width:30px; height:15px; background-position: -2px -257px}
+.set_symbol_FUT {width:20px; height:15px; background-position: -54px -257px}
+.set_symbol_GDC {width:15px; height:15px; background-position: -72px -206px}
+.set_symbol_GLP {width:15px; height:15px; background-position: -72px -206px}
+.set_symbol_GP {width:15px; height:15px; background-position: -107px -240px}
+.set_symbol_GPX {width:15px; height:15px; background-position: -72px -206px}
+.set_symbol_GRV {width:16px; height:15px; background-position: -72px -240px}
+.set_symbol_GTW {width:15px; height:15px; background-position: -72px -206px}
+.set_symbol_GUR {width:30px; height:15px; background-position: -76px -257px}
+.set_symbol_GVL {width:18px; height:15px; background-position: -2px -274px}
+.set_symbol_HL {width:15px; height:15px; background-position: -60px -274px}
+.set_symbol_IA {width:17px; height:15px; background-position: -41px -274px}
+.set_symbol_IN {width:11px; height:15px; background-position: -77px -274px}
+.set_symbol_ISD {width:17px; height:15px; background-position: -22px -274px}
+.set_symbol_IVG {width:11px; height:15px; background-position: -108px -257px}
+.set_symbol_JCG {width:15px; height:15px; background-position: -72px -206px}
+.set_symbol_JU {width:17px; height:15px; background-position: -74px -155px}
+.set_symbol_JVC {width:18px; height:15px; background-position: -37px -155px}
+.set_symbol_KVD {width:15px; height:15px; background-position: -107px -36px}
+.set_symbol_LE {width:20px; height:15px; background-position: -85px -36px}
+.set_symbol_LEG {width:16px; height:15px; background-position: -2px -53px}
+.set_symbol_LG {width:16px; height:15px; background-position: -67px -36px}
+.set_symbol_LRW {width:11px; height:15px; background-position: -34px -36px}
+.set_symbol_M10 {width:28px; height:15px; background-position: -20px -53px}
+.set_symbol_M11 {width:28px; height:15px; background-position: -67px -53px}
+.set_symbol_M12 {width:28px; height:15px; background-position: -32px -70px}
+.set_symbol_M13 {width:28px; height:15px; background-position: -2px -70px}
+.set_symbol_MBS {width:12px; height:15px; background-position: -62px -70px}
+.set_symbol_MI {width:16px; height:15px; background-position: -97px -53px}
+.set_symbol_MM {width:15px; height:16px; background-position: -32px -325px}
+.set_symbol_MOR {width:15px; height:15px; background-position: -50px -53px}
+.set_symbol_MR {width:18px; height:15px; background-position: -47px -36px}
+.set_symbol_NE {width:30px; height:15px; background-position: -2px -36px}
+.set_symbol_NPH {width:10px; height:15px; background-position: -62px -2px}
+.set_symbol_OD {width:11px; height:15px; background-position: -49px -2px}
+.set_symbol_ON {width:20px; height:15px; background-position: -74px -2px}
+.set_symbol_P2 {width:15px; height:15px; background-position: -32px -2px}
+.set_symbol_P3 {width:13px; height:15px; background-position: -2px -2px}
+.set_symbol_PC2 {width:20px; height:15px; background-position: -96px -2px}
+.set_symbol_PCH {width:20px; height:15px; background-position: -23px -19px}
+.set_symbol_PCP {width:20px; height:15px; background-position: -23px -19px}
+.set_symbol_PLC {width:15px; height:15px; background-position: -81px -19px}
+.set_symbol_PP2 {width:20px; height:15px; background-position: -96px -2px}
+.set_symbol_PRE {width:15px; height:15px; background-position: -72px -206px}
+.set_symbol_PRO {width:15px; height:15px; background-position: -72px -206px}
+.set_symbol_PS {width:18px; height:15px; background-position: -61px -19px}
+.set_symbol_PT {width:15px; height:15px; background-position: -98px -19px}
+.set_symbol_PVC {width:14px; height:15px; background-position: -45px -19px}
+.set_symbol_PY {width:19px; height:15px; background-position: -2px -19px}
+.set_symbol_R {width:15px; height:15px; background-position: -76px -70px}
+.set_symbol_RAV {width:12px; height:15px; background-position: -2px -87px}
+.set_symbol_REW {width:30px; height:15px; background-position: -68px -121px}
+.set_symbol_RLC {width:12px; height:15px; background-position: -54px -121px}
+.set_symbol_RLM {width:20px; height:15px; background-position: -100px -121px}
+.set_symbol_RLS {width:15px; height:15px; background-position: -72px -206px}
+.set_symbol_ROE {width:16px; height:15px; background-position: -36px -121px}
+.set_symbol_RTR {width:15px; height:15px; background-position: -2px -121px}
+.set_symbol_S2 {width:15px; height:15px; background-position: -2px -138px}
+.set_symbol_SC {width:15px; height:15px; background-position: -51px -138px}
+.set_symbol_SH {width:15px; height:15px; background-position: -2px -155px}
+.set_symbol_SHM {width:26px; height:15px; background-position: -85px -138px}
+.set_symbol_SLI {width:16px; height:15px; background-position: -19px -155px}
+.set_symbol_SOK {width:15px; height:15px; background-position: -68px -138px}
+.set_symbol_SOM {width:15px; height:15px; background-position: -34px -138px}
+.set_symbol_ST {width:13px; height:15px; background-position: -19px -138px}
+.set_symbol_SUM {width:15px; height:15px; background-position: -72px -206px}
+.set_symbol_TE {width:15px; height:15px; background-position: -19px -121px}
+.set_symbol_TO {width:17px; height:15px; background-position: -103px -104px}
+.set_symbol_TSB {width:14px; height:15px; background-position: -49px -87px}
+.set_symbol_TSP {width:14px; height:15px; background-position: -33px -87px}
+.set_symbol_U {width:15px; height:15px; background-position: -65px -87px}
+.set_symbol_UD {width:15px; height:15px; background-position: -16px -87px}
+.set_symbol_UG {width:23px; height:15px; background-position: -93px -70px}
+.set_symbol_UL {width:26px; height:15px; background-position: -82px -87px}
+.set_symbol_UNH {width:14px; height:15px; background-position: -2px -104px}
+.set_symbol_US {width:23px; height:15px; background-position: -60px -104px}
+.set_symbol_VI {width:13px; height:15px; background-position: -45px -104px}
+.set_symbol_VVK {width:16px; height:15px; background-position: -85px -104px}
+.set_symbol_WL {width:25px; height:15px; background-position: -18px -104px}
+.set_symbol_WRL {width:15px; height:15px; background-position: -72px -206px}
+.set_symbol_WWK {width:13px; height:15px; background-position: -110px -87px}
+.set_symbol_ZEN {width:13px; height:15px; background-position: -17px -2px}
