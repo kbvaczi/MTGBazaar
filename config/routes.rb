@@ -134,7 +134,7 @@ MTGBazaar::Application.routes.draw do
 
   root :to => "home#index"
   match 'about'               => 'home#about'
-  match 'terms'               => 'home#terms_of_service'
+  match 'terms'               => 'home#terms'
   match 'privacy'             => 'home#privacy'
   match 'condition'           => 'home#condition'
   match 'contact'             => 'contact#index'
