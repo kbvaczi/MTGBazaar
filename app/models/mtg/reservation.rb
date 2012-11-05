@@ -29,7 +29,7 @@ class Mtg::Reservation < ActiveRecord::Base
   
   def purchased!
     this_card = self.listing.card                                 # remember listing's card just in case we destroy it
-    if self.listing.quantity > 1
+    if self.listing.quantity > self.quantity
       self.listing.decrement(:quantity, self.quantity).save       # update listing quantities
     else  
       self.listing.destroy                                        # listings can't have 0 quantity, so let's just destroy it
