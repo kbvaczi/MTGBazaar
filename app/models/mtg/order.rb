@@ -112,8 +112,8 @@ class Mtg::Order < ActiveRecord::Base
     self.transaction.transaction_number = "TBD"                                       # we will get the transaction number later from IPN
     self.transaction.order_id = nil                                                   # disconnect transaction from order so order can be destroyed
     if self.transaction.save
-      self.reservations.each { |r| r.purchased! }                                       # update listing quantity and destroy each reservation for this transaction
-      self.items.each { |i| i.update_attributes({:buyer_id => self.buyer_id, :seller_id => self.seller_id}, :without_protection => true) }
+      self.reservations.each { |r| r.purchased! } rescue true                         # update listing quantity and destroy each reservation for this transaction
+      self.transaction.items.each { |i| i.update_attributes({:buyer_id => self.buyer_id, :seller_id => self.seller_id}, :without_protection => true) } rescue true
       self.destroy
     end
   end
