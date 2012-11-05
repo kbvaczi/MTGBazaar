@@ -2,15 +2,15 @@
 <html lang="en">
 
   <head>
-    <link rel="shortcut icon" href="/favicon.ico" />            
+    <%= favicon_link_tag %>           
     <title><%= 'MTGBazaar' + yield(:title) %></title>
 
-    <meta name="description" content="MTG Bazaar: A marketplace for buying and selling Magic the Gathering cards">
-    <meta name="keywords" content="MTG Bazaar: A marketplace for buying and selling Magic the Gathering cards">
+    <meta name="description" content="MTGBazaar: A marketplace for buying and selling Magic the Gathering cards">
+    <meta name="keywords" content="MTGBazaar: A marketplace for buying and selling Magic the Gathering (MTG) cards">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
-    <%= javascript_include_tag "application" %>
     <%= stylesheet_link_tag    "application" %>    
+    <%= javascript_include_tag "application" %>
 
     <% #--------- YIELD STUFF TO PUT IN HEADING SUCH AS JAVASCRIPT INCLUDES, ETC...----# %>
     <%= yield(:head) %>

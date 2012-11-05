@@ -1,10 +1,6 @@
 # encoding: UTF-8
 # make this module available to be included in other areas by using "include Mtg::CardsHelper"
 module Mtg::CardsHelper
-  
-  ABILITY_LIST = ['Absorb',	'Affinity',	'Amplify',	'Annihilator',	'Attach',	'Aura swap',	'Banding',	'Bands with other',	'Battle cry',	'Bloodthirst',	'Bury',	'Bushido',	'Buyback',	'Cascade',	'Champion',	'Changeling',	'Channel',	'Chroma',	'Clash',	'Conspire',	'Convoke',	'Counter',	'Cumulative upkeep',	'Cycling',	'Deathtouch',	'Defender',	'Delve',	'Devour',	'Domain',	'Double strike',	'Dredge',	'Echo',	'Enchant',	'Entwine',	'Epic',	'Equip',	'Evoke',	'Exalted',	'Exile',	'Fading',	'Fateful hour',	'Fateseal',	'Fear',	'Fight',	'First strike',	'Flanking',	'Flash',	'Flashback',
-                  'Flip',	'Flying',	'Forecast',	'Fortify',	'Frenzy',	'Graft',	'Grandeur',	'Gravestorm',	'Haste',	'Haunt',	'Hellbent',	'Hexproof',	'Hideaway',	'Horsemanship',	'Imprint',	'Infect',	'Intimidate',	'Join forces',	'Kicker',	'Kinship',	'Landfall',	'Landhome',	'Landwalk',	'Level up',	'Lifelink',	'Living weapon',	'Madness',	'Metalcraft',	'Modular',	'Morbid',	'Morph',	'Multikicker',	'Ninjutsu',	'Offering',	'Persist',	'Phasing',	'Poisonous',	'Proliferate',	'Protection',	'Provoke',	'Prowl',	'Radiance',	'Rampage',	'Reach',	'Rebound',	'Recover',	'Regenerate',	'Reinforce',
-                  'Replicate',	'Retrace',	'Ripple',	'Sacrifice',	'Scry',	'Shadow',	'Shroud',	'Soulshift',	'Splice',	'Split second',	'Storm',	'Substance',	'Sunburst',	'Suspend',	'Sweep',	'Tap/Untap',	'Threshold',	'Totem armor',	'Trample',	'Transfigure',	'Transform',	'Transmute',	'Typecycling',	'Undying',	'Unearth',	'Vanishing',	'Vigilance',	'Wither'].sort!
 
   def self.camelcase_to_spaced(word)
     word.gsub(/([A-Z])/, " \\1").strip
@@ -26,19 +22,16 @@ module Mtg::CardsHelper
   
   # Converts mana string to a series of corresponding image links to be displayed
   def display_symbols(string)
-    if string.empty?
-      return "None"
-    else
-      string.gsub(/[{]([a-zA-Z0-9]+)[}]/) do |letter| #find the pattern "{xy}" where xy are any letters or numbers
-          letter = letter.gsub(/[{](.+)[}]/, '\1').downcase #strip the {} and lowercase the letters
-          if letter == "t" #if the letters are t, create tap image
-            image_tag('https://s3.amazonaws.com/mtgbazaar/images/mtg/various_symbols/tap.jpg', :class => "mtg_symbol")         
-          else #else the symbol must be a mana symbol, create corresponding mana symbol 
-            #image_tag("https://mtgbazaar.s3.amazonaws.com/images/mtg/mana_symbols/mana_#{letter}.jpg", :class => "mtg_symbol")
-            content_tag(:span, "", :class => "mana_symbol_sprite mana_#{letter}", :title => "Mana Symbol")
-          end
-      end.html_safe
-    end
+    string = "{0}" if string.empty? # show a 0 mana symbol if mana string is empty      
+    string.gsub(/[{]([_a-zA-Z0-9]+)[}]/) do |letter| #find the pattern "{xy}" where xy are any letters or numbers
+        letter = letter.gsub(/[{](.+)[}]/, '\1').downcase #strip the {} and lowercase the letters
+        if letter == "t" #if the letters are t, create tap image
+          image_tag('https://s3.amazonaws.com/mtgbazaar/images/mtg/various_symbols/tap.jpg', :class => "mtg_symbol")         
+        else #else the symbol must be a mana symbol, create corresponding mana symbol 
+          #image_tag("https://mtgbazaar.s3.amazonaws.com/images/mtg/mana_symbols/mana_#{letter}.jpg", :class => "mtg_symbol")
+          content_tag(:span, "", :class => "mana_symbol_sprite mana_#{letter}", :title => "Mana Symbol")
+        end
+    end.html_safe
   end
   
   def display_color(string)
@@ -188,31 +181,11 @@ module Mtg::CardsHelper
 
   # displays set symbol for a given set code
   def display_set_symbol(set, options = {})
-=begin
-    if options.present?
-      dimension = ""
-      dimension += "width:#{options[:width]};"   if options[:width].present?
-      dimension += "height:#{options[:height]};" if options[:height].present?
-    else
-      dimension = "max-height:15px;max-width:30px;"
-    end
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/set_symbols/#{set.code}.png", :title => "#{set.name}", :style => "#{dimension}vertical-align:text-top;")         
-=end
     content_tag(:span, "", :class => "set_symbol_sprite set_symbol_#{set.code}", :title => "#{set.name}")
   end
   
   # displays set symbol for a given set code
   def display_set_symbol_by_id(set_name, set_code, options = {})
-=begin
-    if options.present?
-      dimension = ""
-      dimension += "width:#{options[:width]};"   if options[:width].present?
-      dimension += "height:#{options[:height]};" if options[:height].present?
-    else
-      dimension = "max-height:15px;max-width:30px;"
-    end
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/set_symbols/#{set_code}.png", :title => "#{set_name}", :style => "#{dimension}vertical-align:text-top;")         
-=end
     content_tag(:span, "", :class => "set_symbol_sprite set_symbol_#{set_code}", :title => "#{set_name}")
   end
   

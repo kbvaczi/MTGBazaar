@@ -12,7 +12,6 @@ class Mtg::Cards::ListingsController < ApplicationController
   include Singleton
     
   def new
-    set_back_path
     @listing = Mtg::Card.find(params[:card_id]).listings.build(params[:mtg_cards_listing]) 
     respond_to do |format|
       format.html
@@ -197,7 +196,7 @@ class Mtg::Cards::ListingsController < ApplicationController
   def verify_user_paypal_account
     unless current_user.account.paypal_username.present?
        flash[:error] = "A verified PayPal account is required to sell on MTGBazaar..."
-       redirect_to :root
+       redirect_to back_path
        return false
      end
   end    
@@ -208,7 +207,7 @@ class Mtg::Cards::ListingsController < ApplicationController
       return true
     else
       flash[:error] = "You don't have permission to perform this action..."
-      redirect_to :root
+      redirect_to back_path
       return false
     end
   end

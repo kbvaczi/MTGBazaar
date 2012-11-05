@@ -10,7 +10,14 @@
 
 */
 
-.mana_symbol_sprite {display:inline-block; overflow:hidden; background-repeat: no-repeat;background-image:url(https://mtgbazaar.s3.amazonaws.com/images/mtg/mana_symbols/mana_symbols_sprite.png);}
+.mana_symbol_sprite {
+  display:inline-block;
+  margin-right:auto; 
+  margin-left:auto;
+  overflow:hidden;
+  background-repeat: no-repeat;
+  background-image:url(https://mtgbazaar.s3.amazonaws.com/images/mtg/mana_symbols/mana_symbols_sprite.png);
+}
 
 .mana_0 {width:15px; height:15px; background-position: -36px -138px}
 .mana_1 {width:15px; height:15px; background-position: -19px -155px}
