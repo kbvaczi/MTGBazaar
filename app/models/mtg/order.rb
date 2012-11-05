@@ -106,6 +106,7 @@ class Mtg::Order < ActiveRecord::Base
   end
     
   def checkout_transaction
+    this_transaction = self.transaction                                               # remember this for later
     self.transaction.buyer = self.buyer                                               # setup buyer and seller for transaction
     self.transaction.seller = self.seller                                     
     self.transaction.status = "confirmed"                                             # set transaction to confirmed since money has changed hands
@@ -113,7 +114,7 @@ class Mtg::Order < ActiveRecord::Base
     self.transaction.order_id = nil                                                   # disconnect transaction from order so order can be destroyed
     if self.transaction.save
       self.reservations.each { |r| r.purchased! } rescue true                         # update listing quantity and destroy each reservation for this transaction
-      self.transaction.items.each { |i| i.update_attributes({:buyer_id => self.buyer_id, :seller_id => self.seller_id}, :without_protection => true) } rescue true
+      this_transaction.items.each { |i| i.update_attributes({:buyer_id => self.buyer_id, :seller_id => self.seller_id}, :without_protection => true) } rescue true
       self.destroy
     end
   end
