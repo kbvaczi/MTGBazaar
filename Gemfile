@@ -50,11 +50,12 @@ gem 'json'
 group :production, :staging do
   gem "mysql2"                                                      # allows application to use a mysql database  
   gem "newrelic_rpm"                                                # performance monitoring
-  gem "dalli"                                                       # memcache for heroku
+  gem "dalli"                                                       # enable memcache for heroku
+  gem 'memcachier'                                                  # use memcachier through dalli on heroku
 end
 
 group :staging do
-  gem 'memcachier'
+
 end
 
 group :development do
