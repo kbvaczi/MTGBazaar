@@ -37,7 +37,7 @@
         <%= select_tag "artist" , options_for_select(artist_list, :selected => params[:artist]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Artist...", :class => "search-select chzn-select"} %>                        
       </div>
     
-      <div class="mt search-color">
+      <div class="mt-s search-color">
         <%#= label_tag "Color:" %>
         <table width="100%" cellspacing='2' class="data fixed">
           <tr>
@@ -68,25 +68,24 @@
             <td align="center">
               <%#= image_tag "https://mtgbazaar.s3.amazonaws.com/images/mtg/mana_symbols/mana_g.jpg" , :class => "search-color-icon" %>
               <%= display_symbols("{g_lg}") %>
-              <br/>
+  	          <br class="spacer"/>
               <%= check_box_tag "green", "G", cookies[:search_green] == "true", :class => "search-color-check" %>            
             </td>                                
           </tr>
         </table>
       </div>
     
-      <div class="mt-m mb-s search-abilities">
+      <div class="mt-s mb-s search-abilities">
         <%#= label_tag "Abilities:" %>
         <%= select_tag "abilities" , options_for_select(abilities_list, :selected => cookies[:search_abilities]), { :multiple => true, :class => "search-select-multi chzn-select", :style => "", "data-placeholder" => "Abilities..."} %>                        
       </div> 
 
-      <div class="mt-m search-type">
+      <div class="mt-m">
         <%#= label_tag "Language" %>
         <%= select_tag "language", options_for_select(language_list, :selected => cookies[:search_language]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Language...", :class => "search-select chzn-select"} %>            
       </div>
-      <br/>
-
-  	  <div class="mb search-options">
+      
+  	  <div class="">
   	    <%#= label_tag "Color:" %>
         <table width="100%" cellspacing='8' class="data fixed">
   	      <tr>
@@ -118,7 +117,7 @@
   	    </table>
   	  </div>
 
-    	<div class="mt search-seller group">
+    	<div class="mt-s search-seller group">
   	    <%= text_field_tag "seller", cookies[:search_seller], {:class => "search-text ui-autocomplete-input mb-m deletable" , :placeholder => "Filter by seller..." , "data-autocomplete" => autocomplete_name_users_path }%>
   	    <%= text_field_tag "seller_id", cookies[:search_seller_id], :style => "display:none;" %>
   	  </div>
