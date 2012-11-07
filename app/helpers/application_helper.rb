@@ -39,10 +39,6 @@ module ApplicationHelper
       link_to title, params.merge(options[:params] || {}).merge(:sort => sort, :sort_order => "asc"), :remote => options[:remote], :style => "color:#555;"     
     end
   end
-
-  def menu_icon
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/options.png", :style => "display:inline-block;height:20px;vertical-align:bottom;")         
-  end
     
 end
 

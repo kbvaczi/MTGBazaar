@@ -1,0 +1,42 @@
+/* ----------------------------------------------------
+   created with http://www.texturepacker.com 
+   ----------------------------------------------------
+   $TexturePacker:SmartUpdate:15aec71cff4b5bfe48112ff655da35f0$
+   ----------------------------------------------------
+
+   usage: <span class="{-spritename-} sprite"></span>
+
+   replace {-spritename-} with the sprite you like to use
+
+*/
+
+.option_symbol_sprite {
+  display:inline-block; 
+  overflow:hidden; 
+  background-repeat: no-repeat;
+  background-image:url(https://mtgbazaar.s3.amazonaws.com/images/mtg/options/options_symbols_sprite.png);
+}
+
+.option_symbol_sprite_small {
+  display:inline-block; 
+  overflow:hidden; 
+  background-repeat: no-repeat;
+  background-image:url(https://mtgbazaar.s3.amazonaws.com/images/mtg/options/options_symbols_sprite.png);
+  margin:-2px;
+}
+
+
+.option_symbol_alt {width:20px; height:20px; background-position: -0px -0px}
+.option_symbol_alt_lg {width:25px; height:25px; background-position: -20px -0px}
+.option_symbol_description {width:20px; height:20px; background-position: -0px -25px}
+.option_symbol_description_lg {width:25px; height:25px; background-position: -20px -25px}
+.option_symbol_foil {width:20px; height:20px; background-position: -0px -50px}
+.option_symbol_foil_lg {width:25px; height:25px; background-position: -20px -50px}
+.option_symbol_miscut {width:20px; height:20px; background-position: -0px -75px}
+.option_symbol_miscut_lg {width:25px; height:25px; background-position: -20px -75px}
+.option_symbol_options {width:20px; height:20px; background-position: -0px -100px}
+.option_symbol_scan {width:20px; height:20px; background-position: -20px -100px}
+.option_symbol_scan_lg {width:25px; height:25px; background-position: -0px -120px}
+.option_symbol_signed {width:20px; height:20px; background-position: -25px -120px}
+.option_symbol_signed_lg {width:25px; height:25px; background-position: -0px -145px}
+.option_symbol_x {width:20px; height:20px; background-position: -25px -145px}

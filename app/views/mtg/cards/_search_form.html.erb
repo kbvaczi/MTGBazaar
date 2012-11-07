@@ -88,25 +88,29 @@
 
   	  <div class="mb search-options">
   	    <%#= label_tag "Color:" %>
-  	    <table width="100%" cellspacing='0'>
+        <table width="100%" cellspacing='8' class="data fixed">
   	      <tr>
   	        <td align="center">
-  	          <%= image_tag "https://s3.amazonaws.com/mtgbazaar/images/mtg/options/foil.png" , :title => "Show only foil cards", :class => "search-options-icon" %>
-  	          <br/>
+  	          <%#= image_tag "https://s3.amazonaws.com/mtgbazaar/images/mtg/options/foil.png" , :title => "Show only foil cards", :class => "search-options-icon" %>
+  	          <%= content_tag :span, nil, :class => "option_symbol_sprite option_symbol_foil_lg", :title => "Show only foil cards" %>
+  	          <br class="spacer"/>
   	          <%= check_box_tag "options[]", "f", cookies[:search_foil] == "true", :class => "search-options-check", :id => "search-foil" %>                        
   	        </td>
   	        <td align="center">
-  	          <%= image_tag "https://s3.amazonaws.com/mtgbazaar/images/mtg/options/signed.png", :title => "Show only signed cards", :class => "search-options-icon" %>
-  	          <br/>
+  	          <%#= image_tag "https://s3.amazonaws.com/mtgbazaar/images/mtg/options/signed.png", :title => "Show only signed cards", :class => "search-options-icon" %>
+  	          <%= content_tag :span, nil, :class => "option_symbol_sprite option_symbol_signed_lg", :title => "Show only signed cards" %>  	          
+  	          <br class="spacer"/>
   	          <%= check_box_tag "options[]", "s", cookies[:search_signed] == "true", :class => "search-options-check", :id => "search-signed" %>            
   	        </td>          
   	        <td align="center">
-  	          <%= image_tag "https://s3.amazonaws.com/mtgbazaar/images/mtg/options/alt.png", :title => "Show only alt art cards", :class => "search-options-icon" %>
-  	          <br/>
+  	          <%#= image_tag "https://s3.amazonaws.com/mtgbazaar/images/mtg/options/alt.png", :title => "Show only alt art cards", :class => "search-options-icon" %>
+  	          <%= content_tag :span, nil, :class => "option_symbol_sprite option_symbol_alt_lg", :title => "Show only altered cards" %>  	          
+  	          <br class="spacer"/>
   	          <%= check_box_tag "options[]", "a", cookies[:search_altart] == "true", :class => "search-options-check", :id => "search-altart" %>
   	        </td>          
   	        <td align="center">
-  	          <%= image_tag "https://s3.amazonaws.com/mtgbazaar/images/mtg/options/miscut.png", :title => "Show only misprinted cards", :class => "search-options-icon" %>
+  	          <%#= image_tag "https://s3.amazonaws.com/mtgbazaar/images/mtg/options/miscut.png", :title => "Show only misprinted cards", :class => "search-options-icon" %>
+  	          <%= content_tag :span, nil, :class => "option_symbol_sprite option_symbol_miscut_lg", :title => "Show only misprinted cards" %>  	            	          
   	          <br/>
   	          <%= check_box_tag "options[]", "m", cookies[:search_miscut] == "true", :class => "search-options-check", :id => "search-miscut" %>
   	        </td>
