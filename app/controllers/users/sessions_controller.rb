@@ -20,15 +20,6 @@ protected
     end
   end
   
-  # devise redirect after sign up
-  def after_sign_up_path_for(resource)
-    if resource.is_a?(User)
-      back_path
-    else
-      super
-    end
-  end
-  
   # devise redirect after sign out
   def after_sign_out_path_for(resource)
     if current_cart.present? 

@@ -143,6 +143,7 @@ MTGBazaar::Application.routes.draw do
   match 'help'                => 'home#help'
   match 'faq'                 => 'home#faq'
   match 'feedback'            => 'home#feedback'
+  match 'welcome'             => 'home#welcome'
   mount Ckeditor::Engine      => "/ckeditor"
   
   
