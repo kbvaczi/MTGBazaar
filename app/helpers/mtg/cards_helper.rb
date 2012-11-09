@@ -192,8 +192,9 @@ module Mtg::CardsHelper
   # displays set symbol for a given set code
   def display_flag_symbol(language_code, options = {})
     language = display_language(language_code)
-    height   = options[:height] || "20px"
-    image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/flags/#{language.downcase}.png", :title => "#{language}", :style => "display:inline-block;height:#{height};width:#{height};vertical-align:text-top;")         
+    #height   = options[:height] || "20px"
+    #image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/flags/#{language.downcase}.png", :title => "#{language}", :style => "display:inline-block;height:#{height};width:#{height};vertical-align:text-top;")         
+	  content_tag :span, nil, :class => "flag_sprite flag_#{language.downcase}", :title => "#{language}"      
   end  
   
   def listing_option_foil_icon

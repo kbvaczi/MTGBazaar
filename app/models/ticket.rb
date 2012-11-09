@@ -56,7 +56,7 @@ class Ticket < ActiveRecord::Base
       end
     end
     # Verify offender is present if it is needed
-    unless self.problem == "shipping" or self.problem == "delivery confirmation" or self.problem == "other"
+    if self.problem == "harassment" or self.problem == "profanity"
       if not self.offender_username.present?
         errors.add(:offender_username, "Required for this problem type")
       end

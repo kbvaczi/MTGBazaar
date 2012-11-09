@@ -1,0 +1,29 @@
+/* ----------------------------------------------------
+   created with http://www.texturepacker.com 
+   ----------------------------------------------------
+   $TexturePacker:SmartUpdate:222310b00f2bfca0c85ecdb13d2d5fb4$
+   ----------------------------------------------------
+
+   usage: <span class="{-spritename-} sprite"></span>
+
+   replace {-spritename-} with the sprite you like to use
+
+*/
+
+.flag_sprite {
+  display:inline-block; 
+  overflow:hidden; 
+  background-repeat: no-repeat;
+  background-image:url(https://mtgbazaar.s3.amazonaws.com/images/mtg/flags/flag_sprite.png);
+}
+
+.flag_chinese {width:20px; height:20px; background-position: -2px -2px}
+.flag_english {width:20px; height:20px; background-position: -24px -2px}
+.flag_french {width:20px; height:20px; background-position: -46px -2px}
+.flag_german {width:20px; height:20px; background-position: -68px -2px}
+.flag_italian {width:20px; height:20px; background-position: -90px -2px}
+.flag_japanese {width:20px; height:20px; background-position: -2px -24px}
+.flag_korean {width:20px; height:20px; background-position: -24px -24px}
+.flag_portuguese {width:20px; height:20px; background-position: -46px -24px}
+.flag_russian {width:20px; height:20px; background-position: -68px -24px}
+.flag_spanish {width:20px; height:20px; background-position: -90px -24px}
