@@ -41,7 +41,8 @@ class User < ActiveRecord::Base
   
   # override default route to add username in route.
   def to_param
-    "#{id}-#{username}".parameterize 
+    #"#{id}-#{username}".parameterize 
+    "#{username}".parameterize 
   end
   
 # ---------------- VALIDATIONS ----------------      

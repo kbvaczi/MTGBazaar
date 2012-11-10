@@ -101,28 +101,24 @@ MTGBazaar::Application.routes.draw do
   
 # USERS -------------------- #
 
-
-
-  get 'account' => 'users#show_account_info', :as => 'show_account_info'  
-  get 'account/listings' => 'users#account_listings', :as => 'account_listings'
-  get 'account/sales' => 'users#account_sales', :as => 'account_sales'
-  post 'account/sales' => 'users#account_sales', :as => 'account_sales'   # for pagination
-  get 'account/purchases' => 'users#account_purchases', :as => 'account_purchases'
+  get  'account'           => 'users#account_info',      :as => 'account_info'  
+  get  'account/listings'  => 'users#account_listings',  :as => 'account_listings'
+  get  'account/sales'     => 'users#account_sales',     :as => 'account_sales'
+  post 'account/sales'     => 'users#account_sales',     :as => 'account_sales'   # for pagination
+  get  'account/purchases' => 'users#account_purchases', :as => 'account_purchases'
   post 'account/purchases' => 'users#account_purchases', :as => 'account_purchases'   # for pagination
-  get 'users' => 'users#index', :as => 'users_index'
-  get 'users/validate_username_ajax' => 'users#validate_username_ajax', :as => 'validate_username_ajax' #checking username taken?
 
-  devise_for :users, :controllers => { :registrations => 'users/registrations', :sessions => 'users/sessions', :passwords => 'users/passwords' } 
+  devise_for :users, :path => '/account', :controllers => { :registrations => 'account/registrations', :sessions => 'account/sessions', :passwords => 'account/passwords' } 
   devise_scope :user do
-    get 'users/sign_up/verify_address' => 'users/registrations#verify_address', :as => "sign_up_verify_address"
+    get 'account/sign_up/verify_address' => 'account/registrations#verify_address', :as => "sign_up_verify_address"
   end
 
   # resources :users must be declared after devise_for because earlier declarations take precedence 
   # see http://stackoverflow.com/questions/5051487/combining-devise-with-resources-users-in-rails
-  resources :users, :only => [:index, :show], :controllers => { :users => "users/users"} do
-    get "autocomplete_name", :on => :collection
-    get :autocomplete_user_username, :on => :collection
-    post :seller_status_toggle, :on => :collection
+  resources :users, :only => [:index, :show] do
+    get  :autocomplete_name,      :on => :collection
+    post :seller_status_toggle,   :on => :collection
+    get  :validate_username_ajax, :on => :collection
   end
   match 'users/:id/(:page)', :controller => 'users', :action => 'show'  #TODO: hack to get pagination to work in user show page... relook at this later
 

@@ -1,4 +1,4 @@
-class Users::RegistrationsController < Devise::RegistrationsController
+class Account::RegistrationsController < Devise::RegistrationsController
 
   def new
     @user = resource

@@ -10,15 +10,12 @@ class UsersController < ApplicationController
     
     
     @users = User.includes(:statistics).active.order(users_sort_string).page(params[:page]).per(15)
-    
-    
-    
   end
   
   # GET /users/1
   def show
     set_back_path    
-    @user = User.includes(:statistics, :account).find(params[:id])
+    @user = User.includes(:statistics, :account).where('users.username LIKE ?', params[:id]).first || User.includes(:statistics, :account).find(params[:id])
     @sales = @user.mtg_sales.includes(:feedback).where("mtg_transactions_feedback.id > 0").order("mtg_transactions_feedback.created_at DESC").page(params[:page]).per(10) if params[:section] == "feedback"
     
     listings_sort_string = table_sort(:default => "LOWER(mtg_cards.name)", :price => "price", :condition => "mtg_listings.condition", :language => "mtg_listings.language",
@@ -31,12 +28,9 @@ class UsersController < ApplicationController
     end
   end
   
-
-  
   def account_info 
     set_back_path    
   end
-  
  
   def transactions_index
   end

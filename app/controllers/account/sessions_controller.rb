@@ -1,4 +1,4 @@
-class Users::SessionsController < Devise::SessionsController
+class Account::SessionsController < Devise::SessionsController
 
 protected
 
