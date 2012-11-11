@@ -1,7 +1,3 @@
-<% 
-  Rails.logger.info "Verify Address AJAX Call Running"
-  
-%>
 <% if @error %>
   $("#verify_address_text").text('Error, Please ensure all address fields are filled out correctly.');      
   $("#verify_address_text").addClass('tc-r');          
@@ -16,7 +12,7 @@
   $("#user_account_attributes_state").trigger("liszt:updated");  
   $("#user_account_attributes_zipcode").val('<%= @response[:address][:zip_code] %>');     
   $("#user_account_attributes_address_verification").val('true');      
-  $("#verify_address_text").text('Verified, Please double-check for accuracy.');      
+  $("#verify_address_text").text('Verified, please double-check for accuracy.');      
   $("#verify_address_text").addClass('tc-g'); 
   $("#verify_address_text").removeClass('tc-r tc-y');          
   $("#verify_address_trigger").hide();   
@@ -35,7 +31,7 @@
   $("#verify_address_text").removeClass('tc-g');            
   $("#verify_address_trigger").hide();          
 <% else %>
-  $("#verify_address_text").text('Error, please re-enter address info');      
+  $("#verify_address_text").text('Error, please correct address info');      
   $("#verify_address_text").addClass('tc-r');          
   $("#verify_address_text").removeClass('tc-g tc-y');              
 <% end %>

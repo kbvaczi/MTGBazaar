@@ -85,10 +85,6 @@ GEM
     ckeditor (3.7.3)
       mime-types
       orm_adapter
-    client_side_validations (3.2.1)
-    client_side_validations-simple_form (2.0.0)
-      client_side_validations (~> 3.2.0)
-      simple_form (~> 2.0.3)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -275,8 +271,6 @@ DEPENDENCIES
   activemerchant (~> 1.26.0)
   carrierwave (~> 0.6.2)
   ckeditor (~> 3.7.1)
-  client_side_validations (~> 3.2.1)
-  client_side_validations-simple_form (~> 2.0.0)
   coffee-rails
   dalli
   devise (~> 2.1.2)

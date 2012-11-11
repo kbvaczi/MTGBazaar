@@ -22,12 +22,12 @@
     <h2>Profile Information</h2>
     <br class = "spacer"/>
 
-    <%= a.input :first_name,    :input_html => { :class => "verify_address_input" },
-                                :required => true %>
+    <%= a.input :first_name,    :required => true %>
     
-    <%= a.input :last_name ,    :input_html => { :class => "verify_address_input" },                                                                                                                                
-                                :required => true %>
+    <%= a.input :last_name ,    :required => true %>
+    
     <br class = "spacer"/>                               
+    
     <%= a.input :address1,      :label => "Street Address",
                                 :placeholder => "ex: 402 Planeswalker Place",
                                 :input_html => { :class => "verify_address_input" },                                

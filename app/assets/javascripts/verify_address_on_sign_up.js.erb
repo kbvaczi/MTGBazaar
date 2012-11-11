@@ -6,8 +6,8 @@ $(document).ready(function() {
   } 
   
   $(".verify_address_input").change(function(){  
-    var first_name = $("#user_account_attributes_first_name").val();
-    var last_name = $("#user_account_attributes_last_name").val();  
+    var first_name = $("#user_account_attributes_first_name").val() || "test";
+    var last_name = $("#user_account_attributes_last_name").val() || "test";  
     var address1 = $("#user_account_attributes_address1").val();    
     var address2 = $("#user_account_attributes_address2").val();      
     var city = $("#user_account_attributes_city").val();      
@@ -39,28 +39,3 @@ $(document).ready(function() {
   });
   
 });
-
-
-
-/*$("#verify_address_trigger").click(function(){  
-  var first_name = $("#user_acccount_attributes_first_name").val();
-  var last_name = $("#user_acccount_attributes_last_name").val();  
-  var address1 = $("#user_acccount_attributes_address1").val();    
-  var address2 = $("#user_acccount_attributes_address2").val();      
-  var city = $("#user_acccount_attributes_city").val();      
-  var state = $("#user_acccount_attributes_state").val();      
-  var zip_code = $("#user_acccount_attributes_zipcode").val();
-  var path = $("#verify_address_trigger").attr("data-url");
-  var url = path +  "?first_name=" + first_name +
-                    "&last_name="  + last_name +
-                    "&address1="   + address1 +                                                
-                    "&address2="   + address2 +                                                                                                
-                    "&city="       + city +                                                                                                                                                
-                    "&state="      + state +
-                    "&zip_code="   + zip_code ;
-  alert(url);
-  $("#result").html(ajax_load);  
-  $.getScript(url, function(){  
-      $("#result").html("test running");  
-  });
-});*/

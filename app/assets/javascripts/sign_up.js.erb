@@ -11,12 +11,21 @@ $(document).ready(function() {
 				if(data != null){
 					$("#user_username").parent().append('<span class="error">'+ data +'</span>');
 				}
-				
 				else {
-					$("#user_username").parent().append('<span class="hint" style="color:green;">This username is available!</span>');
-					
+					$("#user_username").parent().append('<span class="hint" style="color:green;">This username is available!</span>');		
 				}
 		  }
 		}); 		
   });
+  
+  $("#sign_up_button").click(function(){
+    if ( !$('#user_account_attributes_address_verification').val() ) {
+      myCustomAlertBox("Please verify your address information prior to continuing");
+    } else if (!$("#AcknowledgeCheckBox").attr('checked')) {
+      myCustomAlertBox("Please accept Terms and Conditions");      
+    } else {
+      $(this).siblings('input').trigger('click'); 
+    }
+  });
+  
 });
