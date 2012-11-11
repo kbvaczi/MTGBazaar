@@ -85,6 +85,10 @@ GEM
     ckeditor (3.7.3)
       mime-types
       orm_adapter
+    client_side_validations (3.2.1)
+    client_side_validations-simple_form (2.0.0)
+      client_side_validations (~> 3.2.0)
+      simple_form (~> 2.0.3)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -225,7 +229,7 @@ GEM
       gyoku (>= 0.3.0)
       httpi (>= 0.7.8)
     sequel (3.20.0)
-    simple_form (1.5.2)
+    simple_form (2.0.4)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
     sinatra (1.0)
@@ -271,6 +275,8 @@ DEPENDENCIES
   activemerchant (~> 1.26.0)
   carrierwave (~> 0.6.2)
   ckeditor (~> 3.7.1)
+  client_side_validations (~> 3.2.1)
+  client_side_validations-simple_form (~> 2.0.0)
   coffee-rails
   dalli
   devise (~> 2.1.2)
@@ -295,7 +301,7 @@ DEPENDENCIES
   rails3-jquery-autocomplete (~> 1.0.6)
   rmagick (~> 2.13.1)
   sass-rails
-  simple_form (~> 1.5.2)
+  simple_form (~> 2.0.3)
   smart_tuple (~> 0.1.2)
   sqlite3
   stamps!

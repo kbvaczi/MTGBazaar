@@ -3,12 +3,12 @@
   
 %>
 <% if @error %>
-  $("#verify_address_text").text('Error, address verification service is not working at the moment.  Please try again in a few minutes');      
+  $("#verify_address_text").text('Error, Please ensure all address fields are filled out correctly.');      
   $("#verify_address_text").addClass('tc-r');          
   $("#verify_address_text").removeClass('tc-g tc-y');
 <% elsif @response[:address_match] %>
-  $("#user_account_attributes_first_name").val('<%= @response[:address][:first_name] %>');    
-  $("#user_account_attributes_last_name").val('<%= @response[:address][:last_name] %>');      
+  //$("#user_account_attributes_first_name").val('<%= @response[:address][:first_name] %>');    
+  //$("#user_account_attributes_last_name").val('<%= @response[:address][:last_name] %>');      
   $("#user_account_attributes_address1").val('<%= @response[:address][:address1] %>');    
   $("#user_account_attributes_address2").val('<%= @response[:address][:address2] %>');      
   $("#user_account_attributes_city").val('<%= @response[:address][:city] %>');      
@@ -21,8 +21,8 @@
   $("#verify_address_text").removeClass('tc-r tc-y');          
   $("#verify_address_trigger").hide();   
 <% elsif @response[:city_state_zip_ok] %>
-  $("#user_account_attributes_first_name").val('<%= @response[:address][:first_name] %>');    
-  $("#user_account_attributes_last_name").val('<%= @response[:address][:last_name] %>');
+  //$("#user_account_attributes_first_name").val('<%= @response[:address][:first_name] %>');    
+  //$("#user_account_attributes_last_name").val('<%= @response[:address][:last_name] %>');
   $("#user_account_attributes_address1").val('<%= @response[:address][:address1] %>');    
   $("#user_account_attributes_address2").val('<%= @response[:address][:address2] %>');      
   $("#user_account_attributes_city").val('<%= @response[:address][:city] %>');      

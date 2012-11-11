@@ -19,7 +19,7 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   
   # Setup accessible (or protected) attributes for your model
   attr_accessible :name, :set, :quantity, :price, :condition, :language, :description, :altart,
-                  :misprint, :foil, :signed, :price_options, :quantity_available, :scan
+                  :misprint, :foil, :signed, :price_options, :quantity_available, :scan, :scan_cache, :remove_scan
 
   # not-in-model field for current password confirmation
   attr_accessor :name, :set, :price_options

@@ -23,7 +23,7 @@
                                 :input_html => { :class => "chzn-select chzn-nosearch" },
                                 :required => 'true' %>
                               
-    <%= f.input :quantity,      :label => "Quantity for sale",
+    <%= f.input :quantity,      :label => "Quantity for Sale",
                                 :as => :string,
                                 :input_html => { :style => "width:50px;" },
                                 :required => 'true' %>                                
@@ -57,18 +57,33 @@
                                   :input_html => { :class => "currency_input", :maxlength => 9, :value => "$ #{@listing.price}" },   
                                   :required => true %>                                  
     </div>
-
+    
     <%= f.input :language,      :label => "Language",
                                 :as => :select,
                                 :collection => @listing.card.list_language_options,
                                 :default => "EN",
                                 :input_html => { :class => "chzn-select chzn-nosearch" },
                                 :required => false %>    
+    <div class="group">
+      <% if @listing.scan? && !@listing.new_record?%>
+        <%= f.label "Scan", :style => "height:50px;margin-top:15px;" %>
+        <div class="input">
+          <div class="center ml">
+            <%= image_tag @listing.scan_url, :class => "overlay_trigger", :title => "Click to View Scan", :style => "cursor:pointer;height:50px;max-width:100px;", :rel => "#scan_overlay_#{@listing.id}"%>
+            <%= listing_option_scan_overlay(@listing) %> 
+          </div>
+          <div class="center" style="position:relative;left:20px;top:-23px;"><%= f.check_box :remove_scan %>Remove scan</div>
 
-   	<%= f.input :scan,     		  :label => "Upload Scan",
-  							                :as => :file %>
-						                                                          
-
+        </div>
+  		<% end %>                                                          
+    </div>
+    
+    <div id="scan_upload_wrapper" class=<%= "hidden" if @listing.scan? && !@listing.new_record?%>>
+   	<%= f.input :scan,     		  :label => "Upload Scan", 
+   	                            :hint => "Required only for Signed, Misprints, and Altered",
+   	                            :as => :file %>
+   	</div>       
+                   	                              
     <%= f.input :description,   :label => "Description",
                                 :placeholder => "Optional",
                                 :as => :string,
@@ -85,7 +100,7 @@
     <%= f.input :misprint,      :label => "Misprinted",
                                 :default => false %>
 
-    <%= f.input :altart,        :label => "Contains alternate art",
+    <%= f.input :altart,        :label => "Contains altered art",
                                 :default => false %>    
 
   </div>

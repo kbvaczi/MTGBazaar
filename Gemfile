@@ -6,7 +6,7 @@ source 'http://rubygems.org'
 
 gem "devise", "~> 2.1.2"                                            # user authentication
 gem "devise-encryptable", "~> 0.1.1"
-gem "simple_form", "~> 1.5.2"                                       # simplified form creation
+gem "simple_form", "~> 2.0.3"                                       # simplified form creation
 gem "nokogiri", "~> 1.5.0"                                          # XML/HTML Parser
 gem "activeadmin", "~> 0.5.0"                                       # Administrator Panel
 gem "formtastic", "~> 2.1.1"                                        # for admin panel only

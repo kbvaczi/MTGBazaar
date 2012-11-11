@@ -1,5 +1,52 @@
 $(document).ready(function() {
 
+/* FIXED NEW AND EDIT LISTING JAVASCRIPT */
+
+  $("#mtg_cards_listing_scan").change(function(){
+    if ($(this).val()) {
+      if ($('#mtg_cards_listing_quantity').val() != 1){
+    		$("#mtg_cards_listing_quantity").siblings('span.error').remove();
+    		$("#mtg_cards_listing_quantity").siblings('span.hint').hide();          
+    		$("#mtg_cards_listing_quantity").parent().append('<span class="error">Quantity must be 1 when attaching scan</span>');
+      } 
+  		$(this).siblings('span.error').remove();
+  		$(this).siblings('.hint').remove();
+  		$(this).parent().append('<div id="remove_scan_button" class="hint" style="color:#688AC1;font-style:normal;cursor:pointer;" onClick="clearFileUpload();">Remove Attached File</div>');
+  	} else {
+  		$(this).siblings('div.hint').remove();
+  		$(this).parent().append('<span class="hint">Required only for Signed, Misprints, and Altered</span>');		
+  	  $("#mtg_cards_listing_quantity").siblings('span.error').remove();
+  	  $("#mtg_cards_listing_quantity").siblings('span.hint').show();  	  
+  		if (($('#mtg_cards_listing_signed').attr('checked') || $('#mtg_cards_listing_misprint').attr('checked') || $('#mtg_cards_listing_altart').attr('checked')) && !$("#mtg_cards_listing_scan").val() ){
+        $(this).parent().append('<span class="error">A scan is required for this listing</span>');
+    		$(this).siblings('span.hint').hide();      
+      }
+  	}
+  });
+  
+  $("#mtg_cards_listing_signed, #mtg_cards_listing_misprint, #mtg_cards_listing_altart").change(function(){
+    var target = $("#mtg_cards_listing_scan")
+    if (($('#mtg_cards_listing_signed').attr('checked') || $('#mtg_cards_listing_misprint').attr('checked') || $('#mtg_cards_listing_altart').attr('checked')) && !$("#mtg_cards_listing_scan").val() ){
+  		target.siblings('span.error').remove();
+  		target.siblings('span.hint').hide();          
+  		target.parent().append('<span class="error">A scan is required for this listing</span>');
+    } else {
+     	target.siblings('span.error').remove();
+     	target.siblings('span.hint').show();     	
+    }
+  });
+  
+  $("#mtg_cards_listing_quantity").change(function(){  
+    if ($('#mtg_cards_listing_quantity').val() != 1 && $("#mtg_cards_listing_scan").val()){
+  		$("#mtg_cards_listing_quantity").siblings('span.error').remove();
+  		$("#mtg_cards_listing_quantity").siblings('span.hint').remove();          
+  		$("#mtg_cards_listing_quantity").parent().append('<span class="error">Quantity must be 1 when attaching scan</span>');
+    } else {
+      $("#mtg_cards_listing_quantity").siblings('span.error').remove();
+  		$("#mtg_cards_listing_quantity").siblings('span.hint').show();
+    }
+  });
+
 /* GENERIC LISTING JAVASCRIPTS */ 
 
   $('#New_Generic_Name_Block div #mtg_cards_listing_name').bind('railsAutocomplete.select', function(event, data){
@@ -62,4 +109,9 @@ $(document).ready(function() {
   
 });
 
+function clearFileUpload() {
+  $('#mtg_cards_listing_scan').replaceWith( $('#mtg_cards_listing_scan').clone( true ) );
+  $("#remove_scan_button").remove();
+  $('#mtg_cards_listing_scan').trigger('change');
+}
 
