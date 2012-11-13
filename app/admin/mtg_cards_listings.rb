@@ -72,7 +72,7 @@ ActiveAdmin.register Mtg::Cards::Listing do
   end
   
   # ------ FILTERS FOR INDEX ------- #
-  filter :card_name_contains, :label => "Card Name", :as => :autocomplete, :url => '/mtg/cards/autocomplete_name.json', :required => false, :wrapper_html => {:style => "list-style: none;margin-bottom:10px;"}  
+  filter :card_name, :label => "Card Name", :as => :string, :input_html => {:class => "ui-autocomplete-input" , "data-type" => "search", "data-autocomplete" => '/mtg/cards/autocomplete_name.json' }  
   filter :card_set_code,      :label => "Set",       :as => :select, :collection => active_set_list,   :input_html => {:class => "chzn-select"}    
   filter :seller_username,    :label => "Seller",    :as => :select, :collection => users_list, :input_html => {:class => "chzn-select"}  
   filter :price,              :label => "Price (in cents)"
