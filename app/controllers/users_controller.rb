@@ -1,10 +1,11 @@
 class UsersController < ApplicationController
 
-  before_filter :authenticate_user!, :except => [:index, :new, :create, :show, :autocomplete_name, :validate_username_ajax]
+  before_filter :authenticate_user!, :except => [:index, :autocomplete_name, :validate_username_ajax]
   
   include ApplicationHelper
   
   def index
+    set_back_path
     users_sort_string = table_sort(:default => "LOWER(username)", :member_since => "created_at", :user => "LOWER(username)", :sales => "user_statistics.number_sales",
                                    :purchases => "user_statistics.number_purchases", :feedback => "user_statistics.approval_percent")
     
@@ -31,14 +32,8 @@ class UsersController < ApplicationController
     end
   end
   
-
-  
   def account_info 
     set_back_path    
-  end
-  
- 
-  def transactions_index
   end
   
   def account_listings
