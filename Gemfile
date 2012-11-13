@@ -1,5 +1,7 @@
 source 'http://rubygems.org'
 
+ruby '1.9.3'
+
 # -----------
 # CUSTOM GEMS
 # -----------
@@ -42,9 +44,9 @@ gem "hirefireapp", "~> 0.0.8"                                       # auto-scali
 # STANDARD GEMS
 # -------------
 
-gem ruby '1.9.3'
-gem 'jquery-rails'                                                  # latest jquery library.  need to include "//= require jquery_ujs" and "//= require jquery" in application.js to be loaded in asset pipeline
+
 gem "rails", "~> 3.2.8"
+gem 'jquery-rails'                                                  # latest jquery library.  need to include "//= require jquery_ujs" and "//= require jquery" in application.js to be loaded in asset pipeline
 gem 'json'
 
 
