@@ -83,7 +83,8 @@ ActiveAdmin.register Mtg::Card do
 
   # ------ FILTERS FOR INDEX ------- #
   begin   
-    filter :name_contains, :label => "Card Name", :as => :autocomplete, :url => '/mtg/cards/autocomplete_name.json', :required => false, :wrapper_html => {:style => "list-style: none;margin-bottom:10px;"}      
+    #filter :name_contains, :label => "Card Name", :as => :autocomplete, :url => '/mtg/cards/autocomplete_name.json', :required => false, :wrapper_html => {:style => "list-style: none;margin-bottom:10px;"}      
+    filter :name, :label => "Card Name", :as => :string, :input_html => {:class => "ui-autocomplete-input" , "data-type" => "search", "data-autocomplete" => '/mtg/cards/autocomplete_name.json' }
     #filter :block_name, :label => "Block", :as => :select, :collection => Mtg::Block.all.map(&:name), :input_html => {:class => "chzn-select"}
     filter :block,        :as => :select,                                   :input_html => {:class => "chzn-select"}  
     filter :set,                                                            :input_html => {:class => "chzn-select"}  
