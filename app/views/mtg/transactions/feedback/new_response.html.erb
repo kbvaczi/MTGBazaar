@@ -12,7 +12,7 @@
   	</tr>
   	<tr class="even">
   	  <td><%= link_to @transaction.transaction_number, show_mtg_transaction_path(@transaction) %></td>
-  	  <td><%= link_to @transaction.seller.username, user_path(@transaction.buyer)%> </td>    	  
+  	  <td><%= link_to @transaction.seller.username, user_path(@transaction.buyer.username)%> </td>    	  
   	  <td><%= "#{ number_to_currency(@transaction.total_value) }" %> </td>  
   	  <td> <%= "#{@transaction.status.capitalize}" %> </td>
   	</tr>

@@ -14,7 +14,7 @@
     <div class="input">
       <% if current_user.id == @transaction.buyer_id %>
         <%= f.label "Seller" %>
-        <p><%= link_to @transaction.seller.username, user_path(@transaction.seller) %></p>
+        <p><%= link_to @transaction.seller.username, user_path(@transaction.seller.username) %></p>
       <% else %>
         <%= f.label "Buyer" %>
         <p><%= @transaction.buyer.username %></p>

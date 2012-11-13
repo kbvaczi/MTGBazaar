@@ -28,7 +28,7 @@ ActiveAdmin.register User do
   # Customize columns displayed on the index screen in the table
   index do
     column :username, :sortable => :username do |user|
-      link_to user.username, admin_user_path(user)
+      link_to user.username, admin_user_path(user.id)
     end
     column "Name", :sortable => :'accounts.last_name' do |user|
       "#{user.account.last_name}, #{user.account.first_name} "
@@ -41,23 +41,23 @@ ActiveAdmin.register User do
     column "Last Sign-in", :last_sign_in_at
     column "Banned?", :sortable => :banned do |user|
       if user.banned?
-        "yes"
+        status_tag "Banned", :error
       else
-        "no"
+        status_tag "No", :ok
       end
     end
     column "Locked?", :sortable => :locked_at do |user|
       if user.locked_at.nil?
-        "no"
+        status_tag "No", :ok
       else
-        "yes"
+        status_tag "Locked", :error
       end
     end
     column "Active?", :sortable => :'user.active' do |user|
       if user.active
-        "yes"
-      else
-        "no"
+          status_tag "Yes", :ok
+        else
+          status_tag "No", :error
       end
     end
   end

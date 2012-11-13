@@ -31,42 +31,47 @@ ActiveAdmin.register Mtg::Card do
       #  link_to card.block.name, admin_mtg_cards_path(:q => {:block_name_contains => card.block.name}, :scope => '')
       #end
       column 'Set', :sortable => :'mtg_sets.name'  do |card|
-        link_to card.set.name, admin_mtg_set_path(card.set)
+        link_to display_set_symbol(card.set), admin_mtg_set_path(card.set)
+      end
+      column 'rarity', :sortable => :rarity do |card|
+        display_rarity(card.rarity)
+      end
+      column 'For Sale', :sortable => 'mtg_card_statistics.listings_available' do |card|
+        link_to card.statistics.listings_available, admin_mtg_cards_listings_path('q[card_name_contains]' => card.name)
       end
       column 'Sales', :sortable => :'mtg_card_statistics.number_sales' do |card| 
-        card.statistics.number_sales
+        link_to card.statistics.number_sales, admin_mtg_transactions_items_path('q[card_name_contains]' => card.name)
       end
-      column '$-low', :sortable => :'mtg_card_statistics.price_low' do |card|
+      column '$ low', :sortable => :'mtg_card_statistics.price_low' do |card|
         card.statistics.price_low
       end
-      column '$-med', :sortable => :'mtg_card_statistics.price_med' do |card|
+      column '$ med', :sortable => :'mtg_card_statistics.price_med' do |card|
         card.statistics.price_med
       end      
-      column '$-high', :sortable => :'mtg_card_statistics.price_high' do |card|
+      column '$ high', :sortable => :'mtg_card_statistics.price_high' do |card|
         card.statistics.price_high
-      end      
-      column 'Set active?', :sortable => :'mtg_sets.active'  do |card|
-        if card.set.active?
-          "yes"
-        else
-          "no"
-        end
-      
-      end    
+      end        
       column :created_at
       column :updated_at
+      column 'Set active?', :sortable => :'mtg_sets.active'  do |card|
+        if card.set.active?
+          status_tag "Yes", :ok
+        else
+          status_tag "No", :error
+        end
+      end      
       column 'Card Active?', :active, :sortable => :active do |card|
         if card.set.active?
           if card.active?
-            "yes"
-          else
-            "no"
+              status_tag "Yes", :ok
+            else
+              status_tag "No", :error
           end
         else
           if card.active?
-            "no (set inactive)"
-          else
-            "no"
+              status_tag "No", :warning, :title => "set inactive"
+            else
+              status_tag "No", :error, :title => "set inactive"
           end
         end
       end
@@ -78,13 +83,13 @@ ActiveAdmin.register Mtg::Card do
 
   # ------ FILTERS FOR INDEX ------- #
   begin   
-    filter :name
+    filter :name_contains, :label => "Card Name", :as => :autocomplete, :url => '/mtg/cards/autocomplete_name.json', :required => false, :wrapper_html => {:style => "list-style: none;margin-bottom:10px;"}      
     #filter :block_name, :label => "Block", :as => :select, :collection => Mtg::Block.all.map(&:name), :input_html => {:class => "chzn-select"}
-    filter :block, :as => :select, :input_html => {:class => "chzn-select"}  
-    filter :set, :input_html => {:class => "chzn-select"}  
-    filter :card_type, :as => :select, :collection => card_type_list, :input_html => {:class => "chzn-select"}
+    filter :block,        :as => :select,                                   :input_html => {:class => "chzn-select"}  
+    filter :set,                                                            :input_html => {:class => "chzn-select"}  
+    filter :card_type,    :as => :select, :collection => card_type_list,    :input_html => {:class => "chzn-select"}
     filter :card_subtype, :as => :select, :collection => card_subtype_list, :input_html => {:class => "chzn-select"}
-    filter :'mtg_sets.active'
+    filter :set_active,   :as => :select,                                   :input_html => {:class => "chzn-select"}
   end 
 
   # ------ ACTION ITEMS (BUTTONS) ------- #  

@@ -5,10 +5,10 @@
   		<li><%= link_to "Sign up", new_user_registration_path, :class => 'round_right' %></li>    
   	<% else %>
     	<li class="navbar_drop">    
-    		<%= link_to "Account", user_path(current_user), :class => 'round_right' %>        
+    		<%= link_to "Account", user_path(current_user.username), :class => 'round_right' %>        
     		<div class="navbar_drop_child">
       		<ul>
-            <li><%= link_to "Public Profile", user_path(current_user) %></li>          
+            <li><%= link_to "Public Profile", user_path(current_user.username) %></li>          
             <li><%= link_to "Communication Center", communications_path %></li>                      
             <li class="heading"> Setup </li>                                          
             <li><%= link_to "Account Info", account_info_path %></li>

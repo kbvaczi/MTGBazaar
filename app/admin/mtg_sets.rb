@@ -35,7 +35,7 @@ ActiveAdmin.register Mtg::Set do
   # ------ INDEX PAGE CUSTOMIZATIONS ------ #
   # Customize columns displayed on the index screen in the table
   index do
-    column :id, :sortable => :id do |set|
+    column :id, :sortable => false do |set|
       link_to set.id, admin_mtg_set_path(set)
     end
     column :name
@@ -49,7 +49,14 @@ ActiveAdmin.register Mtg::Set do
     column :release_date
     column :created_at
     column :updated_at    
-    column :active
+    
+    column 'Active', :sortable => :active  do |set|
+      if set.active?
+        status_tag "Yes", :ok
+      else
+        status_tag "No", :error
+      end
+    end
   end
   
   # ------ FILTERS FOR INDEX ------- #

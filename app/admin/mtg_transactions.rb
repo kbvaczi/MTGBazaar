@@ -8,9 +8,8 @@ ActiveAdmin.register Mtg::Transaction do
   config.clear_action_items! #clear standard buttons
   
   # ------ SCOPES (auto sorts) ------ #
-  scope :all, :default => true
-  scope :pending do |transaction|
-    transaction.where(:status => "pending")
+  scope :all, :default => true do |t|
+    t.includes(:items, :feedback, :buyer, :seller, :shipping_label)
   end
   scope :confirmed do |transaction|
     transaction.where(:status => "confirmed")
@@ -18,18 +17,9 @@ ActiveAdmin.register Mtg::Transaction do
   scope :shipped do |transaction|
     transaction.where(:status => "shipped")
   end
-  scope :final do |transaction|
+  scope "With Feedback" do |transaction|
     transaction.where(:status => "completed")
   end
-  scope :rejected do |transaction|
-    transaction.where(:status => "rejected")
-  end  
-  scope :rejected do |transaction|
-    transaction.where(:status => "cancelled")
-  end  
-  scope :modified do |transaction|
-    transaction.where(:status => "pending", :buyer_confirmed_at => nil)
-  end  
   
   # ------ INDEX PAGE CUSTOMIZATIONS ------ #
   # Customize columns displayed on the index screen in the table
@@ -41,20 +31,30 @@ ActiveAdmin.register Mtg::Transaction do
     column :buyer
     column :seller
     column "Items", :sortable => false do |transaction|
-       link_to transaction.items.sum(:quantity_requested), admin_mtg_transactions_items_path("q[transaction_id_eq]" => transaction.id)
+       link_to transaction.items.sum(:quantity_requested), admin_mtg_transactions_items_path("q[transaction_transaction_number_eq]" => transaction.transaction_number)
     end
-    column :value
-    column :shipping_cost
+    column 'value', :sortable => :value do |t|
+      number_to_currency(t.value)
+    end
+    column 'Shipping', :sortable => :shipping_cost do |t|
+      number_to_currency(t.shipping_cost)
+    end    
+    column 'Label Cost', :sortable => "mtg_transactions_shipping_labels.price" do |t|
+      link_to number_to_currency(t.shipping_label.price), t.shipping_label.params[:url], :target => "_blank" rescue ""      
+    end  
     column "Status", :sortable => :status do |transaction|
       transaction.status
     end
-    column :buyer_confirmed_at
-    column :seller_rejected_at
-    column :rejection_reason    
-    column :seller_confirmed_at    
-    column :seller_shipped_at
-    column :seller_delivered_at    
-    column :buyer_feedback  
+    column "Shipped", :seller_shipped_at
+    column "Feedback", :sortable => "mtg_transactions_feedback.rating" do |t|
+      t.feedback.display_rating rescue ""
+    end
+    column "Feedback Comment", :sortable => false do |t|
+      t.feedback.comment rescue ""
+    end
+    column "Feedback Response", :sortable => false do |t|
+      t.feedback.seller_response_comment rescue ""
+    end    
     column :created_at
     column :updated_at    
   end

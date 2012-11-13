@@ -3,9 +3,9 @@
   <td><%= link_to transaction.transaction_number, show_mtg_transaction_path(transaction) %></td>
  	<td>
  	  <% if current_user.id == transaction.buyer_id %>
-       <%= link_to transaction.seller.username, user_path(transaction.seller) rescue "ERROR" %>
+       <%= link_to transaction.seller.username, user_path(transaction.seller.username) rescue "ERROR" %>
     <% else %>
-       <%= link_to transaction.buyer.username, user_path(transaction.buyer) rescue "ERROR" %>
+       <%= link_to transaction.buyer.username, user_path(transaction.buyer.username) rescue "ERROR" %>
     <% end %>
   </td>
 	<td><%= transaction.status %></td>      

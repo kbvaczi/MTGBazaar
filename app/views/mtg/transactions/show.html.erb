@@ -83,8 +83,8 @@
     	  <th colspan=2>Seller</th>      
     	</tr>
     	<tr class="odd">
-    	  <td>  <%= link_to @transaction.buyer.username, user_path(@transaction.buyer) %> </td>
-    	  <td colspan=2>  <%= link_to @transaction.seller.username, user_path(@transaction.seller) %> </td>
+    	  <td>  <%= link_to @transaction.buyer.username, user_path(@transaction.buyer.username) %> </td>
+    	  <td colspan=2>  <%= link_to @transaction.seller.username, user_path(@transaction.seller.username) %> </td>
     	</tr>
     </table>
   

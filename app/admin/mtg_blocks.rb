@@ -22,12 +22,14 @@ ActiveAdmin.register Mtg::Block do
     end
   end
 
-  scope :all, :default => true
+  scope :all, :default => true do |blocks|
+    blocks.includes(:sets)
+  end
   scope :active do |blocks|
-    blocks.where(:active => true)
+    blocks.includes(:sets).where(:active => true)
   end
   scope :inactive do |blocks|
-    blocks.where(:active => false)
+    blocks.includes(:sets).where(:active => false)
   end  
   
   # Customize columns displayed on the index screen in the table
@@ -44,7 +46,13 @@ ActiveAdmin.register Mtg::Block do
     end
     column :created_at
     column :updated_at    
-    column :active
+    column 'Active?', :sortable => :active  do |block|
+      if block.active?
+        status_tag "Yes", :ok
+      else
+        status_tag "No", :error
+      end
+    end
   end
   
   # ------ CONTROLLER ACTIONS ------- #

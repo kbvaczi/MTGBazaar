@@ -1,9 +1,12 @@
-//= require active_admin/base
 //= require jquery
 //= require jquery_ujs
+//= require active_admin/base
 //= require jquery-ui
 //= require autocomplete-rails
+//= require jquery.ui.autocomplete.html.js
 //= require_self
+
+
 CKEDITOR_BASEPATH = "/assets/ckeditor/";
 
 

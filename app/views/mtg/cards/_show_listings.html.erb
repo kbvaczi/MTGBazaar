@@ -29,7 +29,7 @@
     <% @listings.each do |listing| %>  
   		<tr class=<%= cycle("odd","even") %>> 
     		<td style="width:150px;padding-left:10px;">
-          <%=  link_to "#{listing.seller.username}", user_path(listing.seller) %>
+          <%=  link_to "#{listing.seller.username}", user_path(listing.seller.username) %>
           </br>
           <div>
             <%= "(#{number_with_delimiter(listing.seller.statistics.number_sales, :delimiter => ",")} / #{listing.seller.statistics.display_approval_percent})" %>
