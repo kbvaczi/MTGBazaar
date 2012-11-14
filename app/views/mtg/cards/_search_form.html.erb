@@ -118,7 +118,7 @@
   	  </div>
 
     	<div class="mt-s search-seller group">
-  	    <%= text_field_tag "seller", cookies[:search_seller], {:class => "search-text ui-autocomplete-input mb-m deletable" , :placeholder => "Filter by seller..." , "data-autocomplete" => autocomplete_name_users_path }%>
+  	    <%= text_field_tag "seller", cookies[:search_seller], {:class => "search-text ui-autocomplete-input mb-m deletable" , :placeholder => "Only from this seller..." , "data-autocomplete" => autocomplete_name_users_path }%>
   	    <%= text_field_tag "seller_id", cookies[:search_seller_id], :style => "display:none;" %>
   	  </div>
     	<br/>

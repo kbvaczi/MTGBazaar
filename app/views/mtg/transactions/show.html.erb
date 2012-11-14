@@ -104,8 +104,6 @@
     	  <td style="width:25%;"> 
     	    <% if @transaction.seller_shipped_at.present? %> 
             <%= display_time(@transaction.seller_shipped_at) %>
-    	    <% elsif @transaction.seller_id == current_user.id && @transaction.shipping_label.present? %>
-
     	    <% else %>
             not yet shipped
     	    <% end %>
@@ -147,8 +145,14 @@
           </td>
       	</tr>      	 
         <tr class="odd">
-          <td colspan=2><p>After shipping, please notify the buyer that their package has shipped. This notifies them to expect the package and allows them to track the shipment.</p></td>  
-      	  <td><%= link_to "Mark as Shipped", create_seller_shipment_confirmation_path(@transaction), :method => :put, :class => "button ma-s", :confirm => "Buyer will be notified of your shipment" %></td>
+          <td colspan=2><p>After shipping, please notify the buyer that their package has shipped. This notifies them to expect the package and allows them to track the shipment.</p></td>
+      	  <td>
+      	    <% if @transaction.seller_shipped_at.present? %> 
+              <i>Notification Sent</i>
+      	    <% else %>
+              <%= link_to "Mark as Shipped", create_seller_shipment_confirmation_path(@transaction), :method => :put, :class => "button ma-s", :confirm => "Buyer will be notified of your shipment" %>
+      	    <% end %>      	    
+      	  </td>
         </tr>
     	</table>
   	<% end %>
@@ -185,7 +189,7 @@
              	  <p><%= @transaction.feedback.seller_response_comment %></p>
              	</td>
             <% else %>
-              <td colspan=2><p>The buyer has left you a rating.  If you disagree with the rating for some reason you can leave a response to the buyer's comment which will be publicly viewable to all users on the site.</p></td>
+              <td colspan=2><p>The buyer has left you a rating.  If you disagree with the rating for some reason you can leave a response which will be viewable to all users on the site.</p></td>
               <td><%= link_to "Respond to Feedback", new_feedback_response_path(@transaction), :class => "button ma-s", :style => "display:inline-block;" %></td>
          	  <% end %>
          	</tr>    	

@@ -5,8 +5,9 @@
   
   <div class="group center_wrap">
     <ul class="tabs center">
-        <li <%= "class=selected" if not params[:section].present? %>> <%= link_to "Profile", user_path(@user.username) %> </li>
-        <li <%= "class=selected" if params[:section] == "feedback" %>> <%= link_to "Feedback", user_path(@user.username, :section => "feedback") %> </li>                
+      <li <%= "class=selected" if not params[:section].present? %>> <%= link_to "Profile", user_path(@user.username) %> </li>
+      <li <%= "class=selected" if params[:section] == "feedback" %>> <%= link_to "Feedback", user_path(@user.username, :section => "feedback") %> </li>
+      <li <%= "class=selected" if params[:section] == "mtg_cards" %>> <%= link_to "For Sale", user_path(@user.username, :section => "mtg_cards") %> </li>      
     </ul>
   </div>
   
@@ -63,15 +64,16 @@
 
   <%# FEEDBACK SECTION %>
   <% if params[:section] == "feedback" %>
-  <h2><%= pluralize(@sales.total_count, "User Review", "User Reviews") %></h2>
-	<table class="data fixed">
-    <tr class="header_row">
-      <th width="13%">Date</th>
-      <th>Buyer</th>      
-      <th width="12%">Rating</th>
-      <th width="50%">Feedback</th>
-    </tr>
-	<% @sales.each do |s| %>
+  
+    <h2><%= pluralize(@sales.total_count, "User Review", "User Reviews") %></h2>
+  	<table class="data fixed">
+      <tr class="header_row">
+        <th width="13%">Date</th>
+        <th>Buyer</th>      
+        <th width="12%">Rating</th>
+        <th width="50%">Feedback</th>
+      </tr>
+    	<% @sales.each do |s| %>
         <tr class=<%= cycle("odd","even") %>> 
           <td>
             <%= display_time(s.created_at)%>
@@ -85,23 +87,94 @@
           <td>
             <p><%= s.feedback.comment %></p>  
           </td>    
-		</tr>
-
-      <% end %>
-			
-		  <% if @sales.count == 0 %>
-		    <tr>
-		      <td colspan=4 class="odd"><i>None</i></td>
-		    </tr>
-		  <% end %>
-			
-  </table>
+    		</tr>
+      <% end %>			
+  	  <% if @sales.count == 0 %>
+  	    <tr>
+  	      <td colspan=4 class="odd"><i>None</i></td>
+  	    </tr>
+  	  <% end %>
+    </table>
       
-      <br class="spacer">
-      <div class="paginator center">
-        <%= paginate @sales %>
-      </div>
+    <br class="spacer">
+    <div class="mt paginator center_wrap">
+      <%= paginate @sales, :method => :get %>
+    </div>
 
+  <% end %>
   
+  <%# MTG_CARDS SECTION %>
+  <% if params[:section] == "mtg_cards" %>
+    <div class="right" style="margin-top:25px;margin-right:10px;">
+    <% if params[:filter] != "false" %>
+      Using search filters: &nbsp;
+      <%= link_to "update", url_for(params.merge(:filter => nil, :page => nil)) %> |
+      <%= link_to "remove", url_for(params.merge(:filter => false, :page => nil)) %>      
+    <% else %>
+      Not using search filters: &nbsp;
+      <%= link_to "apply filters", url_for(params.merge(:filter => nil, :page => nil)) %>    
+    <% end %>
+    </div>
+    <%#= content_tag :div, "Search Filters:", :class => "right", :style => "margin-top:25px;margin-right:10px;" %>    
+
+    <h2><%= pluralize(@listings.total_count, "Listing", "Listings") %></h2>
+    <table class="data fixed">
+      <tr class="header_row">
+        <th width="25%"> <%= table_sort_header("Name") %> </th>
+        <th width="9%"> <%= table_sort_header("Set") %> </th>      
+        <th width="8%"> <%= table_sort_header("Lang", :value => "language") %> </th>
+        <th width="8%"> <%= table_sort_header("Cond", :value => "condition") %> </th>              
+        <th width="10%"> Options </th>
+        <th width="12%"> <%= table_sort_header("Price") %> </th>
+        <th> <%= table_sort_header("Qty", :value => "quantity") %> </th>
+        <th width="20%"> Add to Cart </th>
+      </tr>
+      <% @listings.each do |listing| %>
+        <tr class=<%= cycle("odd","even") %>>  
+          <td><%= link_to listing.card.name, mtg_card_path(listing.card) %></td>
+          <td><div><%= display_set_symbol(listing.card.set) %></div></td>          
+          <td><%= display_flag_symbol(listing.language) %></td>
+          <td><%= display_condition(listing.condition)%>
+          <td>
+            <div style="width:60px;">
+              <% if listing.foil %>
+                <%= listing_option_foil_icon %>
+              <% end %>
+              <% if listing.misprint %>
+                <%= listing_option_misprint_icon %>
+              <% end %>
+              <% if listing.signed %>
+                <%= listing_option_signed_icon %>
+              <% end %>
+              <% if listing.altart %>
+                <%= listing_option_altart_icon %>
+              <% end %>    
+              <% if listing.description != "" %>
+                <%= listing_option_description_icon(listing) %>
+              <% end %>
+              <% if listing.scan.present? %>
+                <%= listing_option_scan_icon(listing) %>
+                <%= listing_option_scan_overlay(listing) %>
+              <% end %>
+            <div>     
+          </td>
+          <td><%= number_to_currency(listing.price)%></td>
+          <td><%= listing.quantity_available %></td>
+          <td>
+            <%= form_tag add_to_cart_mtg_listing_path(listing.id), :method => :post do %>
+              <%= text_field_tag "quantity", 1, :id => nil, :maxlength => 4, :style => "width:30px;text-align:center;"%>            
+              <%= submit_tag "Buy" %>
+            <% end %>
+          </td>         
+        </tr>
+      <% end %>
+      <% if @listings.count == 0 %>
+        <tr class="odd"><td colspan=8><i>No listings</i></td></tr>
+      <% end %>
+    </table>
+    
+    <div class="mt paginator center_wrap">
+      <%= paginate @listings, :method => :get %>
+    </div>
   <% end %>
 </div>

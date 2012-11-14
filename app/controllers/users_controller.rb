@@ -7,9 +7,7 @@ class UsersController < ApplicationController
   def index
     set_back_path
     users_sort_string = table_sort(:default => "LOWER(username)", :member_since => "created_at", :user => "LOWER(username)", :sales => "user_statistics.number_sales",
-                                   :purchases => "user_statistics.number_purchases", :feedback => "user_statistics.approval_percent")
-    
-    
+                                   :purchases => "user_statistics.number_purchases", :feedback => "user_statistics.approval_percent")    
     @users = User.includes(:statistics).active.order(users_sort_string).page(params[:page]).per(15)
   end
   
@@ -17,12 +15,14 @@ class UsersController < ApplicationController
   def show
     set_back_path    
     @user = User.includes(:statistics, :account).where('users.username LIKE ?', params[:id]).first || User.includes(:statistics, :account).find(params[:id])
-    @sales = @user.mtg_sales.includes(:feedback).where("mtg_transactions_feedback.id > 0").order("mtg_transactions_feedback.created_at DESC").page(params[:page]).per(10) if params[:section] == "feedback"
-    
-    listings_sort_string = table_sort(:default => "LOWER(mtg_cards.name)", :price => "price", :condition => "mtg_listings.condition", :language => "mtg_listings.language",
-                                      :quantity => "mtg_listings.quantity", :name => "mtg_cards.name", :set => "mtg_sets.release_date")
-    
-    @listings = @user.mtg_listings.includes(:card => :set).available.order(listings_sort_string).page(params[:page]).per(20) if params[:section] == "mtg_cards"
+    if params[:section] == "feedback"
+      @sales = @user.mtg_sales.includes(:feedback).where("mtg_transactions_feedback.id > 0").order("mtg_transactions_feedback.created_at DESC").page(params[:page]).per(10) 
+    elsif params[:section] == "mtg_cards"
+      query = mtg_filters_query(:seller => false, :activate_filters => params[:filter])    
+      listings_sort_string = table_sort(:default => "LOWER(mtg_cards.name)", :price => "price", :condition => "mtg_listings.condition", :language => "mtg_listings.language",
+                                        :quantity => "mtg_listings.quantity", :name => "LOWER(mtg_cards.name)", :set => "mtg_sets.release_date")
+      @listings = @user.mtg_listings.includes(:card => :set).where(query).available.order(listings_sort_string).page(params[:page]).per(15)
+    end
     
     respond_to do |format|
       format.html # show.html.erb

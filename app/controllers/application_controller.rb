@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
     unless Rails.cache.read "clear_expired_sessions" # check timer
       Rails.cache.write "clear_expired_sessions", true, :expires_in => 10.minutes #reset timer
       Rails.logger.info "CLEARING SESSIONS"
-      Session.where("updated_at < ? OR created_at < ?", 1.hours.ago, 6.hours.ago).destroy_all
+      Session.where("updated_at < ? OR created_at < ?", 1.hours.ago, 12.hours.ago).destroy_all
       Rails.logger.info "CLEARING SESSIONS COMPLETE"
     end
     # if we cleared your session
@@ -105,12 +105,14 @@ class ApplicationController < ActionController::Base
     if options[:activate_filters] != false && options[:activate_filters] != "false"
       if options[:card_filters] != false
         # card filters
+
         query << ["mtg_sets.code LIKE ?",           "#{cookies[:search_set]}"]        if cookies[:search_set].present?      && options[:set] != false
-        query << ["mtg_cards.mana_color LIKE ?",    "%#{cookies[:search_white]}%"]    if cookies[:search_white].present?    && options[:color] != false
-        query << ["mtg_cards.mana_color LIKE ?",    "%#{cookies[:search_black]}%"]    if cookies[:search_black].present?    && options[:color] != false    
-        query << ["mtg_cards.mana_color LIKE ?",    "%#{cookies[:search_blue]}%"]     if cookies[:search_blue].present?     && options[:color] != false
-        query << ["mtg_cards.mana_color LIKE ?",    "%#{cookies[:search_red]}%"]      if cookies[:search_red].present?      && options[:color] != false
-        query << ["mtg_cards.mana_color LIKE ?",    "%#{cookies[:search_green]}%"]    if cookies[:search_green].present?    && options[:color] != false
+        query << ["mtg_cards.name LIKE ?",          "%#{cookies[:search_name]}%"]     if cookies[:search_name].present?     && options[:name]  != false        
+        query << ["mtg_cards.mana_color LIKE ?",    "%W%"]                            if cookies[:search_white].present?    && options[:color] != false
+        query << ["mtg_cards.mana_color LIKE ?",    "%B%"]                            if cookies[:search_black].present?    && options[:color] != false    
+        query << ["mtg_cards.mana_color LIKE ?",    "%U%"]                            if cookies[:search_blue].present?     && options[:color] != false
+        query << ["mtg_cards.mana_color LIKE ?",    "%R%"]                            if cookies[:search_red].present?      && options[:color] != false
+        query << ["mtg_cards.mana_color LIKE ?",    "%G%"]                            if cookies[:search_green].present?    && options[:color] != false
         query << ["mtg_cards.rarity LIKE ?",        "#{cookies[:search_rarity]}"]     if cookies[:search_rarity].present?   && options[:rarity] != false
         query << ["mtg_cards.card_type LIKE ?",     "#{cookies[:search_type]}"]       if cookies[:search_type].present?     && options[:type] != false
         query << ["mtg_cards.card_subtype LIKE ?",  "%#{cookies[:search_subtype]}%"]  if cookies[:search_subtype].present?  && options[:subtype] != false
@@ -121,10 +123,12 @@ class ApplicationController < ActionController::Base
         # language filters
         query << ["mtg_listings.language LIKE ?", cookies[:search_language]]          if cookies[:search_language].present? && options[:language] != false
         # options filters
-        query << ["mtg_listings.foil LIKE ?",     true]                               if cookies[:search_foil].present?     && cookies[:search_foil] && options[:options] != false
-        query << ["mtg_listings.misprint LIKE ?", true]                               if cookies[:search_misprint].present? && cookies[:search_misprint] && options[:options] != false
-        query << ["mtg_listings.signed LIKE ?",   true]                               if cookies[:search_signed].present?   && cookies[:search_signed] && options[:options] != false
-        query << ["mtg_listings.altart LIKE ?",   true]                               if cookies[:search_altart].present?   && cookies[:search_altart] && options[:options] != false
+        if options[:options] != false
+          query << ["mtg_listings.foil LIKE ?",     true]                               if cookies[:search_foil].present?     && cookies[:search_foil]
+          query << ["mtg_listings.misprint LIKE ?", true]                               if cookies[:search_miscut].present?   && cookies[:search_miscut]
+          query << ["mtg_listings.signed LIKE ?",   true]                               if cookies[:search_signed].present?   && cookies[:search_signed]
+          query << ["mtg_listings.altart LIKE ?",   true]                               if cookies[:search_altart].present?   && cookies[:search_altart]
+        end
         # seller filter
         query << ["mtg_listings.seller_id LIKE ?", "#{cookies[:search_seller_id]}"]   if cookies[:search_seller_id].present? && options[:seller] != false
       end

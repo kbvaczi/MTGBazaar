@@ -120,7 +120,7 @@ MTGBazaar::Application.routes.draw do
     post :seller_status_toggle,   :on => :collection
     get  :validate_username_ajax, :on => :collection
   end
-  match 'users/:id/(:page)', :controller => 'users', :action => 'show'  #TODO: hack to get pagination to work in user show page... relook at this later
+  #match 'users/:id/(:page)', :controller => 'users', :action => 'show'  #TODO: hack to get pagination to work in user show page... relook at this later
 
 # NEWS FEEDS
 
