@@ -189,7 +189,7 @@
              	  <p><%= @transaction.feedback.seller_response_comment %></p>
              	</td>
             <% else %>
-              <td colspan=2><p>The buyer has left you a rating.  If you disagree with the rating for some reason you can leave a response which will be viewable to all users on the site.</p></td>
+              <td colspan=2><p>The buyer has left you feedback.  If you disagree with this feedback or want to comment on the buyer, you can leave a message here for all users on the site to see.</p></td>
               <td><%= link_to "Respond to Feedback", new_feedback_response_path(@transaction), :class => "button ma-s", :style => "display:inline-block;" %></td>
          	  <% end %>
          	</tr>    	

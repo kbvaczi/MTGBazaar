@@ -38,7 +38,7 @@
         <th colspan=2>Stats</th> 
       </tr>   
       <tr class="odd">
-        <td width="50%">Approval Rating</td>
+        <td width="50%">Feedback</td>
         <td ><%= @user.statistics.display_approval_percent %></td>
       </tr>           
       <tr class="even">
@@ -68,27 +68,42 @@
     <h2><%= pluralize(@sales.total_count, "User Review", "User Reviews") %></h2>
   	<table class="data fixed">
       <tr class="header_row">
-        <th width="13%">Date</th>
-        <th>Buyer</th>      
-        <th width="12%">Rating</th>
-        <th width="50%">Feedback</th>
+        <th width="9%">Date</th>
+        <th width="10%">Feedback</th>
+        <th width="55%">Comments</th>
       </tr>
     	<% @sales.each do |s| %>
-        <tr class=<%= cycle("odd","even") %>> 
-          <td>
-            <%= display_time(s.created_at)%>
-          </td>
-          <td>  
-            <%= link_to s.buyer.username, user_path(s.buyer.username) %>
-          </td>
-          <td>
-            <%= s.feedback.display_rating %>
-          </td>
-          <td>
-            <p><%= s.feedback.comment %></p>  
-          </td>    
-    		</tr>
-      <% end %>			
+        <% if s.feedback.seller_response_comment.present? %>
+          <tr class=<%= cycle("odd", "even") %>> 
+            <td rowspan=2>
+              <%= display_time(s.created_at, :day => false)%>
+            </td>
+            <td rowspan=2>
+              <%= s.feedback.display_rating %>
+            </td>
+            <td>
+              <p><b><%= link_to s.buyer.username, user_path(s.buyer.username) %> commented:</b>&nbsp;&nbsp;&nbsp;<i>"<%= s.feedback.comment %></i>"</p>
+            </td>    
+      		</tr>
+      		<tr>      		  
+      		  <% cycle("odd", "even") %>
+      		  <td class=<%= cycle("odd", "even") %>><p><b>user response:</b>&nbsp;&nbsp;&nbsp;<i>"<%= s.feedback.seller_response_comment %>"</i></p></td>
+    		  </tr>
+    		<% else %>
+      		<tr class=<%= cycle("odd", "even") %>> 
+            <td>
+              <%= display_time(s.created_at, :day => false)%>
+            </td>
+            <td>
+              <%= s.feedback.display_rating %>
+            </td>
+            <td>
+              <p><b><%= link_to s.buyer.username, user_path(s.buyer.username) %> commented:</b> &nbsp;&nbsp;&nbsp;<i>"<%= s.feedback.comment %></i>"</p>
+            </td>    
+      		</tr>
+    		<% end %>
+      <% end %>
+      			
   	  <% if @sales.count == 0 %>
   	    <tr>
   	      <td colspan=4 class="odd"><i>None</i></td>
