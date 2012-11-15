@@ -13,7 +13,6 @@ class Mtg::Transactions::PaymentNotification < ActiveRecord::Base
   def process_transaction  
     if self.status == "completed" &&  self.response[:transaction_type] == "Adaptive Payment PAY" # check to see if payment was successful and verify this is not a refund
       self.payment.transaction.order.checkout_transaction if self.payment.transaction.order.present?
-      self.payment.transaction.update_attribute(:transaction_number, self.paypal_transaction_id)
       self.payment.update_attributes(:status => "completed")      
     end
   end
