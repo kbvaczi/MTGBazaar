@@ -27,9 +27,15 @@ class Mtg::Transaction < ActiveRecord::Base
                 :constructor => Proc.new { |cents| Money.new(cents || 0) },                
                 :converter => Proc.new { |value| value.respond_to?(:to_money) ? value.to_money : Money.empty }                  
 
-  before_validation :update_transaction_costs
+  # override default route to add username in route.
+  def to_param
+    "#{id}-#{transaction_number}".parameterize 
+  end
 
-  #after_create      :set_transaction_number                    
+# ---------------- CALLBACKS ------------------
+
+  before_validation :update_transaction_costs
+  before_create     :generate_transaction_number                  
   
 # ---------------- VALIDATIONS ----------------      
 
@@ -208,11 +214,12 @@ class Mtg::Transaction < ActiveRecord::Base
     self.value = items.to_a.inject(0) {|sum, item| sum + item[:quantity_requested] * item[:price]}.to_f / 100
     self.shipping_cost = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:item_count => self.item_count)[:user_charge]
   end
-    
-  # creates a unique transaction number based on transaction ID
-  def set_transaction_number
-    self.transaction_number = "MTG-#{(self.id + 282382).to_s(36).rjust(6,"0").upcase}"
-    self.save
+  
+  def generate_transaction_number
+    begin
+      token = SecureRandom.urlsafe_base64(12).gsub(/[-=_]/,"0").upcase
+    end while Mtg::Transaction.where(:transaction_number => token).exists?
+    self.transaction_number = token
   end
   
 end

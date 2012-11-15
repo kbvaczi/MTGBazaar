@@ -110,7 +110,6 @@ class Mtg::Order < ActiveRecord::Base
     self.transaction.buyer = self.buyer                                               # setup buyer and seller for transaction
     self.transaction.seller = self.seller                                     
     self.transaction.status = "confirmed"                                             # set transaction to confirmed since money has changed hands
-    self.transaction.transaction_number = "TBD"                                       # we will get the transaction number later from IPN
     self.transaction.order_id = nil                                                   # disconnect transaction from order so order can be destroyed
     if self.transaction.save
       self.reservations.each { |r| r.purchased! } rescue true                         # update listing quantity and destroy each reservation for this transaction

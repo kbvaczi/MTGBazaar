@@ -113,11 +113,15 @@ a {
 a:hover, a:focus {
 	text-decoration: underline;
 }
-input[type="submit"], input[type="password"], input[type="email"], input[type="text"], input[type="search"], textarea, .button  {
+input[type="password"], input[type="email"], input[type="text"], input[type="search"], textarea  {
+  position:relative;
+  top:1px;
   overflow:hidden;
   outline:none;
+  height:15px;
   border: 1px solid #aaa;
   padding: 3px 4px;
+  margin:0;
   -moz-border-radius: 8px;
   -webkit-border-radius: 8px;
   border-radius: 8px;
@@ -189,11 +193,17 @@ select[disabled] {
   width:60%;
 }
 .button, input[type="submit"] {
+  overflow:hidden;
+  outline:none;
+  border: 1px solid #aaa;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
   -moz-box-shadow:    0 0 0 0 #FFF;
   -webkit-box-shadow: 0 0 0 0 #FFF;
   box-shadow:         0 0 0 0 #FFF;
-  padding: 5px 10px 5px 10px;
-  font-family: 'Lucida Grande';
+  padding: 5px 10px;
+  font-family: "Helvetica Neue", "Arial", sans-serif;
   font-size:11px;
   margin:0;
   color: #fff;
