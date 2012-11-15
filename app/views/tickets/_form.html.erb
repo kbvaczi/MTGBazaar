@@ -5,11 +5,11 @@
 
     <%= f.input :problem,                   :label => "Problem",
                                             :as => :select,
-                                            :collection => MTGBazaar::Application::TICKET_PROBLEM_OPTIONS,
+                                            :collection => MTGBazaar::Application::Ticket.ticket_problem_list,
                                             :input_html => { :class => "chzn-select" },
                                             :required => true %>
                             
-    <%= f.input :transaction_number,        :label => "Transaction Number",
+    <%= f.input :transaction_number,        :label => "Transaction ID",
                                             :as => :string,
                                             :hint => "only for issues regarding specific transactions",
                                             :required => false %>

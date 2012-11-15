@@ -10,7 +10,7 @@
       <div class="inputs">        
         <table class="data">
       	  <tr class="header_row">
-        	  <th>Transaction Number</th>
+        	  <th>Transaction ID</th>
         	  <th>Buyer</th>      	    
         	  <th>Value</th>
         	  <th>Status</th>      
@@ -23,7 +23,7 @@
         	</tr>
       	</table>
       	
-        <%= f.label "Transaction Number"%>
+        <%= f.label "Transaction ID"%>
         <div class="input">
           <p><%= link_to @transaction.transaction_number, show_mtg_transaction_path(@transaction) %> </p>          
         </div>

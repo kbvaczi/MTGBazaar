@@ -6,7 +6,9 @@ class Ticket < ActiveRecord::Base
   has_many    :updates,       :class_name  => "TicketUpdate"
   
   validate :verify_transaction_number, :verify_offender_username, :normal_users_cannot_set_strikes
-  validates_presence_of :description, :problem, :author_id, :author_type
+  validates_presence_of           :problem, :author_id, :author_type
+  validates :description,         :presence => true, 
+                                  :length => {:maximum => 500}  
   after_create :set_ticket_number
   
   # these class variables are accessible to be changed by user when creating a new ticket
@@ -15,18 +17,25 @@ class Ticket < ActiveRecord::Base
   # form accepts these parameters which are not actually in the model itself
   attr_accessor :transaction_number, :offender_username, :current_user
   
-  # requires user to either 1) submit blank transaction number, or 2) submit correct transaction number which is associated with themselves
+  # override default route to add username in route.
+  def to_param
+    "#{id}-#{ticket_number}".parameterize 
+  end
+  
+
+  
+  # requires user to either 1) submit blank transaction ID, or 2) submit correct transaction ID which is associated with themselves
   def verify_transaction_number
-    if (not AdminUser.current_admin_user.present?) and (self.transaction_number.present? or self.transaction_id.present?) # user is not admin, and has entered a transaction number
+    if (not AdminUser.current_admin_user.present?) and (self.transaction_number.present? or self.transaction_id.present?) # user is not admin, and has entered a transaction ID
       if self.problem == "delivery confirmation"
         transaction = Mtg::Transaction.where(:seller_id => self.current_user.id, :transaction_number => self.transaction_number).first
       else
-        transaction = Mtg::Transaction.where(:buyer_id => self.current_user.id, :transaction_number => self.transaction_number).first #find the transaction corresponding to transaction number entered and which belongs to current user
+        transaction = Mtg::Transaction.where(:buyer_id => self.current_user.id, :transaction_number => self.transaction_number).first #find the transaction corresponding to transaction ID entered and which belongs to current user
       end
       if not transaction.present? # did we find the transaction?
-        errors.add(:transaction_number, "invalid transaction number") # transaction number was entered wrong, or this transaction doesn't belong to current user
+        errors.add(:transaction_number, "invalid transaction ID") # transaction ID was entered wrong, or this transaction doesn't belong to current user
       else
-        self.transaction = transaction # correct transaction number entered let's set the transaction
+        self.transaction = transaction # correct transaction ID entered let's set the transaction
       end
     end
     
@@ -79,4 +88,17 @@ class Ticket < ActiveRecord::Base
   def self.active
     where("status LIKE ? OR status LIKE ?", "new", "under review")
   end
+  
+  def self.ticket_problem_list
+    [["I found profanity or inappropriate content",   "profanity"],
+     ["I am being harassed by another user",          "harassment"],
+     ["I want to report illegal activity",            "illegal"], 
+     ["I discovered a bug I would like to share",     "bug"],                                                                                     
+     ["Other problem not covered under FAQ",          "other"]]  
+  end
+  
+  def self.ticket_status_list
+    ["open","resolved","closed"]
+  end
+  
 end

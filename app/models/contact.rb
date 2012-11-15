@@ -1,5 +1,6 @@
 class Contact
-include ActiveModel::Validations
+  include ActiveModel::Validations
+
 
   validates_presence_of :support_type, :content 
   
@@ -9,7 +10,7 @@ include ActiveModel::Validations
   validates :email,         :format => {:with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i}
                     
   # to deal with form, you must have an id attribute
-  attr_accessor :id, :email, :sender_name, :support_type, :content, :ip
+  attr_accessor :id, :email, :sender_name, :support_type, :content, :ip, :username
 
   def initialize(attributes = {})
     attributes.each do |key, value|
@@ -26,6 +27,7 @@ include ActiveModel::Validations
 
   def save
     if self.valid?
+      #self.username = User.find(session["warden.user.user.key"][1]).first rescue nil
       ContactMailer.send_mail(self).deliver
       return true
     end

@@ -66,4 +66,5 @@ class TicketsController < ApplicationController
       render "show"
     end
   end
+  
 end

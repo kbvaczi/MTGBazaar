@@ -32,7 +32,7 @@
 		</style>
 		
 		<div class="left" style="margin-left:5%; text-align:left;">
-			<strong>Transaction Number:</strong> <%= @transaction.transaction_number %><br/>
+			<strong>Transaction ID:</strong> <%= @transaction.transaction_number %><br/>
 			<strong>Buyer:</strong> <%= @transaction.buyer.username %><br/>
 			<strong>Seller:</strong> <%= @transaction.seller.username %><br/>
 			<strong>Purchase Date:</strong> <%= display_time @transaction.created_at %><br/>

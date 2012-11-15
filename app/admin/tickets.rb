@@ -128,7 +128,7 @@ ActiveAdmin.register Ticket do
       f.input :status,  :as => :radio, 
                         :collection => ["new","under review","complete"]
       f.input :problem, :as => :select, 
-                        :collection => MTGBazaar::Application::TICKET_PROBLEM_OPTIONS, 
+                        :collection => MTGBazaar::Application::Ticket.ticket_problem_list, 
                         :input_html => {:class => "chzn-select", :style => "min-width:250px;"}
       f.input :offender,:as => :select, 
                         :hint => "only fill this out if ticket pertains to a specific user and not a transaction", 

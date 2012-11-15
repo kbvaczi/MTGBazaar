@@ -4,7 +4,9 @@ class TicketUpdate < ActiveRecord::Base
   belongs_to  :ticket
   
   validate :validate_user_cannot_close_ticket
-  validates_presence_of :description, :author_id, :author_type, :ticket_id
+  validates_presence_of           :author_id, :author_type, :ticket_id
+  validates :description,         :presence => true, 
+                                  :length => {:maximum => 500}  
   
   # these class variables are accessible to be changed by user when creating a new ticket update
   attr_accessible :description
