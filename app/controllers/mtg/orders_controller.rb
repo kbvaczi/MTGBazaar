@@ -16,6 +16,7 @@ class Mtg::OrdersController < ApplicationController
     
     recipients = [ {:email        => @order.seller.account.paypal_username,                                               # setup recipients            
                     :payment_type => "GOODS",                                                                     # tell paypal this payment is for non-digital goods 
+                    :invoice_id   => @order.transaction.transaction_number,
                     :primary      => true,                                                                             # seller is primary receiver
                     :amount       => @order.total_cost },                                                                # all the money goes through primary
                    {:email        => PAYPAL_CONFIG[:account_email],                                        
@@ -35,8 +36,8 @@ class Mtg::OrdersController < ApplicationController
 
     @purchase = @gateway.setup_purchase(
       :action_type          => "PAY",
-      :return_url           => return_url, #order_checkout_success_url(:secret => encoded_secret, :format => :mobile),
-      :cancel_url           => cancel_url, #order_checkout_failure_url(:format => :js),
+      :return_url           => return_url, 
+      :cancel_url           => cancel_url,
       :ipn_notification_url => payment_notification_url(:id => @order.transaction.id,                            # allows us to checkout the transaction using IPN
                                                         :secret => encoded_secret,                              # for security, so people can't approve transactions on the back-end without paying
                                                         :cart_id => current_cart.id),                           # so we can clear the cart from IPN in case user doesn't clear it on checkout_success_path (scenario where user closes browser or changes url before closing paypal light box)
