@@ -77,8 +77,13 @@ class UserStatistics < ActiveRecord::Base
   def update_ip_log(current_ip)
     Rails.logger.debug "CALLING USER_STATISTICS.update_ip_log"
     if current_ip.present?
-      current_ip_log  = self.ip_log || Array.new
-      self.ip_log     = current_ip_log.push( { :time => Time.now, :ip => current_ip } ).last(20)
+      current_ip_log = self.ip_log || Array.new
+      geocoded_info  = Geocoder.search(current_ip)[0] rescue false
+      self.ip_log    = current_ip_log.push( { :time =>    Time.now, 
+                                              :ip =>      current_ip, 
+                                              :city =>    (geocoded_info.city    rescue ""),
+                                              :state =>   (geocoded_info.state   rescue ""),
+                                              :country => (geocoded_info.country rescue "") } ).last(20)
       self.save
     end
   end

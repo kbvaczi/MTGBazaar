@@ -10,7 +10,7 @@ class Contact
   validates :email,         :format => {:with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i}
                     
   # to deal with form, you must have an id attribute
-  attr_accessor :id, :email, :sender_name, :support_type, :content, :ip, :username
+  attr_accessor :id, :email, :sender_name, :support_type, :content, :ip, :username, :city, :state, :country
 
   def initialize(attributes = {})
     attributes.each do |key, value|

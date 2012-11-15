@@ -37,8 +37,9 @@ gem 'stamps', :git => 'https://github.com/darnovo/stamps.git'       # forked rep
 gem "honeypot-captcha", "~> 0.0.2"                                  # alternative to capcha without the complexity  
 gem "taps", "~> 0.3.24"                                             # ability to pull and push databases from development to production
 
-gem "valium", "~> 0.5.0"                                            # improved activerecord queries?
+#gem "valium", "~> 0.5.0"                                            # improved activerecord queries?
 gem "hirefireapp", "~> 0.0.8"                                       # auto-scaling dynos
+gem 'geocoder'
 
 # -------------
 # STANDARD GEMS
