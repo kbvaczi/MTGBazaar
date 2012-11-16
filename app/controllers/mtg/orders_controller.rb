@@ -22,7 +22,7 @@ class Mtg::OrdersController < ApplicationController
                    {:email        => PAYPAL_CONFIG[:account_email],                                        
                     :payment_type => "SERVICE",                                                                   # second leg of the payment is for service
                     :primary      => false,                                                
-                    :amount       => @order.transaction.payment.commission + @order.transaction.payment.shipping_cost } ] # we get commission + shipping on back end
+                    :amount       => @order.transaction.payment.commission + @order.transaction.payment.shipping_cost  } ] # we get commission + shipping on back end
     
     encoded_secret = Base64.encode64(@order.transaction.payment.calculate_secret).encode('utf-8')               # encryptor uses ascii-8bit encoding, we need to convert to utf-8 to put in parameter... see http://stackoverflow.com/questions/11042657/how-to-encrypt-data-in-a-utf-8-string-using-opensslcipher
 
@@ -35,15 +35,41 @@ class Mtg::OrdersController < ApplicationController
     end
 
     @purchase = @gateway.setup_purchase(
-      :action_type          => "PAY",
+      :action_type          => "CREATE",
       :return_url           => return_url, 
       :cancel_url           => cancel_url,
       :ipn_notification_url => payment_notification_url(:id => @order.transaction.id,                            # allows us to checkout the transaction using IPN
                                                         :secret => encoded_secret,                              # for security, so people can't approve transactions on the back-end without paying
                                                         :cart_id => current_cart.id),                           # so we can clear the cart from IPN in case user doesn't clear it on checkout_success_path (scenario where user closes browser or changes url before closing paypal light box)
-      :memo                 => "Purchase of #{@order.item_count} item(s) from user #{@order.seller.username} on MTGBazaar.com",
+      :memo                 => "Purchase of #{@order.item_count} item(s) from user #{@order.seller.username} on MTGBazaar.com.  Details of this order can be accessed at any time through your account on the MTGBazaar website.",
       :receiver_list        => recipients,
       :fees_payer           => "PRIMARYRECEIVER" )
+
+    @gateway.set_payment_options(
+      :display_options => { :business_name => "MTGBazaar" },
+      :pay_key => @purchase["payKey"],
+      :receiver_options => [
+        {
+          :invoice_data => {
+            :item => [
+              { :name => "Purchase of #{@order.item_count} Items",  :item_price => @order.item_price_total, :price => @order.item_price_total },
+              { :name => "Shipping",                                 :item_price => @order.shipping_cost,    :price => @order.shipping_cost }
+            ]
+          },
+          :receiver => { :email => @order.seller.account.paypal_username }
+        },
+        {
+          :description => "MTGBazaar Fees and Shipping",
+          :invoice_data => {
+            :item => [
+              { :name => "MTGBazaar Sale Commission", :item_price => @order.transaction.payment.commission,    :price => @order.transaction.payment.commission },
+              { :name => "Shipping",                  :item_price => @order.shipping_cost,                     :price => @order.shipping_cost }
+            ]
+          },
+          :receiver => { :email => PAYPAL_CONFIG[:account_email] }
+        }
+      ]
+    )
 
     Rails.logger.debug "GATEWAY: #{@gateway.debug.inspect}"  rescue ""
     Rails.logger.debug "PURCHASE: #{@purchase.inspect}" rescue ""
@@ -54,7 +80,6 @@ class Mtg::OrdersController < ApplicationController
 
     respond_to do |format|
       format.mobile do
-        #redirect_to @gateway.embedded_flow_url_for(@purchase["payKey"])
         redirect_to @gateway.redirect_url_for(@purchase["payKey"])
       end
       format.js {}
