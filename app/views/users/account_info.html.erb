@@ -3,80 +3,98 @@
 <h1> My Account </h1>
 
 <div class="content">
-  <table class="data">
-    <tr class="header_row">
-      <th colspan=2>Account</th>
-    </tr>
-    <tr>
-      <td width="33%" class="header_row">Username</td>
-      <td width="67%" class=<%= cycle "odd", "even" %>><%= "#{current_user.username}" %></td>
-    </tr>
-    <tr>
-      <td class="header_row">Email</td>
-      <td class=<%= cycle "odd", "even" %>><%= current_user.email %></td>
-    </tr>
-    <tr>
-      <td class="header_row">Paypal Email</td>
-      <td class=<%= cycle "odd", "even" %>><%= current_user.account.paypal_username %></td>
-    </tr>    
-    <tr>
-      <td class="header_row">Status</td>
-      <td class=<%= cycle "odd", "even" %>><%= current_user.active ? "Active" : "Inactive" %></td>
-    </tr>   
-  </table>
   
-  <table class="data mt">
-    <tr class="header_row">
-      <th colspan=2>Personal Information</th>
-    </tr>
-    <tr>
-      <td width="33%" class="header_row">Name</td>
-      <td width="67%" class=<%= cycle "odd", "even" %>><%= "#{current_user.account.first_name} #{current_user.account.last_name}" %></td>
-    </tr>
-    <tr>
-      <td class="header_row">Address</td>
-      <td class=<%= cycle "odd", "even" %>><%= current_user.account.address1 %> <%= "<br/> #{current_user.account.address2}".html_safe if current_user.account.address2.present?  %></td>
-    </tr>
-    <tr>
-      <td class="header_row">City</td>
-      <td class=<%= cycle "odd", "even" %>><%= current_user.account.city %></td>
-    </tr>    
-    <tr>
-      <td class="header_row">State</td>
-      <td class=<%= cycle "odd", "even" %>><%= current_user.account.state %></td>
-    </tr>   
-    <tr>
-      <td class="header_row">Zipcode</td>
-      <td class=<%= cycle "odd", "even" %>><%= current_user.account.zipcode %></td>
-    </tr>
-  </table>
+  <div class="group center_wrap">
+    <ul class="tabs center">
+      <li <%= "class=selected" if not params[:section].present? %>> <%= link_to "Account Info", account_info_path %> </li>
+      <li <%= "class=selected" if params[:section] == "history" %>> <%= link_to "Login History", account_info_path(:section => "history") %> </li>
+    </ul>
+  </div>
   
-  <table class="data mt">
-    <tr class="header_row">
-      <th colspan=2>History</th>
-    </tr>
-    <tr>
-      <td class="header_row">Current Sign in</td>
-      <td class=<%= cycle "odd", "even" %>><%= "#{time_ago_in_words(current_user.current_sign_in_at)} ago" %></td>
-    </tr>
-    <tr>
-      <td width="33%" class="header_row">Current IP</td>
-      <td width="67%" class=<%= cycle "odd", "even" %>><%= current_user.current_sign_in_ip %></td>
-    </tr>    
-    <tr>
-      <td class="header_row">Last Sign in</td>
-      <td class=<%= cycle "odd", "even" %>><%= "#{time_ago_in_words(current_user.last_sign_in_at)} ago" %></td>
-    </tr>
-    <tr>
-      <td class="header_row">Last IP</td>
-      <td class=<%= cycle "odd", "even" %>><%= current_user.last_sign_in_ip %></td>
-    </tr>
-  </table>  
+  <br class="spacer"/>
   
-<br/>
-<div class=" ma center_wrap">
-  <%= link_to "Edit Account Info", edit_user_registration_path, :class => "button" %>
-</div>
+  <% unless params[:section].present? %>
+  
+    <table class="data">
+      <tr class="header_row">
+        <th colspan=2>Account</th>
+      </tr>
+      <tr>
+        <td width="33%" class="header_row">Username</td>
+        <td width="67%" class=<%= cycle "odd", "even" %>><%= "#{current_user.username}" %></td>
+      </tr>
+      <tr>
+        <td class="header_row">Email</td>
+        <td class=<%= cycle "odd", "even" %>><%= current_user.email %></td>
+      </tr>
+      <tr>
+        <td class="header_row">Paypal Email</td>
+        <td class=<%= cycle "odd", "even" %>><%= current_user.account.paypal_username %></td>
+      </tr>    
+      <tr>
+        <td class="header_row">Status</td>
+        <td class=<%= cycle "odd", "even" %>><%= current_user.active ? "Active" : "Inactive" %></td>
+      </tr>   
+    </table>
+  
+    <table class="data mt">
+
+      <tr class="header_row">
+        <th colspan=2>Personal Information</th>
+      </tr>
+      <tr>
+        <td width="33%" class="header_row">Name</td>
+        <td width="67%" class=<%= cycle "odd", "even" %>><%= "#{current_user.account.first_name} #{current_user.account.last_name}" %></td>
+      </tr>
+      <tr>
+        <td class="header_row">Address</td>
+        <td class=<%= cycle "odd", "even" %>><%= current_user.account.address1 %> <%= "<br/> #{current_user.account.address2}".html_safe if current_user.account.address2.present?  %></td>
+      </tr>
+      <tr>
+        <td class="header_row">City</td>
+        <td class=<%= cycle "odd", "even" %>><%= current_user.account.city %></td>
+      </tr>    
+      <tr>
+        <td class="header_row">State</td>
+        <td class=<%= cycle "odd", "even" %>><%= current_user.account.state %></td>
+      </tr>   
+      <tr>
+        <td class="header_row">Zipcode</td>
+        <td class=<%= cycle "odd", "even" %>><%= current_user.account.zipcode %></td>
+      </tr>
+    </table>
+  
+    <br/>
+  
+    <div class="ma center_wrap">
+      <%= link_to "Edit Account Info", edit_user_registration_path, :class => "button" %>
+    </div>
+  
+  <% else %>
+  
+    <table class="data">
+      <% ip_log_reverse = current_user.statistics.ip_log.reverse %>
+    
+      <% 6.times do |index| %>
+        <% if index < ip_log_reverse.length %>
+          <tr class="header_row">
+            <th colspan=2>Logged in <%= "#{time_ago_in_words(ip_log_reverse[index][:time])} ago" %></th>
+          </tr>
+          <tr>
+            <td width="33%" class="header_row">IP Address</td>
+            <td width="67%" class=<%= cycle "odd", "even" %>><%= ip_log_reverse[index][:ip] %></td>
+          </tr>    
+          <tr>
+            <td class="header_row">Location</td>
+            <td class=<%= cycle "odd", "even" %>><%= "#{ip_log_reverse[index][:city] != "" && ip_log_reverse[index][:city] ? "#{ip_log_reverse[index][:city]}, " : "" rescue ""} #{ip_log_reverse[index][:state] && ip_log_reverse[index][:state] != "" ? "#{ip_log_reverse[index][:state]}, " : "" rescue ""} #{ip_log_reverse[index][:country] != "" ? "#{ip_log_reverse[index][:country]}" : "" rescue ""} " %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </table> 
+  
+  <% end %> 
+  
+
 
    
    
