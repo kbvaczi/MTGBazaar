@@ -67,10 +67,6 @@ ActiveAdmin.register User do
       row :username
       row :email
       row :created_at
-      row :current_sign_in_at
-      row :last_sign_in_at
-      row :current_sign_in_ip
-      row :last_sign_in_ip
       row :sign_in_count
       row :failed_attempts
       row :locked_at
@@ -91,6 +87,9 @@ ActiveAdmin.register User do
     attributes_table_for user.statistics do 
       row :number_strikes
     end    
+    
+    render :partial => 'login_history', :locals => {:statistics => user.statistics}
+
   end
   
   #customize user edit form
