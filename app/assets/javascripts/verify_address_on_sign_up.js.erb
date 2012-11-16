@@ -28,14 +28,16 @@ $(document).ready(function() {
     $("#verify_address_text").removeClass('tc-y tc-g');
     $("#verify_address_trigger").show();    
   });
-  
+
+/*  
   $(".verify_address_input").bind('keypress', function(event){
     var pressed = String.fromCharCode(event.which);
-    var allowed = /^[\w\d\s#.]+$/;     
+    var allowed = /^[\w\d\s\b\t#.]+$/;     
     if(pressed.match(allowed)) {
       return true;
     }
     return false;
   });
-  
+*/
+
 });

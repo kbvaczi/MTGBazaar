@@ -9,6 +9,7 @@
 //= require jquery_ujs
 //= require jquery_tools
 //= require chosen.jquery
+//= require chosen.jquery-ajax_plugin
 //= require mtg_search    
 //= require jquery-ui
 //= require jquery.ui.autocomplete.html.js

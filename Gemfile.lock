@@ -256,6 +256,8 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
+    valium (0.5.0)
+      activerecord (>= 3.0.2)
     warden (1.2.1)
       rack (>= 1.0)
     yui-compressor (0.9.6)
@@ -302,4 +304,5 @@ DEPENDENCIES
   taps (~> 0.3.24)
   uglifier
   unicorn
+  valium (~> 0.5.0)
   yui-compressor

@@ -117,6 +117,7 @@ MTGBazaar::Application.routes.draw do
   # see http://stackoverflow.com/questions/5051487/combining-devise-with-resources-users-in-rails
   resources :users, :only => [:index, :show] do
     get  :autocomplete_name,      :on => :collection
+    get  :autocomplete_name_chosen,      :on => :collection    
     post :seller_status_toggle,   :on => :collection
     get  :validate_username_ajax, :on => :collection
   end

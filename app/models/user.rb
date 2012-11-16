@@ -51,7 +51,7 @@ class User < ActiveRecord::Base
   
   # multiple users cannot have the same username
   validates_uniqueness_of :username, :case_sensitive => false, :message => "This username has already been taken"
-  validates_uniqueness_of :email, :case_sensitive => false
+  validates_uniqueness_of :email,    :case_sensitive => false
   
   # username must be between 3 and 15 characters and can only have letters, numbers, dash, period, or underscore (no other special characters)
   validates             :username,  :length    => { :minimum => 3, :maximum   => 15, :message => "Username must be at least 3 characters" },

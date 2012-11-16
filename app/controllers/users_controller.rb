@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  before_filter :authenticate_user!, :except => [:index, :autocomplete_name, :validate_username_ajax]
+  before_filter :authenticate_user!, :except => [:index, :autocomplete_name, :autocomplete_name_chosen, :validate_username_ajax]
   
   include ApplicationHelper
   
@@ -68,9 +68,38 @@ class UsersController < ApplicationController
   
   # autocomplete name handler for filtering cards by seller
   def autocomplete_name
-    @users = User.where("username LIKE ?", "%#{params[:term]}%").active.limit(10).order("username ASC") # give me 15 users then filter by banned ones (no index on banned column)
+    @users = User.where("username LIKE ?", "%#{params[:term]}%").active.limit(10).order("username ASC")
     respond_to do |format|
       format.json {}  #loads view autocomplete_name.json.erb which returns json hash array of information
+    end
+  end
+  
+  def autocomplete_name_chosen
+    @users = User.select(["users.id", :username]).joins(:statistics).where("username LIKE ?", "#{params[:term]}%").active.limit(20).order("user_statistics.number_sales, username ASC")
+    respond_to do |format|
+      format.json do
+=begin        
+        return_hash = Hash.new
+        if @users.present?
+          @users.each do |u|
+            computed_label = "#{u.username}"
+            computed_value = "#{u.id}"
+            return_hash.merge! Hash[ computed_value => computed_label ]
+          end
+        end
+        render :json => return_hash
+=end
+        return_hash = Hash.new
+        users_hash = Hash.new
+        if @users.present?
+          @users.each do |u|
+            users_hash.merge! Hash[ "#{u.id}" => "#{u.username}" ]
+          end
+          return_hash.merge! Hash[ "Search Results" => {:name => "Search Results", :items => users_hash } ]
+        end
+        render :json => return_hash
+        
+      end
     end
   end
     
