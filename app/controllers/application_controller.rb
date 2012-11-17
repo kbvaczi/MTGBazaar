@@ -4,8 +4,8 @@ class ApplicationController < ActionController::Base
 
   before_filter :production_authenticate        # simple HTTP authentication for production (TEMPORARY)
 
-  #after_filter  :update_current_session_to_prevent_expiration
-  after_filter  :clear_expired_sessions
+  after_filter  :update_current_session_to_prevent_expiration
+  #after_filter  :clear_expired_sessions
   
   include Mtg::CardsHelper
   

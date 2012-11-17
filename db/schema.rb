@@ -11,26 +11,26 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121030184511) do
+ActiveRecord::Schema.define(:version => 20121117052939) do
 
   create_table "accounts", :force => true do |t|
     t.integer  "user_id"
-    t.string   "first_name",           :default => "", :null => false
-    t.string   "last_name",            :default => "", :null => false
-    t.string   "country",              :default => "", :null => false
-    t.string   "state",                :default => "", :null => false
-    t.string   "city",                 :default => "", :null => false
-    t.string   "address1",             :default => "", :null => false
-    t.string   "address2",             :default => "", :null => false
-    t.string   "zipcode",              :default => "", :null => false
-    t.string   "paypal_username",      :default => "", :null => false
-    t.string   "security_question",    :default => "", :null => false
-    t.string   "security_answer",      :default => "", :null => false
-    t.integer  "balance",              :default => 0,  :null => false
-    t.datetime "created_at",                           :null => false
-    t.datetime "updated_at",                           :null => false
+    t.string   "first_name",                :default => "", :null => false
+    t.string   "last_name",                 :default => "", :null => false
+    t.string   "country",                   :default => "", :null => false
+    t.string   "state",                     :default => "", :null => false
+    t.string   "city",                      :default => "", :null => false
+    t.string   "address1",                  :default => "", :null => false
+    t.string   "address2",                  :default => "", :null => false
+    t.string   "zipcode",                   :default => "", :null => false
+    t.string   "paypal_username",           :default => "", :null => false
+    t.string   "security_question",         :default => "", :null => false
+    t.integer  "balance",                   :default => 0,  :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
     t.string   "address_verification"
     t.float    "commission_rate"
+    t.string   "encrypted_security_answer"
   end
 
   add_index "accounts", ["user_id"], :name => "index_accounts_on_user_id"
@@ -97,6 +97,7 @@ ActiveRecord::Schema.define(:version => 20121030184511) do
 
   create_table "communications", :force => true do |t|
     t.integer  "sender_id"
+    t.string   "sender_type"
     t.integer  "receiver_id"
     t.integer  "mtg_transaction_id"
     t.text     "message"
@@ -333,17 +334,17 @@ ActiveRecord::Schema.define(:version => 20121030184511) do
 
   create_table "mtg_transactions_shipping_labels", :force => true do |t|
     t.integer  "transaction_id"
-    t.string   "url"
     t.string   "stamps_tx_id"
     t.integer  "price"
-    t.boolean  "status",         :default => false
+    t.string   "status",         :default => "active"
     t.text     "params"
     t.text     "tracking"
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
+    t.text     "refund"
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
   end
 
-  add_index "mtg_transactions_shipping_labels", ["transaction_id"], :name => "index_mtg_transactions_shipping_labels_on_transaction_id"
+  add_index "mtg_transactions_shipping_labels", ["transaction_id"], :name => "shipping_labels_transactions_id"
 
   create_table "news_feeds", :force => true do |t|
     t.integer  "author_id"

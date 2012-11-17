@@ -47,6 +47,7 @@ class Account < ActiveRecord::Base
                          
   # Attributes accessible to multiple assign.  Others must be individually assigned.
   attr_accessible :first_name, :last_name, :country, :state, :city, :address1, :address2, :zipcode, :security_question, :security_answer, :paypal_username, :address_verification
+  attr_encrypted  :security_answer, :key => 'shamiggidybobbyokomoto', :encode => true
   
   # returns full name of user
   def full_name

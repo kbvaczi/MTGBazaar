@@ -17,9 +17,10 @@ gem "rails3-jquery-autocomplete", "~> 1.0.6"                        # Autocomple
 gem "smart_tuple", "~> 0.1.2"                                       # Aid for building complex and conditional queries
 gem "money", "~> 4.0.2"                                             # handles currency inputs and currency conversions if we need those in the future
 gem "encryptor", "~> 1.1.3"                                         # 2-way encryption using SSL
+gem "attr_encrypted", "~> 1.2.1"                                    # have rails automatically encrypt certain fields
 #gem "heroku"                                                        # allows application to talk to heroku web hosting service
                                                                      # this gem is now depreciated to be replaced by the heroku toolbelt  
-gem "rmagick", "~> 2.13.1"                                          # image manipulation (requires install of rmagick software)
+#gem "rmagick", "~> 2.13.1"                                          # image manipulation (requires install of rmagick software)
 gem "carrierwave", "~> 0.6.2"                                       # image_scan uploader
 gem "fog", "~> 1.3.1"                                               # supports amazon s3
 gem "activemerchant", "~> 1.26.0", :require => 'active_merchant'    # integration of PayPal

@@ -3,25 +3,15 @@
 
 task :clear_expired_sessions => :environment do
   Rails.logger.info "Running clear_expired_sessions task:"
-  Session.all.each do |s|
-    if s.updated_at < 30.minutes.ago.to_s(:db) or s.created_at < 1.days.ago.to_s(:db) # if session has expired (not touched in 30 minutes or more than a day old)
-=begin
-      Rails.logger.debug " found expired session ID:#{s.id}"
-      cart_id = ActiveRecord::SessionStore::Session.find_by_session_id(s.session_id).data["cart_id"] # find the cart associated with this session
-      if cart_id.present? # does this session have an active cart?
-        cart = Cart.includes(:reservations => :listing).where(:id => cart_id).first # find the cart associated with this session        
-        if cart.present?
-          Rails.logger.debug "  -found cart ID:#{cart.id} with #{cart.item_count} listings"
-          cart.empty # remove all listings out of this cart and make them available for other users to purchase
-          Rails.logger.debug "  -cart ID:#{cart.id} was emptied and now has #{cart.item_count} listings"      
-          cart.destroy # delete this cart
-          Rails.logger.debug "  -cart ID:#{cart.id} destroyed"      
-        end
-      end
-=end
-      s.destroy # delete this session.
-      Rails.logger.debug "  -session ID:#{s.id} destroyed"
-    end
-  end  
+  Session.where("updated_at < ? OR created_at < ?", 1.hours.ago.to_s(:db), 1.days.ago.to_s(:db)).destroy_all
   Rails.logger.info "clear_expired_sessions task complete!"
+end
+
+# Description:  this task clears all transactions and reservations prepped for checkout, but were never checked out...
+# Schedule:     run every day more frequently
+
+task :clear_empty_transactions => :environment do
+  Rails.logger.info "Running clear_empty_transactions task:"
+  Mtg::Transaction.where("seller_id IS ? AND buyer_id IS ? AND created_at < ?", nil, nil, 1.hours.ago.to_s(:db)).destroy_all
+  Rails.logger.info "clear_empty_transactions task complete!"
 end
