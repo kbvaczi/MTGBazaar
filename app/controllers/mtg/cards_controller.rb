@@ -35,16 +35,7 @@ class Mtg::CardsController < ApplicationController
     @card_variants = Mtg::Card.includes(:set).where("mtg_cards.name LIKE ?", @mtg_card.name).order("mtg_sets.release_date DESC")  
 
     query = mtg_filters_query(:card_filters => false, :activate_filters => params[:filter])
-=begin    SmartTuple.new(" AND ")
-    unless params[:filter] == "false"
-      query << ["mtg_listings.foil LIKE ?", true] if cookies[:search_foil].present?
-      query << ["mtg_listings.misprint LIKE ?", true] if cookies[:search_miscut].present?
-      query << ["mtg_listings.signed LIKE ?", true] if cookies[:search_signed].present?
-      query << ["mtg_listings.altart LIKE ?", true] if cookies[:search_altart].present?
-      query << ["mtg_listings.seller_id LIKE ?", cookies[:search_seller_id]] if cookies[:search_seller_id].present?    
-      query << ["mtg_listings.language LIKE ?", cookies[:search_language]] if cookies[:search_language].present?          
-    end
-=end    
+
     sort_string = table_sort(:price => "mtg_listings.price", :condition => "mtg_listings.condition", :language => "mtg_listings.language",
                              :quantity => "mtg_listings.quantity_available", :seller => "LOWER(users.username)", :sales => "user_statistics.number_sales",
                              :feedback => "user_statistics.approval_percent")                      

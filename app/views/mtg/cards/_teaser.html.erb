@@ -37,8 +37,7 @@
                 else
                   available_count = mtg_card.statistics.listings_available
                   min_price = mtg_card.statistics.price_min
-                end
-              
+                end           
               %>
               <% if available_count > 0 %>
                 <%= link_to "#{available_count} For Sale from #{number_to_currency(min_price)}", mtg_card_path(mtg_card) %>        

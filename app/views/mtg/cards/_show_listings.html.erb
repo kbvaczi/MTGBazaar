@@ -1,20 +1,11 @@
-<%= link_to "Sell this card", new_mtg_cards_listing_path(:card_id => @mtg_card.id), :class => "right", :style => "margin-top:7px;margin-right:10px;" %>
-<h2>
-  <%= pluralize(@listings.count, "Listing","Listings") %> 
-</h2>
+<%= render :partial => '/mtg/apply_filters', :locals =>  { :remote => true } %>
+<h2><%= pluralize(@listings.count, "Listing","Listings") %></h2>
+
 
   <!-- Heading -->
 
 <% unless listings.empty? %>
 
-  <div>
-    <div class="left ml"<i>Click on table headers for sorting</i></div>
-  	<% if params[:filter] == "false" %> 
-      <%= link_to "Apply search filters", params.merge(:filter => true), :remote => true, :id => "filter_link", :class => "right mr", :style => "font-weight:normal;" %>  
-    <% else %>
-      <%= link_to "Remove search filters", params.merge(:filter => false), :remote => true, :id => "filter_link", :class => "right mr", :style => "font-weight:normal;" %>
-    <% end %>
-  </div>
   <table class="data fixed">
     <tr class="header_row">
       <th width="30%"> <%= table_sort_header("Seller", :params => {:update_card_info => false}, :remote => true) %> (<%= table_sort_header("Sales", :params => {:update_card_info => false}, :remote => true) %>, <%= table_sort_header("Feedback", :params => {:update_card_info => false}, :remote => true) %>) </th>

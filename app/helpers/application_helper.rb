@@ -33,10 +33,10 @@ module ApplicationHelper
 
   def table_sort_header(title, options = {:value => nil, :remote => false, :params => nil})
     sort = options[:value] || title.downcase
-    if params[:sort] == title.downcase || options[:value]
-      link_to title, params.merge(options[:params] || {}).merge(:sort => sort, :sort_order => (params[:sort_order] == "asc" ? "desc" : "asc")), :remote => options[:remote], :style => "color:#555;"     
+    if params[:sort].present? && (params[:sort] == title.downcase || params[:sort] == options[:value])
+      link_to title, params.merge(options[:params] || {}).merge(:sort => sort, :sort_order => (params[:sort_order] == "asc" ? "desc" : "asc")), :remote => options[:remote], :class => "table_header_sort_selected"     
     else
-      link_to title, params.merge(options[:params] || {}).merge(:sort => sort, :sort_order => "asc"), :remote => options[:remote], :style => "color:#555;"     
+      link_to title, params.merge(options[:params] || {}).merge(:sort => sort, :sort_order => "asc"), :remote => options[:remote], :class => "table_header_sort"
     end
   end
     

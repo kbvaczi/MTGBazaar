@@ -1,5 +1,5 @@
 <%= form_tag search_mtg_cards_path , :method => :get, :id => "search-form", :remote => (request.path == search_mtg_cards_path ? true : false) do %>   
-  <% cache('mtg_cards_search_form') do %>
+  <% cache 'mtg_cards_search_form', :expires_in => 1.days do %>
    
     <%= hidden_field_tag "page", 1 %>
     
@@ -120,8 +120,7 @@
     	<div class="mt-s search-seller group">
   	    <%= text_field_tag "seller", cookies[:search_seller], {:class => "search-text ui-autocomplete-input mb-m deletable" , :placeholder => "Only from this seller..." , "data-autocomplete" => autocomplete_name_users_path }%>
   	    <%= text_field_tag "seller_id", cookies[:search_seller_id], :style => "display:none;" %>
-  	    <%= select_tag "seller_id" , grouped_options_for_select({"Top 10 Sellers" => top_sellers_list}, :selected => cookies[:serach_seller_id]), {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Only from this seller...", :class => "search-select chzn-select-ajax", "data-url" => '/users/autocomplete_name_chosen.json'} %>
-  	    <%#[[cookies[:search_seller], cookies[:search_seller_id]]]%>
+  	    <%#= select_tag "seller_id" , grouped_options_for_select({"Top 10 Sellers" => top_sellers_list}, :selected => cookies[:serach_seller_id]), {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Only from this seller...", :class => "search-select chzn-select-ajax", "data-url" => '/users/autocomplete_name_chosen.json'} %>
   	  </div>
     	<br/>
       <div id="clear-search" class="clear_button">

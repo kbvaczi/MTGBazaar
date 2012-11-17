@@ -11,6 +11,7 @@
     </ul>
   </div>
   
+  
   <%# PROFILE SECTION %>
   <% if not params[:section].present? %>
     <h2>Profile</h2>
@@ -120,19 +121,10 @@
   
   <%# MTG_CARDS SECTION %>
   <% if params[:section] == "mtg_cards" %>
-    <div class="right" style="margin-top:25px;margin-right:10px;">
-    <% if params[:filter] != "false" %>
-      Using search filters: &nbsp;
-      <%= link_to "update", url_for(params.merge(:filter => nil, :page => nil)) %> |
-      <%= link_to "remove", url_for(params.merge(:filter => false, :page => nil)) %>      
-    <% else %>
-      Not using search filters: &nbsp;
-      <%= link_to "apply filters", url_for(params.merge(:filter => nil, :page => nil)) %>    
-    <% end %>
-    </div>
-    <%#= content_tag :div, "Search Filters:", :class => "right", :style => "margin-top:25px;margin-right:10px;" %>    
-
+    <div>
+    <%= render :partial => '/mtg/apply_filters', :locals =>  { :remote => false } %>
     <h2><%= pluralize(@listings.total_count, "Listing", "Listings") %></h2>
+    </div>
     <table class="data fixed">
       <tr class="header_row">
         <th width="25%"> <%= table_sort_header("Name") %> </th>
