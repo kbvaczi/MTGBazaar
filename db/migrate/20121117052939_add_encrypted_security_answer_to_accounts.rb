@@ -1,6 +1,6 @@
 class AddEncryptedSecurityAnswerToAccounts < ActiveRecord::Migration
   
-  class Mtg::Transactions::Item < ActiveRecord::Base
+  class Account < ActiveRecord::Base
   end
   
   def up
