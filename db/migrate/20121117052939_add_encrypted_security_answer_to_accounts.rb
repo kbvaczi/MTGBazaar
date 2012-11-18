@@ -1,7 +1,6 @@
 class AddEncryptedSecurityAnswerToAccounts < ActiveRecord::Migration
   
   class Account < ActiveRecord::Base    # create faux model to avoid validation issues
-    attr_encrypted  :security_answer, :key => 'shamiggidybobbyokomoto', :encode => true
   end
   
   def up
@@ -9,7 +8,7 @@ class AddEncryptedSecurityAnswerToAccounts < ActiveRecord::Migration
 
     Account.reset_column_information   # setup faux model
     Account.all.each do |account|
-      account.update_attribute(:security_answer, account.attributes_before_type_cast["security_answer"])
+      account.update_attribute(:encrypted_security_answer,     Base64.encode64(account.security_answer.encrypt(:key => "shamiggidybobbyokomoto")))
     end
     remove_column( :accounts, :security_answer)           if      column_exists?(:accounts, :security_answer)    
   end
