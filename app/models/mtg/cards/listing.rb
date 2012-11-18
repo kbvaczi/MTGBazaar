@@ -42,13 +42,25 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   end
   
   def update_statistics_cache_on_save
-    self.card.statistics.listings_available(:overwrite => true)
-    self.card.statistics.price_min(:overwrite => true) if self.price <= self.card.statistics.price_min || self.card.statistics.price_min == 0
+    begin
+      self.card.statistics.listings_available(:overwrite => true)
+      self.card.statistics.price_min(:overwrite => true) if self.price <= self.card.statistics.price_min || self.card.statistics.price_min == 0
+    rescue
+      this_cards_statistics = Mtg::Cards::Statistics.where(:card_id => self.card.id).first
+      this_cards_statistics.listings_available(:overwrite => true)
+      this_cards_statistics.price_min(:overwrite => true) if self.price <= this_cards_statistics.price_min || this_cards_statistics.price_min == 0
+    end
   end
   
   def update_statistics_cache_on_delete
-    self.card.statistics.listings_available(:overwrite => true) if self.card.statistics.present?
-    self.card.statistics.price_min(:overwrite => true) if self.price <= self.card.statistics.price_min || self.card.statistics.price_min == 0 if self.card.statistics.present?
+    begin
+      self.card.statistics.listings_available(:overwrite => true) if self.card.statistics.present?
+      self.card.statistics.price_min(:overwrite => true) if self.price <= self.card.statistics.price_min || self.card.statistics.price_min == 0 if self.card.statistics.present?
+    rescue
+      this_cards_statistics = Mtg::Cards::Statistics.where(:card_id => self.card.id).first
+      this_cards_statistics.listings_available(:overwrite => true) if this_cards_statistics.present?
+      this_cards_statistics.price_min(:overwrite => true) if self.price <= this_cards_statistics.price_min || this_cards_statistics.price_min == 0 if this_cards_statistics.present?
+    end
   end
   
   # --------------------------------------- #
