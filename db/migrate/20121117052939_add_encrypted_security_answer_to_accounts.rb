@@ -1,6 +1,7 @@
 class AddEncryptedSecurityAnswerToAccounts < ActiveRecord::Migration
   
-  class Account < ActiveRecord::Base
+  class Account < ActiveRecord::Base    # create faux model to avoid validation issues
+    attr_encrypted  :security_answer, :key => 'shamiggidybobbyokomoto', :encode => true
   end
   
   def up
