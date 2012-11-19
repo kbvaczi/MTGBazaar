@@ -27,12 +27,18 @@
         <td class="header_row">Email</td>
         <td class=<%= cycle "odd", "even" %>><%= current_user.email %></td>
       </tr>
+    </table>
+    
+    <table class="data mt">
+      <tr class="header_row">
+        <th colspan=2>Seller Information</th>
+      </tr>
       <tr>
-        <td class="header_row">Paypal Email</td>
-        <td class=<%= cycle "odd", "even" %>><%= current_user.account.paypal_username %></td>
+        <td  width="33%" class="header_row">Seller PayPal Email</td>
+        <td  width="67%" class=<%= cycle "odd", "even" %>><%= current_user.account.paypal_username.present? ? current_user.account.paypal_username : "<i>none</i>".html_safe %></td>
       </tr>    
       <tr>
-        <td class="header_row">Status</td>
+        <td class="header_row">Seller Status</td>
         <td class=<%= cycle "odd", "even" %>><%= current_user.active ? "Active" : "Inactive" %></td>
       </tr>   
     </table>
@@ -83,11 +89,7 @@
           <tr>
             <td width="33%" class="header_row">IP Address</td>
             <td width="67%" class=<%= cycle "odd", "even" %>><%= ip_log_reverse[index][:ip] %></td>
-          </tr>    
-          <tr>
-            <td class="header_row">Location</td>
-            <td class=<%= cycle "odd", "even" %>><%= "#{ip_log_reverse[index][:city] != "" && ip_log_reverse[index][:city] ? "#{ip_log_reverse[index][:city]}, " : "" rescue ""} #{ip_log_reverse[index][:state] && ip_log_reverse[index][:state] != "" ? "#{ip_log_reverse[index][:state]}, " : "" rescue ""} #{ip_log_reverse[index][:country] != "" ? "#{ip_log_reverse[index][:country]}" : "" rescue ""} " %></td>
-          </tr>
+          </tr>            
         <% end %>
       <% end %>
     </table> 

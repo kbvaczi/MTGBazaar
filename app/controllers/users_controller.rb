@@ -104,7 +104,8 @@ class UsersController < ApplicationController
   end
     
   def seller_status_toggle
-    current_user.update_attribute(:active, !current_user.active)
+    current_user.active = !current_user.active
+    current_user.save
     respond_to do |format|
       format.js {}
     end

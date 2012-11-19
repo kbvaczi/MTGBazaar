@@ -7,6 +7,15 @@ class Account < ActiveRecord::Base
   belongs_to :user
   serialize  :address_verification
 
+# ------------ Callbacks -------------- #
+  after_save :set_seller_status_to_false_if_paypal_removed
+  
+  def set_seller_status_to_false_if_paypal_removed
+    if (not self.paypal_username.present?) and self.user.active
+      self.user.update_attribute(:active, false)
+    end
+  end
+
   # --------------------------------------- #
   # ------------ Validations -------------- #
   # --------------------------------------- #

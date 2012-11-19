@@ -11,13 +11,12 @@ class Account::RegistrationsController < Devise::RegistrationsController
   end
   
   def update
-    user_before_update    = resource.attributes.merge!("updated_at" => nil)
+    #user_before_update    = resource.attributes.merge!("updated_at" => nil)
     set_address_info
     super
-    user_after_update     = resource.attributes.merge!("updated_at" => nil)
-    if resource.updated_at > 10.seconds.ago || resource.account.updated_at > 10.seconds.ago #account_before_update != account_after_update || user_before_update != user_after_update
-      ApplicationMailer.account_update_notification(resource).deliver
-    end
+    #user_after_update     = resource.attributes.merge!("updated_at" => nil)
+    #Rails.logger.info(" USER INFO: #{stats.errors.full_messages}")
+
   end
   
   def create
@@ -70,5 +69,17 @@ class Account::RegistrationsController < Devise::RegistrationsController
       super
     end
   end    
+  
+  def after_update_path_for(resource)
+    case resource
+    when :user, User  
+      if resource.updated_at > 10.seconds.ago || resource.account.updated_at > 10.seconds.ago #account_before_update != account_after_update || user_before_update != user_after_update
+        ApplicationMailer.account_update_notification(resource).deliver
+      end
+      account_info_path
+    else
+      super
+    end
+  end
   
 end

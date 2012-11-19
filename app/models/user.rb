@@ -32,16 +32,18 @@ class User < ActiveRecord::Base
   
   # allow form for accounts nested inside user signup/edit forms
   accepts_nested_attributes_for :account, :statistics
-  
-  after_create :create_statistics
 
-  def create_statistics
-    self.statistics = UserStatistics.create
-  end
-  
   # override default route to add username in route.
   def to_param
     "#{id}-#{username}".parameterize 
+  end
+  
+# ---------------- CALLBACKS ----------------      
+
+  after_create   :create_statistics
+
+  def create_statistics
+    self.statistics = UserStatistics.create
   end
   
 # ---------------- VALIDATIONS ----------------      
@@ -64,10 +66,18 @@ class User < ActiveRecord::Base
   # validates account model when user model is saved
   validates_associated :account, :statistics
   
+  validate              :active_false_when_no_paypal_information
+  
   def username_not_reserved
     reserved_usernames = eval("[" + SiteVariable.get("reserved_usernames") + "]")
     reserved_usernames.each do |reserved_username| 
       errors.add(:username, "Username is reserved, please contact us for details") if self.username.include? reserved_username
+    end
+  end
+  
+  def active_false_when_no_paypal_information
+    if self.active && self.account.present? && !self.account.paypal_username.present?
+      self.active = false
     end
   end
   

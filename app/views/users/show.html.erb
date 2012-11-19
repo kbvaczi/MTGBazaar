@@ -88,7 +88,7 @@
       		</tr>
       		<tr>      		  
       		  <% cycle("odd", "even") %>
-      		  <td class=<%= cycle("odd", "even") %>><p><b>user response:</b>&nbsp;&nbsp;&nbsp;<i>"<%= s.feedback.seller_response_comment %>"</i></p></td>
+      		  <td class=<%= cycle("odd", "even") %>><p><b>seller response:</b>&nbsp;&nbsp;&nbsp;<i>"<%= s.feedback.seller_response_comment %>"</i></p></td>
     		  </tr>
     		<% else %>
       		<tr class=<%= cycle("odd", "even") %>> 
@@ -99,7 +99,7 @@
               <%= s.feedback.display_rating %>
             </td>
             <td>
-              <p><b><%= link_to s.buyer.username, user_path(s.buyer.username) %> commented:</b> &nbsp;&nbsp;&nbsp;<i>"<%= s.feedback.comment %></i>"</p>
+              <p><b><%= link_to s.buyer.username, user_path(s.buyer.username) %> commented:</b> &nbsp;&nbsp;&nbsp;<i>"<%= s.feedback.comment %>"</i></p>
             </td>    
       		</tr>
     		<% end %>

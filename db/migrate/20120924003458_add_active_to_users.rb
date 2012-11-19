@@ -1,6 +1,6 @@
 class AddActiveToUsers < ActiveRecord::Migration
   def up
-    add_column :users, :active, :boolean, :default => true
+    add_column :users, :active, :boolean, :default => false
     remove_column :accounts, :vacation
   end
   
