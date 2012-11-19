@@ -53,7 +53,7 @@
     		<td>
     		  <%= form_tag add_to_cart_mtg_listing_path(listing.id), :method => :post do %>
             <%= text_field_tag "quantity", 1, :id => nil, :maxlength => 4, :style => "width:30px;text-align:center;"%>            
-            <%= submit_tag "Buy" %>
+            <%= submit_tag "Add" %>
           <% end %>
         </td>
   		</tr>

@@ -143,34 +143,32 @@
           <td><%= display_flag_symbol(listing.language) %></td>
           <td><%= display_condition(listing.condition)%>
           <td>
-            <div style="width:60px;">
-              <% if listing.foil %>
-                <%= listing_option_foil_icon %>
-              <% end %>
-              <% if listing.misprint %>
-                <%= listing_option_misprint_icon %>
-              <% end %>
-              <% if listing.signed %>
-                <%= listing_option_signed_icon %>
-              <% end %>
-              <% if listing.altart %>
-                <%= listing_option_altart_icon %>
-              <% end %>    
-              <% if listing.description != "" %>
-                <%= listing_option_description_icon(listing) %>
-              <% end %>
-              <% if listing.scan.present? %>
-                <%= listing_option_scan_icon(listing) %>
-                <%= listing_option_scan_overlay(listing) %>
-              <% end %>
-            <div>     
+            <% if listing.foil %>
+              <%= listing_option_foil_icon %>
+            <% end %>
+            <% if listing.misprint %>
+              <%= listing_option_misprint_icon %>
+            <% end %>
+            <% if listing.signed %>
+              <%= listing_option_signed_icon %>
+            <% end %>
+            <% if listing.altart %>
+              <%= listing_option_altart_icon %>
+            <% end %>    
+            <% if listing.description != "" %>
+              <%= listing_option_description_icon(listing) %>
+            <% end %>
+            <% if listing.scan.present? %>
+              <%= listing_option_scan_icon(listing) %>
+              <%= listing_option_scan_overlay(listing) %>
+            <% end %> 
           </td>
           <td><%= number_to_currency(listing.price)%></td>
           <td><%= listing.quantity_available %></td>
           <td>
             <%= form_tag add_to_cart_mtg_listing_path(listing.id), :method => :post do %>
               <%= text_field_tag "quantity", 1, :id => nil, :maxlength => 4, :style => "width:30px;text-align:center;"%>            
-              <%= submit_tag "Buy" %>
+              <%= submit_tag "Add" %>
             <% end %>
           </td>         
         </tr>

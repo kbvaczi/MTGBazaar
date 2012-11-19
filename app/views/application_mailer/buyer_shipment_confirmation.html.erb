@@ -1,7 +1,7 @@
 <%= provide :heading, "Shipment Confirmation" %>
 
 <h3>Your purchase from <%= link_to @transaction.seller.username, user_url(@transaction.seller) %> has shipped!</h3>
-<h3>Transaction number: <%= @transaction.transaction_number %></h3><br/>
+<h3>Transaction ID: <%= @transaction.transaction_number %></h3><br/>
 
 <br/>
 
