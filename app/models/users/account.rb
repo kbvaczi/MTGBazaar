@@ -8,11 +8,18 @@ class Account < ActiveRecord::Base
   serialize  :address_verification
 
 # ------------ Callbacks -------------- #
-  after_save :set_seller_status_to_false_if_paypal_removed
+  after_save    :set_seller_status_to_false_if_paypal_removed
+  after_create  :set_seller_status_to_true_if_paypal_entered
   
   def set_seller_status_to_false_if_paypal_removed
     if (not self.paypal_username.present?) and self.user.active
       self.user.update_attribute(:active, false)
+    end
+  end
+  
+  def set_seller_status_to_true_if_paypal_entered
+    if self.paypal_username.present? and !self.user.active
+      self.user.update_attribute(:active, true)
     end
   end
 
