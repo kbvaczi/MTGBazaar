@@ -64,6 +64,7 @@ class Account::RegistrationsController < Devise::RegistrationsController
   # devise redirect after sign up
   def after_inactive_sign_up_path_for(resource)
     if resource.is_a?(User)
+      resource.statistics.update_ip_log(resource.current_sign_in_ip) # update IP Log
       welcome_path
     else
       super
