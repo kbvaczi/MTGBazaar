@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
 # ---------------- VALIDATIONS ----------------      
   
   # validates that age and terms have been checked on user sign-up only
-  validates :terms, :inclusion => {:in => [["","1"]], :message => "please accept terms to continue"}, :on => :create
+  validates :terms, :inclusion => {:in => [["1",""]], :message => "please accept terms to continue"}, :on => :create
   
   # multiple users cannot have the same username
   validates_uniqueness_of :username, :case_sensitive => false, :message => "This username has already been taken"
