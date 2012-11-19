@@ -29,25 +29,25 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
   validates             :price, :numericality => {:greater_than => 0, :less_than => 5000, :message => "Must be between $0.01 and $50"}, :if => "postage_created"   #price must be between $0 and $10,000.00  
   
   
-  def self.calculate_shipping_parameters(options = {:item_count => 1})
-    card_weight_in_oz = (options[:item_count] / 15.to_f) # 15 cards per ounce
-    if options[:item_count] <= 150
+  def self.calculate_shipping_parameters(options = {:card_count => 1})
+    card_weight_in_oz = (options[:card_count] / 15.to_f) # 15 cards per ounce
+    if options[:card_count] <= 150
       service_type = 'US-FC' 
       package_type = 'Package'
       package_weight_in_oz = 1.7
-      if options[:item_count] <= 15
-        user_charge = 2.29.to_money # our cost = 1.64 at 3oz, USPS 2.80 with DC
-      elsif options[:item_count] <= 50
+      if options[:card_count] <= 15
+        user_charge = 1.99.to_money # our cost = 1.64 at 3oz, USPS 2.80 with DC
+      elsif options[:card_count] <= 50
         user_charge = 2.99.to_money # our cost = 2.15 at 6oz, USPS 3.31 with DC
-      elsif options[:item_count] <= 150
-        user_charge = 4.29.to_money # our cost = 3.28 at 13oz, USPS 4.50 with DC            
+      elsif options[:card_count] <= 150
+        user_charge = 3.99.to_money # our cost = 3.28 at 13oz, USPS 4.50 with DC            
       end 
-    elsif options[:item_count] <= 500
+    elsif options[:card_count] <= 500
       service_type = 'US-PM' 
       package_type = 'Small Flat Rate Box'
       package_weight_in_oz = 4
       user_charge = 5.99.to_money # our cost = 5.15 flat rate, USPS = 6.10 with DC
-    elsif options[:item_count] <= 4000
+    elsif options[:card_count] <= 4000
       service_type = 'US-PM' 
       package_type = 'Flat Rate Box'
       package_weight_in_oz = 5
@@ -110,7 +110,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
   end
   
   def create_stamp(options={})
-    details = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:item_count => transaction.item_count)
+    details = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count => transaction.item_count)
     stamp = Stamps.create!({
                :sample          => STAMPS_CONFIG[:mode] == "production" ? false : true,  # all labels are test labels if we aren't in production mode....
                :image_type      => "Pdf",
