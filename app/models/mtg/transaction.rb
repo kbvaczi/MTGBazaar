@@ -212,7 +212,7 @@ class Mtg::Transaction < ActiveRecord::Base
   
   def update_transaction_costs
     self.value = items.to_a.inject(0) {|sum, item| sum + item[:quantity_requested] * item[:price]}.to_f / 100
-    self.shipping_cost = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:item_count => self.item_count)[:user_charge]
+    self.shipping_cost = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count => self.item_count)[:user_charge]
   end
   
   def generate_transaction_number

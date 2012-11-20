@@ -126,7 +126,7 @@ class Mtg::Order < ActiveRecord::Base
     if fresh_reservations.count > 0
       self.item_count       = fresh_reservations.to_a.inject(0) {|sum, res| sum + res[:quantity] }
       self.item_price_total = Money.new(fresh_reservations.to_a.inject(0) {|sum, res| sum + res[:quantity] * res.listing[:price]})
-      self.shipping_cost    = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:item_count => item_count)[:user_charge]        
+      self.shipping_cost    = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count => item_count)[:user_charge]        
       self.total_cost       = item_price_total + shipping_cost
     else
       self.item_count       = 0
