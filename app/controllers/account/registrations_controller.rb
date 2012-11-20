@@ -12,13 +12,13 @@ class Account::RegistrationsController < Devise::RegistrationsController
   
   def update
     set_address_info
-    resource.attributes.merge!(:paypal_verified => true) if session[:paypal_verify_response] == true
+    set_paypal_verification_status
     super
   end
   
   def create
     set_address_info
-    resource.attributes.merge!(:paypal_verified => true) if session[:paypal_verify_response] == true
+    set_paypal_verification_status
     super
   end
   
@@ -112,6 +112,10 @@ class Account::RegistrationsController < Devise::RegistrationsController
       params[:user][:account_attributes][:address_verification] = { :cleanse_hash => address_info[:cleanse_hash], :override_hash => address_info[:override_hash] } || ""
       session[:address_info] = nil
     end
+  end
+  
+  def set_paypal_verification_status
+    params[:user][:account_attributes][:paypal_verified] = true if session[:paypal_verify_response] == true
   end
   
   # devise redirect after sign up
