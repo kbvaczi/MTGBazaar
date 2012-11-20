@@ -19,7 +19,7 @@ $(document).ready(function() {
   });
   
   $("#user_account_attributes_paypal_username").focusout(function(evt) {
-		target.parent().removeClass('field_with_errors');
+		$(this).parent().removeClass('field_with_errors');
     if ($(this).val() != "") {
       verifyPaypalAccount();
     } else {
