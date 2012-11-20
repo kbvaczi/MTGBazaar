@@ -11,9 +11,16 @@ class Account::RegistrationsController < Devise::RegistrationsController
   end
   
   def update
+    user_before_update    = resource.attributes.merge!("updated_at" => nil)
+    #account_before_update = resource.account.attributes.merge!("updated_at" => nil)
     set_address_info
-    set_paypal_verification_status
+    set_paypal_verification_status    
     super
+    user_after_update     = resource.attributes.merge!("updated_at" => nil)
+    #account_after_update  = resource.account.attributes.merge!("updated_at" => nil)
+    if resource.updated_at > 10.seconds.ago || resource.account.updated_at > 10.seconds.ago #account_before_update != account_after_update || user_before_update != user_after_update
+      ApplicationMailer.account_update_notification(resource).deliver
+    end
   end
   
   def create
@@ -130,9 +137,6 @@ class Account::RegistrationsController < Devise::RegistrationsController
   def after_update_path_for(resource)
     case resource
     when :user, User  
-      if resource.updated_at > 10.seconds.ago || resource.account.updated_at > 10.seconds.ago #account_before_update != account_after_update || user_before_update != user_after_update
-        ApplicationMailer.account_update_notification(resource).deliver
-      end
       account_info_path
     else
       super
