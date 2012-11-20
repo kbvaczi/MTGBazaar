@@ -16,14 +16,10 @@
                                       :placeholder => "ex: BazaarSeller23" %>
 
   <%= f.input :email ,                :required => true,
-                                      :placeholder => "name@domain.com" %>
+                                      :placeholder => "ex: name@domain.com" %>
 
-	  <%= f.simple_fields_for :account do |a| %>
+  <%= f.simple_fields_for :account do |a| %>
 																				
-	<%= a.input :paypal_username, 			:label => "PayPal Email", 
-																			:required => false,
-																			:placeholder => "paypal@domain.com",
-																			:hint => "Verified PayPal required for sellers only" %> 
 
   <%= f.input :password,              :required => true, 
                                       :hint => "must be at least 8 characters"  %>
@@ -69,14 +65,15 @@
                                 :required => true %>
                                 
     <%= a.input :address2,      :label => 'Apt./Suite.',
+                                :placeholder => "ex: APT 203",    
                                 :input_html => { :class => "verify_address_input" } %>
 
     <%= a.input :city ,         :required => true,
                                 :input_html => { :class => "verify_address_input" } %>
 
-    <%= a.input :state ,        :as => :select,
-                                :input_html => { :class => 'chzn-select verify_address_input' },
-                                :collection => us_states,                                        
+    <%= a.input :state ,        :as => :string,
+                                :placeholder => "ex: TX",
+                                :input_html => { :maxlength => 2, :class => 'verify_address_input' },                                       
                                 :required => true %>
                                 
     <%= a.input :zipcode ,      :label => "Zip" , 
@@ -115,8 +112,20 @@
                                                :required => false %>
     </div>
 
+    <br class = "spacer"/>
+    <br class = "spacer"/>
+    <h2>Seller Setup</h2>
+    <br class = "spacer"/>
+    
+    <%= a.label "", "Verified PayPal Email" %>
+  	<%= a.input :paypal_username, 			:label => false,
+  																			:required => false,
+  																			:placeholder => "this is required for sellers only",
+  																			:hint => "first & last name must match PayPal account" %>
       
-  <% end %>
+  <% end # of accounts fields %>
+
+
   
   <br class = "spacer"/>
   <br class = "spacer"/>    

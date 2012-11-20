@@ -40,7 +40,10 @@ gem "taps", "~> 0.3.24"                                             # ability to
 
 gem "valium", "~> 0.5.0"                                            # improved activerecord queries?
 gem "hirefireapp", "~> 0.0.8"                                       # auto-scaling dynos
-gem 'geocoder'
+gem "geocoder", "~> 1.1.5"
+
+gem "httpclient", "~> 2.3.0.1"
+gem "xml-simple", "~> 1.1.2"
 
 # -------------
 # STANDARD GEMS

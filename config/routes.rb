@@ -111,6 +111,7 @@ MTGBazaar::Application.routes.draw do
   devise_for :users, :path => '/account', :controllers => { :registrations => 'account/registrations', :sessions => 'account/sessions', :passwords => 'account/passwords' } 
   devise_scope :user do
     get 'account/sign_up/verify_address' => 'account/registrations#verify_address', :as => "sign_up_verify_address"
+    get 'account/sign_up/verify_paypal'  => 'account/registrations#verify_paypal',  :as => "sign_up_verify_paypal"    
   end
 
   # resources :users must be declared after devise_for because earlier declarations take precedence 

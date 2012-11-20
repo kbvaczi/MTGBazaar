@@ -7,7 +7,14 @@ class Account < ActiveRecord::Base
   belongs_to :user
   serialize  :address_verification
 
-# ------------ Callbacks -------------- #
+  # Attributes accessible to multiple assign.  Others must be individually assigned.
+  attr_accessor   :paypal_verified
+  attr_accessible :first_name, :last_name, :country, :state, :city, :address1, :address2, :zipcode, :security_question, :security_answer, :paypal_username, :address_verification, :paypal_verified
+  attr_encrypted  :security_answer, :key => 'shamiggidybobbyokomoto', :encode => true  
+
+
+  # ------------ Callbacks -------------- #
+  
   after_save    :set_seller_status_to_false_if_paypal_removed
   after_create  :set_seller_status_to_true_if_paypal_entered
   
@@ -61,10 +68,13 @@ class Account < ActiveRecord::Base
                            :maximum   => 30,
                          }
                          
-  # Attributes accessible to multiple assign.  Others must be individually assigned.
-  attr_accessible :first_name, :last_name, :country, :state, :city, :address1, :address2, :zipcode, :security_question, :security_answer, :paypal_username, :address_verification
-  attr_encrypted  :security_answer, :key => 'shamiggidybobbyokomoto', :encode => true
+  validate              :verified_paypal_account
   
+  def verified_paypal_account
+    Rails.logger.info("PAYPAL_VERIFIED_ATTRIBUTE = #{self.paypal_verified}")
+    errors.add(:paypal_username, "Only verified PayPal accounts are accepted...") if self.paypal_verified == false && self.paypal_username.present?
+  end                         
+
   # returns full name of user
   def full_name
     first_name + " " + last_name

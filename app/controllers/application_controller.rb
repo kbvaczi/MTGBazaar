@@ -152,3 +152,9 @@ class ApplicationController < ActionController::Base
 
   
 end
+
+=begin
+
+["darnovo@gmail.com", "ken@mtgbazaar.com", "shennissar@hotmail.com", "johnnyvaleriote@gmail.com", "onislave@gmail.com", "chaosevoker@gmail.com", "nathanlilly@lycos.com", "drshakar@live.com", "anthonysirfalot@yahoo.com", "azariah@azariah.net", "taylor_w87@yahoo.com", "cruzing2001@yahoo.com", "fusionmod@gmail.com", "marcrajotte@shaw.ca", "customerservice@jaxcardsingles.com", "tgpsychoguy@aol.com", "dragbait@yahoo.com", "remeltphoto@gmail.com", "jefemats@hotmail.com", "schaefer.sm@gmail.com", "info@fatogre.com", "schm9400@gmail.com", "mritak@hotmail.com", "shwn@bol.com.br", "sandrete66@gmail.com", "ilovechristiwu@gmail.com", "hugodanobeitia@hotmail.com", "chadwick.j.hewitt@gmail.com", "juan.the-oath@hotmail.com", "fchenard@gmail.com"]
+
+=end
