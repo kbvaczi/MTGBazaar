@@ -9,7 +9,7 @@
   <% if @response[:tracking_events][:tracking_event].class == Hash %>
     <% tracking_events = [ @response[:tracking_events][:tracking_event] ] %>
   <% else %>   <%# if the tracking event object is an array, there are multiple tracking events...%>  
-    <% tracking_events = @response[:tracking_events] %>
+    <% tracking_events = @response[:tracking_events][:tracking_event] %>
   <% end %>
   
   <% tracking_events.each do |event| %>
