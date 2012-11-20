@@ -4,8 +4,8 @@ module ApplicationHelper
     provide :title, " | #{page_title.parameterize}"
   end
   
-  def capitalize_first_word(word)
-    word.split(' ').map {|w| w.capitalize }.join(' ')
+  def capitalize_first_letters(word)
+    word.downcase.split(' ').map {|w| w.capitalize }.join(' ')
   end
   
   def display_time(time, options = {})

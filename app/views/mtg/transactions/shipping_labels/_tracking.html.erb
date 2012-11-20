@@ -1,44 +1,30 @@
-<h2>Tracking <%= @transaction.transaction_number %></h2>
-<table class='data'>
+<table class='data fixed'>
   <tr class='header_row'>
-    <th>Date</th>
-    <th>Location</th>
+    <th width="30%">Date</th>
+    <th width="25%">Location</th>
     <th>Event</th>    
   </tr>
   
   <%# if the tracking event object is a hash, there is only one tracking event...%>
   <% if @response[:tracking_events][:tracking_event].class == Hash %>
-
-    <% event = @response[:tracking_events][:tracking_event] %>
-    <tr>
-      <td> <%= event[:timestamp] %> </td>
+    <% tracking_events = [ @response[:tracking_events][:tracking_event] ] %>
+  <% else %>   <%# if the tracking event object is an array, there are multiple tracking events...%>  
+    <% tracking_events = @response[:tracking_events] %>
+  <% end %>
+  
+  <% tracking_events.each do |event| %>
+    <tr class=<%= cycle("odd", "even")%>>
+      <td> <%= event[:timestamp].in_time_zone.strftime("%m/%d/%y at %I:%M%p CST") %> </td>
       <% if event[:city]  %>      
-        <td> <%= "#{event[:city]}, #{event[:state]} #{event[:zipcode]}" %> </td>            
+        <td> <%= "#{capitalize_first_letters(event[:city])}, #{event[:state]} #{event[:zipcode]}" %> </td>            
       <% else %>
         <td> <%= "#{event[:zipcode]}" %> </td>            
       <% end %>
-      <td> <%= event[:event] %> </td>
+      <td> <p><%= capitalize_first_letters(event[:event]) %></p> </td>
     </tr>
-
-  <%# if the tracking event object is an array, there are multiple tracking events...%>  
-  <% else %>
-
-    <% @response[:tracking_events][:tracking_event].each do |event| %>
-      <tr>
-        <td> <%= event[:timestamp] %> </td>
-        <% if event[:city]  %>      
-          <td> <%= "#{event[:city]}, #{event[:state]} #{event[:zipcode]}" %> </td>            
-        <% else %>
-          <td> <%= "#{event[:zipcode]}" %> </td>            
-        <% end %>
-        <td> <%= event[:event] %> </td>
-      </tr>
-    <% end %>
-    
   <% end %>
 
 </table>
-
 
 <%#
 

@@ -26,7 +26,7 @@
     <% @transfers.each do |transfer| %>
       <tr class=<%= cycle("even","odd") %>>
         <td> <%= display_time(transfer.created_at) %> </td>
-        <td> <%= capitalize_first_word(transfer.transfer_type) rescue "" %> </td>
+        <td> <%= capitalize_first_letters(transfer.transfer_type) rescue "" %> </td>
         <td> <%= number_to_currency(transfer.balance) %> </td>
         <td> <%= transfer.payment_notifications.first.transaction_id rescue "" %> </td>
         <td> <%= transfer.status.capitalize rescue "" %> </td>        
