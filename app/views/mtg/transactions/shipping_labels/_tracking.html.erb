@@ -1,21 +1,59 @@
-<h2>Tracking <%= @transaction.transaction_number %></h2>
-<table class='data'>
+<table class='data fixed'>
   <tr class='header_row'>
-    <th>Date</th>
-    <th>Location</th>
+    <th width="30%">Date</th>
+    <th width="25%">Location</th>
     <th>Event</th>    
   </tr>
-
-  <% @response[:tracking_events].each do |event| %>
-    <tr>
-      <td> <%= event[1][:timestamp] %> </td>
-      <% if event[1][:city]  %>      
-        <td> <%= "#{event[1][:city]}, #{event[1][:state]} #{event[1][:zip]}" %> </td>            
+  
+  <%# if the tracking event object is a hash, there is only one tracking event...%>
+  <% if @response[:tracking_events][:tracking_event].class == Hash %>
+    <% tracking_events = [ @response[:tracking_events][:tracking_event] ] %>
+  <% else %>   <%# if the tracking event object is an array, there are multiple tracking events...%>  
+    <% tracking_events = @response[:tracking_events][:tracking_event] %>
+  <% end %>
+  
+  <% tracking_events.each do |event| %>
+    <tr class=<%= cycle("odd", "even")%>>
+      <td> <%= event[:timestamp].in_time_zone.strftime("%m/%d/%y at %I:%M%p CST") %> </td>
+      <% if event[:city]  %>      
+        <td> <%= "#{capitalize_first_letters(event[:city])}, #{event[:state]} #{event[:zipcode]}" %> </td>            
       <% else %>
-        <td> <%= "#{event[1][:zip]}" %> </td>            
+        <td> <%= "#{event[:zipcode]}" %> </td>            
       <% end %>
-      <td> <%= event[1][:event] %> </td>
+      <td> <p><%= capitalize_first_letters(event[:event]) %></p> </td>
     </tr>
   <% end %>
 
 </table>
+
+<%#
+
+###### NOTE TRACKING EVENT IS AN ARRAY WHEN MULTIPLE ENTRIES
+
+{:authenticator=>"exp=1353506542&uid=6063079&cty=swsim&ctk=04wJBFEGpgyC4ndcHIqCpKayfgw=&iid=bbQsEwUmPEiD0fGoLcBFKw==&rsid=0&eac=0&eacx=0&rrsid=0&raid=0&resellerid=0&pexp=0&mac=BJOY8I9aBMO7V+s1mfGDsZTJ/e4=", 
+  :tracking_events=>{
+    :tracking_event=>
+      [ {:timestamp=>Tue, 20 Nov 2012 00:53:00 +0000, :event=>"PROCESSED THROUGH USPS SORT FACILITY", :tracking_event_type=>"Enroute", :city=>"HOUSTON", :state=>"TX", :zip=>"77201", :country=>"US", :signed_by=>nil, :authorized_agent=>true}, 
+        {:timestamp=>Mon, 19 Nov 2012 17:40:00 +0000, :event=>"PROCESSED THROUGH USPS SORT FACILITY", :tracking_event_type=>"Enroute", :city=>"NORTH HOUSTON", :state=>"TX", :zip=>"77315", :country=>"US", :signed_by=>nil, :authorized_agent=>true}, 
+        {:timestamp=>Mon, 19 Nov 2012 16:25:00 +0000, :event=>"ORIGIN ACCEPTANCE", :tracking_event_type=>"UnrecognizedEvent", :city=>"SPRING", :state=>"TX", :zip=>"77380", :country=>"US", :signed_by=>nil, :authorized_agent=>true}, 
+        {:timestamp=>Sun, 18 Nov 2012 22:23:00 +0000, :event=>"Electronic Notification", :tracking_event_type=>"ElectronicNotification", :city=>nil, :state=>nil, :zip=>"77380", :country=>"US", :signed_by=>nil, :authorized_agent=>true}
+      ]
+  }, 
+  :xmlns=>"http://stamps.com/xml/namespace/2010/11/swsim/swsimv12"
+}
+
+###### NOTE TRACKING EVENT IS A HASH WHEN ONLY ONE ENTRY
+
+{:authenticator=>"exp=1351976120&uid=6063079&cty=swsim&ctk=QXGMu55Jkt/7Q9mQQ7Qoe5bzHlk=&iid=bbQsEwUmPEiD0fGoLcBFKw==&rsid=0&eac=0&eacx=0&rrsid=0&raid=0&resellerid=0&pexp=0&mac=1Fz5ZnWkQLndU6FhH0BxIuTr3eA=", 
+  :tracking_events=>{
+    :tracking_event=>{
+      :timestamp=>2012-11-02 15:54:00 +0000, :event=>"Electronic Notification", :tracking_event_type=>"ElectronicNotification", :city=>nil, :state=>nil, :zip=>"77042", :country=>"US", :signed_by=>nil, :authorized_agent=>true
+    }
+  }, 
+  :xmlns=>"http://stamps.com/xml/namespace/2010/11/swsim/swsimv12"
+}
+
+
+
+
+%>
