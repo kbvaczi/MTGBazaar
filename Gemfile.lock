@@ -135,6 +135,7 @@ GEM
     honeypot-captcha (0.0.2)
     hooves (0.7)
       unicorn (> 0)
+    httpclient (2.3.0.1)
     httpi (0.7.9)
       rack
     i18n (0.6.1)
@@ -261,6 +262,7 @@ GEM
       activerecord (>= 3.0.2)
     warden (1.2.1)
       rack (>= 1.0)
+    xml-simple (1.1.2)
     yui-compressor (0.9.6)
       POpen4 (>= 0.1.4)
 
@@ -286,6 +288,7 @@ DEPENDENCIES
   hirefireapp (~> 0.0.8)
   honeypot-captcha (~> 0.0.2)
   hooves
+  httpclient
   jquery-rails
   json
   kaminari (~> 0.14)
@@ -306,4 +309,5 @@ DEPENDENCIES
   uglifier
   unicorn
   valium (~> 0.5.0)
+  xml-simple
   yui-compressor

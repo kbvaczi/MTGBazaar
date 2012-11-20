@@ -11,17 +11,71 @@ class Account::RegistrationsController < Devise::RegistrationsController
   end
   
   def update
-    #user_before_update    = resource.attributes.merge!("updated_at" => nil)
     set_address_info
+    resource.attributes.merge!(:paypal_verified => true) if session[:paypal_verify_response] == true
     super
-    #user_after_update     = resource.attributes.merge!("updated_at" => nil)
-    #Rails.logger.info(" USER INFO: #{stats.errors.full_messages}")
-
   end
   
   def create
     set_address_info
+    resource.attributes.merge!(:paypal_verified => true) if session[:paypal_verify_response] == true
     super
+  end
+  
+  def verify_paypal
+    #include the gems needed
+    require 'httpclient'
+    require 'xmlsimple'
+
+
+     
+    #set the header of the request
+    header =  {"X-PAYPAL-SECURITY-USERID"       => PAYPAL_CONFIG[:api_login],
+               "X-PAYPAL-SECURITY-PASSWORD"     => PAYPAL_CONFIG[:api_password],
+               "X-PAYPAL-SECURITY-SIGNATURE"    => PAYPAL_CONFIG[:api_signature],
+               "X-PAYPAL-REQUEST-DATA-FORMAT"   => "NV",
+               "X-PAYPAL-RESPONSE-DATA-FORMAT"  => "XML",
+               "X-PAYPAL-APPLICATION-ID"        => PAYPAL_CONFIG[:appid] }
+    #data to be sent in the request
+    data = {"emailAddress"                  => params[:email],
+           "firstName"                      => Rails.env.production? ? params[:first_name].downcase : "christopher",
+           "lastName"                       => Rails.env.production? ? params[:last_name].downcase : "odorizzi",
+           "matchCriteria"                  => "NAME",
+           "requestEnvelope.errorLanguage"  => "en_US"}
+    clnt = HTTPClient.new
+   # uri = "https://svcs.sandbox.paypal.com/AdaptiveAccounts/GetVerifiedStatus"
+    uri = (Rails.env.production? && PAYPAL_CONFIG[:mode] == "production") ? "https://svcs.paypal.com/AdaptiveAccounts/GetVerifiedStatus" : "https://svcs.sandbox.paypal.com/AdaptiveAccounts/GetVerifiedStatus"
+    #make the post
+    res = clnt.post(uri, data, header)
+    #if the request is successfull parse the XML
+    if res.status == 200
+      @xml = XmlSimple.xml_in(res.content)
+      #check if the status node exists in the xml
+      if @xml['accountStatus']!=nil
+        account_status = @xml['accountStatus'][0]
+        if account_status.to_s() == "VERIFIED"
+          paypal_verify_response = "verified"
+        else
+          paypal_verify_response = "unverified"
+        end
+      else
+        paypal_verify_response = "error"
+      end
+    end
+    
+  
+    respond_to do |format|
+      format.json do         
+        case paypal_verify_response
+          when "verified"
+            session[:paypal_verify_response] = true
+          else
+            session[:paypal_verify_response] = false
+        end
+        render :json => paypal_verify_response.to_json
+      end
+    end
+  
   end
   
   def verify_address

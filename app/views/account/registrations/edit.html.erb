@@ -12,8 +12,6 @@
     <br class = "spacer"/>
     
     <%= f.input :email , :required => true %>
-    <%= a.input :paypal_username, :label => "PayPal Email", :required => false,
-			 																											:hint => "Verified PayPal required for sellers"%>    
     
     <%= f.input :password, :label => "New password", :hint => "leave empty to keep existing password" %>
     <%= f.input :password_confirmation, :label => "Confirm password" %>
@@ -40,9 +38,9 @@
     <%= a.input :city ,         :required => true,
                                 :input_html => { :class => "verify_address_input" } %>
 
-    <%= a.input :state ,        :as => :select,
-                                :input_html => { :class => 'chzn-select verify_address_input' },
-                                :collection => us_states,                                        
+    <%= a.input :state ,        :as => :string,
+                                :placeholder => "ex: TX",
+                                :input_html => { :maxlength => 2, :class => 'verify_address_input' },                                       
                                 :required => true %>
                                 
     <%= a.input :zipcode ,      :label => "Zip" , 
@@ -83,7 +81,18 @@
                                                :as => :hidden,
                                                :required => false %>
     </div>
-  <% end %>
+    
+    <br class = "spacer"/>
+    <br class = "spacer"/>
+    <h2>Seller Setup</h2>
+    <br class = "spacer"/>
+    
+    <%= a.label "", "Verified PayPal Email" %>
+  	<%= a.input :paypal_username, 			:label => false,
+  																			:required => false,
+  																			:placeholder => "this is required for sellers only",
+  																			:hint => "first & last name must match PayPal account" %>
+  <% end # of accounts fields %>
   
   <br class = "spacer"/>
   <h2>Confirmation</h2>

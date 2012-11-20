@@ -42,6 +42,9 @@ gem "valium", "~> 0.5.0"                                            # improved a
 gem "hirefireapp", "~> 0.0.8"                                       # auto-scaling dynos
 gem 'geocoder'
 
+gem 'httpclient'
+gem 'xml-simple'
+
 # -------------
 # STANDARD GEMS
 # -------------

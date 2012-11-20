@@ -18,6 +18,16 @@ $(document).ready(function() {
 		}); 		
   });
   
+  $("#user_account_attributes_paypal_username").focusout(function(evt) {
+    if ($(this).val() != "") {
+      verifyPaypalAccount();
+    } else {
+  	  $(this).siblings('span.error').remove();
+			$(this).siblings('span.hint').remove();
+      $(this).parent().append('<span class="hint">first & last name must match PayPal account</span>'); 
+    }
+  });
+  
   $("#sign_up_button").click(function(){
     if ( !$('#user_account_attributes_address_verification').val() ) {
       myCustomAlertBox("Please verify your address information prior to continuing");
@@ -29,3 +39,34 @@ $(document).ready(function() {
   });
   
 });
+
+function verifyPaypalAccount() {
+  var target = $("#user_account_attributes_paypal_username");  
+	$.ajax({
+		url: "/account/sign_up/verify_paypal.json?email=" + target.val() + "&first_name=" + $("#user_account_attributes_first_name").val() + "&last_name=" + $("#user_account_attributes_last_name").val(),
+		type: "GET",
+		dataType: "json",
+		beforeSend: function ( xhr ) {
+		  target.siblings('span.error').remove();
+			target.siblings('span.hint').remove();
+      target.parent().append('<span class="hint">Confirming Account...</span>'); 
+    },
+    error: function (xhr, ajaxOptions, thrownError) {
+		  target.siblings('span.error').remove();
+			target.siblings('span.hint').remove();
+      target.parent().append('<span class="error">Error Confirming Account...</span>');
+    },
+		success: function(data) {
+			target.siblings('span.error').remove();
+			target.siblings('span.hint').remove();
+			if(data == "verified") {
+				target.parent().append('<span class="hint" style="color:green;">PayPal Account Verified!</span>');		
+			}
+			else if (data == "unverified") {
+				target.parent().append('<span class="error">This PayPal account is not verified...</span>');		
+			} else {
+				target.parent().append('<span class="error">Unable to find account. Please check first name, last name, and PayPal email for accuracy...</span>');						  
+			}
+		}
+	});
+}
