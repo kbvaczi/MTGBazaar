@@ -47,10 +47,6 @@ class Account < ActiveRecord::Base
                         :security_question,
                         :security_answer
                         
-  if Rails.env.production?                        
-    validates_uniqueness_of :paypal_username, :case_sensitive => false
-  end
-
   validates             :state, :format => { :with => /\A[A-Z]{2}\z/, :message => "Please enter a valid State Abbreviation" }
 
   # matches 5-digit US zipcodes only
