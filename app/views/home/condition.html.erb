@@ -3,168 +3,53 @@
 <h1>Card Condition Guide</h1>
 
 <div class="ma">
-  <div class="group center_wrap">
-    <ul class="tabs center">
-        <li <%= "class=selected" if not params[:section].present? %>> <%= link_to "Near-Mint"%></li>
-        <li <%= "class=selected" if params[:section] == "Slightly Played" %>> <%= link_to "Slightly Played", :section => "Slightly Played" %> </li>        
-        <li <%= "class=selected" if params[:section] == "Moderately Played" %>> <%= link_to "Moderately Played", :section => "Moderately Played" %> </li>
-		<li <%= "class=selected" if params[:section] == "Heavily Played" %>> <%= link_to "Heavily Played", :section => "Heavily Played" %> </li>        
-	</ul>
-  </div><br class="spacer"/>
-  
-	<%# Near-Mint %>
-	<% if not params[:section].present? %>
-	
-		<table class="data">
-	    <tr class="header_row">
-	    	<th colspan=2>Near-Mint (NM)</th>
-			</tr>
-			<tr>
-				<td colspan=2 class=<%= cycle("odd","even") %>>
-					<p class="ma" style="word-wrap:normal;">
-					  Near-Mint cards show minimal to no wear from shuffling or play. Near-Mint condition cards and cards straight out of a pack are nearly indistinguishable. The card may have very slight corner wear or a very minor nick or scratch.
+ 
+  <table class="data">
+     <tr class="header_row">
+      <th>Near-Mint (NM)</th>
+   </tr>
+   <tr>
+    <td class="odd">
+     <p class="ma" style="word-wrap:normal;">
+       Near-Mint cards have little to no wear, usually resembling a card fresh from a pack.  Sometimes a slight scratch or very minor nick is acceptable but otherwise flaws are not present.
           </p>
-				</td>
-			</tr>
-	    <tr class="header_row">
-	    	<th>Front</th>
-				<th>Back</th>
-			</tr>
-			<tr class=<%= cycle("odd","even") %>> 
-	    	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/B/163.jpg', :width => "135px", :alt => "Near-Mint (NM)" %> </td>
-	    	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/4E/226.jpg', :width => "135px", :alt => "Slightly Played (SP)" %> </td>
-	    </tr>
-			<tr class="header_row"><th colspan=2></th></tr>
+    </td>
+    <tr class="header_row">
+      <th >Slightly Played (SP)</th>
+   </tr>
+   <tr>
+    <td class="odd">
+     <p class="ma">
+      Slightly Played cards show definitive visible, but mild, wear and tear.  Examples of conditions for a card in this category would be:<br/><br/>
 
-	  </table>
-	
-	<% end %>
-
-	<%# Slightly Played (SP) %>
-	<% if params[:section] == "Slightly Played" %>
-	
-		<table class="data">
-	    <tr class="header_row">
-	    	<th colspan=2>Slightly Played (SP)</th>
-			</tr>
-			<tr>
-				<td colspan=2>
-					<p class="ma" style="word-wrap:normal;">
-					  Cards in Slightly Played condition show definite, minor wear. Examples of cards in this grade include cards with mild border wear, minor corner wear, minor binder bending, or scuffing/loss of sheen on the front due to play wear. Cards signed by the card's artist or Richard Garfield, or bearing a pro tour stamp, are graded as Slightly Played condition, if they would otherwise be Near Mint or Slightly Played. Foils in this condition will generally have some clouding or wear on the front of the card. Sleeves may or may not be needed to play these cards in a tournament.
+      Signed Cards, Stamped Cards, Mild Corner/Border Wear, Mild Scratches, Overall Played Look
+       
           </p>
-				</td>
-			</tr>
-	    <tr class="header_row">
-	    	<th>Signed</th>
-				<th>Corner Wear</th>
-			</tr>
-			<tr class=<%= cycle("odd","even") %>> 
-	    	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/B/163.jpg', :width => "135px", :alt => "Near-Mint (NM)" %> </td>
-	    	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/4E/226.jpg', :width => "135px", :alt => "Slightly Played (SP)" %> </td>
-	    </tr>
-	    <tr class="header_row">
-	    	<th>Minor Scratching</th>
-				<th>Border Wear</th>
-			</tr>
-			<tr class=<%= cycle("odd","even") %>> 
-	    	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/B/163.jpg', :width => "135px", :alt => "Near-Mint (NM)" %> </td>
-	    	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/4E/226.jpg', :width => "135px", :alt => "Slightly Played (SP)" %> </td>
-	    </tr>
-			<tr class="header_row"><th colspan=2></th></tr>
+    </td>
+    <tr class="header_row">
+     <th >Moderately Played (MP)</th>
+  </tr>
+  <tr>
+   <td class="odd">
+    <p class="ma" style="word-wrap:normal;">
+     Moderately Played cards show definitive visible wear and tear.  However, they still would pass for tournament legal play.  Examples of conditions for a card in this category would be:<br/><br/>
 
-	  </table>
-		
-	
-	<% end %>
-	
-	<%# Heavily Played (HP) %>
-	<% if params[:section] == "Moderately Played" %>
-	
-	<table class="data">
+     Mild Creasing, Corner/Border Wear, Scratches/Bends, Whitening, Inking, Mild Water Damage
+          
+    </p>
+   </td>
+  </tr>
     <tr class="header_row">
-    	<th colspan=2>Moderately Played (MP)</th>
-		</tr>
-		<tr>
-			<td colspan=2>
-				<p class="ma" style="word-wrap:normal;">
-          Cards in Moderately Played condition show moderate wear, but are still legal for tournament play if sleeved. Examples of cards in this grade include cards with shuffle creasing, moderate corner wear, moderate border wear, moderate whitening on the back or front face of the card, slight-to-moderate inking along the back borders, major binder bends, major scratching, minor water damage, or slight (hairline) creasing.				  
-				</p>
-			</td>
-		</tr>
-    <tr class="header_row">
-    	<th>Creasing</th>
-			<th>Moderate Corner Wear</th>
-		</tr>
-		<tr class=<%= cycle("odd","even") %>> 
-    	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/B/163.jpg', :width => "135px", :alt => "Near-Mint (NM)" %> </td>
-    	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/4E/226.jpg', :width => "135px", :alt => "Slightly Played (SP)" %> </td>
-    </tr>
-    <tr class="header_row">
-    	<th>Moderate Scratching</th>
-			<th>Moderate Border Wear</th>
-		</tr>
-		<tr class=<%= cycle("odd","even") %>> 
-    	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/B/163.jpg', :width => "135px", :alt => "Near-Mint (NM)" %> </td>
-    	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/4E/226.jpg', :width => "135px", :alt => "Slightly Played (SP)" %> </td>
-    </tr>
-    <tr class="header_row">
-    	<th>Minor Water Damage</th>
-			<th>Moderate Whitening</th>
-		</tr>
-		<tr class=<%= cycle("odd","even") %>> 
-    	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/B/163.jpg', :width => "135px", :alt => "Near-Mint (NM)" %> </td>
-    	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/4E/226.jpg', :width => "135px", :alt => "Slightly Played (SP)" %> </td>
-    </tr>
-		<tr class="header_row"><th colspan=2></th></tr>
+     <th >Heavily Played (HP)</th>
+  </tr>
+  <tr>
+   <td class="odd">
+    <p class="ma" style="word-wrap:normal;">
+     Heavily Played cards show definitive visible heavy wear and tear and are usually not legal to play in a tournament.  These cards are not recommended for sale unless for collecting purposes only.  Examples of conditions for a card in this category would be:<br/><br/>
 
+     Major Creasing/Folding, Major Whitening, Writing on the Card, Major Inking, Major Water Damage
+    </p>
+   </td>
+  </tr>
   </table>
-	
-		
-	<% end %>
-	
-	<%# Heavily Played (HP) %>
-	<% if params[:section] == "Heavily Played" %>
-	
-	<table class="data">
-    <tr class="header_row">
-    	<th colspan=2>Heavily Played (HP)</th>
-		</tr>
-		<tr>
-			<td colspan=2>
-				<p class="ma" style="word-wrap:normal;">
-				  Cards in Heavily Played condition show extreme wear, and may not be legal for tournament play, even in a sleeve. Heavily Played cards include cards that have writing on the back, major creasing, folding, major water damage, major whitening, major border wear, major inking (white-bordered cards that are markered on front to look black-bordered), tearing, chunks missing out of the card, cards that have been run over by a car, cards that have been run through a washing machine, etc. Heavily Played cards are any cards that grade worse than Moderately Played.  
-				</p>
-			</td>
-		</tr>
-    <tr class="header_row">
-    	<th>Creasing</th>
-			<th>Moderate Corner Wear</th>
-		</tr>
-		<tr class=<%= cycle("odd","even") %>> 
-    	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/B/163.jpg', :width => "135px", :alt => "Near-Mint (NM)" %> </td>
-    	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/4E/226.jpg', :width => "135px", :alt => "Slightly Played (SP)" %> </td>
-    </tr>
-    <tr class="header_row">
-    	<th>Moderate Scratching</th>
-			<th>Moderate Border Wear</th>
-		</tr>
-		<tr class=<%= cycle("odd","even") %>> 
-    	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/B/163.jpg', :width => "135px", :alt => "Near-Mint (NM)" %> </td>
-    	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/4E/226.jpg', :width => "135px", :alt => "Slightly Played (SP)" %> </td>
-    </tr>
-    <tr class="header_row">
-    	<th>Minor Water Damage</th>
-			<th>Moderate Whitening</th>
-		</tr>
-		<tr class=<%= cycle("odd","even") %>> 
-    	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/B/163.jpg', :width => "135px", :alt => "Near-Mint (NM)" %> </td>
-    	<td width="33%"> <%= image_tag 'https://s3.amazonaws.com/mtgbazaar/images/mtg/cards/4E/226.jpg', :width => "135px", :alt => "Slightly Played (SP)" %> </td>
-    </tr>
-		<tr class="header_row"><th colspan=2></th></tr>
-
-  </table>
-
-	
-	<% end %>
-	
 </div>
