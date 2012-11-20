@@ -1,6 +1,6 @@
 class Mtg::Transactions::PaymentNotificationsController < ApplicationController  
   protect_from_forgery :except => [:payment_notification]
-  skip_before_filter :production_authenticate, :only => [:payment_notification]
+  skip_before_filter :staging_authenticate, :only => [:payment_notification]
   
   def payment_notification
     transaction = Mtg::Transaction.find(params[:id])

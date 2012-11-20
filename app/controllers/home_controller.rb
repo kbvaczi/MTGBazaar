@@ -11,7 +11,7 @@ class HomeController < ApplicationController
   end
   
   def test
-  
+    Rails.logger.info(GirlFriday.status)
   end
 
 end
