@@ -26,8 +26,6 @@ class Account::RegistrationsController < Devise::RegistrationsController
     #include the gems needed
     require 'httpclient'
     require 'xmlsimple'
-
-
      
     #set the header of the request
     header =  {"X-PAYPAL-SECURITY-USERID"       => PAYPAL_CONFIG[:api_login],
@@ -62,7 +60,6 @@ class Account::RegistrationsController < Devise::RegistrationsController
         paypal_verify_response = "error"
       end
     end
-    
   
     respond_to do |format|
       format.json do         
@@ -72,6 +69,7 @@ class Account::RegistrationsController < Devise::RegistrationsController
           else
             session[:paypal_verify_response] = false
         end
+        Rails.logger.info("PAYPAL VERIFICATION SESSION = #{session[:paypal_verify_response]}, class= #{session[:paypal_verify_response].class rescue "error"}")
         render :json => paypal_verify_response.to_json
       end
     end
@@ -115,6 +113,7 @@ class Account::RegistrationsController < Devise::RegistrationsController
   end
   
   def set_paypal_verification_status
+    Rails.logger.info("PAYPAL VERIFICATION SESSION = #{session[:paypal_verify_response]}, class= #{session[:paypal_verify_response].class rescue "error"}")
     params[:user][:account_attributes][:paypal_verified] = false if session[:paypal_verify_response] == false || session[:paypal_verify_response] == "false"
   end
   
