@@ -70,7 +70,7 @@ class Account < ActiveRecord::Base
   validate              :verified_paypal_account
   
   def verified_paypal_account
-    errors.add(:paypal_username, "Only verified PayPal accounts are accepted...") if self.paypal_verified != true && self.paypal_username.present?
+    errors.add(:paypal_username, "Only verified PayPal accounts are accepted...") if self.paypal_verified == false && self.paypal_username.present?
   end                         
 
   # returns full name of user

@@ -115,7 +115,7 @@ class Account::RegistrationsController < Devise::RegistrationsController
   end
   
   def set_paypal_verification_status
-    params[:user][:account_attributes][:paypal_verified] = true if session[:paypal_verify_response] == true
+    params[:user][:account_attributes][:paypal_verified] = false if session[:paypal_verify_response] == false || session[:paypal_verify_response] == "false"
   end
   
   # devise redirect after sign up
