@@ -24,7 +24,8 @@ task :scrape_tcg_pricing => :environment do
                               "Ninth Edition"                     => "9th Edition",
                               "Eighth Edition"                    => "8th Edition",
                               "Seventh Edition"                   => "7th Edition",
-                              "Classic (Sixth Edition)"           => "Classic Sixth Edition" }
+                              "Classic (Sixth Edition)"           => "Classic Sixth Edition",
+                              "Archenemy \"Schemes\""             => "Archenemy"}
 
   if ENV['set_code'].present?
     sets_to_pull = Mtg::Set.where(:code => ENV['set_code'])
