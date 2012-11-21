@@ -64,7 +64,17 @@ def scrape_pricing_for_one_set(our_set_name = "", tcg_set_name = "")
     card_price_med  = row.css("td")[6].text.gsub("$","").to_f
     card_price_med  -= rand(05).to_f/100 if card_price_med  >= 0.25    
     card_price_low  = row.css("td")[7].text.gsub("$","").to_f        
-    card_price_low  -= rand(03).to_f/100 if card_price_low  >= 0.10        
+    card_price_low  -= rand(03).to_f/100 if card_price_low  >= 0.10
+    if card_price_med > card_price_high
+      temp            = card_price_high
+      card_price_high = card_price_med
+      card_price_med  = temp
+    end
+    if card_price_low > card_price_med
+      temp            = card_price_med
+      card_price_med  = card_price_low
+      card_price_low  = temp
+    end    
     card_info_hash.merge!(card_name => {:price_low => card_price_low, :price_med => card_price_med, :price_high => card_price_high})
   end
 
