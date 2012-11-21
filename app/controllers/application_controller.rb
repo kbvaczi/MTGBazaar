@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  stream
   helper :all
 
   before_filter :staging_authenticate        # simple HTTP authentication for production (TEMPORARY)
