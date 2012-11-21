@@ -33,14 +33,23 @@
       <tr class="header_row">
         <th colspan=2>Seller Information</th>
       </tr>
+
       <tr>
-        <td  width="33%" class="header_row">Seller PayPal Email</td>
-        <td  width="67%" class=<%= cycle "odd", "even" %>><%= current_user.account.paypal_username.present? ? current_user.account.paypal_username : "<i>none</i>".html_safe %></td>
-      </tr>    
+        <td width="33%" class="header_row">Seller Status</td>
+        <td width="67%" class=<%= cycle "odd", "even" %>><%= current_user.active ? "Active" : "Inactive" %></td>
+      </tr>
       <tr>
-        <td class="header_row">Seller Status</td>
-        <td class=<%= cycle "odd", "even" %>><%= current_user.active ? "Active" : "Inactive" %></td>
-      </tr>   
+        <td width="33%" class="header_row">Seller PayPal Email</td>
+        <td width="67%" class=<%= cycle "odd", "even" %>><%= current_user.account.paypal_username.present? ? current_user.account.paypal_username : "<i>none</i>".html_safe %></td>
+      </tr>
+      <tr>
+        <td class="header_row">For Sale</td>
+        <td class=<%= cycle "odd", "even" %>><%= pluralize current_user.mtg_listings.to_a.inject(0) {|sum, listing| sum + listing.quantity}, "Card", "Cards" %> / <%= number_to_currency current_user.mtg_listings.to_a.inject(0) {|sum, listing| sum + listing.quantity * listing.price.dollars} %></td>
+      </tr>
+      <tr>
+        <td class="header_row">Previously Sold</td>
+        <td class=<%= cycle "odd", "even" %>><%= pluralize current_user.mtg_sale_items.to_a.inject(0) {|sum, item| sum + item.quantity_requested}, "Card", "Cards" %> / <%= number_to_currency current_user.mtg_sale_items.to_a.inject(0) {|sum, item| sum + item.quantity_requested * item.price.dollars} %></td>
+      </tr>
     </table>
   
     <table class="data mt">
