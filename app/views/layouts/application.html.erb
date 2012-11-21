@@ -2,6 +2,7 @@
 <html lang="en">
 
   <head>
+    
     <%= favicon_link_tag %>           
     <title><%= 'MTGBazaar' + yield(:title) %></title>
 
@@ -17,10 +18,25 @@
   
     <%# cross site forgery protection %>
     <%= csrf_meta_tags %>
-
+    
+    <%# GOOGLE ANALYTICS STUFF ONLY ON PRODUCTION %>
+    <% if Rails.env.production? %>    
+      <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-34432189-1']);
+        _gaq.push(['_trackPageview']);
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+      </script>
+    <% end %>
+    
   </head>
 
   <body>
+    
     <div id="loader"></div>  
 
     <% # DISPLAY FLASH NOTICES --------------------------------------- %>  
@@ -51,9 +67,7 @@
         <%= render :partial => 'shared/user_login' %>
         <br class="spacer"/>                
         <div class="left">
-          <%= render :partial => 'shared/left_bar' %>
-
-                          
+          <%= render :partial => 'shared/left_bar' %>                          
         </div>
         <div id="center_bar_wrapper">
           <%= back_link(:message => "Back", :path => back_path) unless request.fullpath == root_path %>       
@@ -72,7 +86,6 @@
       <%= render :partial => 'shared/footer' %>
       
     </div>
-    
     
   </body>
 
