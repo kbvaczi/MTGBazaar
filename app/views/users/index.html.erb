@@ -1,17 +1,17 @@
 <% title "members"%>
 
-<h1>Member List</h1>
+<h1>Sellers List</h1>
 <div id="content">
   
 	<table class="data fixed">
 		<tr class="header_row">
 
 			<th width="25%"> <%= table_sort_header("User", :params => {}, :value => "user", :remote => true) %> </th>
-			<th width="20%"> <%= table_sort_header("Member Since", :params => {}, :value => "member_since", :remote => true) %> </th>			
-			<th> <%= table_sort_header("Sales", :params => {}, :value => "sales", :remote => true) %> </th>			
-			<th> <%= table_sort_header("Purchases", :params => {}, :value => "purchases", :remote => true) %> </th>						
+			<th > <%= table_sort_header("Member Since", :params => {}, :value => "member_since", :remote => true) %> </th>			
+			<th > <%= table_sort_header("Sales",    :params => {}, :value => "sales",    :remote => true) %> </th>			
+
 			<th> <%= table_sort_header("Feedback", :params => {}, :value => "feedback", :remote => true) %> </th>
-			<th> View Cards</th>
+			<th> Listings</th><%#= table_sort_header("Listings", :params => {}, :value => "listings", :remote => true) %>	
 		</tr>
 				
 	  <% @users.each do |user| %>
@@ -19,11 +19,11 @@
 				<td><%= link_to user.username, user_path(user.username) %></td>
 	      <td><%= display_time(user.created_at, :day => false) %></td>	
   			<td><%= user.statistics.number_sales %></td>
-				<td><%= user.statistics.number_purchases %></td>
+
 				<td><%= "#{user.statistics.display_approval_percent}" %></td>
-				<td><%= link_to "View", search_mtg_cards_path(:seller_id => user.id) %></td>
+        <td><a class="seller_sales_link" style="cursor:pointer;" data-seller=<%= user.username %> data-sellerid=<%= user.id %> title="Search this users's listings with your current search filters"><%= user.mtg_listings.count %></a></td>				
 	    </tr>
-	  <% end %>  
+	  <% end %>
 
 </table>
 

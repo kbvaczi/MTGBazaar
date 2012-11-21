@@ -42,7 +42,6 @@
      		    <li><%= link_to "View Ticket History", tickets_path %></li>                   
    		    <% end %>
           <li class="heading"> Documentation </li>
-					<li><%= link_to "Member List", users_path %></li>
           <li><%= link_to "FAQ", faq_path %></li>
     			<li><%= link_to "Card Condition Guide", condition_path %></li>  
   			</ul>
@@ -50,10 +49,13 @@
 	  </li>
 		
 		<li class="navbar_drop">
-			<%= link_to "Products", mtg_cards_path %>
+			<%= link_to "The Bazaar", mtg_cards_path %>
 			<div class="navbar_drop_child">
   			<ul>
-  		    <li><%= link_to "Cards", mtg_cards_path %></li>
+					<li><%= link_to "Sellers List", users_path %></li>
+          <li class="heading"> Cards </li>					
+  		    <li><%= link_to "Singles", mtg_cards_path %></li>
+  		    <li><%= link_to "Complete Sets (Coming Soon)", root_path %></li>  		    
           <li class="heading"> Other Products </li>
           <li><%= link_to "Coming Soon", root_path %></li>
   			</ul>

@@ -1,15 +1,21 @@
-<div class="attributes_table" style="width:70%">
-  <br/>
-  <h3>Login History (Last 20 Logins)</h3>
-  <table>
-  <% statistics.ip_log.reverse.each do |ip_entry| %>
-    <tr>
-      <th><%= "#{ip_entry[:time]}" %></th>
-      <td><b>IP:</b> <%= "#{ip_entry[:ip]}" %></td>
-      <td><b>City:</b> <%= ip_entry[:city] || "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".html_safe %></td>
-      <td><b>State:</b> <%= ip_entry[:state] || "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".html_safe %></td>
-      <td><b>Country:</b> <%= ip_entry[:country] || "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".html_safe %></td>        
-    </tr>
-  <% end %>
-  </table>
-</div>
+<% begin %>
+
+  <div class="attributes_table" style="width:70%">
+    <br/>
+    <h3>Login History (Last 20 Logins)</h3>
+    <table>
+    <% statistics.ip_log.reverse.each do |ip_entry| %>
+      <tr>
+        <th><%= "#{ip_entry[:time]}" %></th>
+        <td><b>IP:</b> <%= "#{ip_entry[:ip]}" %></td>
+        <td><b>City:</b> <%= ip_entry[:city] || "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".html_safe %></td>
+        <td><b>State:</b> <%= ip_entry[:state] || "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".html_safe %></td>
+        <td><b>Country:</b> <%= ip_entry[:country] || "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".html_safe %></td>        
+      </tr>
+    <% end %>
+    </table>
+  </div>
+
+<% rescue %>
+
+<% end %>

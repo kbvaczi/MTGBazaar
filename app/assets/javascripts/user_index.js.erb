@@ -1,0 +1,11 @@
+$(document).ready(function() {
+
+  $(".seller_sales_link").live("click",function(e) {
+    $.cookie('search_seller', $(this).data('seller'), { expires: 1, path: '/' });
+    $.cookie('search_seller_id', $(this).data('sellerid'), { expires: 1, path: '/' });    
+    $('#seller_id').val($(this).data('sellerid'));
+    $('#seller').val($(this).data('seller'));
+    $('#search-form').submit();
+  });
+
+});

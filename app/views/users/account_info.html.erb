@@ -86,22 +86,27 @@
     </div>
   
   <% else %>
-  
-    <table class="data">
-      <% ip_log_reverse = current_user.statistics.ip_log.reverse %>
+    <% begin %>
     
-      <% 6.times do |index| %>
-        <% if index < ip_log_reverse.length %>
-          <tr class="header_row">
-            <th colspan=2>Logged in <%= "#{time_ago_in_words(ip_log_reverse[index][:time])} ago" %></th>
-          </tr>
-          <tr>
-            <td width="33%" class="header_row">IP Address</td>
-            <td width="67%" class=<%= cycle "odd", "even" %>><%= ip_log_reverse[index][:ip] %></td>
-          </tr>            
+      <table class="data">
+        <% ip_log_reverse = current_user.statistics.ip_log.reverse %>
+    
+        <% 6.times do |index| %>
+          <% if index < ip_log_reverse.length %>
+            <tr class="header_row">
+              <th colspan=2>Logged in <%= "#{time_ago_in_words(ip_log_reverse[index][:time])} ago" %></th>
+            </tr>
+            <tr>
+              <td width="33%" class="header_row">IP Address</td>
+              <td width="67%" class=<%= cycle "odd", "even" %>><%= ip_log_reverse[index][:ip] %></td>
+            </tr>            
+          <% end %>
         <% end %>
-      <% end %>
-    </table> 
+      </table> 
+      
+    <% rescue %>
+    
+    <% end %>
   
   <% end %> 
   
