@@ -3,7 +3,6 @@
 preload_app true
 timeout 30 # 30 seconds for production
 worker_processes 3
-listen ENV['PORT'].to_i, :tcp_nopush => false
 
 before_fork do |server, worker|
   # Replace with MongoDB or whatever
