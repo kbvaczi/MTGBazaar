@@ -23,13 +23,15 @@ module Mtg::CardsHelper
   # Converts mana string to a series of corresponding image links to be displayed
   def display_symbols(string)
     string = "{0}" if string.empty? # show a 0 mana symbol if mana string is empty      
-    string.gsub(/[{]([_a-zA-Z0-9]+)[}]/) do |letter| #find the pattern "{xy}" where xy are any letters or numbers
+    string.gsub(/[{]([_a-zA-Z0-9 ]*)[}]/) do |letter| #find the pattern "{xy}" where xy are any letters or numbers
         letter = letter.gsub(/[{](.+)[}]/, '\1').downcase #strip the {} and lowercase the letters
         if letter == "t" #if the letters are t, create tap image
           image_tag('https://s3.amazonaws.com/mtgbazaar/images/mtg/various_symbols/tap.jpg', :class => "mtg_symbol")         
-        else #else the symbol must be a mana symbol, create corresponding mana symbol 
+        elsif letter.present? #else the symbol must be a mana symbol, create corresponding mana symbol 
           #image_tag("https://mtgbazaar.s3.amazonaws.com/images/mtg/mana_symbols/mana_#{letter}.jpg", :class => "mtg_symbol")
           content_tag(:span, "", :class => "mana_symbol_sprite mana_#{letter}", :title => "Mana Symbol")
+        else
+          ""
         end
     end.html_safe
   end
