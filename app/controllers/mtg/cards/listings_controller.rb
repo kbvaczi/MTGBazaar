@@ -151,7 +151,7 @@ class Mtg::Cards::ListingsController < ApplicationController
     if params[:sort] == "name"
       @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).includes(:statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("mtg_cards.name ASC")
     else
-      @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).includes(:statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("CAST(mtg_cards.card_number AS INTEGER) ASC")
+      @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).includes(:statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("CAST(mtg_cards.card_number AS SIGNED) ASC")
     end
   end
   
@@ -161,7 +161,7 @@ class Mtg::Cards::ListingsController < ApplicationController
     if params[:sort] == "name"
       @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("name ASC")
     else
-      @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("CAST(mtg_cards.card_number AS INTEGER) ASC")
+      @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("CAST(mtg_cards.card_number AS SIGNED) ASC")
     end
     array_of_listings = Array.new # blank array
     params[:sales].each do |key, value| # iterate through all of our individual listings from the bulk form
