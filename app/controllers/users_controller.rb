@@ -37,7 +37,7 @@ class UsersController < ApplicationController
     set_back_path
     query = SmartTuple.new(" AND ")
     query << ["mtg_sets.code  LIKE ?", "#{params[:filters][:set] }"] if params[:filters] && params[:filters][:set].present?
-    query << ["mtg_cards.name LIKE ?", "#{params[:filters][:name]}"] if params[:filters] && params[:filters][:name].present?   
+    query << ["mtg_cards.name LIKE ?", "#{params[:filters][:name]}%"] if params[:filters] && params[:filters][:name].present?   
 
     if params[:status] == "active"
       @listings = current_user.mtg_listings.includes(:card => :set).where(query.compile).active.order("mtg_cards.name ASC").page(params[:page]).per(25)
