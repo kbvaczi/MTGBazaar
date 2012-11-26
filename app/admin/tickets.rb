@@ -55,7 +55,7 @@ ActiveAdmin.register Ticket do
   # ------ FILTERS FOR INDEX ------- #
   filter :author, :as => :select, :collection => proc { User.all }, :input_html => {:class => "chzn-select"}    
   filter :offender, :as => :select, :input_html => {:class => "chzn-select"}      
-  filter :status, :as => :select, :collection => ["new","under review","complete"], :input_html => {:class => "chzn-select"}      
+  filter :status, :as => :select, :collection => ["open","resolved","closed"], :input_html => {:class => "chzn-select"}      
   filter :problem, :as => :select, :input_html => {:class => "chzn-select"}      
   filter :strike, :as => :select, :collection => ["",false,true], :input_html => {:class => "chzn-select"}    
   filter :created_at
@@ -126,7 +126,7 @@ ActiveAdmin.register Ticket do
         
       end
       f.input :status,  :as => :radio, 
-                        :collection => ["new","under review","complete"]
+                        :collection => ["open","resolved","closed"]
       f.input :problem, :as => :select, 
                         :collection => MTGBazaar::Application::Ticket.ticket_problem_list, 
                         :input_html => {:class => "chzn-select", :style => "min-width:250px;"}
