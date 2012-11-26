@@ -12,5 +12,6 @@ $(document).ready(function() {
   
   $('.mtg_card_image').draggable( "disable" )
   $('.mtg_card_image_horizontal:hover').draggable( "disable" )  
+  $('.mtg_card_image_horizontal:active').draggable( "disable" )    
   
 });
