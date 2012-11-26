@@ -31,55 +31,52 @@
       <div class="group center" style="width:80%">
         <p><b>Oops! There were no results with your current search filters:</b></p>
         <table class="fixed data mt">
-          <tr class="header_row">
-            <th>Filter</th>
-            <th>Current Value</th>
-          </tr>
+          
           <% if params[:name].present? %>
             <tr class=<%=cycle "odd", "even"%>>
-              <th>Card Name</th>
+              <th>Card Name:</th>
               <td><%= params[:name] %></td>
             </tr>
           <% end %>
           <% if params[:set].present? %>
             <tr class=<%=cycle "odd", "even"%>>
-              <th>Set</th>
+              <th>Set:</th>
               <td><%= display_set_symbol(Mtg::Set.find_by_code(params[:set])) %></td>
             </tr>
           <% end %>
           <% if params[:type].present? %>
             <tr class=<%=cycle "odd", "even"%>>
-              <th>Card Type</th>
+              <th>Card Type:</th>
               <td><%= params[:type] %></td>
             </tr>
           <% end %>
           <% if params[:subtype].present? %>
             <tr class=<%=cycle "odd", "even"%>>
-              <th>Card Subtype</th>
+              <th>Card Subtype:</th>
               <td><%= params[:subtype] %></td>
             </tr>
           <% end %>        
           <% if params[:rarity].present? %>
             <tr class=<%=cycle "odd", "even"%>>
-              <th>Rarity</th>
+              <th>Rarity:</th>
               <td><%= display_rarity params[:rarity] %></td>
             </tr>
           <% end %>         
           <% if params[:artist].present? %>
             <tr class=<%=cycle "odd", "even"%>>
-              <th>Artist</th>
+              <th>Artist:</th>
               <td><%= params[:artist] %></td>
             </tr>
           <% end %>
           <% if params[:white].present? || params[:black].present? || params[:blue].present? || params[:red].present? || params[:green].present?%>
             <tr class=<%=cycle "odd", "even"%>>
-              <th>Color</th>
+              <th>Color:</th>
               <td><%= display_symbols "{#{params[:white]}}{#{params[:blue]}}{#{params[:black]}}{#{params[:red]}}{#{params[:green]}}" %></td>
             </tr>
           <% end %>          
           <% if params[:abilities].present?%>
             <tr class=<%=cycle "odd", "even"%>>
-              <th>Abilities</th>
+              <th>Abilities:</th>
               <td>
                 <% params[:abilities].each do |ability| %>
                   <%= ability %><br/>
@@ -89,13 +86,13 @@
           <% end %>
           <% if params[:language].present? %>
             <tr class=<%=cycle "odd", "even"%>>
-              <th>Language</th>
+              <th>Language:</th>
               <td><%= display_flag_symbol params[:language] %></td>
             </tr>
           <% end %>  
           <% if params[:options].present?%>
             <tr class=<%=cycle "odd", "even"%>>
-              <th>Advanced Options</th>
+              <th>Advanced Options:</th>
               <td>
                 <%= listing_option_foil_icon if params[:options].include?('f') %>
                 <%= listing_option_signed_icon if params[:options].include?('s') %>
@@ -107,7 +104,7 @@
                 
           <% if params[:seller].present? %>
             <tr class=<%=cycle "odd", "even"%>>
-              <th>Seller</th>
+              <th>Seller:</th>
               <td><%= params[:seller] %></td>
             </tr>
           <% end %>
