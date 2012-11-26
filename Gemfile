@@ -42,8 +42,8 @@ gem "valium", "~> 0.5.0"                                            # improved a
 gem "hirefireapp", "~> 0.0.8"                                       # auto-scaling dynos
 gem "geocoder", "~> 1.1.5"
 
-gem "httpclient", "~> 2.3.0.1"
-gem "xml-simple", "~> 1.1.2"
+gem "httpclient", "~> 2.3.0.1"                                      # for paypal verify account code
+gem "xml-simple", "~> 1.1.2"                                        # for paypal verify account code
 
 # -------------
 # STANDARD GEMS
@@ -60,6 +60,7 @@ group :production, :staging do
   gem "newrelic_rpm"                                                # performance monitoring
   gem "dalli"                                                       # enable memcache for heroku
   gem 'memcachier'                                                  # use memcachier through dalli on heroku
+  gem 'rack-www'                                                    # allows use of middleware to add www. to domain calls (i.e. mtgbazaar.com)
 end
 
 group :staging do

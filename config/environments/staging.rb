@@ -6,6 +6,9 @@ MTGBazaar::Application.configure do
   # this is needed for devise to work on heroku
   config.action_mailer.default_url_options = { :host => 'mtgbazaar-staging.herokuapp.com' }
   
+  #redirects all traffic to www subdomain
+  config.middleware.use Rack::WWW
+  
   # STANDARD OPTIONS -------------------------------------------------------------------------------------------------- #
 
   # Serving static assets and setting cache headers 
