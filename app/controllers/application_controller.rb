@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   # temporary HTTP authentication for production server
   # DELETE THIS METHOD WHEN SITE IS LIVE
   def staging_authenticate
-    if Rails.env.staging?
+    if Rails.env.staging? && request.env['PATH_INFO'] != '/admin/login' 
       authenticate_or_request_with_http_basic do |username, password|
         username == "site" && password == "test"
       end 
