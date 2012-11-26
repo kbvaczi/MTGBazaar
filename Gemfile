@@ -60,7 +60,7 @@ group :production, :staging do
   gem "newrelic_rpm"                                                # performance monitoring
   gem "dalli"                                                       # enable memcache for heroku
   gem 'memcachier'                                                  # use memcachier through dalli on heroku
-  gem 'rack-www'                                                    # allows use of middleware to add www. to domain calls (i.e. mtgbazaar.com)
+  gem 'rack-www'                                                    # allows use of middleware to add www. to domain calls (i.e. mtgbazaar.com)... using only in production
 end
 
 group :staging do
