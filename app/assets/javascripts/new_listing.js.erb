@@ -111,6 +111,7 @@ $(document).ready(function() {
 
 function clearFileUpload() {
   $('#mtg_cards_listing_scan').replaceWith( $('#mtg_cards_listing_scan').clone( true ) );
+  $("#mtg_cards_listing_scan").val("");
   $("#remove_scan_button").remove();
   $('#mtg_cards_listing_scan').trigger('change');
 }

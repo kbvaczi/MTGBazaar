@@ -204,30 +204,31 @@ select[disabled] {
   min-height:25px;
   width:60%;
 }
+input::-moz-focus-inner { /*Remove button padding in FF*/ 
+  border: 0;
+  padding: 0;
+}
 .button, input[type="submit"] {
   overflow:hidden;
   outline:none;
   border: 1px solid #aaa;
-  -moz-border-radius: 8px;
-  -webkit-border-radius: 8px;
-  border-radius: 8px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
   -moz-box-shadow:    0 0 0 0 #FFF;
   -webkit-box-shadow: 0 0 0 0 #FFF;
   box-shadow:         0 0 0 0 #FFF;
   padding: 5px 10px;
+  margin:0;
   font-family: "Helvetica Neue", "Arial", sans-serif;
   font-size:11px;
-  margin:0;
   color: #fff;
   line-height:normal;
   display: inline-block;
   text-decoration: none;
+  vertical-align:middle;
   text-shadow: 0 -1px 0px rgb(100,100,100);
-  text-align: center;
   background: #ABB0B1;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
   background: rgb(192,192,192); /* Old browsers */
   background: -moz-linear-gradient(top,  rgba(192,192,192,1) 0%, rgba(176,176,176,1) 50%, rgba(159,159,159,1) 51%, rgba(112,112,112,1) 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(192,192,192,1)), color-stop(50%,rgba(176,176,176,1)), color-stop(51%,rgba(159,159,159,1)), color-stop(100%,rgba(112,112,112,1))); /* Chrome,Safari4+ */
@@ -554,7 +555,7 @@ table.data tr:last-child td:first-child, table.data tr:last-child th:first-child
 table.data tr:last-child td:last-child, table.data tr:last-child th:last-child {
   -moz-border-radius-bottomright:8px;
   -webkit-border-bottom-right-radius:8px;
-  border-bottom-right-radius:8px
+  border-bottom-right-radius:8px  
 }
 table.data tr:first-child th:first-child, table.data tr:first-child td:first-child  {
   -moz-border-radius-topleft:8px;
@@ -579,6 +580,7 @@ table.data tr td p, table.data tr th p {
   word-wrap:break-word;
   max-width:95%;
 }
+
 .odd {
   background-color: rgb(245,245,245);  
 }

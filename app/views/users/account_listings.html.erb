@@ -9,35 +9,22 @@
     </ul>
   </div>
 
-  <%= form_tag account_listings_path, :method => :get, :id => "account_listings_filters", :remote => false do %>   
-    <%= hidden_field_tag :status, params[:status] %>
-    <div class="ma">
-      <div class="left">
-        <%= text_field_tag "filters[name]", (params[:filters][:name] rescue ""), {:class => "search-text ui-autocomplete-input deletable", :style => "width:180px;", :placeholder => "Name..." , "data-type" => "search", "data-autocomplete" => autocomplete_name_mtg_cards_path }%>
-      </div>  
-      <div class="left ml">
-        <%= select_tag "filters[set]" , options_for_select(active_set_list, :selected => (params[:filters][:set] rescue "")), {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Set...", :class => "chzn-select", :style => "width:200px;"} %>    
-      </div>
-      <div class="right">
-        <%= submit_tag "Search" %>
-      </div>      
-    </div>
-  <% end %>
-
-  <br class="spacer"/>  
-
-  <%= link_to "Create a New Listing", new_generic_mtg_cards_listings_path, :class => "right", :style => "margin-top:23px;margin-right:10px;" %>
-  <h2><%="#{@listings.total_count} #{(params[:status] || "").capitalize} Listings"%></h2>
+  <%#= link_to "Create a New Listing", new_generic_mtg_cards_listings_path, :class => "right", :style => "margin-top:23px;margin-right:10px;" %>
+  <div>
+    <%= render :partial => '/mtg/apply_filters', :locals =>  { :remote => false } %>  
+    <h2><%="#{@listings.total_count} #{(params[:status] || "").capitalize} Listings"%></h2>
+  </div>
 
 	<%= form_tag mtg_cards_listings_multiple_process_request_path, :id => "multiple_listing_edit_form", :method => :post do %>
     <%= submit_tag "Delete", :id => "delete_submit_button", :style => "display:none;", :confirm => "Are you sure you want to permanently delete selected listing(s)?"%>
     <%= hidden_field_tag "action_input" %>
-    <div class="right mr mb">
-      <%= select_tag "action_selector" , options_for_select([["Set checked items to active", "active"], ["Set checked items to inactive", "inactive"], ["Delete checked items","delete"]], :selected => ""), {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Actions...", :id => "multiple_listings_actions", :class => "chzn-select"} %> 
+    <div>
+      <span class="ml mb">
+        <%= select_tag "action_selector" , options_for_select([["Set checked items to active", "active"], ["Set checked items to inactive", "inactive"], ["Delete checked items","delete"]], :selected => ""), {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Actions...", :id => "multiple_listings_actions", :class => "chzn-select"} %> 
+      </span>
+      <%= link_to "Create New Listing", new_generic_mtg_cards_listings_path, :class => "right button mr mb" %>
     </div>
-    
     <table class="data fixed">
-
     	<tr class="header_row">
     	  <th width="5%"><%= check_box_tag "listings", 1, false, {:id => "check_all_listings"} %></th>
     		<th>Card Name</th>

@@ -5,34 +5,34 @@
     
     <div class="ma-m">
 
-      <div>
+      <div class="search-select-wrapper">
         <%= text_field_tag "name", params[:name], {:class => "search-text ui-autocomplete-input deletable" , :placeholder => "Name..." , "data-type" => "search", "data-autocomplete" => autocomplete_name_mtg_cards_path }%>
         <%= hidden_field_tag "search_type", nil %>
       </div>
 
-      <div class= "mt-m search-set">
+      <div class= "mt-m search-set search-select-wrapper">
         <%#= label_tag "Set:" %>
         <%= select_tag "set" , options_for_select(active_set_list, :sort => "name", :selected => params[:set]), {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Set...", :class => "search-select chzn-select"} %>
       </div>
     
-      <div class="mt-m search-type">
+      <div class="mt-m search-type search-select-wrapper">
         <%#= label_tag "Type:" %>
         <%= select_tag "type", options_for_select(card_type_list, :selected => params[:type]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Type...", :class => "search-select chzn-select"} %>            
       </div>
 
-      <div class="mt-m search-subtype">
+      <div class="mt-m search-subtype search-select-wrapper">
         <%#= label_tag "Subtype:" %>
         <%= select_tag "subtype", options_for_select(card_subtype_list, :selected => params[:subtype]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Subtype...", :class => "search-select chzn-select"} %>            
       </div>          
     
       <div class="mt-m">
-        <div class="search-rarity">
+        <div class="search-rarity search-select-wrapper">
           <%#= label_tag "Rarity:" %>      
           <%= select_tag "rarity" , options_for_select(rarity_list, :selected => params[:rarity]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Rarity...", :class => "search-select chzn-select chzn-nosearch"} %>                        
         </div>
       </div>
     
-      <div class="mt-m search-artist">
+      <div class="mt-m search-artist search-select-wrapper">
         <%#= label_tag "Artist:" %>
         <%= select_tag "artist" , options_for_select(artist_list, :selected => params[:artist]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Artist...", :class => "search-select chzn-select"} %>                        
       </div>
@@ -80,7 +80,7 @@
         <%= select_tag "abilities" , options_for_select(abilities_list, :selected => cookies[:search_abilities]), { :multiple => true, :class => "search-select-multi chzn-select", :style => "", "data-placeholder" => "Abilities..."} %>                        
       </div> 
 
-      <div class="mt-m">
+      <div class="mt-m search-select-wrapper">
         <%#= label_tag "Language" %>
         <%= select_tag "language", options_for_select(language_list, :selected => cookies[:search_language]) , {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Language...", :class => "search-select chzn-select"} %>            
       </div>
@@ -117,7 +117,7 @@
   	    </table>
   	  </div>
 
-    	<div class="mt-s search-seller group">
+    	<div class="mt-s search-seller group search-select-wrapper">
   	    <%= text_field_tag "seller", cookies[:search_seller], {:class => "search-text ui-autocomplete-input mb-m deletable" , :placeholder => "Only from this seller..." , "data-autocomplete" => autocomplete_name_users_path }%>
   	    <%= text_field_tag "seller_id", cookies[:search_seller_id], :style => "display:none;" %>
   	    <%#= select_tag "seller_id" , grouped_options_for_select({"Top 10 Sellers" => top_sellers_list}, :selected => cookies[:serach_seller_id]), {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Only from this seller...", :class => "search-select chzn-select-ajax", "data-url" => '/users/autocomplete_name_chosen.json'} %>
