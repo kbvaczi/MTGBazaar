@@ -137,16 +137,16 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
     self.params = stamp
     self.stamps_tx_id = stamp[:stamps_tx_id]
     self.price = stamp[:rate][:amount]
-    Rails.cache.write "stamps_current_balance" stamp[:postage_balance][:available_postage] rescue nil
+    Rails.cache.write "stamps_current_balance", stamp[:postage_balance][:available_postage] rescue nil
     buy_postage_if_necessary(:current_balance => stamp[:postage_balance][:available_postage].to_i, 
                              :control_total   => stamp[:postage_balance][:control_total].to_i)
   end
   
   # buy postage if balance is below minimum (only works in STAMPS_CONFIG[:mode] = production)
   def buy_postage_if_necessary(options = {:current_balance => 9999, :control_total => 0})
-    min_postage_balance     = 50   # buy postage if balance is under this amount
+    min_postage_balance     = 25   # buy postage if balance is under this amount
+    postage_purchase_amount = 75   # amount to purchase at a time
     max_control_total       = 1000 # max amount to spend per month?
-    postage_purchase_amount = 25   # amount to purchase at a time
     if STAMPS_CONFIG[:mode] == "production" || true 
       if options[:current_balance] < min_postage_balance && options[:control_total] < max_control_total
           Rails.logger.info("STAMPS: Postage below #{min_postage_balance}, attempting to purchase #{postage_purchase_amount} in postage")
@@ -157,7 +157,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
           else
             Rails.logger.info("STAMPS: Postage purchase SUCCESS!")          
             Rails.cache.write "stamps_last_purchased_postage_at", Time.now rescue nil
-            Rails.cache.write "stamps_current_balance" response[:postage_balance][:available_postage] rescue nil
+            Rails.cache.write "stamps_current_balance", response[:postage_balance][:available_postage] rescue nil
           end
       else
         Rails.logger.info("STAMPS: Checking Postage Balance: #{options[:current_balance]}")          
