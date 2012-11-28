@@ -1,7 +1,7 @@
 module ApplicationHelper
 
   def title(page_title)
-    provide :title, " | #{page_title.parameterize}"
+    provide :title, " | #{page_title.parameterize(" ")}"
   end
   
   def capitalize_first_letters(word)

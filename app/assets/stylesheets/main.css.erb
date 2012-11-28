@@ -968,7 +968,7 @@ ul.tabs li.selected a:hover {
 /* DELETE ICON FOR TEXT INPUTS, SEE delete_icon.js.erb */
 
 span.deleteicon {
-     position: relative;
+   position: relative;
 }
 span.deleteicon span {
    position: absolute;
@@ -980,6 +980,13 @@ span.deleteicon span {
    right: 23px; left: auto; 
    cursor: pointer;
 }
+
+@-moz-document url-prefix() {
+   span.deleteicon span {
+    top:3px;
+  }
+}
+
 span.deleteicon span:hover {
   background-position: right -11px;
 }

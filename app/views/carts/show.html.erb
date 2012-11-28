@@ -52,19 +52,17 @@
       <% end %>
       
       <tr class="header_row">
-      	<td colspan=6 >Subtotal</td>
+      	<td colspan=6 style="text-align:left;padding-left:15px;">Subtotal</td>
         <td><%= @selected_order.item_count %> </td>            	
         <td><%= number_to_currency(@selected_order.item_price_total) %> </td>      
       </tr>
       <% if @selected_order.item_price_total >= minimum_price_for_checkout %>
         <tr class="header_row">
-        	<td colspan=6>Shipping (includes delivery confirmation)</td>
-        	<td></td>
+        	<td colspan=7 style="text-align:left;padding-left:15px;">Shipping <i><span class="ml-s t-s">(includes delivery confirmation)</span></i></td>
           <td><%= number_to_currency(@selected_order.shipping_cost) %> </td>      
         </tr>          
         <tr class="header_row">
-        	<th colspan=6>Total Cost</th>
-        	<td></td>
+        	<th colspan=7 style="text-align:left;padding-left:15px;">Total Cost</th>
           <th><%= number_to_currency(@selected_order.total_cost) %> </th>
         </tr>
       <% end %>
