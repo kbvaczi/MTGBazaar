@@ -23,15 +23,23 @@
 
     <h2><%= "Your order for #{@selected_order.seller.username}" %></h2>
  		<table class="data fixed">
+ 		  <col width="22%">
+ 		  <col width="8%"> 		  
+ 		  <col width="7%"> 		  
+ 		  <col width="7%"> 		  
+ 		  <col width="10%"> 		  
+ 		  <col width="12%"> 
+ 		  <col>		  
+ 		 	<col width="15%">  
       <tr class="header_row">
-        <th width="22%">Name</th>
-        <th width="8%">Set</th>      
-        <th width="7%">Cond</th>
-        <th width="7%">Lang</th>
-        <th width="10%">Options</th>
-        <th width="12%">Price<br/>Each</th>
+        <th>Name</th>
+        <th>Set</th>      
+        <th>Cond</th>
+        <th>Lang</th>
+        <th>Options</th>
+        <th>Price<br/>Each</th>
         <th>Quantity</th>
-        <th width="15%">Price</th>
+        <th>Price</th>
       </tr>
   
       <%= render :partial => "cart_mtg_card_teaser", :collection => @reservations, :as => 'reservation' %>          
@@ -44,25 +52,23 @@
       <% end %>
       
       <tr class="header_row">
-      	<td colspan=6>Subtotal</td>
+      	<td colspan=6 style="text-align:left;padding-left:15px;">Subtotal</td>
         <td><%= @selected_order.item_count %> </td>            	
         <td><%= number_to_currency(@selected_order.item_price_total) %> </td>      
       </tr>
       <% if @selected_order.item_price_total >= minimum_price_for_checkout %>
         <tr class="header_row">
-        	<td colspan=6>Shipping (includes delivery confirmation)</td>
-        	<td></td>
+        	<td colspan=7 style="text-align:left;padding-left:15px;">Shipping <i><span class="ml-s t-s">(includes delivery confirmation)</span></i></td>
           <td><%= number_to_currency(@selected_order.shipping_cost) %> </td>      
         </tr>          
         <tr class="header_row">
-        	<th colspan=6>Total Cost</th>
-        	<td></td>
+        	<th colspan=7 style="text-align:left;padding-left:15px;">Total Cost</th>
           <th><%= number_to_currency(@selected_order.total_cost) %> </th>
         </tr>
       <% end %>
     </table>
 
-    <br class="spacer"/>    
+
 
     <div class="center_wrap">
 
@@ -75,6 +81,9 @@
         <%= button_to "Check Out This Order", order_checkout_path(@selected_order), :method => :post, :format => :mobile, :class => "center"%>
 
       <% else %>
+      
+        <p style="margin: 20px 50px;">In fairness to all buyers, carts will clear after a period of inactivity.<br/>Please make purchases in a timely manner to reserve your items. </p>
+      
       
         <%= button_to "Check Out This Order", order_checkout_path(@selected_order), :method => :post, :remote => true, :class => "center"%>
         
@@ -97,7 +106,6 @@
         
       <% end %>
       
-      <p style="margin: 20px 50px;">Carts will clear after a period of inactivity in fairness for other buyers.<br/>To reserve your products, please make purchases in a timely manner. </p>
 
     </div>
     

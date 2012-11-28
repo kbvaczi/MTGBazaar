@@ -36,8 +36,7 @@
     <%= number_to_currency(reservation.listing.price) %>
   </td>                          
   <td>
-    <div class="center_wrap">
-      <div class="center">
+      <div class="center" <%="style=position:relative;top:4px;" if request.env['HTTP_USER_AGENT'].include? "Firefox" %>>
         <%= form_tag update_quantity_in_cart_mtg_cards_path(reservation), :method => :post, :remote => true do %>
           <%#= text_field_tag "quantity", 1, :class => "quantity_in_cart", :id => nil, :value => reservation.quantity, :style => "width:30px;text-align:center;"%>
           <%= select_tag "quantity", options_for_select(update_quantity_in_cart_selection(reservation), :selected => reservation.quantity), :class => "quantity_in_cart chzn-select chzn-nosearch", :id => nil, :style => "width:55px"%>  
@@ -45,12 +44,11 @@
           <%#= submit_tag "Update" , :style => "display:none;"%>
         <% end %>
       </div>
-      <div class="center">
-        <%= form_tag remove_from_cart_mtg_listing_path(:id => reservation.id, :quantity => reservation.quantity ), :method => :delete, :remote => true do %>
-          <%= submit_tag "X" %>
-        <% end %>
+      <div class="center" <%="style=position:relative;top:-4px;" if request.env['HTTP_USER_AGENT'].include? "Firefox" %>>
+      <%= form_tag remove_from_cart_mtg_listing_path(:id => reservation.id, :quantity => reservation.quantity ), :method => :delete, :remote => true, :style => "vertical-align:center;" do %>
+        <%= submit_tag "X" %>
+      <% end %>
       </div>
-    </div>
   </td>    
   <td>
     <%= number_to_currency(reservation.quantity * reservation.listing.price.dollars)%>

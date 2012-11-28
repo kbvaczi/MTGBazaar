@@ -196,7 +196,7 @@ class Mtg::Cards::ListingsController < ApplicationController
   def verify_user_paypal_account
     unless current_user.account.paypal_username.present?
        flash[:error] = "A verified PayPal account is required to sell on MTGBazaar..."
-       redirect_to back_path
+       redirect_to edit_user_registration_path
        return false
      end
   end    
