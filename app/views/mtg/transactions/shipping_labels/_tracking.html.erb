@@ -14,7 +14,7 @@
   
   <% tracking_events.each do |event| %>
     <tr class=<%= cycle("odd", "even")%>>
-      <td> <%= event[:timestamp].in_time_zone.strftime("%m/%d/%y at %I:%M%p CST") %> </td>
+      <td> <%= event[:timestamp].strftime("%m/%d/%y at %I:%M%p CST") %> </td>
       <% if event[:city]  %>      
         <td> <%= "#{capitalize_first_letters(event[:city])}, #{event[:state]} #{event[:zipcode]}" %> </td>            
       <% else %>

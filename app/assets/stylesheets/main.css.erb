@@ -580,15 +580,14 @@ table.data tr td p, table.data tr th p {
   word-wrap:break-word;
   max-width:95%;
 }
-
-.odd {
+.odd td, .odd th, td.odd, th.odd {
   background-color: rgb(245,245,245);  
 }
-.even {
+.even td, .even th, td.even, th.even {
   background-color: rgb(252,252,252);  
 }
-.header_row {
-  background-color: rgb(235,235,235);  
+tr.header_row th, tr.header_row td, th.header_row, td.header_row  {
+  background-color: rgb(235,235,235); 
 }
 
 
@@ -618,6 +617,7 @@ table.data tr td p, table.data tr th p {
 .ma-m {margin: 10px; }
 .t-n {font-size: 100%; line-height:100%;}
 .t-s {font-size: 80%; line-height:80%;}
+.t-ss {font-size: 50%; line-height:50%;}
 .t-l {font-size: 120%; line-height:120%;}
 .t-b {font-weight:bold;}
 .tc-y {color:#FFE51E;}

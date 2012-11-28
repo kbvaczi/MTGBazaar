@@ -52,7 +52,7 @@
       <% end %>
       
       <tr class="header_row">
-      	<td colspan=6>Subtotal</td>
+      	<td colspan=6 >Subtotal</td>
         <td><%= @selected_order.item_count %> </td>            	
         <td><%= number_to_currency(@selected_order.item_price_total) %> </td>      
       </tr>
@@ -70,7 +70,7 @@
       <% end %>
     </table>
 
-    <br class="spacer"/>    
+
 
     <div class="center_wrap">
 
@@ -83,6 +83,9 @@
         <%= button_to "Check Out This Order", order_checkout_path(@selected_order), :method => :post, :format => :mobile, :class => "center"%>
 
       <% else %>
+      
+        <p style="margin: 20px 50px;">In fairness to all buyers, carts will clear after a period of inactivity.<br/>Please make purchases in a timely manner to reserve your items. </p>
+      
       
         <%= button_to "Check Out This Order", order_checkout_path(@selected_order), :method => :post, :remote => true, :class => "center"%>
         
@@ -105,7 +108,6 @@
         
       <% end %>
       
-      <p style="margin: 20px 50px;">Carts will clear after a period of inactivity in fairness for other buyers.<br/>To reserve your products, please make purchases in a timely manner. </p>
 
     </div>
     
