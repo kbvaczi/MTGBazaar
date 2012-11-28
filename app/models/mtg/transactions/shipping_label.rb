@@ -137,6 +137,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
     self.params = stamp
     self.stamps_tx_id = stamp[:stamps_tx_id]
     self.price = stamp[:rate][:amount]
+    Rails.logger.info "STAMP RESPONSE: #{stamp.inspect}" rescue nil
     Rails.cache.write "stamps_current_balance", stamp[:postage_balance][:available_postage] rescue nil
     buy_postage_if_necessary(:current_balance => stamp[:postage_balance][:available_postage].to_i, 
                              :control_total   => stamp[:postage_balance][:control_total].to_i)
