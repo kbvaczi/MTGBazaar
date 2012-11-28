@@ -151,15 +151,19 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
     if STAMPS_CONFIG[:mode] == "production" || true 
       if options[:current_balance] < min_postage_balance && options[:control_total] < max_control_total
           Rails.logger.info("STAMPS: Postage below #{min_postage_balance}, attempting to purchase #{postage_purchase_amount} in postage")
-          response = Stamps.purchase_postage(:amount => postage_purchase_amount,
-                                             :control_total => options[:control_total])
-          if response[:purchase_status] == "Rejected"
-            Rails.logger.info("STAMPS: Postage purchase FAILED!, Rejection reason: #{response[:rejection_reason]}")
-          else
-            Rails.logger.info("STAMPS: Postage purchase SUCCESS!")          
-            Rails.cache.write "stamps_last_purchased_postage_at", Time.now rescue nil
-            Rails.cache.write "stamps_current_balance", response[:postage_balance][:available_postage] rescue nil
-          end
+          begin 
+            response = Stamps.purchase_postage(:amount => postage_purchase_amount,
+                                               :control_total => options[:control_total])
+            if response[:purchase_status] == "Rejected"
+              Rails.logger.info("STAMPS: Postage purchase FAILED!, Rejection reason: #{response[:rejection_reason]}")
+            else
+              Rails.logger.info("STAMPS: Postage purchase SUCCESS!")          
+              Rails.cache.write "stamps_last_purchased_postage_at", Time.now rescue nil
+              Rails.cache.write "stamps_current_balance", response[:postage_balance][:available_postage] rescue nil
+            end                                               
+          rescue Exception => message
+            Rails.logger.info("STAMPS PURCHASE POSTAGE ERROR MESSAGE: #{message}")
+          end                                            
       else
         Rails.logger.info("STAMPS: Checking Postage Balance: #{options[:current_balance]}")          
       end

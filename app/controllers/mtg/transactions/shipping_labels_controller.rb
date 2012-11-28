@@ -17,9 +17,9 @@ class Mtg::Transactions::ShippingLabelsController < ApplicationController
           redirect_to back_path
           return
         end
-        Rails.logger.debug("STAMP CREATED")
+        Rails.logger.info("STAMP CREATED")
       rescue Exception => message
-        Rails.logger.debug("STAMPS ERROR MESSAGE: #{message}")
+        Rails.logger.info("STAMPS ERROR MESSAGE: #{message}")
         @error = true
       end 
     end
