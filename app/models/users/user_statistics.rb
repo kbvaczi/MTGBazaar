@@ -53,7 +53,7 @@ class UserStatistics < ActiveRecord::Base
     if (self.number_sales_with_feedback > 0 rescue false)
       "#{self.approval_percent.round(0)}%" rescue "0%"
     else
-      "0%"
+      "none"
     end
   end
   
