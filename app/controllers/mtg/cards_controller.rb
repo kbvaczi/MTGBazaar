@@ -74,6 +74,7 @@ class Mtg::CardsController < ApplicationController
       query << SmartTuple.new(" AND ").add_each(params[:abilities]) {|v| ["mtg_cards.description LIKE ?", "%#{v}%"]} if params[:abilities].present?
       if params[:language].present? or params[:options].present? or params[:seller_id].present?
         params[:show] = "listed" unless params[:show] == "all"
+        params[:show_level] = "details"
         # language filters
         query << ["mtg_listings.language LIKE ?", params[:language]] if params[:language].present?
         # options filters
@@ -91,9 +92,11 @@ class Mtg::CardsController < ApplicationController
       params[:type] = "" # clear search type after an exact search to prevent ajax from continuing exact searches
     end
     params[:page]    = params[:page] || 1 # if params[:page] # set page number if this was a search request, otherwise we keep the old one for return paths
-    params[:show_level] = params[:seller_id].present? ? "details" : nil
-    
-    @mtg_cards = Mtg::Card.joins(:listings => :seller).includes(:set, :statistics).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(15)
+    if params[:show] == "listed"
+      @mtg_cards = Mtg::Card.joins(:listings => :seller).includes(:set, :statistics).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(15)
+    else
+      @mtg_cards = Mtg::Card.includes(:set, :statistics).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(15)
+    end
 
     respond_to do |format|
       format.html do

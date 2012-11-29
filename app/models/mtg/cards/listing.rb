@@ -31,7 +31,7 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   before_validation :set_quantity_available, :on => :create
   before_save       :update_statistics_cache_on_save, :if => "active_changed? || price_changed? || quantity_available_changed? || self.new_record?"
   after_save        :delete_if_empty
-  before_destroy    :update_statistics_cache_on_delete
+  after_destroy     :update_statistics_cache_on_delete
   
   def delete_if_empty
     self.destroy if quantity_available == 0 && quantity == 0 && reservations.count == 0
@@ -49,7 +49,7 @@ class Mtg::Cards::Listing < ActiveRecord::Base
       self.seller.statistics.update_attribute(:listings_mtg_cards_count, self.seller.statistics.listings_mtg_cards_count + self.quantity_available - self.quantity_available_was)
       self.card.statistics.update_attribute(:listings_available, self.card.statistics.listings_available + self.quantity_available - self.quantity_available_was)
     end
-    self.card.statistics.price_min(:overwrite => true) if self.price <= self.card.statistics.price_min || self.card.statistics.price_min == 0
+    self.card.statistics.update_attribute(:price_min, self.price) if self.price <= self.card.statistics.price_min || self.card.statistics.price_min == 0
   end
   
   def update_statistics_cache_on_delete
