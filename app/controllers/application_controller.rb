@@ -144,6 +144,7 @@ class ApplicationController < ActionController::Base
     end
     query.compile
   end
+  helper_method :mtg_filters_query
   
   def minimum_price_for_checkout
     5.00

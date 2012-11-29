@@ -43,7 +43,6 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   end
   
   def update_statistics_cache_on_save
-    Rails.logger.info "UPDATE STATISTICS CALLED!!!!"
     self.card.statistics.listings_available(:overwrite => true)
     self.card.statistics.price_min(:overwrite => true) if self.price <= self.card.statistics.price_min || self.card.statistics.price_min == 0
   end

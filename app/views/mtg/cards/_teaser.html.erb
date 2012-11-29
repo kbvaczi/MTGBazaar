@@ -32,8 +32,12 @@
             <div style="margin-top:-10px;">
               <% 
                 if params[:show_level] == "details"
-                  available_count = mtg_card.listings.available.sum(:quantity_available)
-                  min_price = Money.new(mtg_card.listings.minimum(:price))
+                  listings = mtg_card.listings.available.where(mtg_filters_query(:card_filters => false))
+                  available_count = listings.to_a.inject(0) { |sum, listing| sum += listing.quantity_available}
+                  min_price = Money.new(listings.available.to_a.collect { |listing| listing[:price] }.sort.first)
+                  #min_price = Money.new(listings.minimum(:price))
+                  #available_count = mtg_card.listings.available.sum(:quantity_available)
+                  #min_price = Money.new(mtg_card.listings.minimum(:price))
                 else
                   available_count = mtg_card.statistics.listings_available
                   min_price = mtg_card.statistics.price_min

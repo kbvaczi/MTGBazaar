@@ -72,10 +72,9 @@ class Mtg::CardsController < ApplicationController
       query << ["card_subtype LIKE ?", "%#{params[:subtype]}%"] if params[:subtype].present?
       query << ["artist LIKE ?", "#{params[:artist]}"] if params[:artist].present?
       query << SmartTuple.new(" AND ").add_each(params[:abilities]) {|v| ["mtg_cards.description LIKE ?", "%#{v}%"]} if params[:abilities].present?
-      if params[:language].present? or params[:options].present? or params[:seller_id].present? or params[:show] == "listed"
+      if params[:language].present? or params[:options].present? or params[:seller_id].present?
         params[:show] = "listed" unless params[:show] == "all"
         # language filters
-        query << ["mtg_listings.active LIKE ? AND users.active LIKE ? AND mtg_listings.quantity_available > 0", true, true]
         query << ["mtg_listings.language LIKE ?", params[:language]] if params[:language].present?
         # options filters
         query << ["mtg_listings.foil LIKE ?", true]     if (params[:options].include?("f") rescue false)
@@ -85,12 +84,16 @@ class Mtg::CardsController < ApplicationController
         # seller filter
         query << ["mtg_listings.seller_id LIKE ?", "#{params[:seller_id]}"] if params[:seller_id].present?
       end
+      if params[:show] == "listed"
+        query << ["mtg_listings.active LIKE ? AND users.active LIKE ? AND mtg_listings.quantity_available > 0", true, true]
+      end
     else
       params[:type] = "" # clear search type after an exact search to prevent ajax from continuing exact searches
     end
-    params[:page] = params[:page] || 1 # if params[:page] # set page number if this was a search request, otherwise we keep the old one for return paths
+    params[:page]    = params[:page] || 1 # if params[:page] # set page number if this was a search request, otherwise we keep the old one for return paths
+    params[:show_level] = params[:seller_id].present? ? "details" : nil
     
-    @mtg_cards = Mtg::Card.includes(:set, {:listings => :seller}, :statistics).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(15)
+    @mtg_cards = Mtg::Card.joins(:listings => :seller).includes(:set, :statistics).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(15)
 
     respond_to do |format|
       format.html do

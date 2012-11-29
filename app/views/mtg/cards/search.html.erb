@@ -18,13 +18,16 @@
       </ul>
     </div>  
     <div id="search_results">
-      <%= render :partial => "teaser", :collection => @mtg_cards, :as => "mtg_card" %>
+      <%= render :partial => "teaser", :collection => @mtg_cards, :as => "mtg_card" %>      
     </div>        
     <div class="center_wrap">
       <div class="paginator"><%= paginate @mtg_cards, :window => 2, :remote => true ,:collection => @mtg_cards %></div>
     </div>
   
   <% else %>
+
+    <%# NO RESULTS SPLASH SCREEN %>
+  
     <h5 class="ma t-l"></h5>        
     <div class="center_wrap">
 

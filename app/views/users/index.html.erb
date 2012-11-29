@@ -11,7 +11,7 @@
 			<th > <%= table_sort_header("Sales",    :params => {}, :value => "sales",    :remote => true) %> </th>			
 
 			<th> <%= table_sort_header("Feedback", :params => {}, :value => "feedback", :remote => true) %> </th>
-			<th> Listings</th><%#= table_sort_header("Listings", :params => {}, :value => "listings", :remote => true) %>	
+			<th> <%= table_sort_header("Cards", :params => {}, :value => "cards", :remote => true) %> </th>			
 		</tr>
 				
 	  <% @users.each do |user| %>
@@ -21,7 +21,7 @@
   			<td><%= user.statistics.number_sales %></td>
 
 				<td><%= "#{user.statistics.display_approval_percent}" %></td>
-        <td><a class="seller_sales_link" style="cursor:pointer;" data-seller=<%= user.username %> data-sellerid=<%= user.id %> title="Search this users's listings with your current search filters"><%= user.mtg_listings.count %></a></td>				
+        <td><a class="seller_sales_link" style="cursor:pointer;" data-seller=<%= user.username %> data-sellerid=<%= user.id %> title="Search this users's listings with your current search filters"><%= user.mtg_listings.available.sum(:quantity_available) %></a></td>				
 	    </tr>
 	  <% end %>
 
