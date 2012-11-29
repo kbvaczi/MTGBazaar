@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   def index
     set_back_path
     users_sort_string = table_sort(:default => "LOWER(username)", :member_since => "created_at", :user => "LOWER(username)", :sales => "user_statistics.number_sales",
-                                   :purchases => "user_statistics.number_purchases", :feedback => "user_statistics.approval_percent")    
+                                   :purchases => "user_statistics.number_purchases", :feedback => "user_statistics.approval_percent", :cards => "user_statistics.listings_mtg_cards_count")    
     @users = User.includes(:statistics, :mtg_listings).active.order(users_sort_string).page(params[:page]).per(15)
   end
   

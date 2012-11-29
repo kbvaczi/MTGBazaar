@@ -41,14 +41,19 @@ class User < ActiveRecord::Base
 # ---------------- CALLBACKS ----------------      
 
   after_create   :create_statistics
-  after_update   :update_card_statistics_when_active_changed, :if => "active_changed?"
+  after_update   :update_statistics_when_active_changed, :if => "active_changed?"
 
   def create_statistics
     self.statistics = UserStatistics.create
   end
   
-  def update_card_statistics_when_active_changed
+  def update_statistics_when_active_changed
     self.mtg_listings.each { |l| l.update_statistics_cache_on_save }
+    if self.active
+      self.statistics.update_listings_mtg_cards_count
+    else
+      self.statistics.update_attribute(:listings_mtg_cards_count, 0)
+    end
   end
   
 # ---------------- VALIDATIONS ----------------      

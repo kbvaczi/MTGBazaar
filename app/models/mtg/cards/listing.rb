@@ -29,8 +29,7 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   # --------------------------------------- #
 
   before_validation :set_quantity_available, :on => :create
-  after_create      :update_statistics_cache_on_save
-  after_save        :update_statistics_cache_on_save, :if => "active_changed? || price_changed? || quantity_available_changed?"
+  before_save       :update_statistics_cache_on_save, :if => "active_changed? || price_changed? || quantity_available_changed? || self.new_record?"
   after_save        :delete_if_empty
   before_destroy    :update_statistics_cache_on_delete
   
@@ -43,13 +42,21 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   end
   
   def update_statistics_cache_on_save
-    self.card.statistics.listings_available(:overwrite => true)
+    if self.new_record?
+      self.card.statistics.update_attribute(:listings_available, self.card.statistics.listings_available + self.quantity_available)
+      self.seller.statistics.update_attribute(:listings_mtg_cards_count, self.seller.statistics.listings_mtg_cards_count + self.quantity_available)      
+    else
+      self.seller.statistics.update_attribute(:listings_mtg_cards_count, self.seller.statistics.listings_mtg_cards_count + self.quantity_available - self.quantity_available_was)
+      self.card.statistics.update_attribute(:listings_available, self.card.statistics.listings_available + self.quantity_available - self.quantity_available_was)
+    end
     self.card.statistics.price_min(:overwrite => true) if self.price <= self.card.statistics.price_min || self.card.statistics.price_min == 0
   end
   
   def update_statistics_cache_on_delete
-    self.card.statistics.listings_available(:overwrite => true) if self.card.statistics.present?
+    #self.card.statistics.listings_available(:overwrite => true) if self.card.statistics.present?
+    self.card.statistics.update_attribute(:listings_available, self.card.statistics.listings_available - self.quantity_available) if self.card.statistics.present?
     self.card.statistics.price_min(:overwrite => true) if self.price <= self.card.statistics.price_min || self.card.statistics.price_min == 0 if self.card.statistics.present?
+    self.seller.statistics.update_attribute(:listings_mtg_cards_count, self.seller.statistics.listings_mtg_cards_count - self.quantity_available)
   end
   
   # --------------------------------------- #

@@ -4,7 +4,7 @@ class AddEncryptedSecurityAnswerToAccounts < ActiveRecord::Migration
   end
   
   def up
-    add_column(   :accounts, :encrypted_security_answer, :string )    unless column_exists?(:accounts, :encrypted_security_answer)
+    add_column(   :accounts, :encrypted_security_answer, :string)    unless column_exists?(:accounts, :encrypted_security_answer)
 
     Account.reset_column_information   # setup faux model
     Account.all.each do |account|

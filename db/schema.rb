@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121117052939) do
+ActiveRecord::Schema.define(:version => 20121129091845) do
 
   create_table "accounts", :force => true do |t|
     t.integer  "user_id"
@@ -431,6 +431,7 @@ ActiveRecord::Schema.define(:version => 20121117052939) do
     t.datetime "updated_at",                                :null => false
     t.float    "approval_percent"
     t.integer  "number_sales_with_feedback"
+    t.integer  "listings_mtg_cards_count"
   end
 
   add_index "user_statistics", ["approval_percent"], :name => "index_user_statistics_on_approval_percent"
