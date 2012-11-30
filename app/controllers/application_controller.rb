@@ -116,8 +116,6 @@ class ApplicationController < ActionController::Base
     # setup query
     query           = SmartTuple.new(" AND ")
 
-    Rails.logger.debug options
-    Rails.logger.debug options_in
     # should we filter at all?
     if options[:activate_filters] != false && options[:activate_filters] != "false" # test for string too if coming in from parameter
       
@@ -146,7 +144,6 @@ class ApplicationController < ActionController::Base
           query << ["mtg_listings.language LIKE ?", cookies[:search_language]]          if cookies[:search_language].present? && options[:language] != false
           # options filters
           if options[:options] != false
-            Rails.logger.debug "OPTIONS FILTERS RUNNING"
             query << ["mtg_listings.foil LIKE ?",     true]                               if cookies[:search_foil].present?     && cookies[:search_foil]
             query << ["mtg_listings.misprint LIKE ?", true]                               if cookies[:search_miscut].present?   && cookies[:search_miscut]
             query << ["mtg_listings.signed LIKE ?",   true]                               if cookies[:search_signed].present?   && cookies[:search_signed]
