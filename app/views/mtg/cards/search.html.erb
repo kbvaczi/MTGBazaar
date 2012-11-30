@@ -18,8 +18,8 @@
   <div>
   <div class="text_in_h2">
     <% if params[:seller_id].present? && params[:show] != "all" %>
-      showing cards from <b><%= User.find(params[:seller_id]).username %></b> | 
-      <%= link_to "show all sellers", url_for(params.merge(:seller => nil, :seller_id => nil)), :remote => true %>      
+      showing listings from <b><%= User.find(params[:seller_id]).username %></b> | 
+      <%= link_to "show all listings", url_for(params.merge(:seller => nil, :seller_id => nil)), :remote => true %>      
     <% end %>
   </div>
   <h2><%= pluralize(@mtg_cards.total_count, "Search Result", "Search Results")%></h2>
