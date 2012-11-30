@@ -50,9 +50,9 @@ class User < ActiveRecord::Base
   def update_statistics_when_active_changed
     self.mtg_listings.each { |l| l.update_statistics_cache_on_save }
     if self.active
-      self.statistics.update_listings_mtg_cards_count
+      self.statistics.update_listings_mtg_cards_count if self.statistics.present?
     else
-      self.statistics.update_attribute(:listings_mtg_cards_count, 0)
+      self.statistics.update_attribute(:listings_mtg_cards_count, 0) if self.statistics.present?
     end
   end
   
