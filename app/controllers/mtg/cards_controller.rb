@@ -74,7 +74,6 @@ class Mtg::CardsController < ApplicationController
       query << ["artist LIKE ?", "#{params[:artist]}"] if params[:artist].present?
       query << SmartTuple.new(" AND ").add_each(params[:abilities]) {|v| ["mtg_cards.description LIKE ?", "%#{v}%"]} if params[:abilities].present?
       if params[:language].present? or params[:options].present? or params[:seller_id].present? and params[:show] != "all"
-        Rails.logger.info "NO NO NO NON O"
         params[:show] = "listed" unless params[:show] == "all"
         params[:show_level] = "details"
         # language filters

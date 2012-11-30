@@ -109,38 +109,88 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_cart
   
-  def mtg_filters_query(options = {})
-    query = SmartTuple.new(" AND ")
-    if options[:activate_filters] != false && options[:activate_filters] != "false"
-      if options[:card_filters] != false
-        # card filters
+  def mtg_filters_query(options_in = {})
+    # setup default options and overwrite defaults with what options are sent in
+    default_options = { :filter_by => "cookies", :activate_filters => true }
+    options         = default_options.merge(options_in)
+    # setup query
+    query           = SmartTuple.new(" AND ")
 
-        query << ["mtg_sets.code LIKE ?",           "#{cookies[:search_set]}"]        if cookies[:search_set].present?      && options[:set] != false
-        query << ["mtg_cards.name LIKE ?",          "%#{cookies[:search_name]}%"]     if cookies[:search_name].present?     && options[:name]  != false        
-        query << ["mtg_cards.mana_color LIKE ?",    "%W%"]                            if cookies[:search_white].present?    && options[:color] != false
-        query << ["mtg_cards.mana_color LIKE ?",    "%B%"]                            if cookies[:search_black].present?    && options[:color] != false    
-        query << ["mtg_cards.mana_color LIKE ?",    "%U%"]                            if cookies[:search_blue].present?     && options[:color] != false
-        query << ["mtg_cards.mana_color LIKE ?",    "%R%"]                            if cookies[:search_red].present?      && options[:color] != false
-        query << ["mtg_cards.mana_color LIKE ?",    "%G%"]                            if cookies[:search_green].present?    && options[:color] != false
-        query << ["mtg_cards.rarity LIKE ?",        "#{cookies[:search_rarity]}"]     if cookies[:search_rarity].present?   && options[:rarity] != false
-        query << ["mtg_cards.card_type LIKE ?",     "#{cookies[:search_type]}"]       if cookies[:search_type].present?     && options[:type] != false
-        query << ["mtg_cards.card_subtype LIKE ?",  "%#{cookies[:search_subtype]}%"]  if cookies[:search_subtype].present?  && options[:subtype] != false
-        query << ["mtg_cards.artist LIKE ?",        "#{cookies[:search_artist]}"]     if cookies[:search_artist].present?   && options[:artist] != false
-        query << SmartTuple.new(" AND ").add_each(cookies[:search_abilities].split(",")) {|v| ["mtg_cards.description LIKE ?", "%#{v}%"]} if cookies[:search_abilities].present? && options[:abilities] != false
-      end
-      if options[:listing_filters] != false
-        # language filters
-        query << ["mtg_listings.language LIKE ?", cookies[:search_language]]          if cookies[:search_language].present? && options[:language] != false
-        # options filters
-        if options[:options] != false
-          query << ["mtg_listings.foil LIKE ?",     true]                               if cookies[:search_foil].present?     && cookies[:search_foil]
-          query << ["mtg_listings.misprint LIKE ?", true]                               if cookies[:search_miscut].present?   && cookies[:search_miscut]
-          query << ["mtg_listings.signed LIKE ?",   true]                               if cookies[:search_signed].present?   && cookies[:search_signed]
-          query << ["mtg_listings.altart LIKE ?",   true]                               if cookies[:search_altart].present?   && cookies[:search_altart]
+    Rails.logger.debug options
+    Rails.logger.debug options_in
+    # should we filter at all?
+    if options[:activate_filters] != false && options[:activate_filters] != "false" # test for string too if coming in from parameter
+      
+      # filtering by cookies, not parameters
+      if options[:filter_by] == "cookies"
+
+        if options[:card_filters] != false
+          query << ["mtg_cards.active LIKE ?", true]
+          query << ["mtg_sets.active LIKE ?", true]
+          # card filters
+          query << ["mtg_sets.code LIKE ?",           "#{cookies[:search_set]}"]        if cookies[:search_set].present?      && options[:set] != false
+          query << ["mtg_cards.name LIKE ?",          "%#{cookies[:search_name]}%"]     if cookies[:search_name].present?     && options[:name]  != false        
+          query << ["mtg_cards.mana_color LIKE ?",    "%W%"]                            if cookies[:search_white].present?    && options[:color] != false
+          query << ["mtg_cards.mana_color LIKE ?",    "%B%"]                            if cookies[:search_black].present?    && options[:color] != false    
+          query << ["mtg_cards.mana_color LIKE ?",    "%U%"]                            if cookies[:search_blue].present?     && options[:color] != false
+          query << ["mtg_cards.mana_color LIKE ?",    "%R%"]                            if cookies[:search_red].present?      && options[:color] != false
+          query << ["mtg_cards.mana_color LIKE ?",    "%G%"]                            if cookies[:search_green].present?    && options[:color] != false
+          query << ["mtg_cards.rarity LIKE ?",        "#{cookies[:search_rarity]}"]     if cookies[:search_rarity].present?   && options[:rarity] != false
+          query << ["mtg_cards.card_type LIKE ?",     "#{cookies[:search_type]}"]       if cookies[:search_type].present?     && options[:type] != false
+          query << ["mtg_cards.card_subtype LIKE ?",  "%#{cookies[:search_subtype]}%"]  if cookies[:search_subtype].present?  && options[:subtype] != false
+          query << ["mtg_cards.artist LIKE ?",        "#{cookies[:search_artist]}"]     if cookies[:search_artist].present?   && options[:artist] != false
+          query << SmartTuple.new(" AND ").add_each(cookies[:search_abilities].split(",")) {|v| ["mtg_cards.description LIKE ?", "%#{v}%"]} if cookies[:search_abilities].present? && options[:abilities] != false
         end
-        # seller filter
-        query << ["mtg_listings.seller_id LIKE ?", "#{cookies[:search_seller_id]}"]   if cookies[:search_seller_id].present? && options[:seller] != false
-      end
+        if options[:listing_filters] != false
+          # language filters
+          query << ["mtg_listings.language LIKE ?", cookies[:search_language]]          if cookies[:search_language].present? && options[:language] != false
+          # options filters
+          if options[:options] != false
+            Rails.logger.debug "OPTIONS FILTERS RUNNING"
+            query << ["mtg_listings.foil LIKE ?",     true]                               if cookies[:search_foil].present?     && cookies[:search_foil]
+            query << ["mtg_listings.misprint LIKE ?", true]                               if cookies[:search_miscut].present?   && cookies[:search_miscut]
+            query << ["mtg_listings.signed LIKE ?",   true]                               if cookies[:search_signed].present?   && cookies[:search_signed]
+            query << ["mtg_listings.altart LIKE ?",   true]                               if cookies[:search_altart].present?   && cookies[:search_altart]
+          end
+          # seller filter
+          query << ["mtg_listings.seller_id LIKE ?", "#{cookies[:search_seller_id]}"]   if cookies[:search_seller_id].present? && options[:seller] != false
+        end
+      
+      else # end filtering by cookies, start filtering by parameters
+      
+        if options[:card_filters] != false
+          query << ["mtg_cards.active LIKE ?", true]
+          query << ["mtg_sets.active LIKE ?", true]          
+          # card filters
+          query << ["mtg_cards.name LIKE ?",          "%#{params[:name]}%"]             if params[:name].present?             && options[:name]  != false
+          query << ["mtg_sets.code LIKE ?",           "#{params[:set]}"]                if params[:set].present?              && options[:set]   != false
+          query << ["mtg_cards.mana_color LIKE ?",    "%W%"]                            if params[:white].present?            && options[:color] != false
+          query << ["mtg_cards.mana_color LIKE ?",    "%B%"]                            if params[:black].present?            && options[:color] != false    
+          query << ["mtg_cards.mana_color LIKE ?",    "%U%"]                            if params[:blue].present?             && options[:color] != false
+          query << ["mtg_cards.mana_color LIKE ?",    "%R%"]                            if params[:red].present?              && options[:color] != false
+          query << ["mtg_cards.mana_color LIKE ?",    "%G%"]                            if params[:green].present?            && options[:color] != false
+          query << ["mtg_cards.rarity LIKE ?",        "#{params[:rarity]}"]             if params[:rarity].present?           && options[:rarity] != false
+          query << ["mtg_cards.card_type LIKE ?",     "#{params[:type]}"]               if params[:type].present?             && options[:type] != false
+          query << ["mtg_cards.card_subtype LIKE ?",  "%#{params[:subtype]}%"]          if params[:subtype].present?          && options[:subtype] != false
+          query << ["mtg_cards.artist LIKE ?",        "#{params[:artist]}"]             if params[:artist].present?           && options[:artist] != false
+          query << SmartTuple.new(" AND ").add_each(params[:abilities]) {|v| ["mtg_cards.description LIKE ?", "%#{v}%"]} if params[:abilities].present? && options[:abilities] != false
+        end
+        if options[:listing_filters] != false
+          # language filters
+          query << ["mtg_listings.language LIKE ?", params[:language]]                  if params[:language].present?         && options[:language] != false
+          # options filters
+          if options[:options] != false
+            query << ["mtg_listings.foil LIKE ?", true]                                 if (params[:options].include?("f") rescue false)
+            query << ["mtg_listings.misprint LIKE ?", true]                             if (params[:options].include?("m") rescue false)
+            query << ["mtg_listings.signed LIKE ?", true]                               if (params[:options].include?("s") rescue false)
+            query << ["mtg_listings.altart LIKE ?", true]                               if (params[:options].include?("a") rescue false)
+          end
+          # seller filter
+          query << ["mtg_listings.seller_id LIKE ?", "#{params[:seller_id]}"]           if params[:seller_id].present?        && options[:seller] != false
+        end      
+
+      end # filtering by parameters
+      
     end
     query.compile
   end
