@@ -24,4 +24,8 @@ class AdminUser < ActiveRecord::Base
     self.email.gsub(/@[a-zA-z0-9.]+/,"").capitalize
   end
   
+  def self.members
+    where("nickname <> \'admin\'")
+  end
+  
 end

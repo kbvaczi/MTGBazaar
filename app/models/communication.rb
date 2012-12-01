@@ -23,7 +23,13 @@ class Communication < ActiveRecord::Base
   
   ##### ------ PUBLIC METHODS ----- #####  
 
-
+  def display_sender
+    if self.sender.present? && self.sender_type == "User"
+      self.sender.username
+    else
+      "<b><i>MTGBazaar Admin</i></b>".html_safe
+    end
+  end
     
   ##### ------ PRIVATE METHODS ----- #####          
   protected
