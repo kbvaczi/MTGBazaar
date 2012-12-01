@@ -202,8 +202,12 @@ class ApplicationController < ActionController::Base
     selected_sort = options[params[:sort].parameterize.underscore.to_sym] rescue nil
     if selected_sort
       sort_string = "#{selected_sort} #{params[:sort_order] == "asc" ? "ASC" : "DESC"}" 
-    else 
-      sort_string = "#{options[:default]} ASC" if options[:default]
+    else
+      if options[:default]
+        sort_string = "#{options[:default]} #{options[:default_order] || "ASC"}" 
+      else
+        nil
+      end
     end
   end
 

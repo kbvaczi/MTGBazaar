@@ -5,8 +5,8 @@ class ContactMailer < ActionMailer::Base
   def send_mail(sender)
     @sender = sender
 
-    mail(:to => "feedback@mtgbazaar.com",
-         :subject => "#{sender.support_type}")
+    mail(:to => "CustomerService@mtgbazaar.com",
+         :subject => "Contact Form: #{sender.support_type}")
   end
   
 end
