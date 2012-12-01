@@ -94,6 +94,10 @@ class Account::RegistrationsController < Devise::RegistrationsController
       :zip_code    => params[:zip_code]
     }
     
+    Rails.logger.debug address.inspect
+    Rails.logger.debug address[:address2]
+    Rails.logger.debug address[:address2]      
+    
     begin
       @response = Stamps.clean_address(:address => address)
       session[:address_info] = @response[:address]

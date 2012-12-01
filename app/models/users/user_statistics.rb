@@ -72,9 +72,13 @@ class UserStatistics < ActiveRecord::Base
   
   def display_average_ship_time
     if self.average_ship_time.present?
-      self.average_ship_time.to_s + " days"
+      if self.average_ship_time < 1
+        "less than 1 day"
+      else
+        "#{self.average_ship_time.truncate} - #{self.average_ship_time.ceil} days"
+      end
     else
-      "No Sales Yet"
+      "no sales yet"
     end
   end
   

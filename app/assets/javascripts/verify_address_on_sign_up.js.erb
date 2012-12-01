@@ -5,28 +5,32 @@ $(document).ready(function() {
     $("#verify_address_trigger").hide();         
   } 
   
-  $(".verify_address_input").change(function(){  
-    var first_name = $("#user_account_attributes_first_name").val() || "test";
-    var last_name = $("#user_account_attributes_last_name").val() || "test";  
-    var address1 = $("#user_account_attributes_address1").val();    
-    var address2 = $("#user_account_attributes_address2").val();      
-    var city = $("#user_account_attributes_city").val();      
-    var state = $("#user_account_attributes_state").val();      
-    var zip_code = $("#user_account_attributes_zipcode").val();
-    var path = $("#verify_address_trigger").attr("data-url");
-    var url = path +  "?first_name=" + first_name +
-                      "&last_name="  + last_name +
-                      "&address1="   + address1 +                                                
-                      "&address2="   + address2 +                                                                                                
-                      "&city="       + city +                                                                                                                                                
-                      "&state="      + state +
-                      "&zip_code="   + zip_code ;
-    $("#verify_address_trigger").attr("href", url); 
-    $("#verify_address_text").text('Unverified');            
-    $("#user_account_attributes_address_verification").val('');      
-    $("#verify_address_text").addClass('tc-r'); 
-    $("#verify_address_text").removeClass('tc-y tc-g');
-    $("#verify_address_trigger").show();    
-  });
+  $(".verify_address_input").change( UpdateAddressInfoOnSignUp );
+  $(".verify_address_input").keyup( UpdateAddressInfoOnSignUp );  
 
 });
+
+function UpdateAddressInfoOnSignUp() {
+  var first_name = $("#user_account_attributes_first_name").val() || "test";
+  var last_name = $("#user_account_attributes_last_name").val() || "test";  
+  var address1 = $("#user_account_attributes_address1").val();    
+  var address2 = $("#user_account_attributes_address2").val();      
+  var city = $("#user_account_attributes_city").val();      
+  var state = $("#user_account_attributes_state").val();      
+  var zip_code = $("#user_account_attributes_zipcode").val();
+  var path = $("#verify_address_trigger").attr("data-url");
+  var params = [{ name:"first_name",  value:first_name },
+                { name:"last_name",   value:last_name },
+                { name:"address1",    value:address1 },
+                { name:"address2",    value:address2 },
+                { name:"city",        value:state },
+                { name:"state",       value:state },
+                { name:"zip_code",    value:zip_code }];
+  var url = path + "?" + $.param(params);
+  $("#verify_address_trigger").attr("href", url); 
+  $("#verify_address_text").text('Unverified');            
+  $("#user_account_attributes_address_verification").val('');      
+  $("#verify_address_text").addClass('tc-r'); 
+  $("#verify_address_text").removeClass('tc-y tc-g');
+  $("#verify_address_trigger").show();
+}
