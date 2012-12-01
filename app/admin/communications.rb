@@ -2,6 +2,14 @@ ActiveAdmin.register Communication do
 
   menu :label => "Communications"
   
+  # ------ SCOPES (auto sorts) ------ #
+    scope "Sent by users", :default => true do |comms|
+      comms.where(:sender_type => "User")
+    end
+    scope "Sent by Admin" do |comms|
+      comms.where(:sender_type => "AdminUser")
+    end    
+  
   # ------ INDEX ------- #
   index do
     column :id
@@ -27,7 +35,6 @@ ActiveAdmin.register Communication do
 
   # ------ FILTERS FOR INDEX ------- #
   filter :sender,             :as => :select, :collection => User.select([:id, :username]), :input_html => {:class => "chzn-select"}
-  filter :sender_type,        :as => :hidden, :input_html => {:value => "User"}, :wrapper_html => {:style => "list-style:none;"}
   filter :receiver,           :as => :select, :collection => User.select([:id, :username]), :input_html => {:class => "chzn-select"}
   filter :unread,             :as => :check_boxes
   filter :created_at
