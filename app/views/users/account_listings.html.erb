@@ -60,7 +60,7 @@
   
     <% if (not current_user.active) && params[:section] == "active" %>
       <p class="ma"><i>Note: All your listings are temporarily inactive due to your seller status</i></p>
-    <% elsif @listings.total_count == 0 %>
+    <% elsif current_user.mtg_listings.count == 0 %>
       <%= link_to "Create New Listing", new_generic_mtg_cards_listings_path, :class => "right button mr mb" %>  
       <p class="ma"><i>You currently have no Listings...</i></p>
     <% else %>  

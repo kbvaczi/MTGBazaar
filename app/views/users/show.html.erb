@@ -185,10 +185,10 @@
       <div class="mt paginator center_wrap">
         <%= paginate @listings, :method => :get %>
       </div>
-    <% elsif @listings.total_count == 0 %>
-      <p class="ma"><i>This user currently has no listings...</i></p>
-    <% else %>  
+    <% elsif params[:filter] != "false" %>  
       <%= render :partial => "mtg/no_results", :locals => { :filter_by => "cookies" } %>
+    <% else %>
+      <p class="ma"><i>This user currently has no listings...</i></p>
     <% end %>
     
   <% end %>
