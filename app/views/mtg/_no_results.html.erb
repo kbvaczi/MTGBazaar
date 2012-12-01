@@ -1,0 +1,143 @@
+<%# inputs: filter_by [params,cookies] %>
+
+<%
+
+  if (filter_by == "params" rescue false)
+
+    name      = params[:name].present?      ? params[:name]       : nil
+    set       = params[:set].present?       ? params[:set]        : nil
+    type      = params[:type].present?      ? params[:type]       : nil
+    subtype   = params[:subtype].present?   ? params[:subtype]    : nil  
+    rarity    = params[:rarity].present?    ? params[:rarity]     : nil
+    language  = params[:language].present?  ? params[:language]   : nil
+    options   = params[:options].present?   ? params[:options]    : nil
+    seller    = params[:seller].present?    ? params[:seller]     : nil
+    abilities = params[:abilities].present? ? params[:abilities]  : nil
+    artist    = params[:artist].present?    ? params[:artist]     : nil   
+    colors    = params[:white].present? || 
+                params[:black].present? || 
+                params[:blue].present?  || 
+                params[:red].present?   || 
+                params[:green].present?     ? "{#{params[:white]}}{#{params[:blue]}}{#{params[:black]}}{#{params[:red]}}{#{params[:green]}}" : nil
+
+  else
+
+    name      = cookies[:search_name].present?      ? cookies[:search_name]       : nil
+    set       = cookies[:search_set].present?       ? cookies[:search_set]        : nil
+    type      = cookies[:search_type].present?      ? cookies[:search_type]       : nil
+    subtype   = cookies[:search_subtype].present?   ? cookies[:search_subtype]    : nil  
+    rarity    = cookies[:search_rarity].present?    ? cookies[:search_rarity]     : nil
+    language  = cookies[:search_language].present?  ? cookies[:search_language]   : nil
+    seller    = cookies[:search_seller].present?    ? cookies[:search_seller]     : nil
+    artist    = cookies[:search_artist].present?    ? cookies[:search_artist]     : nil       
+    abilities = cookies[:search_abilities].present? ? cookies[:search_abilities].split(",") : nil    
+    options   = cookies[:search_options].present?   ? cookies[:search_options]    : nil    
+    options   = []
+    options.push "f" if cookies[:search_foil].present?
+    options.push "m" if cookies[:search_miscut].present?
+    options.push "s" if cookies[:search_signed].present?
+    options.push "a" if cookies[:search_altart].present?    
+    Rails.logger.debug options
+    colors    = ""
+    colors.concat "{W}" if cookies[:search_white].present?
+    colors.concat "{U}" if cookies[:search_blue].present?    
+    colors.concat "{B}" if cookies[:search_black].present?    
+    colors.concat "{R}" if cookies[:search_red].present?    
+    colors.concat "{G}" if cookies[:search_green].present?
+    
+  end
+
+%>
+
+  <h5 class="ma t-l"></h5>        
+  <div class="center_wrap">
+
+    <div class="group center" style="width:80%">
+      <p><b>Oops! There were no results with your current search filters:</b></p>
+      <table class="fixed data mt">
+        
+        <% if name.present? %>
+          <tr class=<%=cycle "odd", "even"%>>
+            <th>Card Name:</th>
+            <td><%= name %></td>
+          </tr>
+        <% end %>
+        <% if set.present? %>
+          <tr class=<%=cycle "odd", "even"%>>
+            <th>Set:</th>
+            <% set_object = Mtg::Set.find_by_code(set) %>
+            <td><div style="display:inline-block;margin-top:auto;margin-bottom:auto;vertical-align:middle;height:100%;"><%= display_set_symbol(set_object) %></div><div class="ml-m" style="margin-top:auto;margin-bottom:auto;vertical-align:middle;display:inline-block;max-width:120px;"><%= set_object.name %></div></td>
+          </tr>
+        <% end %>
+        <% if type.present? %>
+          <tr class=<%=cycle "odd", "even"%>>
+            <th>Card Type:</th>
+            <td><%= type %></td>
+          </tr>
+        <% end %>
+        <% if subtype.present? %>
+          <tr class=<%=cycle "odd", "even"%>>
+            <th>Card Subtype:</th>
+            <td><%= subtype %></td>
+          </tr>
+        <% end %>        
+        <% if rarity.present? %>
+          <tr class=<%=cycle "odd", "even"%>>
+            <th>Rarity:</th>
+            <td><%= display_rarity rarity %></td>
+          </tr>
+        <% end %>         
+        <% if artist.present? %>
+          <tr class=<%=cycle "odd", "even"%>>
+            <th>Artist:</th>
+            <td><%= artist %></td>
+          </tr>
+        <% end %>
+        <% if colors.present?%>
+          <tr class=<%=cycle "odd", "even"%>>
+            <th>Color:</th>
+            <td><%= display_symbols colors %></td>
+          </tr>
+        <% end %>          
+        <% if abilities.present?%>
+          <tr class=<%=cycle "odd", "even"%>>
+            <th>Abilities:</th>
+            <td>
+              <% abilities.each do |ability| %>
+                <%= ability %><br/>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+        <% if language.present? %>
+          <tr class=<%=cycle "odd", "even"%>>
+            <th>Language:</th>
+            <td><%= display_flag_symbol language %></td>
+          </tr>
+        <% end %>  
+        <% if options.present?%>
+          <tr class=<%=cycle "odd", "even"%>>
+            <th>Advanced Options:</th>
+            <td>
+              <div style="position:relative; top:2px;">
+                <%= listing_option_foil_icon      if options.include?('f') %>
+                <%= listing_option_signed_icon    if options.include?('s') %>
+                <%= listing_option_altart_icon    if options.include?('a') %>
+                <%= listing_option_misprint_icon  if options.include?('m') %>
+              </div>
+            </td>
+          </tr>
+        <% end %>                      
+              
+        <% if seller.present? %>
+          <tr class=<%=cycle "odd", "even"%>>
+            <th>Seller:</th>
+            <td><%= seller %></td>
+          </tr>
+        <% end %>
+      </table>
+      <br/>
+      <p class="mt">Please update your filters and try again...</p>
+    </div>
+    
+  </div>

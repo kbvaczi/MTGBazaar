@@ -121,65 +121,75 @@
   
   <%# MTG_CARDS SECTION %>
   <% if params[:section] == "mtg_cards" %>
+  
     <div>
-    <%= render :partial => '/mtg/apply_filters', :locals =>  { :remote => false } %>
-    <h2><%= pluralize(@listings.total_count, "Listing", "Listings") %></h2>
+      <%= render :partial => '/mtg/apply_filters', :locals =>  { :remote => false } %>
+      <h2><%= pluralize(@listings.total_count, "Listing", "Listings") %></h2>
     </div>
-    <table class="data fixed">
-      <tr class="header_row">
-        <th width="25%"> <%= table_sort_header("Name") %> </th>
-        <th width="9%"> <%= table_sort_header("Set") %> </th>      
-        <th width="8%"> <%= table_sort_header("Lang", :value => "language") %> </th>
-        <th width="8%"> <%= table_sort_header("Cond", :value => "condition") %> </th>              
-        <th width="10%"> Options </th>
-        <th width="12%"> <%= table_sort_header("Price") %> </th>
-        <th width="8%"> <%= table_sort_header("Qty", :value => "quantity") %> </th>
-        <th width="20%"> Add to Cart </th>
-      </tr>
-      <% @listings.each do |listing| %>
-        <tr class=<%= cycle("odd","even") %>>  
-          <td><%= link_to listing.card.name, mtg_card_path(listing.card) %></td>
-          <td><div><%= display_set_symbol(listing.card.set) %></div></td>          
-          <td><%= display_flag_symbol(listing.language) %></td>
-          <td><%= display_condition(listing.condition)%>
-          <td>
-            <% if listing.foil %>
-              <%= listing_option_foil_icon %>
-            <% end %>
-            <% if listing.misprint %>
-              <%= listing_option_misprint_icon %>
-            <% end %>
-            <% if listing.signed %>
-              <%= listing_option_signed_icon %>
-            <% end %>
-            <% if listing.altart %>
-              <%= listing_option_altart_icon %>
-            <% end %>    
-            <% if listing.description != "" %>
-              <%= listing_option_description_icon(listing) %>
-            <% end %>
-            <% if listing.scan.present? %>
-              <%= listing_option_scan_icon(listing) %>
-              <%= listing_option_scan_overlay(listing) %>
-            <% end %> 
-          </td>
-          <td><%= number_to_currency(listing.price)%></td>
-          <td><%= listing.quantity_available %></td>
-          <td>
-            <%= form_tag add_to_cart_mtg_listing_path(listing.id), :method => :post do %>
-              <%= text_field_tag "quantity", 1, :id => nil, :maxlength => 4, :style => "width:30px;text-align:center;"%>            
-              <%= submit_tag "Add" %>
-            <% end %>
-          </td>         
+  
+    <% if @listings.count > 0 %>
+
+      <table class="data fixed">
+        <tr class="header_row">
+          <th width="25%"> <%= table_sort_header("Name") %> </th>
+          <th width="9%"> <%= table_sort_header("Set") %> </th>      
+          <th width="8%"> <%= table_sort_header("Lang", :value => "language") %> </th>
+          <th width="8%"> <%= table_sort_header("Cond", :value => "condition") %> </th>              
+          <th width="10%"> Options </th>
+          <th width="12%"> <%= table_sort_header("Price") %> </th>
+          <th width="8%"> <%= table_sort_header("Qty", :value => "quantity") %> </th>
+          <th width="20%"> Add to Cart </th>
         </tr>
-      <% end %>
-      <% if @listings.count == 0 %>
-        <tr class="odd"><td colspan=8><i>No listings</i></td></tr>
-      <% end %>
-    </table>
+        <% @listings.each do |listing| %>
+          <tr class=<%= cycle("odd","even") %>>  
+            <td><%= link_to listing.card.name, mtg_card_path(listing.card) %></td>
+            <td><div><%= display_set_symbol(listing.card.set) %></div></td>          
+            <td><%= display_flag_symbol(listing.language) %></td>
+            <td><%= display_condition(listing.condition)%>
+            <td>
+              <% if listing.foil %>
+                <%= listing_option_foil_icon %>
+              <% end %>
+              <% if listing.misprint %>
+                <%= listing_option_misprint_icon %>
+              <% end %>
+              <% if listing.signed %>
+                <%= listing_option_signed_icon %>
+              <% end %>
+              <% if listing.altart %>
+                <%= listing_option_altart_icon %>
+              <% end %>    
+              <% if listing.description != "" %>
+                <%= listing_option_description_icon(listing) %>
+              <% end %>
+              <% if listing.scan.present? %>
+                <%= listing_option_scan_icon(listing) %>
+                <%= listing_option_scan_overlay(listing) %>
+              <% end %> 
+            </td>
+            <td><%= number_to_currency(listing.price)%></td>
+            <td><%= listing.quantity_available %></td>
+            <td>
+              <%= form_tag add_to_cart_mtg_listing_path(listing.id), :method => :post do %>
+                <%= text_field_tag "quantity", 1, :id => nil, :maxlength => 4, :style => "width:30px;text-align:center;"%>            
+                <%= submit_tag "Add" %>
+              <% end %>
+            </td>         
+          </tr>
+        <% end %>
+        <% if @listings.count == 0 %>
+          <tr class="odd"><td colspan=8><i>No listings</i></td></tr>
+        <% end %>
+      </table>
     
-    <div class="mt paginator center_wrap">
-      <%= paginate @listings, :method => :get %>
-    </div>
+      <div class="mt paginator center_wrap">
+        <%= paginate @listings, :method => :get %>
+      </div>
+    <% elsif @listings.total_count == 0 %>
+      <p class="ma"><i>This user currently has no listings...</i></p>
+    <% else %>  
+      <%= render :partial => "mtg/no_results", :locals => { :filter_by => "cookies" } %>
+    <% end %>
+    
   <% end %>
 </div>

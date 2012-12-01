@@ -40,7 +40,7 @@
       <% @sets.each do |set| %>
         <tr class=<%= cycle("even","odd") %>>
           <td><%= link_to "#{set.name}", mtg_cards_path(:set => set.code) %></td>
-          <td><%= display_time(set.release_date, :day => false) rescue ""%> </td>
+          <td><%= set.display_release_date rescue "" %> </td>
           <td><%= display_set_symbol(set) %></td>
         </tr>
       <% end %>  
