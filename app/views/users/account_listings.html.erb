@@ -1,6 +1,6 @@
 <% title "my listings"%>
 <h1>My Listings</h1>
-<div class="content">
+<div id="content">
 
   <div class="group center_wrap">
     <ul class="tabs">
@@ -12,7 +12,7 @@
 
   <%#= link_to "Create a New Listing", new_generic_mtg_cards_listings_path, :class => "right", :style => "margin-top:23px;margin-right:10px;" %>
   <div>
-    <%= render :partial => '/mtg/apply_filters', :locals =>  { :remote => false } %>  
+    <%= render :partial => '/mtg/apply_filters', :locals =>  { :remote => true } %>  
     <h2><%="#{@listings.total_count} #{(params[:status] || "").capitalize} Listings"%></h2>
   </div>
   
@@ -60,11 +60,11 @@
   
     <% if (not current_user.active) && params[:section] == "active" %>
       <p class="ma"><i>Note: All your listings are temporarily inactive due to your seller status</i></p>
-    <% elsif current_user.mtg_listings.count == 0 %>
-      <%= link_to "Create New Listing", new_generic_mtg_cards_listings_path, :class => "right button mr mb" %>  
-      <p class="ma"><i>You currently have no Listings...</i></p>
-    <% else %>  
+    <% elsif params[:filter] != "false" %>
       <%= render :partial => "mtg/no_results", :locals => { :filter_by => "cookies" } %>
+    <% else %>  
+      <%= link_to "Create New Listing", new_generic_mtg_cards_listings_path, :class => "right button mr mb" %>  
+      <p class="ma"><i>No Listings...</i></p>
     <% end %>
 
   

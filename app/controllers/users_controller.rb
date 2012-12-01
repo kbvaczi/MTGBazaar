@@ -26,6 +26,7 @@ class UsersController < ApplicationController
     
     respond_to do |format|
       format.html # show.html.erb
+      format.js
     end
   end
   
@@ -45,6 +46,11 @@ class UsersController < ApplicationController
       @listings = current_user.mtg_listings.includes(:card => :set).where(query).inactive.order("mtg_cards.name ASC").page(params[:page]).per(25)      
     else
       @listings = current_user.mtg_listings.includes(:card => :set).where(query).order("mtg_cards.name ASC").page(params[:page]).per(25)
+    end
+    
+    respond_to do |format|
+      format.html
+      format.js
     end
   end
   

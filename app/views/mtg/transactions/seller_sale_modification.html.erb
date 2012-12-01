@@ -2,7 +2,7 @@
 
 <h1>Modify Sale <%= @transaction.transaction_number %></h1>
 
-<div class="content">
+<div id="content">
   <h2>Sale Items</h2>
   <%= form_tag create_seller_sale_modification_path(@transaction), :method => :put do %>
     <table class="data">

@@ -1,6 +1,6 @@
 <%= title "Shopping Cart"%>
 <h1><%="Your Cart (#{pluralize(current_cart.orders.to_a.count,"order","orders")})"%></h1>
-<div class="content">
+<div id="content">
 
   <% if current_cart.item_count <= 0 # Do this if the user's cart is not empty %>
     <br class="spacer"/>

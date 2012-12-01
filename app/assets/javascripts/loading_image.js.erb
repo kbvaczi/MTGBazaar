@@ -2,7 +2,7 @@ $(document).ready(function() {
 
   $('#loader').bind('ajaxStart', function(){
       $(this).centerScreen();
-      $(this).delay(3000).show();
+      $(this).delay(2000).fadeIn(2000);
   }).bind('ajaxStop', function(){
       $(this).stop(1).hide();
   });

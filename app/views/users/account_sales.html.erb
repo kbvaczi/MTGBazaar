@@ -2,7 +2,7 @@
 
 <h1>My Sales</h1>
 
-<div class="content">
+<div id="content">
   <div class="group center_wrap">
     <ul class="tabs center">
         <li <%= "class=selected" if request.fullpath ==  account_sales_path %>> <%= link_to "All (#{current_user.mtg_sales.count})", account_sales_path %> </li>
