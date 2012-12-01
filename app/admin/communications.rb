@@ -26,8 +26,8 @@ ActiveAdmin.register Communication do
   end
 
   # ------ FILTERS FOR INDEX ------- #
-  #filter :sender,             :as => :select, :collection => User.select([:id, :username]), :input_html => {:class => "chzn-select"}
-  #filter :sender_type_equals, :as => :hidden, :input_html => {:value => "User"}, :wrapper_html => {:style => "list-style:none;"}
+  filter :sender,             :as => :select, :collection => User.select([:id, :username]), :input_html => {:class => "chzn-select"}
+  filter :sender_type_equals, :as => :hidden, :input_html => {:value => "User"}, :wrapper_html => {:style => "list-style:none;"}
   filter :receiver,           :as => :select, :collection => User.select([:id, :username]), :input_html => {:class => "chzn-select"}
   #filter :unread,             :as => :check_boxes
   filter :created_at
