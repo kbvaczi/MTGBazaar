@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  before_filter :authenticate_user!, :except => [:index, :autocomplete_name, :autocomplete_name_chosen, :validate_username_ajax]
+  before_filter :authenticate_user!, :except => [:show, :index, :autocomplete_name, :autocomplete_name_chosen, :validate_username_ajax]
   
   include ApplicationHelper
   
