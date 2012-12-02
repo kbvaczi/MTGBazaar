@@ -9,7 +9,7 @@ class Mtg::CardsController < ApplicationController
   
   # GET /mtg_cards
   def index
-    @title = "MTG Cards"
+    @title = "Buy MTG Cards"
     # LIST ALL CARDS BY SET    
     if params[:set]
       @set = Mtg::Set.includes(:cards => :listings).where(:code => params[:set], :active => true).first
