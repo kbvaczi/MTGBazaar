@@ -86,10 +86,10 @@
     </div>
   
   <% else %>
-    <% begin %>
+
     
       <table class="data">
-        <% ip_log_reverse = current_user.statistics.ip_log.reverse %>
+        <% ip_log_reverse = current_user.statistics.ip_log.reverse rescue [] %>
     
         <% 6.times do |index| %>
           <% if index < ip_log_reverse.length %>
@@ -103,10 +103,7 @@
           <% end %>
         <% end %>
       </table> 
-      
-    <% rescue %>
-    
-    <% end %>
+
   
   <% end %> 
   

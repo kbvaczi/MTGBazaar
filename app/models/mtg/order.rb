@@ -58,6 +58,7 @@ class Mtg::Order < ActiveRecord::Base
       res = self.reservations.build(:listing_id => listing.id, :quantity => 0) # build a new reservation
     end
     res.increment(:quantity, quantity)
+    res.increment(:cards_quantity, quantity * listing.number_cards_per_listing)    
     res.listing.decrement(:quantity_available, quantity)
     if res.valid? && res.listing.valid?
       res.save
@@ -72,6 +73,7 @@ class Mtg::Order < ActiveRecord::Base
     if self.reservations.include?(reservation)
       if quantity <= reservation.quantity # remove less quantity than reservation holds, just update quantity in reservation
         reservation.decrement(:quantity, quantity)
+        reservation.decrement(:cards_quantity, quantity * reservation.listing.number_cards_per_listing)            
         reservation.listing.increment(:quantity_available, quantity)
         if reservation.valid? && reservation.listing.valid?
           reservation.save
@@ -102,6 +104,7 @@ class Mtg::Order < ActiveRecord::Base
                                     :shipping_cost => self.shipping_cost, 
                                     :commission_rate => calculated_commission_rate,
                                     :commission => Money.new((calculated_commission_rate * self.item_price_total.cents).ceil)  )  # Calculate commision as commission_rate * item value (without shipping), round up to nearest cent
+    Rails.logger.debug self.transaction.inspect
     self.transaction.save!
   end
     
@@ -124,12 +127,14 @@ class Mtg::Order < ActiveRecord::Base
   def update_cache
     fresh_reservations = self.reservations.includes(:listing)
     if fresh_reservations.count > 0
-      self.item_count       = fresh_reservations.to_a.inject(0) {|sum, res| sum + res[:quantity] }
+      self.item_count       = fresh_reservations.pluck(:quantity).inject(0) {|sum, value| sum + value }
+      self.cards_quantity   = fresh_reservations.pluck(:cards_quantity).inject(0) {|sum, value| sum + value }      
       self.item_price_total = Money.new(fresh_reservations.to_a.inject(0) {|sum, res| sum + res[:quantity] * res.listing[:price]})
-      self.shipping_cost    = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count => item_count)[:user_charge]        
+      self.shipping_cost    = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count => cards_quantity)[:user_charge]        
       self.total_cost       = item_price_total + shipping_cost
     else
       self.item_count       = 0
+      self.cards_quantity   = 0      
       self.item_price_total = 0
       self.shipping_cost    = 0
       self.total_cost       = 0

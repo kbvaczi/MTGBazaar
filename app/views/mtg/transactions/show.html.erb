@@ -151,7 +151,7 @@
       	      <% else %>
         	      <i>Order Shipped</i>
         	      <br class="spacer"/>
-        	      <%= link_to "view shipping label", create_shipping_label_path(@transaction), :target => "_blank", :class => "t-s", :style => "display:inline-block;" if @transaction.seller_shipped_at > 1.week.ago%>
+        	      <%= link_to "view shipping label", create_shipping_label_path(@transaction), :target => "_blank", :class => "t-s", :style => "display:inline-block;" if @transaction.seller_shipped_at > 2.days.ago %>
       	      <% end %>
     	      </div>
           </td>

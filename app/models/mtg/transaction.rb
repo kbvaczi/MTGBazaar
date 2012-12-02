@@ -81,7 +81,13 @@ class Mtg::Transaction < ActiveRecord::Base
   end
     
   def item_count
-    items.to_a.sum(&:quantity_available)
+    #items.select(:quantity_available).to_a.sum(&:quantity_available)
+    self.items.pluck(:quantity_available).inject(0) { |sum, value| sum + value }
+  end
+  
+  def cards_quantity
+    #items.select(:cards_quantity).to_a.sum(&:cards_quantity)
+    self.items.pluck(:cards_quantity).inject(0) { |sum, value| sum + value }    
   end
   
   def display_feedback
@@ -173,6 +179,8 @@ class Mtg::Transaction < ActiveRecord::Base
                                      :description => reservation.listing.description,
                                      :altart => reservation.listing.altart,
                                      :misprint => reservation.listing.misprint,
+                                     :playset => reservation.listing.playset,                                     
+                                     :cards_quantity => reservation.listing.number_cards_per_listing,                                                                          
                                      :foil => reservation.listing.foil,
                                      :signed => reservation.listing.signed,
                                      :card_id => reservation.listing.card_id,
@@ -183,7 +191,7 @@ class Mtg::Transaction < ActiveRecord::Base
   end
   
   def create_listing_from_item(item)
-    listing = Mtg::Cards::Listing.new(      :quantity => item.quantity_available,
+    listing = Mtg::Cards::Listing.new(:quantity => item.quantity_available,
                                      :price => item.price,
                                      :condition => item.condition,
                                      :language => item.language,
@@ -191,7 +199,9 @@ class Mtg::Transaction < ActiveRecord::Base
                                      :altart => item.altart,
                                      :misprint => item.misprint,
                                      :foil => item.foil,
-                                     :signed => item.signed )
+                                     :signed => item.signed,
+                                     :playset => item.playset,                                     
+                                     :number_cards_per_listing => (item.cards_quantity / item.quantity_available).to_i )
     listing.card_id = item.card_id
     listing.seller_id = self.seller_id
     duplicate = Mtg::Cards::Listing.duplicate_listings_of(listing).first
@@ -211,8 +221,10 @@ class Mtg::Transaction < ActiveRecord::Base
   private
   
   def update_transaction_costs
-    self.value = items.to_a.inject(0) {|sum, item| sum + item[:quantity_requested] * item[:price]}.to_f / 100
-    self.shipping_cost = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count => self.item_count)[:user_charge]
+    Rails.logger.debug self.items
+    Rails.logger.debug self.items.to_a
+    self.value = Money.new(self.items.to_a.inject(0) {|sum, item| sum + item.quantity_requested * item.price.dollars})
+    self.shipping_cost = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count => self.cards_quantity)[:user_charge]
   end
   
   def generate_transaction_number

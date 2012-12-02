@@ -44,10 +44,10 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   def update_statistics_cache_on_save
     if self.new_record?
       self.card.statistics.update_attribute(:listings_available, self.card.statistics.listings_available + self.quantity_available)
-      self.seller.statistics.update_attribute(:listings_mtg_cards_count, self.seller.statistics.listings_mtg_cards_count + self.quantity_available)      
+      self.seller.statistics.update_attribute(:listings_mtg_cards_count, self.seller.statistics.listings_mtg_cards_count + self.quantity_available * self.number_cards_per_listing)      
     else
-      self.seller.statistics.update_attribute(:listings_mtg_cards_count, self.seller.statistics.listings_mtg_cards_count + self.quantity_available - self.quantity_available_was)
       self.card.statistics.update_attribute(:listings_available, self.card.statistics.listings_available + self.quantity_available - self.quantity_available_was)
+      self.seller.statistics.update_attribute(:listings_mtg_cards_count, self.seller.statistics.listings_mtg_cards_count + (self.quantity_available - self.quantity_available_was) * self.number_cards_per_listing)
     end
     self.card.statistics.update_attribute(:price_min, self.price) if self.price <= self.card.statistics.price_min || self.card.statistics.price_min == 0
   end
@@ -56,7 +56,7 @@ class Mtg::Cards::Listing < ActiveRecord::Base
     #self.card.statistics.listings_available(:overwrite => true) if self.card.statistics.present?
     self.card.statistics.update_attribute(:listings_available, self.card.statistics.listings_available - self.quantity_available) if self.card.statistics.present?
     self.card.statistics.price_min(:overwrite => true) if self.price <= self.card.statistics.price_min || self.card.statistics.price_min == 0 if self.card.statistics.present?
-    self.seller.statistics.update_attribute(:listings_mtg_cards_count, self.seller.statistics.listings_mtg_cards_count - self.quantity_available)
+    self.seller.statistics.update_attribute(:listings_mtg_cards_count, self.seller.statistics.listings_mtg_cards_count - (self.quantity_available * self.number_cards_per_listing))
   end
   
   # --------------------------------------- #
@@ -148,6 +148,7 @@ class Mtg::Cards::Listing < ActiveRecord::Base
                    self.altart == other_listing.altart &&                   
                    self.signed == other_listing.signed &&
                    self.description == other_listing.description &&
+                   self.playset == other_listing.playset &&                   
                    (not self.scan.present?) &&
                    (not other_listing.scan.present?)
     return false
@@ -166,6 +167,7 @@ class Mtg::Cards::Listing < ActiveRecord::Base
                 :altart => listing.altart,
                 :signed => listing.signed,
                 :description => listing.description,
+                :playset => listing.playset,                
                 :scan => "")
       results = results.where("id <> ?", listing.id) unless include_self
       results # return results
@@ -174,48 +176,4 @@ class Mtg::Cards::Listing < ActiveRecord::Base
     end
   end
   
-  # returns the number of listings that are a duplicate of this listing in a subset if specified or in the entire database if subset not specified
-  # this should be phased out
-  def duplicate_listing_count(subset = nil, show_only_available = true)
-    if subset
-      relation_of_listings = subset
-    else 
-      relation_of_listings = Mtg::Cards::Listing.where(:seller_id => self.seller_id, :card_id => self.card_id)
-    end
-    #relation_of_listings.duplicate_listings_of(self, false, show_only_available).count
-    count = 0
-    relation_of_listings.each do |l|
-      count += 1 if self.duplicate_listing?(l)
-    end
-    count #return count
-  end
-  
-  # returns the number of listings that are a duplicate of this listing in a subset if specified or in the entire database if subset not specified
-  def self.duplicate_listing_count(listing)
-    duplicate_listings_of(listing).count
-  end
-  
-  # organizes an activerecord relation of Mtg::Cards::Listings by duplicates 
-  # in the form of [{"count" => count, "listing" => reference listing}, {"count" => count, "listing" => reference listing}]
-  def self.organize_by_duplicates(show_only_available = true)
-    array_of_listings = available if show_only_available
-    array_of_listings = where("id <> 0") if not show_only_available
-    array_of_duplicates = Array.new
-    array_of_listings.each do |l|
-      array_of_duplicates << {"count" => l.duplicate_listing_count(array_of_listings), "listing" => l}
-      array_of_listings.delete_if {|x| x.duplicate_listing?(l) && x != l}
-    end
-    #inefficient code - array_of_duplicates.each {|d| array_of_duplicates.delete_if {|x| d["listing"].duplicate_listing?(x["listing"]) && d["listing"] != x["listing"] }}
-    array_of_duplicates
-  end
-  
-  # finds the first available listing that is duplicate to this one
-  def find_duplicate_listing(subset = nil)
-    if subset
-      array_of_listings = subset
-    else 
-      array_of_listings = Mtg::Cards::Listing.where(:seller_id => self.seller_id, :card_id => self.card_id).available
-    end
-      
-  end
 end

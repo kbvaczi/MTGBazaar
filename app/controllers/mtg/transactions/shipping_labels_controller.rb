@@ -1,8 +1,8 @@
 class Mtg::Transactions::ShippingLabelsController < ApplicationController
   
-  before_filter :authenticate_user! # must be logged in to make or edit listings
+  before_filter :authenticate_user! # must be logged in
   # right now either buyer or seller can track package
-  # before_filter :verify_buyer, :only => [:track]  # user has access to create and/or view this shipping label
+  before_filter :verify_buyer_or_seller, :only => [:track]  # user has access to create and/or view this shipping label
   before_filter :verify_seller, :only => [:create]  # user has access to create and/or view this shipping label  
     
   def create
@@ -71,6 +71,14 @@ class Mtg::Transactions::ShippingLabelsController < ApplicationController
   
   def verify_buyer
     unless current_transaction.buyer == current_user
+      flash[:error] = "You don't have permission to perform this action..."
+      redirect_to back_path
+      return false
+    end
+  end
+  
+  def verify_buyer_or_seller
+    unless current_transaction.seller == current_user || current_transaction.buyer == current_user
       flash[:error] = "You don't have permission to perform this action..."
       redirect_to back_path
       return false
