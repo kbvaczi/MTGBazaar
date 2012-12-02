@@ -1,4 +1,4 @@
-<% title "#{display_name(@mtg_card.name)}" #title is first 30 characters in card name %>
+<% title "Card - #{display_name(@mtg_card.name)} (#{display_name(@mtg_card.set.name)})" #title is first 30 characters in card name %>
 
 <h1><%= display_name(@mtg_card.name) %></h1>
 

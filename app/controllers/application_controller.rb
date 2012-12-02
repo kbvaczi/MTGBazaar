@@ -90,7 +90,7 @@ class ApplicationController < ActionController::Base
   helper_method :back_path  
   
   def current_path
-    @current_path ||= url_for(params.merge(:authenticity_token => nil, :utf8 => nil, :sort => nil, :sort_order => nil))
+    @current_path ||= url_for(params.merge(:authenticity_token => nil, :utf8 => nil, :sort => nil, :sort_order => nil, :section => nil, :status => nil))
   end
   helper_method :current_path  
   

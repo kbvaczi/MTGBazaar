@@ -5,9 +5,9 @@
   
   <div class="group center_wrap">
     <ul class="tabs center">
-      <li <%= "class=selected" if not params[:section].present? %>> <%= link_to "Profile", user_path(@user.username) %> </li>
-      <li <%= "class=selected" if params[:section] == "feedback" %>> <%= link_to "Feedback", user_path(@user.username, :section => "feedback") %> </li>
-      <li <%= "class=selected" if params[:section] == "mtg_cards" %>> <%= link_to "For Sale", user_path(@user.username, :section => "mtg_cards") %> </li>      
+      <li <%= "class=selected" if not params[:section].present? %>> <%= link_to "Profile", user_path(@user.username), :remote => true %> </li>
+      <li <%= "class=selected" if params[:section] == "feedback" %>> <%= link_to "Feedback", user_path(@user.username, :section => "feedback"), :remote => true %> </li>
+      <li <%= "class=selected" if params[:section] == "mtg_cards" %>> <%= link_to "For Sale", user_path(@user.username, :section => "mtg_cards"), :remote => true %> </li>      
     </ul>
   </div>
   
@@ -186,7 +186,7 @@
         <%= paginate @listings, :method => :get %>
       </div>
     <% elsif params[:filter] != "false" %>  
-      <%= render :partial => "mtg/no_results", :locals => { :filter_by => "cookies" } %>
+      <%= render :partial => "mtg/no_results", :locals => { :filter_by => "cookies", :use_seller_filter => false } %>
     <% else %>
       <p class="ma"><i>This user currently has no listings...</i></p>
     <% end %>

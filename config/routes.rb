@@ -96,6 +96,7 @@ MTGBazaar::Application.routes.draw do
       get  "search", :as => 'search', :on => :collection  # can't figure out how to send autocorrect click link via post so we need get too for now
       post "search", :as => 'search', :on => :collection      
     end
+
     
   end
   
@@ -148,6 +149,9 @@ MTGBazaar::Application.routes.draw do
   if Rails.env.development?
     match 'test'              => 'home#test'
   end
+  
+  # VANITY URLs for users
+  get  ':id/(:section)' => 'users#show', :constraints => {:id => /.+?(?<!ico)/, :format => /(html|xml|js|json)/}, :as => 'user'  
   
 # RAILS STANDARD COMMENTS ----------- #
   

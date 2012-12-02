@@ -13,8 +13,14 @@ class UsersController < ApplicationController
   
   # GET /users/1
   def show
-    set_back_path    
-    @user = User.includes(:statistics, :account).where('users.username LIKE ?', params[:id]).first || User.includes(:statistics, :account).find(params[:id])
+    set_back_path
+        
+    begin
+      @user = User.includes(:statistics, :account).where('users.username LIKE ?', params[:id]).first || User.includes(:statistics, :account).find(params[:id])   
+    rescue 
+      raise ActionController::RoutingError.new('Not Found')
+    end
+    
     if params[:section] == "feedback"
       @sales = @user.mtg_sales.includes(:feedback).where("mtg_transactions_feedback.id > 0").order("mtg_transactions_feedback.created_at DESC").page(params[:page]).per(10) 
     elsif params[:section] == "mtg_cards"
@@ -36,9 +42,6 @@ class UsersController < ApplicationController
   
   def account_listings
     set_back_path
-    #query = SmartTuple.new(" AND ")
-    #query << ["mtg_sets.code  LIKE ?", "#{params[:filters][:set] }"] if params[:filters] && params[:filters][:set].present?
-    #query << ["mtg_cards.name LIKE ?", "#{params[:filters][:name]}%"] if params[:filters] && params[:filters][:name].present?   
     query = mtg_filters_query(:seller => false, :activate_filters => params[:filter])    
     if params[:status] == "active"
       @listings = current_user.mtg_listings.includes(:card => :set).where(query).active.order("mtg_cards.name ASC").page(params[:page]).per(25)

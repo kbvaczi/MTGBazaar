@@ -115,6 +115,7 @@ class User < ActiveRecord::Base
     self.mtg_sales.where("status <> \'completed\'")
   end
   
+  
 # ------------  SCOPES --------------------
   
   def self.active

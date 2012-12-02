@@ -1,4 +1,6 @@
 var template = $("<%= escape_javascript render :template => "users/show", :formats => [:html] %>");
+parent.location.hash = "<%= params[:section] %>";
+parent.location.hash.clear;
 $('#content').html(template.nextAll('#content').html());
 $(".overlay_trigger[rel]").overlay({mask:'#000'});
 $(".tooltip_trigger[title]").tooltip();
