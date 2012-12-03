@@ -44,7 +44,12 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   def update_statistics_cache_on_save
     if self.new_record?
       self.card.statistics.update_attribute(:listings_available, self.card.statistics.listings_available + self.quantity_available)
-      self.seller.statistics.update_attribute(:listings_mtg_cards_count, self.seller.statistics.listings_mtg_cards_count + self.quantity_available * self.number_cards_per_listing)      
+      Rails.logger.debug self.seller
+      Rails.logger.debug self.seller.statistics.inspect
+      Rails.logger.debug self.seller.statistics.listings_mtg_cards_count
+      Rails.logger.debug self.quantity_available
+      Rails.logger.debug self.number_cards_per_listing
+      self.seller.statistics.update_attribute(:listings_mtg_cards_count, (self.seller.statistics.listings_mtg_cards_count || 0) + self.quantity_available * self.number_cards_per_listing)      
     else
       self.card.statistics.update_attribute(:listings_available, self.card.statistics.listings_available + self.quantity_available - self.quantity_available_was)
       self.seller.statistics.update_attribute(:listings_mtg_cards_count, self.seller.statistics.listings_mtg_cards_count + (self.quantity_available - self.quantity_available_was) * self.number_cards_per_listing)
@@ -71,6 +76,7 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   validates :description,         :length => {:maximum => 255}
   validate  :validate_scan, :if => "scan?"
   validate  :validate_options # scan must be included if options are selected
+  validate  :validate_playset, :if => "self.playset"
 
   def validate_scan
     errors[:scan] << "Max file size is 5MB" if scan.size > 5.megabytes
@@ -79,6 +85,14 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   
   def validate_options
     errors[:scan] << "Required for the options you have selected" if ( altart.present? || misprint.present? || signed.present? ) && !scan.present?    
+  end
+  
+  def validate_playset
+    errors[:quantity] << "number of cards per playset must be 4, please contact administrator" if self.number_cards_per_listing != 4
+    errors[:scan]     << "Cannot have scan with playsets"           if self.scan.present?
+    errors[:altart]   << "Cannot have altered cards in playsets"    if self.altart
+    errors[:misprint] << "Cannot have misprinted cards in playsets" if self.misprint
+    errors[:signed]   << "Cannot have signed cards in playsets"     if self.misprint    
   end
   
 

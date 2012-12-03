@@ -72,4 +72,8 @@ class Mtg::Card < ActiveRecord::Base
   def list_language_options
     return [["English","EN"], ["Russian","RU"], ["French","FR"], ["Japanese","JN"], ["Chinese","CN"], ["Korean","KO"], ["German","GN"], ["Portuguese", "PG"], ["Spanish", "SP"], ["Italian", "IT"]]
   end
+  
+  def self.active
+    joins(:set).where("mtg_sets.active" => true, "mtg_cards.active" => true)
+  end
 end

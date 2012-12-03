@@ -1,0 +1,98 @@
+<% title "List a Playset to Sell"%>
+<h1>List a Playset to Sell</h1>
+
+<div id="content">
+
+
+  <%= simple_form_for @listing, :url => mtg_cards_listings_playsets_path, :method => :post do |f| %>
+
+    <div class="inputs">
+      <br class="spacer"/>  
+
+      <div id="New_Generic_Name_Block">                      
+        <%= f.input :name,          :label => "Card Name",
+                                    :input_html => { :class => "ui-autocomplete-input" , :placeholder => "Name..." , "data-autocomplete" => autocomplete_name_mtg_cards_path },
+                                    :required => true %>
+      </div>
+  
+      <% if not (params[:mtg_cards_listing] && params[:mtg_cards_listing][:set].present?) %>
+        <div id="New_Generic_Set_Block" style="display:none;">        
+          <%= f.input :set,           :label => "Set",
+                                      :as => :select,                                  
+                                      :required => true,
+                                      :input_html => {:class => "chzn-select", "data-placeholder" => "Select a set..." } %>
+        </div>
+      <% else %>
+        <div id="New_Generic_Set_Block">        
+          <%= f.input :set,           :label => "Set",
+                                      :as => :select,                                  
+                                      :required => true,
+                                      :collection => @sets.collect(&:name).zip(@sets.collect(&:code)),
+                                      :input_html => {:class => "chzn-select", "data-placeholder" => "Select a set..." } %>
+        </div>    
+      <% end %>
+  
+      <div id="New_Generic_Info_Block" <%= "style=display:none;" if not params[:mtg_cards_listing].present? %>>                      
+        <%= f.input :condition,     :label => "Condition",
+                                    :as => :select,
+                                    :collection => condition_list,
+                                    :default => "NM",
+                                    :input_html => { :class => "chzn-select chzn-nosearch" },
+                                    :required => 'true' %>
+
+        <%= f.input :quantity,      :label => "Quantity for sale",
+                                    :as => :string,
+                                    :input_html => { :style => "width:50px;" },
+                                    :hint => "This is quantity of playsets, NOT quantity of cards",
+                                    :required => true %>                                
+
+        <%= f.input :price_options, :label => "Asking Price",
+                                    :as => :select,
+                                    :collection =>  params[:mtg_cards_listing].present? ? [["Low (#{number_to_currency (@card.statistics.price_low.dollars * 4)})", @card.statistics.price_low.dollars],
+                                                    ["Average (#{number_to_currency (@card.statistics.price_med.dollars * 4)})", @card.statistics.price_med.dollars], 
+                                                    ["High (#{number_to_currency (@card.statistics.price_high.dollars * 4)})", @card.statistics.price_high.dollars], 
+                                                    ["Other", "other"]] : [],
+                                    :input_html => { :class => "chzn-select chzn-nosearch" },                                  
+                                    :required => 'true' %>
+
+        <div id="Custom_Pricing_Block" <%= "style=display:none;" unless (params[:mtg_cards_listing] && params[:mtg_cards_listing][:price_options] == "other") %>> 
+          <%= f.input :price,         :label => "Custom Pricing",
+                                      :as => :string,
+                                      :input_html => {:class => "currency_input", :maxlength => 9, :value => params[:mtg_cards_listing].present? ? params[:mtg_cards_listing][:price] : "$ 1.00"},
+                                      :required => true %>                                  
+        </div>
+
+        <%= f.input :language,      :label => "Language",
+                                    :as => :select,
+                                    :collection => language_list,
+                                    :default => "EN",
+                                    :input_html => { :class => "chzn-select chzn-nosearch" },
+                                    :required => false %>    
+
+        <%= f.input :description,   :label => "Description",
+                                    :placeholder => "Optional",
+                                    :input_html => { :maxlength => 100 },
+                                    :as => :string %>
+
+        <%= f.label "Advanced Options",      :style => "height:100px;"%>
+
+        <%= f.input :foil,          :label => "Foil",
+                                    :default => false %>                                     
+
+    
+        <br class="spacer"/>
+        <br class="spacer"/>  
+        <div class="center_wrap">
+          <%= f.button :submit, "List This Playset", :class => "center" %>
+        </div>
+        <br class="spacer"/>
+        <br class="spacer"/>      
+      
+      </div>  <%# new_generic_info_block %>
+    
+    </div>  <%# inputs %>
+
+  <% end # form %>
+
+
+</div>

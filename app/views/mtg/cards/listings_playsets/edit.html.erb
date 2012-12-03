@@ -1,0 +1,84 @@
+<% title "Edit Listed Playset"%>
+<h1>Edit Listed Playset</h1>
+
+<div id="content">
+
+  <%= simple_form_for @listing, :url => mtg_cards_listings_playset_path(@listing), :method => :put do |f| %>
+
+    <div class="inputs">
+      <br class="spacer"/>
+      <%= f.input :card_id,       :as => :hidden,
+                                  :input_html => { :value => ( params[:card_id] != "" ? params[:card_id] : @listing.card.id ), 
+                                                   :name => :card_id } %>
+
+      <%= f.input :name,          :label => "Card",
+                                  :input_html => { :value => "#{@listing.card.name}" },
+                                  :disabled => true,
+                                  :required => 'false' %>
+
+      <%= f.input :set,           :label => "Set",
+                                  :as => :string,
+                                  :input_html => { :value => "#{@listing.card.set.name}" },
+                                  :disabled => true,                                
+                                  :required => 'false' %>
+
+      <%= f.input :condition,     :label => "Condition",
+                                  :as => :select,
+                                  :hint => "worst card condition in playset",
+                                  :collection => condition_list,
+                                  :default => "NM",
+                                  :input_html => { :class => "chzn-select chzn-nosearch" },
+                                  :required => true %>
+
+      <%= f.input :quantity,      :label => "Playsets for Sale",
+                                  :as => :string,
+                                  :input_html => { :style => "width:50px;" },
+                                  :required => true %>                                
+
+      <%= f.input :price_options, :label => "Playset Asking Price",
+                                  :as => :select,
+                                  :collection => [["Low     ($#{@listing.card.statistics.price_low * 4})",      @listing.card.statistics.price_low], 
+                                                  ["Average ($#{@listing.card.statistics.price_med * 4})",  @listing.card.statistics.price_med], 
+                                                  ["High    ($#{@listing.card.statistics.price_high * 4})",    @listing.card.statistics.price_high],
+                                                  ["Other", "other"]],
+                                  :selected => @listing.new_record? ? "#{@listing.card.statistics.price_med}" : "other",
+                                  :input_html => { :class => "chzn-select chzn-nosearch" },
+                                  :required => true %>
+
+      <div id="Custom_Pricing_Block" style=<%="display:none;" if @listing.new_record? %>> 
+        <%= f.input :price,         :label => "Custom Pricing",
+                                    :hint => "cost per playset",        
+                                    :as => :string,
+                                    :input_html => { :class => "currency_input", :maxlength => 9, :value => "$ #{@listing.price}" },   
+                                    :required => true %>                                  
+      </div>
+
+      <%= f.input :language,      :label => "Language",
+                                  :as => :select,
+                                  :collection => @listing.card.list_language_options,
+                                  :default => "EN",
+                                  :input_html => { :class => "chzn-select chzn-nosearch" },
+                                  :required => false %>    
+
+      <%= f.input :description,   :label => "Description",
+                                  :placeholder => "Optional",
+                                  :as => :string,
+                                  :input_html => { :maxlength => 100 } %>
+
+      <%= f.label "Options",      :style => "height:10px;"%>
+
+      <%= f.input :foil,          :label => "Foil",
+                                  :default => false %>                                     
+
+
+    </div>
+    <br class="spacer"/>
+    <br class="spacer"/>  
+    <div class="center_wrap">
+      <%= f.button :submit, "Update Playset Listing", :class => "center" %>
+    </div>
+    <br class="spacer"/>
+
+  <% end # form %>
+
+</div>

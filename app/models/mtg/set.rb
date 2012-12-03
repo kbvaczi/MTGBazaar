@@ -12,4 +12,9 @@ class Mtg::Set < ActiveRecord::Base
     end
   end
   
+  def self.active
+    where("mtg_sets.active" => true)
+  end
+
+  
 end
