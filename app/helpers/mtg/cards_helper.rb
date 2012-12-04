@@ -14,7 +14,7 @@ module Mtg::CardsHelper
   def display_product_name(product)
     if product.class == Mtg::Card
       display_name(product.name)
-    elsif product.class == Mtg::Cards::Listing
+    elsif product.class == Mtg::Cards::Listing || product.class == Mtg::Transactions::Item
       if product.playset
         "Playset: &nbsp;".html_safe + display_name(product.card.name)
       else

@@ -41,7 +41,7 @@ class Mtg::OrdersController < ApplicationController
       :ipn_notification_url => payment_notification_url(:id => @order.transaction.id,                            # allows us to checkout the transaction using IPN
                                                         :secret => encoded_secret,                              # for security, so people can't approve transactions on the back-end without paying
                                                         :cart_id => current_cart.id),                           # so we can clear the cart from IPN in case user doesn't clear it on checkout_success_path (scenario where user closes browser or changes url before closing paypal light box)
-      :memo                 => "Purchase of #{@order.item_count} item(s) from user #{@order.seller.username} on MTGBazaar.com.  Details of this order can be accessed at any time through your account on the MTGBazaar website.",
+      :memo                 => "Purchase of #{@order.item_count} line item(s) for a total of #{@order.reservations.pluck(:cards_quantity).inject(0) {|sum, count| sum + count }} cards from #{@order.seller.username} on MTGBazaar.com.  Details of this order can be accessed at any time through your account on the MTGBazaar website.",
       :receiver_list        => recipients,
       :fees_payer           => "PRIMARYRECEIVER" )
 
@@ -52,7 +52,7 @@ class Mtg::OrdersController < ApplicationController
         {
           :invoice_data => {
             :item => [
-              { :name => "Purchase of #{@order.item_count} Items",  :item_price => @order.item_price_total, :price => @order.item_price_total },
+              { :name => "Purchase of #{@order.item_count} Line Items",  :item_price => @order.item_price_total, :price => @order.item_price_total },
               { :name => "Shipping",                                 :item_price => @order.shipping_cost,    :price => @order.shipping_cost }
             ]
           },
