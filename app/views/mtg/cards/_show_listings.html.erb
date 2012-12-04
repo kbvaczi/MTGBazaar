@@ -46,7 +46,10 @@
           <% end %>
           <% if listing.altart %>
             <%= listing_option_altart_icon %>
-          <% end %>    
+          <% end %>
+          <% if listing.playset %>
+            <%= listing_option_playset_icon %>
+          <% end %>
           <% if listing.description != "" %>
             <%= listing_option_description_icon(listing) %>
           <% end %>

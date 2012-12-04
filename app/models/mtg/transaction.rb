@@ -180,7 +180,7 @@ class Mtg::Transaction < ActiveRecord::Base
                                      :altart => reservation.listing.altart,
                                      :misprint => reservation.listing.misprint,
                                      :playset => reservation.listing.playset,                                     
-                                     :cards_quantity => reservation.listing.number_cards_per_listing,                                                                          
+                                     :cards_quantity => reservation.cards_quantity,                                                                          
                                      :foil => reservation.listing.foil,
                                      :signed => reservation.listing.signed,
                                      :card_id => reservation.listing.card_id,
@@ -201,7 +201,7 @@ class Mtg::Transaction < ActiveRecord::Base
                                      :foil => item.foil,
                                      :signed => item.signed,
                                      :playset => item.playset,                                     
-                                     :number_cards_per_listing => (item.cards_quantity / item.quantity_available).to_i )
+                                     :number_cards_per_listing => item.playset ? 4 : 1)
     listing.card_id = item.card_id
     listing.seller_id = self.seller_id
     duplicate = Mtg::Cards::Listing.duplicate_listings_of(listing).first
@@ -221,10 +221,12 @@ class Mtg::Transaction < ActiveRecord::Base
   private
   
   def update_transaction_costs
-    Rails.logger.debug self.items
-    Rails.logger.debug self.items.to_a
-    self.value = Money.new(self.items.to_a.inject(0) {|sum, item| sum + item.quantity_requested * item.price.dollars})
-    self.shipping_cost = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count => self.cards_quantity)[:user_charge]
+    Rails.logger.debug "BLAH"
+    Rails.logger.debug self.cards_quantity
+    Rails.logger.debug "BLAH"    
+    self.value    = self.items.to_a.inject(0) {|sum, item| sum + item.quantity_requested * item.price.dollars}.to_money
+    card_quantity = self.items.to_a.inject(0) {|sum, item| sum + item.cards_quantity}
+    self.shipping_cost = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count => card_quantity)[:user_charge]
   end
   
   def generate_transaction_number

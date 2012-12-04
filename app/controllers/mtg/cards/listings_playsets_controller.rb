@@ -6,7 +6,7 @@ class Mtg::Cards::ListingsPlaysetsController < Mtg::Cards::ListingsController
   before_filter :verify_user_paypal_account
 
   # user must be owner of listing to perform an action EXCEPT for those listed here                                                     
-  before_filter :verify_owner?, :except => [ :new, :create ]
+  before_filter :verify_owner?, :except => [ :new, :create, :playset_pricing_ajax ]
 
   # don't allow users to change listings when they're in someone's cart or when they're in a transaction.                                            
   before_filter :verify_not_in_cart?, :only => [ :edit, :update ]  
@@ -96,5 +96,28 @@ class Mtg::Cards::ListingsPlaysetsController < Mtg::Cards::ListingsController
     redirect_to back_path, :notice => "Listing Updated!"
     return # don't show a view
   end
+  
+  # updates cost info based on card selection
+  def playset_pricing_ajax
+    @card = Mtg::Card.joins(:set).includes(:statistics).active.where("mtg_cards.name LIKE ? AND mtg_sets.code LIKE ?", "#{params[:name]}", "#{params[:set]}").first
+    respond_to do |format|
+      format.json do 
+        playset_price_low   = @card.statistics.price_low.dollars * 4
+        playset_price_med   = @card.statistics.price_med.dollars * 4
+        playset_price_high  = @card.statistics.price_high.dollars * 4
+        label_low           = generate_pricing_label "Low", @card.statistics.price_low.dollars
+        label_med           = generate_pricing_label "Med", @card.statistics.price_med.dollars
+        label_high          = generate_pricing_label "High", @card.statistics.price_high.dollars
+        render :json => [[label_low, playset_price_low], [label_med, playset_price_med], [label_high, playset_price_high], ["Other", "other"]].to_json
+      end
+    end
+  end
+  
+  def generate_pricing_label(label = "Low", price = 0)
+    #adjusted_label = label.center(10)
+    string         = "#{label}: &nbsp;&nbsp;#{number_to_currency (price * 4)}/playset &nbsp;&nbsp; (#{number_to_currency (price)}/card)".html_safe
+  end
+  helper_method :generate_pricing_label
+  
   
 end

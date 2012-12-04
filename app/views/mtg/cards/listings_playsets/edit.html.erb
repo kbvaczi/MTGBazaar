@@ -22,24 +22,29 @@
                                   :disabled => true,                                
                                   :required => 'false' %>
 
-      <%= f.input :condition,     :label => "Condition",
+      <%= f.input :condition,     :label => "Worst Card Condition",
                                   :as => :select,
-                                  :hint => "worst card condition in playset",
                                   :collection => condition_list,
                                   :default => "NM",
                                   :input_html => { :class => "chzn-select chzn-nosearch" },
-                                  :required => true %>
+                                  :required => 'true' %>
 
-      <%= f.input :quantity,      :label => "Playsets for Sale",
+      <%= f.input :quantity,      :label => "Playsets for sale",
                                   :as => :string,
                                   :input_html => { :style => "width:50px;" },
-                                  :required => true %>                                
+                                  :hint => "Quantity of playsets, not quantity of cards",
+                                  :required => true %>                              
 
+      <%
+        price_low   = (@listing.card.present? && @listing.card.statistics.present?) ? @listing.card.statistics.price_low  : 0.50
+        price_med   = (@listing.card.present? && @listing.card.statistics.present?) ? @listing.card.statistics.price_med  : 1.50
+        price_high  = (@listing.card.present? && @listing.card.statistics.present?) ? @listing.card.statistics.price_high : 2.50                
+      %>
       <%= f.input :price_options, :label => "Playset Asking Price",
                                   :as => :select,
-                                  :collection => [["Low     ($#{@listing.card.statistics.price_low * 4})",      @listing.card.statistics.price_low], 
-                                                  ["Average ($#{@listing.card.statistics.price_med * 4})",  @listing.card.statistics.price_med], 
-                                                  ["High    ($#{@listing.card.statistics.price_high * 4})",    @listing.card.statistics.price_high],
+                                  :collection => [[generate_pricing_label("Low", price_low),  (price_low * 4)], 
+                                                  [generate_pricing_label("Med", price_low),   (price_med * 4)], 
+                                                  [generate_pricing_label("High", price_low),  (price_high * 4)],
                                                   ["Other", "other"]],
                                   :selected => @listing.new_record? ? "#{@listing.card.statistics.price_med}" : "other",
                                   :input_html => { :class => "chzn-select chzn-nosearch" },
@@ -54,20 +59,21 @@
       </div>
 
       <%= f.input :language,      :label => "Language",
+                                  :hint => "All cards should be the same language",
                                   :as => :select,
-                                  :collection => @listing.card.list_language_options,
+                                  :collection => language_list,
                                   :default => "EN",
                                   :input_html => { :class => "chzn-select chzn-nosearch" },
-                                  :required => false %>    
+                                  :required => false %>
 
       <%= f.input :description,   :label => "Description",
                                   :placeholder => "Optional",
                                   :as => :string,
                                   :input_html => { :maxlength => 100 } %>
 
-      <%= f.label "Options",      :style => "height:10px;"%>
+      <%= f.label "Options" %>
 
-      <%= f.input :foil,          :label => "Foil",
+      <%= f.input :foil,          :label => "All cards are foil",
                                   :default => false %>                                     
 
 

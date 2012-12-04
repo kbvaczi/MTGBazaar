@@ -16,15 +16,18 @@
   clear:   left;
   color:   red;
   display: block;
-  margin: 5px 70px 10px 36%;
+  margin: 3px 70px 15px 36%;
   font-style: italic;
 }
 .simple_form .hint {
   clear: left;
-  color: #bbb;
+  color: #aaa;
   display: block;
-  margin: 5px 70px 10px 36%;
+  margin: 3px 70px 15px 36%;
   font-style: italic;
+}
+.simple_form .select .hint,.simple_form .select .error {
+  margin: -2px 70px 20px 36%;
 }
 .simple_form div.input {
   margin-bottom: 10px;
@@ -73,6 +76,12 @@ div.boolean, .simple_form input[type='submit'] {
 div.boolean label, label.collection_radio {
   float: none;
   margin: 0;
+}
+.simple_form div.boolean {
+  margin-top:13px;
+}
+.simple_form div.boolean input.boolean {
+  margin-right:10px;
 }
 
 label.collection_radio {

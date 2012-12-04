@@ -55,10 +55,10 @@ class Mtg::Order < ActiveRecord::Base
     if self.listings.include?(listing) # is there already a reservation for this listing in cart?
       res = self.reservations.where(:listing_id => listing.id).first # add to existing reservation
     else
-      res = self.reservations.build(:listing_id => listing.id, :quantity => 0) # build a new reservation
+      res = self.reservations.build(:listing_id => listing.id, :quantity => 0, :cards_quantity => 0) # build a new reservation
     end
     res.increment(:quantity, quantity)
-    res.increment(:cards_quantity, quantity * listing.number_cards_per_listing)    
+    res.increment(:cards_quantity, (quantity * listing.number_cards_per_listing))    
     res.listing.decrement(:quantity_available, quantity)
     if res.valid? && res.listing.valid?
       res.save
@@ -73,7 +73,7 @@ class Mtg::Order < ActiveRecord::Base
     if self.reservations.include?(reservation)
       if quantity <= reservation.quantity # remove less quantity than reservation holds, just update quantity in reservation
         reservation.decrement(:quantity, quantity)
-        reservation.decrement(:cards_quantity, quantity * reservation.listing.number_cards_per_listing)            
+        reservation.decrement(:cards_quantity, (quantity * reservation.listing.number_cards_per_listing))            
         reservation.listing.increment(:quantity_available, quantity)
         if reservation.valid? && reservation.listing.valid?
           reservation.save

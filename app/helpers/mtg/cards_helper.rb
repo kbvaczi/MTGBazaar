@@ -11,6 +11,22 @@ module Mtg::CardsHelper
     name.truncate(30, :omission => "...")
   end
   
+  def display_product_name(product)
+    if product.class == Mtg::Card
+      display_name(product.name)
+    elsif product.class == Mtg::Cards::Listing
+      if product.playset
+        "Playset: &nbsp;".html_safe + display_name(product.card.name)
+      else
+        display_name(product.card.name)
+      end
+    elsif product.class == Mtg::Sets::Listing
+      "Full Set"
+    else
+      "unknown"
+    end
+  end
+  
   # display only first 30 characters of a name"
   def display_type(type, subtype)
     if subtype.length > 1
@@ -213,6 +229,10 @@ module Mtg::CardsHelper
     #image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/miscut.png", :title => "Misprint",:class => "mtg_option_symbol")         
 	  content_tag :span, nil, :class => "option_symbol_sprite_small option_symbol_miscut", :title => "Misprinted"      
   end
+  
+  def listing_option_playset_icon
+	  content_tag :span, nil, :class => "option_symbol_sprite_small option_symbol_playset", :title => "Playset of 4 cards"      
+  end  
 
   def listing_option_scan_icon(listing)
     #image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/scan.png", :title => "Click to view scan", :class => "overlay_trigger mtg_option_symbol", :style => "cursor:pointer;", :rel => "#scan_overlay_#{listing.id}")

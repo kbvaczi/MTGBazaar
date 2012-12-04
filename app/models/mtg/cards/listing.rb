@@ -43,15 +43,10 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   
   def update_statistics_cache_on_save
     if self.new_record?
-      self.card.statistics.update_attribute(:listings_available, self.card.statistics.listings_available + self.quantity_available)
-      Rails.logger.debug self.seller
-      Rails.logger.debug self.seller.statistics.inspect
-      Rails.logger.debug self.seller.statistics.listings_mtg_cards_count
-      Rails.logger.debug self.quantity_available
-      Rails.logger.debug self.number_cards_per_listing
+      self.card.statistics.update_attribute(:listings_available, self.card.statistics.listings_available + (self.quantity_available * self.number_cards_per_listing))
       self.seller.statistics.update_attribute(:listings_mtg_cards_count, (self.seller.statistics.listings_mtg_cards_count || 0) + self.quantity_available * self.number_cards_per_listing)      
     else
-      self.card.statistics.update_attribute(:listings_available, self.card.statistics.listings_available + self.quantity_available - self.quantity_available_was)
+      self.card.statistics.update_attribute(:listings_available, self.card.statistics.listings_available + (self.quantity_available - self.quantity_available_was) * self.number_cards_per_listing)
       self.seller.statistics.update_attribute(:listings_mtg_cards_count, self.seller.statistics.listings_mtg_cards_count + (self.quantity_available - self.quantity_available_was) * self.number_cards_per_listing)
     end
     self.card.statistics.update_attribute(:price_min, self.price) if self.price <= self.card.statistics.price_min || self.card.statistics.price_min == 0

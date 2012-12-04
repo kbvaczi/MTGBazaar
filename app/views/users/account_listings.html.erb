@@ -25,7 +25,8 @@
         <span class="ml mb">
           <%= select_tag "action_selector" , options_for_select([["Set checked items to active", "active"], ["Set checked items to inactive", "inactive"], ["Delete checked items","delete"]], :selected => ""), {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Actions...", :id => "multiple_listings_actions", :class => "chzn-select"} %> 
         </span>
-        <%= link_to "Create New Listing", new_generic_mtg_cards_listings_path, :class => "right button mr mb" %>
+        <%= link_to "List a New Playset", new_mtg_cards_listings_playset_path, :class => "right button mr mb" %>
+        <%= link_to "List a New Card", new_generic_mtg_cards_listings_path, :class => "right button mr mb" %>
       </div>
       <table class="data fixed">
       	<tr class="header_row">

@@ -1,6 +1,7 @@
 <tr class=<%= cycle("odd","even", :name => "rows") %>>
   <td>
-    <%= link_to display_name(reservation.listing.card.name), mtg_card_path(reservation.listing.card), :title => reservation.listing.card.name %>
+    <% name_to_display = display_product_name(reservation.listing) %>
+    <%= link_to name_to_display, mtg_card_path(reservation.listing.card), :title => name_to_display %>
 	</td>
   <td>
     <%= display_set_symbol(reservation.listing.card.set)%>
@@ -24,6 +25,9 @@
     <% if reservation.listing.altart %>
       <%= listing_option_altart_icon %>
     <% end %>    
+    <% if reservation.listing.playset %>
+      <%= listing_option_playset_icon %>
+    <% end %>    
     <% if reservation.listing.description != "" %>
       <%= listing_option_description_icon(reservation.listing) %>
     <% end %>
@@ -46,7 +50,7 @@
       </div>
       <div class="center" <%="style=position:relative;top:-4px;" if request.env['HTTP_USER_AGENT'].include? "Firefox" %>>
       <%= form_tag remove_from_cart_mtg_listing_path(:id => reservation.id, :quantity => reservation.quantity ), :method => :delete, :remote => true, :style => "vertical-align:center;" do %>
-        <%= submit_tag "X" %>
+        <%= submit_tag "X", :style => "padding:5px;" %>
       <% end %>
       </div>
   </td>    

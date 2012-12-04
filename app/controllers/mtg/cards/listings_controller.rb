@@ -55,13 +55,13 @@ class Mtg::Cards::ListingsController < ApplicationController
   
   def edit
     @listing = Mtg::Cards::Listing.includes(:card => :statistics).find(params[:id])
-
+    if @listing.playset 
+      redirect_to edit_mtg_cards_listings_playset_path(@listing) #render :template => 'mtg/cards/listings_playsets/edit', :formats => [:html]
+      return
+    end
     respond_to do |format|
       format.html do
-        if @listing.playset 
-          render :template => 'mtg/cards/listings_playsets/edit', :formats => [:html]
-          return
-        end
+
       end
     end
   end  

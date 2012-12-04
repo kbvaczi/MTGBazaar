@@ -92,6 +92,45 @@ $(document).ready(function() {
     }
   });
   
+  /* PLAYSET LISTING JAVASCRIPTS */ 
+
+    $('#New_Generic_Name_Block div #mtg_cards_listing_name').bind('railsAutocomplete.select', function(event, data){
+      $.get('/mtg/cards/listings/new_generic_set.json?name=' + $('#mtg_cards_listing_name').val(), function(data) {
+        $("#New_Generic_Info_Block").hide();
+        $("#New_Playset_Set_Block").show();
+        var selection_array = data;
+        $("#mtg_cards_listing_set").empty();
+        $("#mtg_cards_listing_set").removeAttr('disabled');      
+        $("#mtg_cards_listing_set").append('<option value></option>'); // give null value so label shows      
+        if (selection_array.length > 1) {
+          $(selection_array).each(function(index, item) {
+             $("#mtg_cards_listing_set").append('<option value=' + item[1] + '>' + item[0] + '</option>');           
+          });
+          $("#mtg_cards_listing_set").trigger("liszt:updated");
+        } else if (selection_array.length == 1) {
+          $("#mtg_cards_listing_set").append('<option selected=selected value=' + selection_array[0][1] + '>' + selection_array[0][0] + '</option>');
+          $("#mtg_cards_listing_set").trigger("liszt:updated");
+          $("#mtg_cards_listing_set").trigger("change");
+        }
+      });      
+    });
+
+    $("#New_Playset_Set_Block #mtg_cards_listing_set").chosen().change( function() {
+      var params = [{ name:"name",  value: $('#mtg_cards_listing_name').val() },
+                    { name:"set",   value: $('#mtg_cards_listing_set').chosen().val() }];
+      var url = "/mtg/cards/listings/playsets/playset_pricing_ajax.json?" + $.param(params);
+      $.get(url, function(data) {
+        $("#New_Generic_Info_Block").show();             
+        var selection_array = data;
+        $("#mtg_cards_listing_price_options").empty();
+        $(selection_array).each(function(index, item) {
+           $("#mtg_cards_listing_price_options").append('<option value=' + item[1] + '>' + item[0] + '</option>');
+        });           
+        $("#mtg_cards_listing_price_options").removeAttr('disabled');     
+        $("#mtg_cards_listing_price_options").trigger("liszt:updated");      
+      });        
+    });
+  
   
 /* BULK LISTING JAVASCRIPTS */ 
 
