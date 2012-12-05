@@ -1,10 +1,12 @@
 $(document).ready(function() {
 
   // wrap all inputs with class .deletable with x to clear
-  $('input.deletable').wrap('<span class="deleteicon" />').after($('<span/>').click(function() {
-    $(this).prev('input').val('').focus();
-    $(this).prev('input').trigger('change');
+  $('input.deletable').wrap('<span class="deleteicon" />').after($('<span/>').click(function( event ) {
+    var new_span = $(this).siblings('span').html('').clone(true);
+    $(this).siblings('span').remove();
+    $(this).prev('input').val('').trigger('change');
     $(this).hide();
+    $(this).parent().append(new_span);
   }));
 
    // on page load hide X for blank values
@@ -15,7 +17,7 @@ $(document).ready(function() {
    });
 
    
-  $('input.deletable').keyup(function(){
+  $('input.deletable').live('keyup', function(){
     if($(this).val() != ""){
       $(this).next('span').show();
     }

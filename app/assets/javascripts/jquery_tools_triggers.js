@@ -10,6 +10,15 @@ $(document).ready(function() {
     }
   });
   
-  $(".tooltip_trigger[title]").tooltip();
+  
+  $("[title]").tooltip({ 
+    position: { 
+      my: "left bottom", 
+      at: "right+5 top", 
+      collision: "flipfit" 
+    },
+    show: false,
+    hide: false
+  });
   
 });

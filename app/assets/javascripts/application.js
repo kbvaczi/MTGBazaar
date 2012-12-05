@@ -7,18 +7,19 @@
 
 //= require jquery
 //= require jquery_ujs
+
 //= require jquery_tools
 //= require chosen.jquery
-//= require chosen.jquery-ajax_plugin
-//= require mtg_search    
+//= require chosen.jquery-ajax_plugin  
+
 //= require jquery-ui
-//= require jquery.ui.autocomplete.html.js
 //= require autocomplete-rails
+//= require jquery.ui.autocomplete.html.js
+//= require mtg_search  
+
 //= require jquery-cookie
 //= require jquery.maskMoney
 //= require paypal_embedded_flow_lightbox
-
-
 
 
 //= require_tree .

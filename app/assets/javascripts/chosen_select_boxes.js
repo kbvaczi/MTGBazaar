@@ -33,6 +33,7 @@ $.activateChosenSelect = function(){
       $(this).scrollTop(scrollTo + $(this).scrollTop());
     }
   });
+  
 /*  
   $(".chzn-select-ajax").ajaxChosen({
       type: 'GET',
@@ -46,7 +47,7 @@ $.activateChosenSelect = function(){
 
       return results;
   });
-*/
+
   $(".chzn-select-ajax").ajaxChosen({
       type: 'GET',
       dataType: 'json'
@@ -59,11 +60,11 @@ $.activateChosenSelect = function(){
               text: val.name, // label for the group
               items: val["items"] // individual options within the group
           };
-          /*$.each(val.values, function (i1, val1) {
+          $.each(val.values, function (i1, val1) {
               results[i].items[val1.Id] = val1.name;
-          });*/
+          });
       });
       return results;
-  });
+  });*/
 
 }

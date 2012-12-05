@@ -45,7 +45,7 @@ module Mtg::CardsHelper
           image_tag('https://s3.amazonaws.com/mtgbazaar/images/mtg/various_symbols/tap.jpg', :class => "mtg_symbol")         
         elsif letter.present? #else the symbol must be a mana symbol, create corresponding mana symbol 
           #image_tag("https://mtgbazaar.s3.amazonaws.com/images/mtg/mana_symbols/mana_#{letter}.jpg", :class => "mtg_symbol")
-          content_tag(:span, "", :class => "mana_symbol_sprite mana_#{letter}", :title => "Mana Symbol")
+          content_tag(:span, "", :class => "mana_symbol_sprite mana_#{letter}")
         else
           ""
         end
