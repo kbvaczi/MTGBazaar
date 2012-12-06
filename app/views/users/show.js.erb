@@ -3,4 +3,4 @@ parent.location.hash = "<%= params[:section] %>";
 parent.location.hash.clear;
 $('#content').html(template.nextAll('#content').html());
 $(".overlay_trigger[rel]").overlay({mask:'#000'});
-$(".tooltip_trigger[title]").tooltip();
+initialize_tooltips();

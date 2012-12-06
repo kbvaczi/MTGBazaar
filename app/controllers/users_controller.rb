@@ -44,11 +44,23 @@ class UsersController < ApplicationController
     set_back_path
     query = mtg_filters_query(:seller => false, :activate_filters => params[:filter])    
     if params[:status] == "active"
-      @listings = current_user.mtg_listings.includes(:card => :set).where(query).active.order("mtg_cards.name ASC").page(params[:page]).per(25)
+      if params[:type] == "playsets"
+        @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => true).active.order("mtg_cards.name ASC").page(params[:page]).per(25)
+      else
+        @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => false).active.order("mtg_cards.name ASC").page(params[:page]).per(25)
+      end
     elsif params[:status] == "inactive"
-      @listings = current_user.mtg_listings.includes(:card => :set).where(query).inactive.order("mtg_cards.name ASC").page(params[:page]).per(25)      
+      if params[:type] == "playsets"
+        @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => true).inactive.order("mtg_cards.name ASC").page(params[:page]).per(25)
+      else
+        @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => false).inactive.order("mtg_cards.name ASC").page(params[:page]).per(25)
+      end
     else
-      @listings = current_user.mtg_listings.includes(:card => :set).where(query).order("mtg_cards.name ASC").page(params[:page]).per(25)
+      if params[:type] == "playsets"
+        @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => true).order("mtg_cards.name ASC").page(params[:page]).per(25)
+      else
+        @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => false).order("mtg_cards.name ASC").page(params[:page]).per(25)
+      end
     end
     
     respond_to do |format|

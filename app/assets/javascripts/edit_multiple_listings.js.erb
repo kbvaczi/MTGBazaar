@@ -2,7 +2,7 @@ $(document).ready(function() {
 
 /* GENERIC LISTING JAVASCRIPTS */ 
   
-  $("#multiple_listings_actions").chosen().change( function() {
+  $("#multiple_listings_actions").chosen().live('change', function() {
     $(this).closest('form').find('#action_input').val($(this).val());
     if ($(this).val() != "delete") {
       $(this).closest('form').submit();
@@ -13,7 +13,7 @@ $(document).ready(function() {
     $(this).trigger("liszt:updated");
   });
 
-  $("#check_all_listings").change( function() {
+  $("#check_all_listings").live('change', function() {
     if ($(this).is(":checked")){
       $('.listing_check_box').prop('checked', true);
     }

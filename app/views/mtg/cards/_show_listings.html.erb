@@ -1,4 +1,4 @@
-<% if params[:section] == "playsets" %>
+<% if params[:type] == "playsets" %>
   <%= link_to "Sell this Playset", new_mtg_cards_listings_playset_path(:card_id => @mtg_card.id), :class => "button right mr-s" %>  
 <% else %>
   <%= link_to "Sell this Card", new_mtg_cards_listing_path(:card_id => @mtg_card.id), :class => "button right mr-s" %>
@@ -7,8 +7,8 @@
 <br class="spacer"/>
 
 <ul class="tabs2">
-  <li <%= "class=selected" if not params[:section].present?  %>> <%= link_to "Singles for Sale (#{@listings_singles_count})",  url_for(params.merge(:section => nil)), :remote => true %> </li>  
-  <li <%= "class=selected" if params[:section] == "playsets" %>> <%= link_to "Playsets for Sale (#{@listings_playsets_count})", url_for(params.merge(:section => "playsets")), :remote => true %> </li>  
+  <li <%= "class=selected" if not params[:type].present?  %>> <%= link_to "Cards for Sale (#{@listings_singles_count})",  url_for(params.merge(:type => nil)), :remote => true %> </li>  
+  <li <%= "class=selected" if params[:type] == "playsets" %>> <%= link_to "Playsets for Sale (#{@listings_playsets_count})", url_for(params.merge(:type => "playsets")), :remote => true %> </li>  
   <li class="tab2 message">
     <%= render :partial => '/mtg/apply_filters', :locals =>  { :remote => true } %>
   </li>  

@@ -37,16 +37,15 @@ class Mtg::CardsController < ApplicationController
     @card_variants = Mtg::Card.includes(:set).where("mtg_cards.name LIKE ?", @mtg_card.name).order("mtg_sets.release_date DESC")  
 
     filter_query       = mtg_filters_query(:card_filters => false, :activate_filters => params[:filter])
-    listing_type_query = params[:section] == "playsets" ? "mtg_listings.playset = \'f\'" : "mtg_listings.playset = \'t\'"
 
     sort_string = table_sort(:price => "mtg_listings.price", :condition => "mtg_listings.condition", :language => "mtg_listings.language",
                              :quantity => "mtg_listings.quantity_available", :seller => "LOWER(users.username)", :sales => "user_statistics.number_sales",
                              :feedback => "user_statistics.approval_percent")                      
-    
 
-    @listings = @mtg_card.listings.includes(:seller => :statistics).available.where(filter_query).where(:playset => params[:section] == "playsets" ? true : false).order(sort_string).page(params[:page]).per(15)
     @listings_playsets_count  = @mtg_card.listings.available.where(:playset => true).pluck(:quantity_available).inject(0) {|sum, value| sum + value}
     @listings_singles_count   = @mtg_card.listings.available.where(:playset => false).pluck(:quantity_available).inject(0) {|sum, value| sum + value}
+    @listings = @mtg_card.listings.includes(:seller => :statistics).available.where(filter_query).where(:playset => params[:type] == "playsets" ? true : false).order(sort_string).page(params[:page]).per(15)
+
             
     if not (@mtg_card.active or current_admin_user) # normal users cannot see inactive cards
       redirect_to back_path
