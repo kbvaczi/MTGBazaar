@@ -1,7 +1,6 @@
 <tr class=<%= cycle("odd","even", :name => "rows") %>>
   <td>
-    <% name_to_display = display_product_name(reservation.listing) %>
-    <%= link_to name_to_display, mtg_card_path(reservation.listing.card), :title => name_to_display %>
+    <%= link_to display_name(product_name(reservation.listing)), mtg_card_path(reservation.listing.card), :title => product_name(reservation.listing) %>
 	</td>
   <td>
     <%= display_set_symbol(reservation.listing.card.set)%>
@@ -24,9 +23,6 @@
     <% end %>
     <% if reservation.listing.altart %>
       <%= listing_option_altart_icon %>
-    <% end %>    
-    <% if reservation.listing.playset %>
-      <%= listing_option_playset_icon %>
     <% end %>    
     <% if reservation.listing.description != "" %>
       <%= listing_option_description_icon(reservation.listing) %>

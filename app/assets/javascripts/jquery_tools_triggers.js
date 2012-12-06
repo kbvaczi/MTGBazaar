@@ -11,6 +11,12 @@ $(document).ready(function() {
   });
   
   
+  initialize_tooltips();
+  
+});
+
+function initialize_tooltips() {
+  
   $("[title]").tooltip({ 
     position: { 
       my: "left bottom", 
@@ -19,6 +25,6 @@ $(document).ready(function() {
     },
     show: false,
     hide: false
-  });
+  });  
   
-});
+}

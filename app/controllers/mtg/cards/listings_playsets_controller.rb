@@ -20,10 +20,17 @@ class Mtg::Cards::ListingsPlaysetsController < Mtg::Cards::ListingsController
   def new
     set_back_path
     @listing = Mtg::Cards::Listing.new(params[:mtg_cards_listing])
+
+    if params[:card_id].present?
+      @card = Mtg::Card.includes(:set, :statistics).active.find(params[:card_id])
+      @sets = Mtg::Set.joins(:cards).active.where("mtg_cards.name LIKE ?", @card.name).order("release_date DESC").to_a
+    end   
+   
     if params[:mtg_cards_listing] && params[:mtg_cards_listing][:set]
       @sets = Mtg::Set.joins(:cards).active.where("mtg_cards.name LIKE ?", params[:mtg_cards_listing][:name]).order("release_date DESC").to_a    
       @card = Mtg::Card.includes(:set, :statistics).active.where("mtg_cards.name LIKE ? AND mtg_sets.code LIKE ?", "#{params[:mtg_cards_listing][:name]}", "#{params[:set]}").first      
     end
+    
     respond_to do |format|
       format.html
     end
@@ -45,7 +52,7 @@ class Mtg::Cards::ListingsPlaysetsController < Mtg::Cards::ListingsController
     @listing.card_id    = @card.id
     @listing.seller_id  = current_user.id
     @listing.playset    = true
-    @listing.number_cards_per_listing = 4
+    @listing.number_cards_per_item = 4
 
     #handle duplicates, save
     duplicate_listings  = Mtg::Cards::Listing.duplicate_listings_of(@listing)
@@ -75,7 +82,7 @@ class Mtg::Cards::ListingsPlaysetsController < Mtg::Cards::ListingsController
     # setup variables    
     @listing                          = Mtg::Cards::Listing.includes(:card => :statistics).find(params[:id])
     @listing.playset                  = true
-    @listing.number_cards_per_listing = 4
+    @listing.number_cards_per_item = 4
     
     # handle pricing select options to determine how to update price
     if params[:mtg_cards_listing] && params[:mtg_cards_listing][:price_options] != "other"

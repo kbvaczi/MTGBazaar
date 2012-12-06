@@ -14,7 +14,7 @@ class Mtg::Transactions::Item < ActiveRecord::Base
                 :converter => Proc.new { |value| value.respond_to?(:to_money) ? value.to_money : Money.empty }  
   
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :set, :quantity_available, :quantity_requested, :price, :condition, :language, :description, :altart, :misprint, :foil, :signed, :cards_quantity
+  attr_accessible :name, :set, :quantity_available, :quantity_requested, :price, :condition, :language, :description, :altart, :misprint, :foil, :signed, :number_cards_per_item
 
   # not-in-model field for current password confirmation
   attr_accessor :name, :set
@@ -57,6 +57,10 @@ class Mtg::Transactions::Item < ActiveRecord::Base
         return "GD"
       else return "Unknown"
     end
+  end
+  
+  def cards_quantity
+    self.number_cards_per_item * self.quantity_available
   end
 
 end

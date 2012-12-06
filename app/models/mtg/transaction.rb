@@ -85,11 +85,6 @@ class Mtg::Transaction < ActiveRecord::Base
     self.items.pluck(:quantity_available).inject(0) { |sum, value| sum + value }
   end
   
-  def cards_quantity
-    #items.select(:cards_quantity).to_a.sum(&:cards_quantity)
-    self.items.pluck(:cards_quantity).inject(0) { |sum, value| sum + value }    
-  end
-  
   def display_feedback
     case self.buyer_feedback
       when "1"
@@ -180,7 +175,7 @@ class Mtg::Transaction < ActiveRecord::Base
                                      :altart => reservation.listing.altart,
                                      :misprint => reservation.listing.misprint,
                                      :playset => reservation.listing.playset,                                     
-                                     :cards_quantity => reservation.cards_quantity,                                                                          
+                                     :number_cards_per_item => reservation.listing.number_cards_per_item,                                                                          
                                      :foil => reservation.listing.foil,
                                      :signed => reservation.listing.signed,
                                      :card_id => reservation.listing.card_id,
@@ -201,7 +196,7 @@ class Mtg::Transaction < ActiveRecord::Base
                                      :foil => item.foil,
                                      :signed => item.signed,
                                      :playset => item.playset,                                     
-                                     :number_cards_per_listing => item.playset ? 4 : 1)
+                                     :number_cards_per_item => item.number_cards_per_item )
     listing.card_id = item.card_id
     listing.seller_id = self.seller_id
     duplicate = Mtg::Cards::Listing.duplicate_listings_of(listing).first
@@ -221,12 +216,8 @@ class Mtg::Transaction < ActiveRecord::Base
   private
   
   def update_transaction_costs
-    Rails.logger.debug "BLAH"
-    Rails.logger.debug self.cards_quantity
-    Rails.logger.debug "BLAH"    
-    self.value    = self.items.to_a.inject(0) {|sum, item| sum + item.quantity_requested * item.price.dollars}.to_money
-    card_quantity = self.items.to_a.inject(0) {|sum, item| sum + item.cards_quantity}
-    self.shipping_cost = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count => card_quantity)[:user_charge]
+    self.value         = self.items.to_a.inject(0) {|sum, item| sum + item.quantity_requested * item.price.dollars}.to_money
+    self.shipping_cost = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count => self.cards_quantity)[:user_charge]
   end
   
   def generate_transaction_number

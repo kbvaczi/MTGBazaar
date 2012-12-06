@@ -11,22 +11,6 @@ module Mtg::CardsHelper
     name.truncate(30, :omission => "...")
   end
   
-  def display_product_name(product)
-    if product.class == Mtg::Card
-      display_name(product.name)
-    elsif product.class == Mtg::Cards::Listing || product.class == Mtg::Transactions::Item
-      if product.playset
-        "Playset: &nbsp;".html_safe + display_name(product.card.name)
-      else
-        display_name(product.card.name)
-      end
-    elsif product.class == Mtg::Sets::Listing
-      "Full Set"
-    else
-      "unknown"
-    end
-  end
-  
   # display only first 30 characters of a name"
   def display_type(type, subtype)
     if subtype.length > 1

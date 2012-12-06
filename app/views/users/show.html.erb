@@ -123,7 +123,7 @@
   <% if params[:section] == "mtg_cards" %>
   
     <div>
-      <%= render :partial => '/mtg/apply_filters', :locals =>  { :remote => true } %>
+      <div class="text_in_h2"><%= render :partial => '/mtg/apply_filters', :locals =>  { :remote => true } %></div>
       <h2><%= pluralize(@listings.total_count, "Listing", "Listings") %></h2>
     </div>
   

@@ -12,7 +12,9 @@
 
   <%#= link_to "Create a New Listing", new_generic_mtg_cards_listings_path, :class => "right", :style => "margin-top:23px;margin-right:10px;" %>
   <div>
-    <%= render :partial => '/mtg/apply_filters', :locals =>  { :remote => true } %>  
+    <div class="text_in_h2">
+      <%= render :partial => '/mtg/apply_filters', :locals =>  { :remote => true } %>  
+    </div>
     <h2><%="#{@listings.total_count} #{(params[:status] || "").capitalize} Listings"%></h2>
   </div>
   

@@ -81,7 +81,7 @@ class Mtg::Cards::Statistics < ActiveRecord::Base
     if read_attribute(:listings_available) && (not overwrite)
       read_attribute(:listings_available)       
     else
-      write_attribute(:listings_available, (listings.select([:seller_id, :quantity_available, :number_cards_per_listing]).available.to_a.inject(0) {|sum, listing| sum + listing.quantity_available * listing.number_cards_per_listing} || 0))
+      write_attribute(:listings_available, (listings.select([:seller_id, :quantity_available, :number_cards_per_item]).available.to_a.inject(0) {|sum, listing| sum + listing.quantity_available * listing.number_cards_per_item} || 0))
       self.save
       read_attribute(:listings_available || 0)
     end

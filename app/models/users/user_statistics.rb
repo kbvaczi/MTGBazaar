@@ -51,7 +51,7 @@ class UserStatistics < ActiveRecord::Base
   
   def update_listings_mtg_cards_count
     # multiply quantity_available * number_cars_per_listing, sum for every listing
-    self.update_attribute(:listings_mtg_cards_count, (Mtg::Cards::Listing.select([:seller_id, :quantity_available, :number_cards_per_listing]).available.where(:seller_id => self.user_id).to_a.inject(0) {|sum, listing| sum + listing.quantity_available * listing.number_cards_per_listing}))
+    self.update_attribute(:listings_mtg_cards_count, (Mtg::Cards::Listing.select([:seller_id, :quantity_available, :number_cards_per_item]).available.where(:seller_id => self.user_id).to_a.inject(0) {|sum, listing| sum + listing.quantity_available * listing.number_cards_per_item}))
   end
 
   def display_approval_percent

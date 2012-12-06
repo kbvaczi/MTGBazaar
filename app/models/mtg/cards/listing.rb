@@ -43,11 +43,11 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   
   def update_statistics_cache_on_save
     if self.new_record?
-      self.card.statistics.update_attribute(:listings_available, self.card.statistics.listings_available + (self.quantity_available * self.number_cards_per_listing))
-      self.seller.statistics.update_attribute(:listings_mtg_cards_count, (self.seller.statistics.listings_mtg_cards_count || 0) + self.quantity_available * self.number_cards_per_listing)      
+      self.card.statistics.update_attribute(:listings_available, self.card.statistics.listings_available + (self.quantity_available * self.number_cards_per_item))
+      self.seller.statistics.update_attribute(:listings_mtg_cards_count, (self.seller.statistics.listings_mtg_cards_count || 0) + self.quantity_available * self.number_cards_per_item)      
     else
-      self.card.statistics.update_attribute(:listings_available, self.card.statistics.listings_available + (self.quantity_available - self.quantity_available_was) * self.number_cards_per_listing)
-      self.seller.statistics.update_attribute(:listings_mtg_cards_count, self.seller.statistics.listings_mtg_cards_count + (self.quantity_available - self.quantity_available_was) * self.number_cards_per_listing)
+      self.card.statistics.update_attribute(:listings_available, self.card.statistics.listings_available + (self.quantity_available - self.quantity_available_was) * self.number_cards_per_item)
+      self.seller.statistics.update_attribute(:listings_mtg_cards_count, self.seller.statistics.listings_mtg_cards_count + (self.quantity_available - self.quantity_available_was) * self.number_cards_per_item)
     end
     self.card.statistics.update_attribute(:price_min, self.price) if self.price <= self.card.statistics.price_min || self.card.statistics.price_min == 0
   end
@@ -56,7 +56,7 @@ class Mtg::Cards::Listing < ActiveRecord::Base
     #self.card.statistics.listings_available(:overwrite => true) if self.card.statistics.present?
     self.card.statistics.update_attribute(:listings_available, self.card.statistics.listings_available - self.quantity_available) if self.card.statistics.present?
     self.card.statistics.price_min(:overwrite => true) if self.price <= self.card.statistics.price_min || self.card.statistics.price_min == 0 if self.card.statistics.present?
-    self.seller.statistics.update_attribute(:listings_mtg_cards_count, self.seller.statistics.listings_mtg_cards_count - (self.quantity_available * self.number_cards_per_listing))
+    self.seller.statistics.update_attribute(:listings_mtg_cards_count, self.seller.statistics.listings_mtg_cards_count - (self.quantity_available * self.number_cards_per_item))
   end
   
   # --------------------------------------- #
@@ -83,13 +83,21 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   end
   
   def validate_playset
-    errors[:quantity] << "number of cards per playset must be 4, please contact administrator" if self.number_cards_per_listing != 4
+    errors[:quantity] << "number of cards per playset must be 4, please contact administrator" if self.number_cards_per_item != 4
     errors[:scan]     << "Cannot have scan with playsets"           if self.scan.present?
     errors[:altart]   << "Cannot have altered cards in playsets"    if self.altart
     errors[:misprint] << "Cannot have misprinted cards in playsets" if self.misprint
     errors[:signed]   << "Cannot have signed cards in playsets"     if self.misprint    
   end
+
+  # ------------ Universal Product Methods --------- #
   
+  def product_name
+    output_string = ""
+    output_string += "Playset:<br/>" if self.playset
+    output_string += self.card.name
+  end
+
 
   # --------------------------------------- #
   # ------------ Public Model Methods ----- #
