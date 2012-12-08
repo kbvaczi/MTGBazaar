@@ -1,22 +1,16 @@
 <h1>test</h1>
-<div id="content">
+<%#
+gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(                                                 # setup gateway, login to Paypal API
+  :pem =>       PAYPAL_CONFIG[:paypal_cert_pem],
+  :login =>     PAYPAL_CONFIG[:api_login],
+  :password =>  PAYPAL_CONFIG[:api_password],
+  :signature => PAYPAL_CONFIG[:api_signature],
+  :appid =>     PAYPAL_CONFIG[:appid] )
+  
 
-<ul class="tabs2">
-  <li class="tab2">
-    Tab1
-  </li>
-  <li class="tab2">
-    Tab2
-  </li>
-  <li class="tab2 selected">
-    Tab3 Selected
-  </li>    
-  <li class="tab2 message">
-    Tab3 Selected
-  </li>  
-</ul>
+%>
 
-</div>
+<%#=  gateway.get_shipping_addresses(:pay_key => 'AP-8H09309221582825D').selected_address.base_address.city %>
 <%# STAMPS %>
 
 

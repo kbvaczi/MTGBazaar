@@ -18,7 +18,6 @@ class Mtg::Cards::ListingsPlaysetsController < Mtg::Cards::ListingsController
   # ------ LISTING A SINGLE FROM CARD SHOW PAGE ------- #
     
   def new
-    set_back_path
     @listing = Mtg::Cards::Listing.new(params[:mtg_cards_listing])
 
     if params[:card_id].present?
@@ -61,14 +60,13 @@ class Mtg::Cards::ListingsPlaysetsController < Mtg::Cards::ListingsController
       duplicate_listing.increment(:quantity_available, params[:mtg_cards_listing][:quantity].to_i)
       duplicate_listing.increment(:quantity, params[:mtg_cards_listing][:quantity].to_i)      
       duplicate_listing.save!
-      redirect_to account_listings_path, :notice => "Listing Created!"
+      redirect_to back_path, :notice => "Your Playset has been Listed!"
     elsif @listing.save
-      redirect_to account_listings_path, :notice => "Listing Created!"
+      redirect_to back_path, :notice => "Your Playset has been Listed!"
     else
       flash[:error] = "There were one or more errors while trying to process your request"
       render 'new'
-    end
-    
+    end  
   end
   
   def edit

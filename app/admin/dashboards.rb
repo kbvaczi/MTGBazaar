@@ -1,3 +1,175 @@
+ActiveAdmin.register_page "Dashboard" do
+
+  menu :priority => 1, :label => proc{ I18n.t("active_admin.dashboard") }
+
+  content :title => proc{ I18n.t("active_admin.dashboard") } do
+    
+    columns do
+      column do
+        panel "Users Data" do
+          user_info_panel
+        end
+        panel "Sales Data" do
+          transactions_info_panel
+        end
+        panel "Stamps Data" do
+          stamps_info_panel
+        end
+        panel "Total Income" do
+          total_income_panel
+        end
+      end
+      column do
+        panel "NewRelic Data" do
+          div :style => "text-align:center;" do
+            text_node %{<iframe src="https://heroku.newrelic.com/public/charts/7dwwC7h2smI" width="500" height="300" scrolling="no" frameborder="no"></iframe>}.html_safe
+            text_node %{<iframe src="https://heroku.newrelic.com/public/charts/4LxW774491Z" width="500" height="300" scrolling="no" frameborder="no"></iframe>}.html_safe          
+          end
+        end
+      end
+    end
+
+    # Here is an example of a simple dashboard with columns and panels.
+    #
+    # columns do
+    #   column do
+    #     panel "Recent Posts" do
+    #       ul do
+    #         Post.recent(5).map do |post|
+    #           li link_to(post.title, admin_post_path(post))
+    #         end
+    #       end
+    #     end
+    #   end
+
+    #   column do
+    #     panel "Info" do
+    #       para "Welcome to ActiveAdmin."
+    #     end
+    #   end
+    # end
+  end # content
+end
+
+def stamps_info_panel
+  stamps_account_info ||= Rails.cache.fetch "stamps_account_info", :expires_in => 1.hours do
+    Stamps.account
+  end
+  stamps_this_month = Mtg::Transactions::ShippingLabel.where("created_at > ?",Time.now.beginning_of_month).pluck(:price)
+  shipping_paid_this_month = Mtg::Transaction.joins(:shipping_label).where("mtg_transactions_shipping_labels.created_at > ?",Time.now.beginning_of_month).pluck(:shipping_cost).sum
+  info = %{ <table>
+              <tr>
+                <th>Available Postage:</th>
+                <th>#{number_to_currency(stamps_account_info[:postage_balance][:available_postage].to_f)}</th>
+                <td>&nbsp;</td>                
+                <th>Max Postage Balance:</th>
+                <th>#{number_to_currency(stamps_account_info[:max_postage_balance].to_f)}</th>
+              </tr>
+              <tr>
+                <th>Stamps This Month:</th>
+                <th>#{stamps_this_month.count}</th>
+                <td>&nbsp;</td>                
+                <th>Postage This Month:</th>
+                <th>#{number_to_currency stamps_this_month.sum}</th>
+              </tr>
+              <tr>
+                <th colspan=4>Money Made On Postage This Month:</th>
+                <th colspan=1>#{ number_to_currency Money.new(shipping_paid_this_month - stamps_this_month.sum) }</th>
+              </tr>              
+            </table>}
+  text_node info.html_safe
+end
+
+def transactions_info_panel
+  info = Rails.cache.fetch "transaction_info_panel", :expires_in => 1.hours do
+    %{<div >
+        <table>
+          <tr>
+            <th>Today:</th>
+            <th>#{Mtg::Transaction.where("created_at > ?", Time.now.midnight).count}</th>
+            <td>&nbsp;</td>                
+            <th>Value:</th>
+            <th>#{number_to_currency Money.new(Mtg::Transaction.where("created_at > ?", Time.now.midnight).pluck(:value).sum)}</th>
+            <td>&nbsp;</td>                          
+            <th>Commission:</th>
+            <th>#{number_to_currency Money.new( Mtg::Transactions::Payment.where("created_at > ?", Time.now.midnight).pluck(:commission).sum)}</th>
+          </tr>
+          <tr>
+            <th>This Month:</th>
+            <th>#{Mtg::Transaction.where("created_at > ?", Time.now.beginning_of_month).count}</th>
+            <td>&nbsp;</td>                
+            <th>Value:</th>
+            <th>#{number_to_currency Money.new(Mtg::Transaction.where("created_at > ?", Time.now.beginning_of_month).pluck(:value).sum)}</th>
+            <td>&nbsp;</td>                          
+            <th>Commission:</th>
+            <th>#{number_to_currency Money.new( Mtg::Transactions::Payment.where("created_at > ?", Time.now.beginning_of_month).pluck(:commission).sum)}</th>
+          </tr>
+          <tr>
+            <th>This Year:</th>
+            <th>#{Mtg::Transaction.where("created_at > ?", Time.now.beginning_of_year).count}</th>
+            <td>&nbsp;</td>                
+            <th>Value:</th>
+            <th>#{number_to_currency Money.new(Mtg::Transaction.where("created_at > ?", Time.now.beginning_of_year).pluck(:value).sum)}</th>
+            <td>&nbsp;</td>                          
+            <th>Commission:</th>
+            <th>#{number_to_currency Money.new( Mtg::Transactions::Payment.where("created_at > ?", Time.now.beginning_of_year).pluck(:commission).sum)}</th>
+          </tr>
+        </table>
+      </div>}
+  end
+  text_node info.html_safe
+end
+
+def user_info_panel
+  info = Rails.cache.fetch("user_info_panel", :expires_in => 1.hours) do
+    %{<table>
+        <tr>
+          <th>New Users Today:</th>
+          <th>#{User.where("created_at > ?", Time.now.midnight).count}</th>
+          <td>&nbsp;</td>                
+          <th>Total Users:</th>
+          <th>#{User.count}</th>
+        </tr>
+        <tr>
+          <th>Users Logged In Now:</th>
+          <th>#{Session.where("updated_at > ?", 30.minutes.ago).count}</th>
+          <td>&nbsp;</td>
+          <th>Users Logged In Today:</th>
+          <th>#{User.where("users.current_sign_in_at > ?", Time.now.midnight).count}</th>
+        </tr>
+
+      </table>}
+  end
+  text_node info.html_safe
+end
+
+def total_income_panel
+  Rails.cache.fetch "total_income_panel", :expires_in => 1.hours do
+    # Today
+    commission_today      = Money.new(Mtg::Transactions::Payment.where("created_at > ?", Time.now.midnight).pluck(:commission).sum)
+    commission_this_month = Money.new(Mtg::Transactions::Payment.where("created_at > ?", Time.now.beginning_of_month).pluck(:commission).sum)
+    commission_this_year  = Money.new( Mtg::Transactions::Payment.where("created_at > ?", Time.now.beginning_of_year).pluck(:commission).sum)
+  
+    earned_on_stamps_today        = Money.new(Mtg::Transaction.joins(:shipping_label).where("mtg_transactions_shipping_labels.created_at > ?",Time.now.midnight).pluck(:shipping_cost).sum - Mtg::Transactions::ShippingLabel.where("created_at > ?",Time.now.midnight).pluck(:price).sum)
+    earned_on_stamps_this_month   = Money.new(Mtg::Transaction.joins(:shipping_label).where("mtg_transactions_shipping_labels.created_at > ?",Time.now.beginning_of_month).pluck(:shipping_cost).sum - Mtg::Transactions::ShippingLabel.where("created_at > ?",Time.now.beginning_of_month).pluck(:price).sum)
+    earned_on_stamps_this_year    = Money.new(Mtg::Transaction.joins(:shipping_label).where("mtg_transactions_shipping_labels.created_at > ?",Time.now.beginning_of_year).pluck(:shipping_cost).sum - Mtg::Transactions::ShippingLabel.where("created_at > ?",Time.now.beginning_of_year).pluck(:price).sum)
+    
+    info = %{ <table>
+                <tr>
+                  <th>Today:</th>
+                  <th>#{number_to_currency(commission_today + earned_on_stamps_today)}</th>
+                  <td>&nbsp;</td>                
+                  <th>This Month:</th>
+                  <th>#{number_to_currency(commission_this_month + earned_on_stamps_this_month)}</th>
+                  <td>&nbsp;</td>                                                    
+                  <th>This Year:</th>
+                  <th>#{number_to_currency(commission_this_year + earned_on_stamps_this_year)}</th>
+                  <td>&nbsp;</td>
+                </tr>
+              </table>}
+  end.html_safe
+end
+=begin
 ActiveAdmin::Dashboards.build do
 
   # Define your dashboard sections here. Each block will be
@@ -52,3 +224,4 @@ ActiveAdmin::Dashboards.build do
   
 
 end
+=end
