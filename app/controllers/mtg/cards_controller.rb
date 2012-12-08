@@ -34,18 +34,24 @@ class Mtg::CardsController < ApplicationController
       @mtg_card_back = Mtg::Card.where("mtg_cards.card_number LIKE ?", "%03d" % @mtg_card.card_number.to_i.to_s + "b").first
     end
     
-    @card_variants = Mtg::Card.includes(:set).where("mtg_cards.name LIKE ?", @mtg_card.name).order("mtg_sets.release_date DESC")  
+    @card_variants  = Mtg::Card.joins(:set).where("mtg_cards.name LIKE ?", @mtg_card.name).select("mtg_cards.id, mtg_sets.name, mtg_sets.code").order("mtg_sets.release_date DESC")  
 
-    filter_query       = mtg_filters_query(:card_filters => false, :activate_filters => params[:filter])
-
-    sort_string = table_sort(:price => "mtg_listings.price", :condition => "mtg_listings.condition", :language => "mtg_listings.language",
-                             :quantity => "mtg_listings.quantity_available", :seller => "LOWER(users.username)", :sales => "user_statistics.number_sales",
-                             :feedback => "user_statistics.approval_percent")                      
-
+    filter_query    = mtg_filters_query(:card_filters => false, :seller => false, :activate_filters => params[:filter])
+    
+    @sort_string    = table_sort( :price => "mtg_listings.price", :condition => "mtg_listings.condition", :language => "mtg_listings.language",
+                                  :quantity => "mtg_listings.quantity_available", :seller => "LOWER(users.username)", :sales => "user_statistics.number_sales",
+                                  :feedback => "user_statistics.approval_percent")                      
+    
     @listings_playsets_count  = @mtg_card.listings.available.where(:playset => true).pluck(:quantity_available).inject(0) {|sum, value| sum + value}
     @listings_singles_count   = @mtg_card.listings.available.where(:playset => false).pluck(:quantity_available).inject(0) {|sum, value| sum + value}
-    @listings = @mtg_card.listings.includes(:seller => :statistics).available.where(filter_query).where(:playset => params[:type] == "playsets" ? true : false).order(sort_string).page(params[:page]).per(15)
-
+    
+    if cookies[:search_seller_id].present? && params[:filter] != "false"
+      @listings_seller  = @mtg_card.listings.includes(:seller => :statistics).available.where(filter_query).where(:playset => params[:type] == "playsets" ? true : false).where("seller_id =  ?", cookies[:search_seller_id]).order(@sort_string).limit(20)
+      @listings         = @mtg_card.listings.includes(:seller => :statistics).available.where(filter_query).where(:playset => params[:type] == "playsets" ? true : false).where("seller_id <> ?", cookies[:search_seller_id]).order(@sort_string).page(params[:page]).per(20)    
+    else
+      @listings_seller  = []
+      @listings         = @mtg_card.listings.includes(:seller => :statistics).available.where(filter_query).where(:playset => params[:type] == "playsets" ? true : false).order(@sort_string).page(params[:page]).per(30)          
+    end
             
     if not (@mtg_card.active or current_admin_user) # normal users cannot see inactive cards
       redirect_to back_path
@@ -62,6 +68,7 @@ class Mtg::CardsController < ApplicationController
   def search
     # SEARCH CARDS
     params[:show_level] = nil
+    
     query = SmartTuple.new(" AND ")
     query << ["mtg_cards.active LIKE ?", true]
     query << ["mtg_sets.active LIKE ?", true]
@@ -89,7 +96,7 @@ class Mtg::CardsController < ApplicationController
         query << ["mtg_listings.signed LIKE ?", true]   if (params[:options].include?("s") rescue false)
         query << ["mtg_listings.altart LIKE ?", true]   if (params[:options].include?("a") rescue false)
         # seller filter
-        query << ["mtg_listings.seller_id LIKE ?", "#{params[:seller_id]}"] if params[:seller_id].present?
+        query << ["mtg_listings.seller_id = ?", params[:seller_id]] if params[:seller_id].present?
       end
       if params[:show] == "listed"
         query << ["mtg_listings.active LIKE ? AND users.active LIKE ? AND mtg_listings.quantity_available > 0", true, true]
@@ -97,9 +104,10 @@ class Mtg::CardsController < ApplicationController
     else
       params[:type] = "" # clear search type after an exact search to prevent ajax from continuing exact searches
     end
+    
     params[:page]    = params[:page] || 1 # if params[:page] # set page number if this was a search request, otherwise we keep the old one for return paths
     if params[:show] == "listed"
-      @mtg_cards = Mtg::Card.joins(:listings => :seller).includes(:set, :statistics).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(15)
+      @mtg_cards = Mtg::Card.joins(:listings => :seller).includes(:set, :statistics, :listings).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(15)
     else
       @mtg_cards = Mtg::Card.includes(:set, :statistics).where(query.compile).order("mtg_cards.name ASC, mtg_sets.release_date DESC").page(params[:page]).per(15)
     end

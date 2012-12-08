@@ -41,35 +41,30 @@ class Mtg::OrdersController < ApplicationController
       :ipn_notification_url => payment_notification_url(:id => @order.transaction.id,                            # allows us to checkout the transaction using IPN
                                                         :secret => encoded_secret,                              # for security, so people can't approve transactions on the back-end without paying
                                                         :cart_id => current_cart.id),                           # so we can clear the cart from IPN in case user doesn't clear it on checkout_success_path (scenario where user closes browser or changes url before closing paypal light box)
-      :memo                 => "Purchase of #{@order.item_count} line item(s) for a total of #{@order.reservations.pluck(:cards_quantity).inject(0) {|sum, count| sum + count }} cards from #{@order.seller.username} on MTGBazaar.com.  Details of this order can be accessed at any time through your account on the MTGBazaar website.",
+      :memo                 => "Purchase of #{@order.item_count} item(s) for a total of #{@order.reservations.pluck(:cards_quantity).inject(0) {|sum, count| sum + count }} cards from #{@order.seller.username} on MTGBazaar.com.  Details of this order can be accessed at any time through your account on the MTGBazaar website.",
       :receiver_list        => recipients,
       :fees_payer           => "PRIMARYRECEIVER" )
 
     @gateway.set_payment_options(
       :display_options => { :business_name => "MTGBazaar" },
       :pay_key => @purchase["payKey"],
+      :sender => { :share_address => true, :require_shipping_address_selection => true },
       :receiver_options => [
-        {
-          :invoice_data => {
+        { :invoice_data => {
             :item => [
-              { :name => "Purchase of #{@order.item_count} Line Items",  :item_price => @order.item_price_total, :price => @order.item_price_total },
-              { :name => "Shipping",                                 :item_price => @order.shipping_cost,    :price => @order.shipping_cost }
-            ]
+              { :name => "Purchase of #{@order.item_count} Item(s)",  :item_price => @order.item_price_total, :price => @order.item_price_total },
+              { :name => "Shipping",                                  :item_price => @order.shipping_cost,    :price => @order.shipping_cost }]
           },
           :receiver => { :email => @order.seller.account.paypal_username }
         },
-        {
-          :description => "MTGBazaar Fees and Shipping",
+        { :description => "MTGBazaar Fees and Shipping",
           :invoice_data => {
             :item => [
               { :name => "MTGBazaar Sale Commission", :item_price => @order.transaction.payment.commission,    :price => @order.transaction.payment.commission },
-              { :name => "Shipping",                  :item_price => @order.shipping_cost,                     :price => @order.shipping_cost }
-            ]
+              { :name => "Shipping",                  :item_price => @order.shipping_cost,                     :price => @order.shipping_cost }]
           },
           :receiver => { :email => PAYPAL_CONFIG[:account_email] }
-        }
-      ]
-    )
+        }] )
 
     Rails.logger.debug "GATEWAY: #{@gateway.debug.inspect}"  rescue ""
     Rails.logger.debug "PURCHASE: #{@purchase.inspect}" rescue ""

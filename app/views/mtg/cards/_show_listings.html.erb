@@ -16,7 +16,7 @@
 
   <!-- Heading -->
 
-<% unless listings.empty? %>
+<% unless @listings.empty?  && @listings_seller.empty? %>
 
   <table class="data fixed">
     <col width="30%">
@@ -35,48 +35,14 @@
       <th> <%= table_sort_header("Qty", :params => {:update_card_info => false}, :value => "quantity", :remote => true) %> </th>
       <th> Add to Cart </th>
     </tr>
-    <% @listings.each do |listing| %>  
-  		<tr class=<%= cycle("odd","even") %>> 
-    		<td style="width:150px;padding-left:10px;">
-          <%=  link_to "#{listing.seller.username}", user_path(listing.seller.username) %>
-          </br>
-          <div>
-            <%= "(#{number_with_delimiter(listing.seller.statistics.number_sales, :delimiter => ",")} / #{listing.seller.statistics.display_approval_percent})" %>
-          </div>
-    	  </td>
-    		<td><%= display_flag_symbol(listing.language) %></td>
-    		<td><%= display_condition(listing.condition) %></td>
-    		<td class="mtg_options_cell">
-    		  <% if listing.foil %>
-            <%= listing_option_foil_icon %>
-          <% end %>
-          <% if listing.misprint %>
-            <%= listing_option_misprint_icon %>
-          <% end %>
-          <% if listing.signed %>
-            <%= listing_option_signed_icon %>
-          <% end %>
-          <% if listing.altart %>
-            <%= listing_option_altart_icon %>
-          <% end %>
-          <% if listing.description != "" %>
-            <%= listing_option_description_icon(listing) %>
-          <% end %>
-      		<% if listing.scan.present? %>
-            <%= listing_option_scan_icon(listing) %>
-            <%= listing_option_scan_overlay(listing) %>
-          <% end %>
-        </td>
-    		<td><%= number_to_currency(listing.price) %></td>
-    		<td><%= listing.quantity_available %></td>
-    		<td>
-    		  <%= form_tag add_to_cart_mtg_listing_path(listing.id), :method => :post do %>
-            <%= text_field_tag "quantity", 1, :id => nil, :maxlength => 4, :style => "width:30px;text-align:center;"%>            
-            <%= submit_tag "Add" %>
-          <% end %>
-        </td>
-  		</tr>
-  	<% end %>
+    
+    <% if cookies[:search_seller_id].present? && params[:filter] != "false"%>
+      <%= render :partial => "show_listings_teaser", :collection => @listings_seller, :as => :listing, :locals => { :highlight => true } %>
+    <% end %>
+    
+    <%= render :partial => "show_listings_teaser", :collection => @listings,        :as => :listing %>
+
+  	
   </table>
   
   <br class="spacer"/>

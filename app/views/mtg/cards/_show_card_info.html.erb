@@ -90,7 +90,7 @@
     </div>
     <div class="card_show_info_value t-l">
       <% @card_variants.each do |v| %>
-        <%= link_to display_set_symbol(v.set), mtg_card_path(v, :update_card_info => true), :remote => true %>
+        <%= link_to display_set_symbol(v), mtg_card_path(v.id, :update_card_info => true), :remote => true %>
       <% end %>
     </div>   
   </div>    
