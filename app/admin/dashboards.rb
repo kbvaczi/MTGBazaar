@@ -60,59 +60,59 @@ def stamps_info_panel
   info = %{ <table>
               <tr>
                 <th>Available Postage:</th>
-                <th>#{number_to_currency(stamps_account_info[:postage_balance][:available_postage].to_f)}</th>
+                <th style="text-align:right">#{number_to_currency(stamps_account_info[:postage_balance][:available_postage].to_f)}</th>
                 <td>&nbsp;</td>                
                 <th>Max Postage Balance:</th>
-                <th>#{number_to_currency(stamps_account_info[:max_postage_balance].to_f)}</th>
+                <th style="text-align:right">#{number_to_currency(stamps_account_info[:max_postage_balance].to_f)}</th>
               </tr>
               <tr>
                 <th>Stamps This Month:</th>
-                <th>#{stamps_this_month.count}</th>
+                <th style="text-align:right">#{stamps_this_month.count}</th>
                 <td>&nbsp;</td>                
                 <th>Postage This Month:</th>
-                <th>#{number_to_currency stamps_this_month.sum}</th>
+                <th style="text-align:right">#{number_to_currency stamps_this_month.sum}</th>
               </tr>
               <tr>
                 <th colspan=4>Money Made On Postage This Month:</th>
-                <th colspan=1>#{ number_to_currency Money.new(shipping_paid_this_month - stamps_this_month.sum) }</th>
+                <th colspan=1 style="text-align:right">#{ number_to_currency Money.new(shipping_paid_this_month - stamps_this_month.sum) }</th>
               </tr>              
             </table>}
   text_node info.html_safe
 end
 
 def transactions_info_panel
-  info = Rails.cache.fetch "transaction_info_panel", :expires_in => 1.hours do
+  info = Rails.cache.fetch "transaction_info_panel", :expires_in => 1.seconds do
     %{<div >
         <table>
           <tr>
             <th>Today:</th>
-            <th>#{Mtg::Transaction.where("created_at > ?", Time.now.midnight).count}</th>
+            <th style="text-align:right">#{Mtg::Transaction.where("created_at > ?", Time.now.midnight).count}</th>
             <td>&nbsp;</td>                
             <th>Value:</th>
-            <th>#{number_to_currency Money.new(Mtg::Transaction.where("created_at > ?", Time.now.midnight).pluck(:value).sum)}</th>
+            <th style="text-align:right">#{number_to_currency Money.new(Mtg::Transaction.where("created_at > ?", Time.now.midnight).pluck(:value).sum)}</th>
             <td>&nbsp;</td>                          
             <th>Commission:</th>
-            <th>#{number_to_currency Money.new( Mtg::Transactions::Payment.where("created_at > ?", Time.now.midnight).pluck(:commission).sum)}</th>
+            <th style="text-align:right">#{number_to_currency Money.new( Mtg::Transactions::Payment.where("created_at > ?", Time.now.midnight).pluck(:commission).sum)}</th>
           </tr>
           <tr>
             <th>This Month:</th>
-            <th>#{Mtg::Transaction.where("created_at > ?", Time.now.beginning_of_month).count}</th>
+            <th style="text-align:right">#{Mtg::Transaction.where("created_at > ?", Time.now.beginning_of_month).count}</th>
             <td>&nbsp;</td>                
             <th>Value:</th>
-            <th>#{number_to_currency Money.new(Mtg::Transaction.where("created_at > ?", Time.now.beginning_of_month).pluck(:value).sum)}</th>
+            <th style="text-align:right">#{number_to_currency Money.new(Mtg::Transaction.where("created_at > ?", Time.now.beginning_of_month).pluck(:value).sum)}</th>
             <td>&nbsp;</td>                          
             <th>Commission:</th>
-            <th>#{number_to_currency Money.new( Mtg::Transactions::Payment.where("created_at > ?", Time.now.beginning_of_month).pluck(:commission).sum)}</th>
+            <th style="text-align:right">#{number_to_currency Money.new( Mtg::Transactions::Payment.where("created_at > ?", Time.now.beginning_of_month).pluck(:commission).sum)}</th>
           </tr>
           <tr>
             <th>This Year:</th>
-            <th>#{Mtg::Transaction.where("created_at > ?", Time.now.beginning_of_year).count}</th>
+            <th style="text-align:right">#{Mtg::Transaction.where("created_at > ?", Time.now.beginning_of_year).count}</th>
             <td>&nbsp;</td>                
             <th>Value:</th>
-            <th>#{number_to_currency Money.new(Mtg::Transaction.where("created_at > ?", Time.now.beginning_of_year).pluck(:value).sum)}</th>
+            <th style="text-align:right">#{number_to_currency Money.new(Mtg::Transaction.where("created_at > ?", Time.now.beginning_of_year).pluck(:value).sum)}</th>
             <td>&nbsp;</td>                          
             <th>Commission:</th>
-            <th>#{number_to_currency Money.new( Mtg::Transactions::Payment.where("created_at > ?", Time.now.beginning_of_year).pluck(:commission).sum)}</th>
+            <th style="text-align:right">#{number_to_currency Money.new( Mtg::Transactions::Payment.where("created_at > ?", Time.now.beginning_of_year).pluck(:commission).sum)}</th>
           </tr>
         </table>
       </div>}
@@ -125,17 +125,17 @@ def user_info_panel
     %{<table>
         <tr>
           <th>New Users Today:</th>
-          <th>#{User.where("created_at > ?", Time.now.midnight).count}</th>
+          <th style="text-align:right">#{User.where("created_at > ?", Time.now.midnight).count}</th>
           <td>&nbsp;</td>                
           <th>Total Users:</th>
-          <th>#{User.count}</th>
+          <th style="text-align:right">#{User.count}</th>
         </tr>
         <tr>
           <th>Users Logged In Now:</th>
-          <th>#{Session.where("updated_at > ?", 30.minutes.ago).count}</th>
+          <th style="text-align:right">#{Session.where("updated_at > ?", 30.minutes.ago).count}</th>
           <td>&nbsp;</td>
           <th>Users Logged In Today:</th>
-          <th>#{User.where("users.current_sign_in_at > ?", Time.now.midnight).count}</th>
+          <th style="text-align:right">#{User.where("users.current_sign_in_at > ?", Time.now.midnight).count}</th>
         </tr>
 
       </table>}
@@ -157,14 +157,13 @@ def total_income_panel
     info = %{ <table>
                 <tr>
                   <th>Today:</th>
-                  <th>#{number_to_currency(commission_today + earned_on_stamps_today)}</th>
+                  <th style="text-align:right">#{number_to_currency(commission_today + earned_on_stamps_today)}</th>
                   <td>&nbsp;</td>                
                   <th>This Month:</th>
-                  <th>#{number_to_currency(commission_this_month + earned_on_stamps_this_month)}</th>
+                  <th style="text-align:right">#{number_to_currency(commission_this_month + earned_on_stamps_this_month)}</th>
                   <td>&nbsp;</td>                                                    
                   <th>This Year:</th>
-                  <th>#{number_to_currency(commission_this_year + earned_on_stamps_this_year)}</th>
-                  <td>&nbsp;</td>
+                  <th style="text-align:right">#{number_to_currency(commission_this_year + earned_on_stamps_this_year)}</th>
                 </tr>
               </table>}
   end.html_safe
