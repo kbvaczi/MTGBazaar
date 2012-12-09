@@ -12,6 +12,20 @@ $(document).ready(function() {
   
   initialize_tooltips();
   
+});
+
+function initialize_tooltips() {
+  
+  $("[title]").tooltip({ 
+    position: { 
+      my: "left bottom", 
+      at: "right+5 top", 
+      collision: "flipfit" 
+    },
+    show: false,
+    hide: false
+  });  
+  
   $("img.mtg_teaser_image").tooltip({
     items: "img",
     content: "<div class=\'mtg_teaser_image_tooltip\'></div>",
@@ -28,19 +42,5 @@ $(document).ready(function() {
     show: false,
     hide: false
   });
-  
-});
-
-function initialize_tooltips() {
-  
-  $("[title]").tooltip({ 
-    position: { 
-      my: "left bottom", 
-      at: "right+5 top", 
-      collision: "flipfit" 
-    },
-    show: false,
-    hide: false
-  });  
   
 }

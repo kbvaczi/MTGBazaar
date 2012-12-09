@@ -1,3 +1,4 @@
 $('#center_bar').html('<%= escape_javascript render :template => "mtg/cards/search", :formats => [:html] %>');
+initialize_tooltips();
 //$('#search_results').html('<%= escape_javascript render :partial => "teaser", :collection => @mtg_cards, :as => "mtg_card" %>');
 //$('.paginator').html('<%= escape_javascript paginate @mtg_cards, :window => 2, :collection => @mtg_cards, :remote => true %>');
