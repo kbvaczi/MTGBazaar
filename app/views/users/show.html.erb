@@ -123,7 +123,7 @@
   <% if params[:section] == "mtg_cards" %>
   
     <div>
-      <%= render :partial => '/mtg/apply_filters', :locals =>  { :remote => true } %>
+      <div class="text_in_h2"><%= render :partial => '/mtg/apply_filters', :locals =>  { :remote => true } %></div>
       <h2><%= pluralize(@listings.total_count, "Listing", "Listings") %></h2>
     </div>
   
@@ -158,7 +158,10 @@
               <% end %>
               <% if listing.altart %>
                 <%= listing_option_altart_icon %>
-              <% end %>    
+              <% end %>
+              <% if listing.playset %>
+                <%= listing_option_playset_icon %>
+              <% end %>                  
               <% if listing.description != "" %>
                 <%= listing_option_description_icon(listing) %>
               <% end %>

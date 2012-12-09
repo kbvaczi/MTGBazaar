@@ -7,7 +7,7 @@ class Mtg::Reservation < ActiveRecord::Base
   has_one    :card,         :class_name => "Mtg::Card",     :through => :listing
   has_one    :cart,         :class_name => "Cart",          :through => :order  
   
-  attr_accessible :listing_id, :order_id, :quantity
+  attr_accessible :listing_id, :order_id, :quantity, :cards_quantity
   
   ##### ------ VALIDATIONS ----- #####
   

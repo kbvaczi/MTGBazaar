@@ -1,15 +1,27 @@
 class Mtg::Cards::ListingsController < ApplicationController
   
   before_filter :authenticate_user! # must be logged in to make or edit listings
-  before_filter :verify_user_paypal_account, :only => [:new, :create, :new_generic, :new_generic_set, :new_generic_pricing, :create_generic, 
-                                                       :new_bulk_prep, :new_bulk, :create_bulk]
-  before_filter :verify_owner?, :except => [:new, :create, :new_generic, :new_generic_set, :new_generic_pricing, :create_generic, 
-                                            :new_bulk_prep, :new_bulk, :create_bulk]  # prevent a user from editing another user's listings
-  before_filter :verify_not_in_cart?, :only => [:edit, :update, :destroy, :set_inactive]  # don't allow users to change listings when they're in someone's cart or when they're in a transaction.
+  
+  # user must have a paypal email entered on his account before performing these actions
+  before_filter :verify_user_paypal_account, :only => [ :new, :create, 
+                                                        :new_generic, :new_generic_set, :new_generic_pricing, :create_generic, 
+                                                        :new_bulk_prep, :new_bulk, :create_bulk,
+                                                        :new_playset, :create_playset ]
+
+  # user must be owner of listing to perform an action EXCEPT for those listed here                                                     
+  before_filter :verify_owner?, :except => [:new, :create, 
+                                            :new_generic, :new_generic_set, :new_generic_pricing, :create_generic, 
+                                            :new_bulk_prep, :new_bulk, :create_bulk,
+                                            :new_playset, :create_playset ]  # prevent a user from editing another user's listings
+
+  # don't allow users to change listings when they're in someone's cart or when they're in a transaction.                                            
+  before_filter :verify_not_in_cart?, :only => [:edit_playset, :edit, :update, :destroy, :set_inactive]  
   
   include ActionView::Helpers::NumberHelper  # needed for number_to_currency  
   include ActionView::Helpers::TextHelper
   include Singleton
+    
+  # ------ LISTING A SINGLE FROM CARD SHOW PAGE ------- #
     
   def new
     @listing = Mtg::Card.find(params[:card_id]).listings.build(params[:mtg_cards_listing]) 
@@ -43,8 +55,14 @@ class Mtg::Cards::ListingsController < ApplicationController
   
   def edit
     @listing = Mtg::Cards::Listing.includes(:card => :statistics).find(params[:id])
+    if @listing.playset 
+      redirect_to edit_mtg_cards_listings_playset_path(@listing) #render :template => 'mtg/cards/listings_playsets/edit', :formats => [:html]
+      return
+    end
     respond_to do |format|
-      format.html
+      format.html do
+
+      end
     end
   end  
   
@@ -88,7 +106,7 @@ class Mtg::Cards::ListingsController < ApplicationController
     end
   end
   
-  # NEW GENERIC IMPORT FUNCTIONS
+  # ------ LISTING A SINGLE FROM GENERIC FORM ------- #
   
   def new_generic
     set_back_path
@@ -142,6 +160,8 @@ class Mtg::Cards::ListingsController < ApplicationController
     end      
   end
   
+  # ------ LISTING A SINGLE FROM BULK IMPORT PAGE ------- #
+  
   def new_bulk_prep
     @listing = Mtg::Cards::Listing.new(params[:mtg_cards_listing])
   end
@@ -191,7 +211,23 @@ class Mtg::Cards::ListingsController < ApplicationController
     return #don't display a template
   end
 
-  # CONTROLLER FUNCTIONS
+  # ------ LISTING A PLAYSET ------- #
+
+  def new_playset
+    
+  end
+  
+  def create_playset
+    
+  end
+  
+  def edit_playset
+    
+  end
+
+  # ------ CONTROLLER PROTECTED FUNCTIONS ------- #
+
+  protected
 
   def verify_user_paypal_account
     unless current_user.account.paypal_username.present?

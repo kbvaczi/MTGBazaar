@@ -50,7 +50,7 @@ gem "xml-simple", "~> 1.1.2"                                        # for paypal
 # -------------
 
 
-gem "rails", "~> 3.2.8"
+gem "rails", "~> 3.2.9"
 gem 'jquery-rails'                                                  # latest jquery library.  need to include "//= require jquery_ujs" and "//= require jquery" in application.js to be loaded in asset pipeline
 gem 'json'
 

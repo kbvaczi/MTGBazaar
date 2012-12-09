@@ -23,7 +23,7 @@
 
     <h2><%= "Your order for #{@selected_order.seller.username}" %></h2>
  		<table class="data fixed">
- 		  <col width="22%">
+ 		  <col width="23%">
  		  <col width="8%"> 		  
  		  <col width="7%"> 		  
  		  <col width="7%"> 		  
@@ -32,7 +32,7 @@
  		  <col>		  
  		 	<col width="15%">  
       <tr class="header_row">
-        <th>Name</th>
+        <th>Line Item</th>
         <th>Set</th>      
         <th>Cond</th>
         <th>Lang</th>
@@ -52,8 +52,7 @@
       <% end %>
       
       <tr class="header_row">
-      	<td colspan=6 style="text-align:left;padding-left:15px;">Subtotal</td>
-        <td><%= @selected_order.item_count %> </td>            	
+      	<td colspan=7 style="text-align:left;padding-left:15px;">Subtotal<div class="right mr-s"><%= @selected_order.item_count %> Items / <%= @selected_order.cards_quantity %> Cards</div></td>
         <td><%= number_to_currency(@selected_order.item_price_total) %> </td>      
       </tr>
       <% if @selected_order.item_price_total >= minimum_price_for_checkout %>
@@ -93,8 +92,7 @@
       		<input type="submit" id="checkout_submit" style="display:none;"> 	
         </form>
         
-        <%# This script source is now included in vendor/paypal_embedded_flow_lightbox.js %>
-        <%# <script src="https://www.paypalobjects.com/js/external/dg.js"></script>%>
+        <script src="https://www.paypalobjects.com/js/external/dg.js"></script>
 
         <%# PAYPAL Lightbox embedded flow activate %>
         <script type="text/javascript" charset="utf-8">

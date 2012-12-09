@@ -1,0 +1,111 @@
+<% title "Sell a Playset"%>
+<h1>Sell a Playset</h1>
+
+<div id="content">
+
+
+  <%= simple_form_for @listing, :url => mtg_cards_listings_playsets_path, :method => :post do |f| %>
+
+    <div class="inputs">
+      <br class="spacer"/>  
+
+      <div id="New_Generic_Name_Block">                      
+        <%= f.input :name,          :label => "Card Name",
+                                    :input_html => { :class => "ui-autocomplete-input" , 
+                                                     :placeholder => "Name..." , 
+                                                     "data-autocomplete" => autocomplete_name_mtg_cards_path,
+                                                     :value => (@card.name if defined?(@card)) },
+                                    :required => true %>
+      </div>
+  
+      <% if @sets.present? %>
+        <div id="New_Playset_Set_Block">        
+          <%= f.input :set,           :label => "Set",
+                                      :as => :select,                                  
+                                      :required => true,
+                                      :collection => @sets.collect(&:name).zip(@sets.collect(&:code)),
+                                      :selected => (@card.set.code if @card.present?),
+                                      :input_html => {:class => "chzn-select", 
+                                                      "data-placeholder" => "Select a set..." } %>
+        </div>
+      <% else %>
+        <div id="New_Playset_Set_Block" style="display:none;">        
+          <%= f.input :set,           :label => "Set",
+                                      :as => :select,                                  
+                                      :required => true,
+                                      :input_html => {:class => "chzn-select", 
+                                                      "data-placeholder" => "Select a set..." } %>
+        </div>
+      <% end %>
+  
+      <div id="New_Generic_Info_Block" <%= "style=display:none;" if not @sets.present? %>>                      
+        <%= f.input :condition,     :label => "Worst Card Condition",
+                                    :as => :select,
+                                    :collection => condition_list,
+                                    :default => "NM",
+                                    :input_html => { :class => "chzn-select chzn-nosearch" },
+                                    :required => 'true' %>
+
+        <%= f.input :quantity,      :label => "Playsets for sale",
+                                    :as => :string,
+                                    :input_html => { :style => "width:50px;" },
+                                    :hint => "Quantity of playsets, not quantity of cards",
+                                    :required => true %>                                
+
+        <%
+          price_low   = (@card.present? && @card.statistics.present?) ? @card.statistics.price_low  : 0.50
+          price_med   = (@card.present? && @card.statistics.present?) ? @card.statistics.price_med  : 1.50
+          price_high  = (@card.present? && @card.statistics.present?) ? @card.statistics.price_high : 2.50                
+        %>
+        <%= f.input :price_options, :label => "Playset Asking Price",
+                                    :as => :select,
+                                    :collection => @card.present? ? [[generate_pricing_label("Low", price_low),  (price_low * 4)], 
+                                                    [generate_pricing_label("Med", price_low),   (price_med * 4)], 
+                                                    [generate_pricing_label("High", price_low),  (price_high * 4)],
+                                                    ["Other", "other"]] : [],
+                                    :input_html => { :class => "chzn-select chzn-nosearch" },
+                                    :required => true %>
+
+        <div id="Custom_Pricing_Block" <%= "style=display:none;" unless (params[:mtg_cards_listing] && params[:mtg_cards_listing][:price_options] == "other") %>> 
+          <%= f.input :price,         :label => "Custom Pricing",
+                                      :hint => "cost per playset",        
+                                      :as => :string,
+                                      :input_html => { :class => "currency_input", :maxlength => 9, :value => "$ #{@listing.price}" },   
+                                      :required => true %>                                 
+        </div>
+
+        <%= f.input :language,      :label => "Language",
+                                    :hint => "All cards should be the same language",
+                                    :as => :select,
+                                    :collection => language_list,
+                                    :default => "EN",
+                                    :input_html => { :class => "chzn-select chzn-nosearch" },
+                                    :required => false %>    
+
+        <%= f.input :description,   :label => "Description",
+                                    :placeholder => "Optional",
+                                    :input_html => { :maxlength => 100 },
+                                    :as => :string %>
+
+        <%= f.label "Options" %>
+
+        <%= f.input :foil,          :label => "All cards are foil",
+                                    :default => false %>                                     
+
+    
+        <br class="spacer"/>
+        <br class="spacer"/>  
+        <div class="center_wrap">
+          <%= f.button :submit, "List This Playset", :class => "center" %>
+        </div>
+        <br class="spacer"/>
+        <br class="spacer"/>      
+      
+      </div>  <%# new_generic_info_block %>
+    
+    </div>  <%# inputs %>
+
+  <% end # form %>
+
+
+</div>

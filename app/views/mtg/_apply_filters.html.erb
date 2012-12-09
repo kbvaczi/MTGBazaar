@@ -1,11 +1,9 @@
 <% remote ||= false %>
-<div class="text_in_h2">
-  <% if params[:filter] != "false" %>
-    Using search filters: &nbsp;
-    <%= link_to "update", url_for(params.merge(:filter => nil, :page => nil)), :remote => remote %> |
-    <%= link_to "remove", url_for(params.merge(:filter => false, :page => nil)), :remote => remote %>      
-  <% else %>
-    Not using search filters: &nbsp;
-    <%= link_to "apply filters", url_for(params.merge(:filter => nil, :page => nil)), :remote => remote %>    
-  <% end %>
-</div>
+<% if params[:filter] != "false" %>
+  Using search filters: &nbsp;
+  <%= link_to "update", url_for(params.merge(:filter => nil, :page => nil)), :remote => remote %> |
+  <%= link_to "remove", url_for(params.merge(:filter => false, :page => nil)), :remote => remote %>      
+<% else %>
+  Not using search filters: &nbsp;
+  <%= link_to "apply filters", url_for(params.merge(:filter => nil, :page => nil)), :remote => remote %>    
+<% end %>

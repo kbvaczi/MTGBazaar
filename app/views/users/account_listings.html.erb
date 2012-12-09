@@ -4,20 +4,41 @@
 
   <div class="group center_wrap">
     <ul class="tabs">
-      <li <%= "class=selected" if params[:status] == nil || params[:status] == "" %>> <%= link_to "All (#{current_user.mtg_listings.count})", url_for(params.merge(:status => nil)), :remote => true %> </li>
-      <li <%= "class=selected" if params[:status] == "active" %>>                     <%= link_to "Active (#{current_user.mtg_listings.active.count})", url_for(params.merge(:status => "active")), :remote => true %> </li>
-      <li <%= "class=selected" if params[:status] == "inactive" %>>                   <%= link_to "Inactive (#{current_user.mtg_listings.inactive.count})", url_for(params.merge(:status => "inactive")), :remote => true %> </li>      
+      <li <%= "class=selected" if params[:status] == nil || params[:status] == "" %>> <%= link_to "All (#{current_user.mtg_listings.pluck(:quantity_available).inject(0) {|sum, value| sum + value}})", url_for(params.merge(:status => nil)), :remote => true %> </li>
+      <li <%= "class=selected" if params[:status] == "active" %>>                     <%= link_to "Active (#{current_user.mtg_listings.active.pluck(:quantity_available).inject(0) {|sum, value| sum + value}})", url_for(params.merge(:status => "active")), :remote => true %> </li>
+      <li <%= "class=selected" if params[:status] == "inactive" %>>                   <%= link_to "Inactive (#{current_user.mtg_listings.inactive.pluck(:quantity_available).inject(0) {|sum, value| sum + value}})", url_for(params.merge(:status => "inactive")), :remote => true %> </li>      
     </ul>
   </div>
 
   <%#= link_to "Create a New Listing", new_generic_mtg_cards_listings_path, :class => "right", :style => "margin-top:23px;margin-right:10px;" %>
   <div>
-    <%= render :partial => '/mtg/apply_filters', :locals =>  { :remote => true } %>  
-    <h2><%="#{@listings.total_count} #{(params[:status] || "").capitalize} Listings"%></h2>
+    <%
+      if params[:status] == "active"
+        listings_playsets_count  = current_user.mtg_listings.where(:playset => true).active.pluck(:quantity_available).inject(0) {|sum, value| sum + value}
+        listings_singles_count   = current_user.mtg_listings.where(:playset => false).active.pluck(:quantity_available).inject(0) {|sum, value| sum + value}
+      elsif params[:status] == "inactive"
+        listings_playsets_count  = current_user.mtg_listings.where(:playset => true).inactive.pluck(:quantity_available).inject(0) {|sum, value| sum + value}
+        listings_singles_count   = current_user.mtg_listings.where(:playset => false).inactive.pluck(:quantity_available).inject(0) {|sum, value| sum + value}
+      else
+        listings_playsets_count  = current_user.mtg_listings.where(:playset => true).pluck(:quantity_available).inject(0) {|sum, value| sum + value}
+        listings_singles_count   = current_user.mtg_listings.where(:playset => false).pluck(:quantity_available).inject(0) {|sum, value| sum + value}
+      end
+    %>
+    <ul class="tabs2">
+      <li <%= "class=selected" if not params[:type].present?  %>> <%= link_to "Singles (#{listings_singles_count})",  url_for(params.merge(:type => nil)), :remote => true %> </li>  
+      <li <%= "class=selected" if params[:type] == "playsets" %>> <%= link_to "Playsets (#{listings_playsets_count})", url_for(params.merge(:type => "playsets")), :remote => true %> </li>  
+      <li class="tab2 message">
+        <%= render :partial => '/mtg/apply_filters', :locals =>  { :remote => true } %>
+      </li>  
+    </ul>    
   </div>
   
   <% if @listings.count > 0 %>
   
+    <% if !current_user.active %>
+      <p class="ma"><i>Note: All your listings are temporarily inactive due to your seller status</i></p> 
+    <% end %>
+    
   	<%= form_tag mtg_cards_listings_multiple_process_request_path, :id => "multiple_listing_edit_form", :method => :post do %>
       <%= submit_tag "Delete", :id => "delete_submit_button", :style => "display:none;", :confirm => "Are you sure you want to permanently delete selected listing(s)?"%>
       <%= hidden_field_tag "action_input" %>
@@ -25,7 +46,8 @@
         <span class="ml mb">
           <%= select_tag "action_selector" , options_for_select([["Set checked items to active", "active"], ["Set checked items to inactive", "inactive"], ["Delete checked items","delete"]], :selected => ""), {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Actions...", :id => "multiple_listings_actions", :class => "chzn-select"} %> 
         </span>
-        <%= link_to "Create New Listing", new_generic_mtg_cards_listings_path, :class => "right button mr mb" %>
+        <%= link_to "List a New Playset", new_mtg_cards_listings_playset_path, :class => "right button mr mb" %>
+        <%= link_to "List a New Card", new_generic_mtg_cards_listings_path, :class => "right button mr mb" %>
       </div>
       <table class="data fixed">
       	<tr class="header_row">
@@ -58,7 +80,7 @@
     
   <% else %>
   
-    <% if (not current_user.active) && params[:section] == "active" %>
+    <% if (not current_user.active) && params[:status] == "active" %>
       <p class="ma"><i>Note: All your listings are temporarily inactive due to your seller status</i></p>
     <% elsif params[:filter] != "false" %>
       <%= render :partial => "mtg/no_results", :locals => { :filter_by => "cookies", :use_seller_filter => false } %>

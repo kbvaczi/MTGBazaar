@@ -78,7 +78,10 @@ MTGBazaar::Application.routes.draw do
       post   "listings/multiple/set_active"       => "edit_multiple_listings#set_active",         :as => 'listings_multiple_set_active'  
       post   "listings/multiple/set_inactive"     => "edit_multiple_listings#set_inactive",       :as => 'listings_multiple_set_inactive'        
       post   "listings/multiple/delete"           => "edit_multiple_listings#delete",             :as => 'listings_multiple_delete'              
-      post   "listings/multiple/process_request"  => "edit_multiple_listings#process_request",    :as => 'listings_multiple_process_request'                    
+      post   "listings/multiple/process_request"  => "edit_multiple_listings#process_request",    :as => 'listings_multiple_process_request'
+      resources :listings_playsets, :only => [:new, :edit, :update, :create], :path => "listings/playsets" do
+        get "playset_pricing_ajax", :as => "playset_pricing_ajax", :on => :collection
+      end
       resources :listings, :except => [:index, :show ] do
         get "new_generic", :as => "new_generic", :on => :collection
         get "new_generic_pricing", :as => "new_generic_pricing", :on => :collection                  

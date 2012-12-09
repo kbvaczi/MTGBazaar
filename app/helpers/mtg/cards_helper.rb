@@ -29,7 +29,7 @@ module Mtg::CardsHelper
           image_tag('https://s3.amazonaws.com/mtgbazaar/images/mtg/various_symbols/tap.jpg', :class => "mtg_symbol")         
         elsif letter.present? #else the symbol must be a mana symbol, create corresponding mana symbol 
           #image_tag("https://mtgbazaar.s3.amazonaws.com/images/mtg/mana_symbols/mana_#{letter}.jpg", :class => "mtg_symbol")
-          content_tag(:span, "", :class => "mana_symbol_sprite mana_#{letter}", :title => "Mana Symbol")
+          content_tag(:span, "", :class => "mana_symbol_sprite mana_#{letter}")
         else
           ""
         end
@@ -213,6 +213,10 @@ module Mtg::CardsHelper
     #image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/miscut.png", :title => "Misprint",:class => "mtg_option_symbol")         
 	  content_tag :span, nil, :class => "option_symbol_sprite_small option_symbol_miscut", :title => "Misprinted"      
   end
+  
+  def listing_option_playset_icon
+	  content_tag :span, nil, :class => "option_symbol_sprite_small option_symbol_playset", :title => "Playset of 4 cards"      
+  end  
 
   def listing_option_scan_icon(listing)
     #image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/options/scan.png", :title => "Click to view scan", :class => "overlay_trigger mtg_option_symbol", :style => "cursor:pointer;", :rel => "#scan_overlay_#{listing.id}")

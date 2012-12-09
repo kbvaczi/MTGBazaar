@@ -110,7 +110,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
   end
   
   def create_stamp(options={})
-    details = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count => transaction.item_count)
+    details = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count => transaction.cards_quantity)
     stamp = Stamps.create!({
                :sample          => STAMPS_CONFIG[:mode] == "production" ? false : true,  # all labels are test labels if we aren't in production mode....
                :image_type      => "Pdf",

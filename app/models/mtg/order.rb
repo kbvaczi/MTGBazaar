@@ -55,9 +55,10 @@ class Mtg::Order < ActiveRecord::Base
     if self.listings.include?(listing) # is there already a reservation for this listing in cart?
       res = self.reservations.where(:listing_id => listing.id).first # add to existing reservation
     else
-      res = self.reservations.build(:listing_id => listing.id, :quantity => 0) # build a new reservation
+      res = self.reservations.build(:listing_id => listing.id, :quantity => 0, :cards_quantity => 0) # build a new reservation
     end
     res.increment(:quantity, quantity)
+    res.increment(:cards_quantity, (quantity * listing.number_cards_per_item))    
     res.listing.decrement(:quantity_available, quantity)
     if res.valid? && res.listing.valid?
       res.save
@@ -72,6 +73,7 @@ class Mtg::Order < ActiveRecord::Base
     if self.reservations.include?(reservation)
       if quantity <= reservation.quantity # remove less quantity than reservation holds, just update quantity in reservation
         reservation.decrement(:quantity, quantity)
+        reservation.decrement(:cards_quantity, (quantity * reservation.listing.number_cards_per_item))            
         reservation.listing.increment(:quantity_available, quantity)
         if reservation.valid? && reservation.listing.valid?
           reservation.save
@@ -94,7 +96,7 @@ class Mtg::Order < ActiveRecord::Base
   def setup_transaction_for_checkout
     self.transaction.destroy if self.transaction.present?                             # refresh transaction every time we try to check out so we don't get old data
     #TODO: buyer_confirmed_at now obsolete for transactions
-    self.build_transaction(:buyer_confirmed_at => Time.now)
+    self.build_transaction(:buyer_confirmed_at => Time.now, :cards_quantity => self.cards_quantity)
     self.reservations.each { |r| self.transaction.build_item_from_reservation(r) }   # create transaction items based on these reservations
     calculated_commission_rate = self.buyer.account.commission_rate || SiteVariable.get("global_commission_rate").to_f
     self.transaction.build_payment( :user_id => self.buyer.id, 
@@ -124,12 +126,14 @@ class Mtg::Order < ActiveRecord::Base
   def update_cache
     fresh_reservations = self.reservations.includes(:listing)
     if fresh_reservations.count > 0
-      self.item_count       = fresh_reservations.to_a.inject(0) {|sum, res| sum + res[:quantity] }
+      self.item_count       = fresh_reservations.pluck(:quantity).inject(0) {|sum, value| sum + value }
+      self.cards_quantity   = fresh_reservations.pluck(:cards_quantity).inject(0) {|sum, value| sum + value }      
       self.item_price_total = Money.new(fresh_reservations.to_a.inject(0) {|sum, res| sum + res[:quantity] * res.listing[:price]})
-      self.shipping_cost    = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count => item_count)[:user_charge]        
+      self.shipping_cost    = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count => self.cards_quantity)[:user_charge]        
       self.total_cost       = item_price_total + shipping_cost
     else
       self.item_count       = 0
+      self.cards_quantity   = 0      
       self.item_price_total = 0
       self.shipping_cost    = 0
       self.total_cost       = 0

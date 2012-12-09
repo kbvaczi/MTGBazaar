@@ -6,5 +6,6 @@
   $('#card_listings').html("<%= escape_javascript render :partial => "mtg/cards/show_listings", :locals => {:listings => @listings}%>");
 <% end %>
 $(".overlay_trigger[rel]").overlay({mask:'#000'});
-$(".tooltip_trigger[title]").tooltip();
+initialize_tooltips();
+
 /* $('#filter_link').html('<%= escape_javascript params[:filter] == "true" ? link_to("Remove search filters", params.merge(:filter => "false"), :remote => true, :class => "right", :style => "font-weight:normal;") : link_to("Apply search filters", params.merge(:filter => "true"), :remote => true, :class => "right", :style => "font-weight:normal;") %>');*/

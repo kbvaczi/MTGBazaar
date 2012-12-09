@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121129091845) do
+ActiveRecord::Schema.define(:version => 20121202090045) do
 
   create_table "accounts", :force => true do |t|
     t.integer  "user_id"
@@ -171,21 +171,23 @@ ActiveRecord::Schema.define(:version => 20121129091845) do
   create_table "mtg_listings", :force => true do |t|
     t.integer  "card_id"
     t.integer  "seller_id"
-    t.integer  "price",              :default => 100,   :null => false
-    t.integer  "quantity",           :default => 1,     :null => false
-    t.integer  "quantity_available", :default => 1,     :null => false
-    t.string   "condition",          :default => "1",   :null => false
-    t.string   "language",           :default => "EN",  :null => false
-    t.string   "description",        :default => "",    :null => false
-    t.boolean  "signed",             :default => false, :null => false
-    t.boolean  "misprint",           :default => false, :null => false
-    t.boolean  "foil",               :default => false, :null => false
-    t.boolean  "altart",             :default => false, :null => false
-    t.boolean  "reserved",           :default => false, :null => false
-    t.boolean  "active",             :default => true,  :null => false
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
-    t.string   "scan",               :default => ""
+    t.integer  "price",                 :default => 100,   :null => false
+    t.integer  "quantity",              :default => 1,     :null => false
+    t.integer  "quantity_available",    :default => 1,     :null => false
+    t.string   "condition",             :default => "1",   :null => false
+    t.string   "language",              :default => "EN",  :null => false
+    t.string   "description",           :default => "",    :null => false
+    t.boolean  "signed",                :default => false, :null => false
+    t.boolean  "misprint",              :default => false, :null => false
+    t.boolean  "foil",                  :default => false, :null => false
+    t.boolean  "altart",                :default => false, :null => false
+    t.boolean  "reserved",              :default => false, :null => false
+    t.boolean  "active",                :default => true,  :null => false
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
+    t.string   "scan",                  :default => ""
+    t.integer  "number_cards_per_item", :default => 1
+    t.boolean  "playset",               :default => false
   end
 
   add_index "mtg_listings", ["altart"], :name => "index_mtg_listings_on_altart"
@@ -205,6 +207,7 @@ ActiveRecord::Schema.define(:version => 20121129091845) do
     t.integer  "total_cost"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
+    t.integer  "cards_quantity"
   end
 
   add_index "mtg_orders", ["cart_id"], :name => "index_mtg_orders_on_cart_id"
@@ -212,10 +215,11 @@ ActiveRecord::Schema.define(:version => 20121129091845) do
 
   create_table "mtg_reservations", :force => true do |t|
     t.integer  "listing_id"
-    t.integer  "quantity",   :default => 0, :null => false
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
+    t.integer  "quantity",       :default => 0, :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
     t.integer  "order_id"
+    t.integer  "cards_quantity"
   end
 
   add_index "mtg_reservations", ["listing_id"], :name => "index_mtg_reservations_on_listing_id"
@@ -241,19 +245,21 @@ ActiveRecord::Schema.define(:version => 20121129091845) do
     t.integer  "seller_id"
     t.integer  "buyer_id"
     t.integer  "transaction_id"
-    t.integer  "price",              :default => 100,   :null => false
-    t.string   "condition",          :default => "1",   :null => false
-    t.string   "language",           :default => "EN",  :null => false
-    t.string   "description",        :default => "",    :null => false
-    t.boolean  "signed",             :default => false, :null => false
-    t.boolean  "misprint",           :default => false, :null => false
-    t.boolean  "foil",               :default => false, :null => false
-    t.boolean  "altart",             :default => false, :null => false
+    t.integer  "price",                 :default => 100,   :null => false
+    t.string   "condition",             :default => "1",   :null => false
+    t.string   "language",              :default => "EN",  :null => false
+    t.string   "description",           :default => "",    :null => false
+    t.boolean  "signed",                :default => false, :null => false
+    t.boolean  "misprint",              :default => false, :null => false
+    t.boolean  "foil",                  :default => false, :null => false
+    t.boolean  "altart",                :default => false, :null => false
     t.datetime "rejected_at"
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
     t.integer  "quantity_available"
     t.integer  "quantity_requested"
+    t.integer  "number_cards_per_item", :default => 1
+    t.boolean  "playset",               :default => false
   end
 
   add_index "mtg_transaction_items", ["buyer_id"], :name => "index_mtg_transaction_items_on_buyer_id"
@@ -301,6 +307,7 @@ ActiveRecord::Schema.define(:version => 20121129091845) do
     t.integer  "value"
     t.integer  "shipping_cost"
     t.integer  "order_id"
+    t.integer  "cards_quantity"
   end
 
   add_index "mtg_transactions", ["buyer_id"], :name => "index_mtg_transactions_on_buyer_id"

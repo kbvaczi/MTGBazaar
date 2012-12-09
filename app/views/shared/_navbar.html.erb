@@ -26,7 +26,8 @@
     		<div class="navbar_drop_child">
     			<ul>
       	    <li><%= link_to "Sell a Card", new_generic_mtg_cards_listings_path %></li>
-      	    <li><%= link_to "Bulk Cards Sale",  new_bulk_prep_mtg_cards_listings_path  %></li>
+      	    <li><%= link_to "Sell a Playset", new_mtg_cards_listings_playset_path %></li>      	          	    
+      	    <li><%= link_to "Bulk Sell Cards",  new_bulk_prep_mtg_cards_listings_path  %></li>
         	</ul>
         </div>
       </li>
@@ -56,7 +57,7 @@
   			<ul>
 					<li><%= link_to "Sellers List", users_path %></li>
           <li class="heading"> Cards </li>					
-  		    <li><%= link_to "Singles", mtg_cards_path %></li>
+  		    <li><%= link_to "Singles & Playsets", mtg_cards_path %></li>
   		    <li><%= link_to "Complete Sets (Coming Soon)", root_path %></li>  		    
           <li class="heading"> Other Products </li>
           <li><%= link_to "Coming Soon", root_path %></li>

@@ -1,5 +1,5 @@
 <div class="card_image_wrapper">
-  <%= content_tag :div, "", :class => "mtg_card_image #{"mtg_card_image_horizontal" if mtg_card.card_type == "Plane"}", :style => "background-image:url('#{mtg_card.image_path}');", :title => "Click to Zoom" %>
+  <%= content_tag :div, "", :class => "mtg_card_image #{"mtg_card_image_horizontal" if mtg_card.card_type == "Plane"}", :style => "background-image:url('#{mtg_card.image_path}');" %>
   <%#= image_tag(mtg_card.image_path, :class => "mtg_card_image #{"mtg_card_image_horizontal" if mtg_card.card_type == "Plane"}") %>
   <% if mtg_card.dual_sided_card? %>
     <div>
@@ -90,7 +90,7 @@
     </div>
     <div class="card_show_info_value t-l">
       <% @card_variants.each do |v| %>
-        <%= link_to display_set_symbol(v.set), mtg_card_path(v, :update_card_info => true), :remote => true %>
+        <%= link_to display_set_symbol(v), mtg_card_path(v.id, :update_card_info => true), :remote => true %>
       <% end %>
     </div>   
   </div>    

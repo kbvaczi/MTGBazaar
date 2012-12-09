@@ -38,13 +38,13 @@
 			<strong>Purchase Date:</strong> <%= display_time @transaction.created_at %><br/>
 		</div><br/><br/><br/><br/><br/>
 		<center><p><strong>PLEASE USE THIS INVOICE TO VERIFY THE CONTENTS OF YOUR ORDER AND INCLUDE IT WITH YOUR SHIPMENT</strong></p></center><br/><br/>
-		<div class="right" style="margin-right:7%;vertical-align:bottom;" >*F= Foil, M= Miscut, S= Signed, A= Altered</div>
+		<div class="right" style="margin-right:7%;vertical-align:bottom;" >*F= Foil, M= Miscut, S= Signed, A= Altered, P= Playset</div>
 		<table style="width:95%; " class="data invoice">
 			  <tr class="header_row">
-					<th colspan=9>Invoice</th>
+					<th colspan=10>Invoice</th>
 				</tr>
 				<tr class="header_row">
-			  <th>Name</th>
+			  <th>Item</th>
 			  <th>Set</th>
 				<th>Symbol</th>      
 				<th>Condition</th>
@@ -52,12 +52,13 @@
 				<th>Options*</th>   		
 				<th>Price</th>
 				<th>Quantity</th>
+				<th>Cards</th>				
 				<th>Total</th> 
 			</tr>
 			
 			<% @transaction.items.each do |item| %>
 			<tr> 
-			  <td><%= link_to display_name(item.card.name), mtg_card_path(item.card) %></td>
+			  <td><%= link_to product_name(item), mtg_card_path(item.card) %></td>
 			  <td><%= display_name(item.card.set.name) %></td>
 				<td><%= display_set_symbol(item.card.set) %></td>
 			  <td><%= display_condition(item.condition) %></td>
@@ -74,10 +75,14 @@
 			    <% end %>
 			    <% if item.altart %>
 			      A &nbsp;
-			    <% end %>    
+			    <% end %>  
+			    <% if item.playset %>
+			      P &nbsp;
+			    <% end %>			      
 			  </td>
 				<td><%= number_to_currency(item.price) %>
 			  <td><%= item.quantity_available %></td>
+			  <td><%= item.cards_quantity %></td>			  
 				<td><%= number_to_currency(item.price * item.quantity_available) %> </td> 
 			</tr>   
 		   
@@ -86,15 +91,20 @@
 			<tr>
 				<td colspan=7 style="text-align:right; border: 0px; padding-right:5px; ";><strong>Subtotal:</strong></td>
 				<td><%= @transaction.items.count %></td>
+				<td><%= @transaction.items.pluck(:cards_quantity).inject(0) {|sum, cards| sum + cards} %></td>
 		    <td><%= number_to_currency @transaction.value %></td>				
 			</tr>
 			<tr>
 				<td colspan=7 style="text-align:right; border: 0px; padding-right:5px;"><strong>Shipping:</strong></td>
-				<td> - </td><td><%= number_to_currency @transaction.shipping_cost %></td>
+				<td> - </td>
+        <td> - </td>				
+				<td><%= number_to_currency @transaction.shipping_cost %></td>
 			</tr>	
 			<tr>
 				<td colspan=7 style="text-align:right; border: 0px; padding-right:5px;"><strong>Total:</strong></td>
-				<td> - </td><td><%= number_to_currency (@transaction.shipping_cost + @transaction.value)%></td>
+				<td> - </td>
+        <td> - </td>				
+				<td><%= number_to_currency (@transaction.shipping_cost + @transaction.value)%></td>
 			</tr>				
 			 
 		</table>
