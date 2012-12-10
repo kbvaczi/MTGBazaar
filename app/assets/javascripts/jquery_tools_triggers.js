@@ -28,15 +28,15 @@ function initialize_tooltips() {
   
   $("img.mtg_teaser_image").tooltip({
     items: "img",
-    content: "<div class=\'mtg_teaser_image_tooltip\'></div>",
+    content: "<div class=\'mtg_teaser_image_tooltip\'> </div>",
     open: function( event, ui ) {
       var element = $( this );
       var src = element.attr("src").replace("_thumb.jpg", ".jpg");
-      element.tooltip('option', 'content', '<img class="mtg_teaser_image_tooltip_image" src=' + src + '>');
+      element.tooltip('option', 'content', '<div class=\'mtg_teaser_image_tooltip\'><img class="mtg_teaser_image_tooltip_image" src=' + src + '></div>');
     },
     position: { 
       my: "left bottom", 
-      at: "right+10 top-200",
+      at: "right+15 bottom",
       collision: "fit"
     },
     show: false,
