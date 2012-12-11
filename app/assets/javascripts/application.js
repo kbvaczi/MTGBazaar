@@ -17,8 +17,9 @@
 //= require jquery.ui.autocomplete.html.js
 //= require mtg_search  
 
+
 //= require jquery-cookie
 //= require jquery.maskMoney
-
+//= require spin
 
 //= require_tree .
