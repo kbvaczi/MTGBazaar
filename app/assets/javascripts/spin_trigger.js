@@ -17,28 +17,26 @@ $(document).ready(function() {
     top: 'auto', // Top position relative to parent in px
     left: 'auto' // Left position relative to parent in px
   };
-  
-  $($('body')).spin(opts);
-  
-  $('.spinner').css({
-    display:none;
-    position:'fixed',
-    top:'50%',
-    left:'50%',
-    width:'50px',                 // adjust width
-    height:'50px',                // adjust height
-    zIndex:99999,
-    marginTop:'0px',             // half of height
-    marginLeft:'0px'            // half of width
-  });
 
-
-  $('#spinner').live('ajaxStart', function(){
-      $(this).delay(2000).fadeIn(2000);
+  $('#main').bind('ajaxStart', function(){
+      $(this).spin(opts);
+      $('.spinner').css({
+        display:'none',
+        position:'fixed',
+        top:'50%',
+        left:'50%',
+        width:'50px',                 // adjust width
+        height:'50px',                // adjust height
+        zIndex:99999,
+        marginTop:'0px',             // half of height
+        marginLeft:'0px'            // half of width
+      });
+      $('.spinner').delay(2000).fadeIn();
   }).bind('ajaxStop', function(){
-      $(this).stop(1).stop();
+      $('.spinner').stop(1);
+      $(this).spin(false);
   });
-          
+        
 });
 
 $.fn.spin = function(opts) {

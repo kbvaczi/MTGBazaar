@@ -668,14 +668,12 @@ tr.header_row th, tr.header_row td, th.header_row, td.header_row  {
 }
 
 .spinner {
-  position:absolute;
+  position:fixed;
   top:50%;
   left:50%;
   width:50px;                 // adjust width
   height:50px;                // adjust height
-  zIndex:1000;
-  marginTop:-150px;             // half of height
-  marginLeft:-300px;            // half of width
+  z-index:1000;
 }
 
 ul.tabs2 {
