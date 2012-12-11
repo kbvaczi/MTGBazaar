@@ -1,6 +1,6 @@
-<% title "Complete Bulk Import"%>
+<% title "Complete Bulk Singles Import"%>
 
-<h1>Step 2: Complete Bulk Import</h1>
+<h1>Step 2: Complete Bulk Singles Import</h1>
 
 <div id="content">
   
@@ -45,7 +45,7 @@
         
     <table class="data">
       <tr class="header_row">
-        <th colspan=4>Individual listings</th>
+        <th colspan=4>Settings For Individual listings</th>
       </tr>
       <tr class="header_row">
         <th>Number</th>
@@ -82,7 +82,10 @@
               </div>
           </td>
           <td>
+            <span class="quantity_plus button t-l" style="padding:0px 5px 1px 5px;">+</span>
             <%= text_field_tag "sales[#{card.id}][quantity]", (params[:sales] && params[:sales]["#{card.id}"]) ? params[:sales]["#{card.id}"][:quantity] : 0, :style => "width:30px;text-align:center;" %>
+
+            <span class="quantity_minus button t-l" style="padding:0px 6px 1px 6px;">-</span>            
           </td>
         </tr>
       <% end %>
@@ -93,9 +96,20 @@
       </tr>
     </table>
     
+    <script>
+      $('.quantity_plus').live('click', function() {
+        var input = $(this).siblings('input');
+        input.val(parseInt(input.val()) + 1);
+      });
+      $('.quantity_minus').live('click', function() {
+        var input = $(this).siblings('input');
+        if (input.val() > 0) {
+          input.val(parseInt(input.val()) - 1);
+        }
+      });      
+    </script
+    
     <br class="spacer"/>
-
-
     <br class="spacer"/>
     <br class="spacer"/> 
     <div class="center_wrap">   
