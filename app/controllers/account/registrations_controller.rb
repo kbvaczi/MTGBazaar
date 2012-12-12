@@ -49,7 +49,7 @@ class Account::RegistrationsController < Devise::RegistrationsController
            "requestEnvelope.errorLanguage"  => "en_US"}
     clnt = HTTPClient.new
    # uri = "https://svcs.sandbox.paypal.com/AdaptiveAccounts/GetVerifiedStatus"
-    uri = (Rails.env.production? && PAYPAL_CONFIG[:mode] == "production") ? "https://svcs.paypal.com/AdaptiveAccounts/GetVerifiedStatus" : "https://svcs.sandbox.paypal.com/AdaptiveAccounts/GetVerifiedStatus"
+    uri = (PAYPAL_CONFIG[:running_mode] == "production") ? "https://svcs.paypal.com/AdaptiveAccounts/GetVerifiedStatus" : "https://svcs.sandbox.paypal.com/AdaptiveAccounts/GetVerifiedStatus"
     #make the post
     res = clnt.post(uri, data, header)
     #if the request is successfull parse the XML
