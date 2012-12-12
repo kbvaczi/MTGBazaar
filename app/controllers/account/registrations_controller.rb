@@ -43,8 +43,8 @@ class Account::RegistrationsController < Devise::RegistrationsController
                "X-PAYPAL-APPLICATION-ID"        => PAYPAL_CONFIG[:appid] }
     #data to be sent in the request
     data = {"emailAddress"                  => params[:email],
-           "firstName"                      => Rails.env.production? ? params[:first_name].downcase : "christopher",
-           "lastName"                       => Rails.env.production? ? params[:last_name].downcase : "odorizzi",
+           "firstName"                      => PAYPAL_CONFIG[:running_mode] == "production" ? params[:first_name].downcase : "christopher",
+           "lastName"                       => PAYPAL_CONFIG[:running_mode] == "production" ? params[:last_name].downcase : "odorizzi",
            "matchCriteria"                  => "NAME",
            "requestEnvelope.errorLanguage"  => "en_US"}
     clnt = HTTPClient.new
