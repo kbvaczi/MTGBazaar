@@ -49,7 +49,7 @@ class Mtg::OrdersController < ApplicationController
       :display_options => { :business_name => "MTGBazaar" },
       :pay_key => @purchase["payKey"],
       # force buyer to select an address or enter an address when they make a payment.
-      #:sender => { :share_address => true, :require_shipping_address_selection => true },
+      :sender => { :share_address => true, :require_shipping_address_selection => true },
       :receiver_options => [
         { :invoice_data => {
             :item => [

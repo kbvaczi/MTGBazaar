@@ -31,7 +31,7 @@ $(document).ready(function() {
         marginTop:'0px',             // half of height
         marginLeft:'0px'            // half of width
       });
-      $('.spinner').delay(2000).fadeIn();
+      $('.spinner').delay(1500).fadeIn();
   }).bind('ajaxStop', function(){
       $('.spinner').stop(1);
       $(this).spin(false);
