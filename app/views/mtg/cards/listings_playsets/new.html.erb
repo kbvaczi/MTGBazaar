@@ -60,8 +60,8 @@
         <%= f.input :price_options, :label => "Playset Asking Price",
                                     :as => :select,
                                     :collection => @card.present? ? [[generate_pricing_label("Low", price_low),  (price_low * 4)], 
-                                                    [generate_pricing_label("Med", price_low),   (price_med * 4)], 
-                                                    [generate_pricing_label("High", price_low),  (price_high * 4)],
+                                                    [generate_pricing_label("Med", price_med),   (price_med * 4)], 
+                                                    [generate_pricing_label("High", price_high),  (price_high * 4)],
                                                     ["Other", "other"]] : [],
                                     :input_html => { :class => "chzn-select chzn-nosearch" },
                                     :required => true %>

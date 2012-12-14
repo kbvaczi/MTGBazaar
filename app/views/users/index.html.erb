@@ -21,7 +21,7 @@
   			<td><%= user.statistics.number_sales %></td>
 
 				<td><%= "#{user.statistics.display_approval_percent}" %></td>
-        <td><a class="seller_sales_link" style="cursor:pointer;" data-seller=<%= user.username %> data-sellerid=<%= user.id %> title="Search this users's listings with your current search filters"><%= user.statistics.listings_mtg_cards_count %></a></td>				
+        <td><a class="seller_sales_link" style="cursor:pointer;" data-seller=<%= user.username %> data-sellerid=<%= user.id %> title="View user's listings with your current search filters"><%= user.statistics.listings_mtg_cards_count %></a></td>				
 	    </tr>
 	  <% end %>
 
