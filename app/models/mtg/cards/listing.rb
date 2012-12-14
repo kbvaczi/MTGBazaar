@@ -55,7 +55,7 @@ class Mtg::Cards::Listing < ActiveRecord::Base
       #self.seller.statistics.update_attribute(:listings_mtg_cards_count, self.seller.statistics.listings_mtg_cards_count + (self.quantity_available - self.quantity_available_was) * self.number_cards_per_item)
       my_seller_statistics.listings_mtg_cards_count(true) if my_seller_statistics.present?
     end
-    my_card_statistics.update_attribute(:price_min, self.price) if my_card_statistics.present? && ((self.price < my_card_statistics.price_min) || (self.price_changed? && (self.price_was <= my_card_statistics.price_min)) || (my_card_statistics.price_min == 0))
+    my_card_statistics.update_attribute(:price_min, self.price) if my_card_statistics.present? && ((self.price < my_card_statistics.price_min) || (self.price_changed? && (Money.new(self.price_was) <= my_card_statistics.price_min)) || (my_card_statistics.price_min == 0))
   end
   
   def update_statistics_cache_on_delete
