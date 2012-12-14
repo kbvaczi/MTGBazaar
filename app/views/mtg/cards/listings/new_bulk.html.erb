@@ -82,10 +82,9 @@
               </div>
           </td>
           <td>
-            <span class="quantity_plus button t-l" style="padding:0px 5px 1px 5px;">+</span>
-            <%= text_field_tag "sales[#{card.id}][quantity]", (params[:sales] && params[:sales]["#{card.id}"]) ? params[:sales]["#{card.id}"][:quantity] : 0, :style => "width:30px;text-align:center;" %>
-
             <span class="quantity_minus button t-l" style="padding:0px 6px 1px 6px;">-</span>            
+            <%= text_field_tag "sales[#{card.id}][quantity]", (params[:sales] && params[:sales]["#{card.id}"]) ? params[:sales]["#{card.id}"][:quantity] : 0, :style => "width:30px;text-align:center;" %>
+            <span class="quantity_plus button t-l" style="padding:0px 5px 1px 5px;">+</span>
           </td>
         </tr>
       <% end %>

@@ -1,7 +1,7 @@
 <tr class=<%= cycle("odd","even") %>> 
   <td>
     <%#= link_to display_name(item.card.name), mtg_card_path(item.card) %>
-    <%= link_to display_name(product_name(item)), mtg_card_path(item.card), :title => product_name(item) %>    
+    <%= link_to product_name(item, true), mtg_card_path(item.card), :title => product_name(item) %>    
   </td>
   <td>
     <%= display_set_symbol(item.card.set) %>
