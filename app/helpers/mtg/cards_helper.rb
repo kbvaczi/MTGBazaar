@@ -8,7 +8,7 @@ module Mtg::CardsHelper
   
   # display only first 30 characters of a name"
   def display_name(name = "")
-    name.truncate(30, :omission => "...")
+    name.truncate(30, :omission => "...").html_safe
   end
   
   # display only first 30 characters of a name"
