@@ -124,7 +124,11 @@ $(document).ready(function() {
         var selection_array = data;
         $("#mtg_cards_listing_price_options").empty();
         $(selection_array).each(function(index, item) {
-           $("#mtg_cards_listing_price_options").append('<option value=' + item[1] + '>' + item[0] + '</option>');
+          if (index == 1){
+            $("#mtg_cards_listing_price_options").append('<option value=' + item[1] + ' selected=selected>' + item[0] + '</option>');                        
+          } else {
+            $("#mtg_cards_listing_price_options").append('<option value=' + item[1] + '>' + item[0] + '</option>');      
+          }
         });           
         $("#mtg_cards_listing_price_options").removeAttr('disabled');     
         $("#mtg_cards_listing_price_options").trigger("liszt:updated");      

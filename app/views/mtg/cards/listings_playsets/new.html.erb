@@ -63,6 +63,7 @@
                                                     [generate_pricing_label("Med", price_med),   (price_med * 4)], 
                                                     [generate_pricing_label("High", price_high),  (price_high * 4)],
                                                     ["Other", "other"]] : [],
+                                    :selected => @card.present? ? price_med * 4 : nil,
                                     :input_html => { :class => "chzn-select chzn-nosearch" },
                                     :required => true %>
 
@@ -71,7 +72,7 @@
                                       :hint => "cost per playset",        
                                       :as => :string,
                                       :input_html => { :class => "currency_input", :maxlength => 9, :value => "$ #{@listing.price}" },   
-                                      :required => true %>                                 
+                                      :required => false %>                                 
         </div>
 
         <%= f.input :language,      :label => "Language",
