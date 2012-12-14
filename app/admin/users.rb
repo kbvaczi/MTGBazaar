@@ -6,8 +6,14 @@ ActiveAdmin.register User do
   #scope :all, :default => true
   
   scope :all, :default => true do |users|
-    users.includes [:account]
+    users.includes [:account, :statistics]
   end
+  scope :active do |users|
+    users.includes(:account, :statistics).where("users.active = ?", true)
+  end
+  scope :inactive do |users|
+    users.includes(:account, :statistics).where("users.active = ?", false)
+  end  
 
   # Filterable attributes on the index screen
   filter :username
@@ -22,6 +28,13 @@ ActiveAdmin.register User do
       link_to "Un-ban User", ban_admin_user_path(user), :method => :post, :confirm => "Are you sure you want to UN-ban #{user.username}?" 
     else 
       link_to "Ban User", ban_admin_user_path(user), :method => :post, :confirm => "Are you sure you want to ban #{user.username}?" 
+    end
+  end
+  action_item :only => :show do
+    if user.active
+      link_to "Set User Inactive", toggle_active_admin_user_path(user), :method => :post, :confirm => "Are you sure you want to set #{user.username} Inactive?" 
+    else 
+      link_to "Set User Active", toggle_active_admin_user_path(user), :method => :post, :confirm => "Are you sure you want to set #{user.username} Active?" 
     end
   end
 
@@ -39,6 +52,18 @@ ActiveAdmin.register User do
     end 
     column "Current Sign-in", :current_sign_in_at
     column "Last Sign-in", :last_sign_in_at
+    column "Cards Listed", :sortable => "user_statistics.listings_mtg_cards_count" do |user|
+      user.statistics.listings_mtg_cards_count
+    end
+    column "Sales", :sortable => "user_statistics.number_sales" do |user|
+      user.statistics.number_sales
+    end
+    column "Feedback", :sortable => "user_statistics.approval_percent" do |user|
+      user.statistics.display_approval_percent
+    end    
+    column "Strikes", :sortable => "user_statistics.number_strikes" do |user|
+      user.statistics.number_strikes
+    end
     column "Banned?", :sortable => :banned do |user|
       if user.banned?
         status_tag "Banned", :error
@@ -63,39 +88,74 @@ ActiveAdmin.register User do
   end
   
   show :title => :username do |user|
-    attributes_table_for user do 
-      row :username
-      row :email
-      row :created_at
-      row :sign_in_count
-      row :failed_attempts
-      row :locked_at
-      row :banned
+    columns do 
+      column do
+        panel "User Info" do 
+          attributes_table_for user do 
+            row :id
+            row :username
+            row :email
+            row :unconfirmed_email            
+            row :created_at
+            row :sign_in_count
+            row :failed_attempts
+            row :locked_at
+            row :banned
+            row "Strikes" do 
+              user.statistics.number_strikes
+            end
+            row :confirmed_at
+            row :confirmation_sent_at
+            row :confirmation_token
+            row :reset_password_token
+            row :reset_password_sent_at
+            row "security_question" do
+              user.account.security_question
+            end
+            row "security answer" do
+              user.account.security_answer
+            end            
+          end
+        end
+      end
+      column do
+        panel "Account Info" do
+          attributes_table_for user.account do 
+            row :first_name
+            row :last_name
+            row :address1
+            row :address2  
+            row :country
+            row :state
+            row :city
+            row :zipcode
+            row :address_verification do
+              pretty_print_hash(user.account.address_verification.to_hash)
+            end
+          end    
+        end
+        panel "Seller Info" do
+          attributes_table_for user.account do 
+            row :paypal_username
+            row :commission_rate
+            row "Seller Status" do
+              user.active
+            end
+          end
+        end  
+      end
     end
     
-    attributes_table_for user.account do 
-      row :first_name
-      row :last_name
-      row :address1
-      row :address2  
-      row :country
-      row :state
-      row :city
-      row :zipcode
+    panel "Login History" do
+      render :partial => 'login_history', :locals => {:statistics => user.statistics}
     end
-        
-    attributes_table_for user.statistics do 
-      row :number_strikes
-    end    
-    
-    render :partial => 'login_history', :locals => {:statistics => user.statistics}
-
   end
   
   #customize user edit form
   form do |f|
     f.inputs "User Details" do
       f.input :username
+      f.input :email
     end
     f.inputs "Account Info" do
       f.semantic_fields_for :account do |ff|
@@ -106,18 +166,14 @@ ActiveAdmin.register User do
   end
   
   #turns off mass assignment when editing so that you can edit protected fields
-  #NOT WORKING CURRENTLY
   controller do
-    def update 
-      super
-      #user = User.find(params[:id])      
-      #user.update_attribute(:banned, params[:user][:banned])
-      #redirect_to admin_user_path(user), :notice => "Updated!"      
+    with_role :admin
+    def update_resource(object, attributes)
+      object.update_attributes(attributes[0], :without_protection => true)
     end
   end
   
   #custom action to ban users
-  #NOT CURRENTLY USED
   member_action :ban, :method => :post do
     user = User.find(params[:id])
     if user.banned?
@@ -127,6 +183,13 @@ ActiveAdmin.register User do
       user.update_attribute(:banned, true)
       redirect_to admin_user_path(user), :notice => "Banned! Take that!"
     end
+  end
+  
+  member_action :toggle_active, :method => :post do 
+    user = User.find(params[:id])    
+    user.active = !user.active
+    user.save
+    redirect_to admin_user_path(user), :notice => "User set to #{user.active ? "active" : "inactive"}"
   end
 
   

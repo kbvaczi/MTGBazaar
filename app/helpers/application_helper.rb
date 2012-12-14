@@ -39,6 +39,24 @@ module ApplicationHelper
       link_to title, params.merge(options[:params] || {}).merge(:sort => sort, :sort_order => "asc"), :remote => options[:remote], :class => "table_header_sort"
     end
   end
+  
+  def pretty_print_hash(input_hash)
+    if input_hash.class == Hash
+      output_string = ""
+      input_hash.each do |key, value|
+        if value.class == Hash
+          output_string << "<strong>:#{key} =></strong><div style=\"margin-left:3%\">"
+          output_string << pretty_print_hash(value)
+          output_string << "</div>"
+        else
+          output_string << "<div><strong>:#{key} =></strong> #{value}</div>"
+        end
+      end
+      output_string.html_safe
+    else 
+      ""
+    end
+  end
     
 end
 

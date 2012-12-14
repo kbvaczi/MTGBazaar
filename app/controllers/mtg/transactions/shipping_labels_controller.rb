@@ -58,7 +58,7 @@ class Mtg::Transactions::ShippingLabelsController < ApplicationController
       format.js  { }
     end
   end
-  
+
   private 
   
   def verify_seller

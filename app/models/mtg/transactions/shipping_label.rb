@@ -67,8 +67,43 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
   end
   
   
-  def track
-     tracking_info = Stamps.track(self.stamps_tx_id)
+  def update_tracking
+    begin
+      self.tracking       = Stamps.track(self.stamps_tx_id)
+      last_tracking_event = self.tracking_events.first # tracking events are in reverse order (newest first)
+      self.status         = "delivered" if last_tracking_event.present? && last_tracking_event[:event].downcase == "delivered"
+      self.save
+      return true
+    rescue
+      return false
+    end 
+  end
+  
+  def tracking_events
+    # if the tracking event object is a hash, there is only one tracking event...
+    if self.tracking.present? && self.tracking[:tracking_events].present? && self.tracking[:tracking_events][:tracking_event].class == Hash 
+      [ self.tracking[:tracking_events][:tracking_event] ] 
+    # if the tracking event object is an array, there are multiple tracking events...  
+    elsif self.tracking.present? && self.tracking[:tracking_events].present? && self.tracking[:tracking_events][:tracking_event].class == Array    
+      self.tracking[:tracking_events][:tracking_event] 
+    # no tracking info, return empty array
+    else
+      [] 
+    end
+  end
+  
+  def refund
+    begin
+      # stamp must be older than 2 weeks old and not mailed yet
+      if self.status == "active" and self.created_at < 2.weeks.ago
+        Stamps.refund(self.stamps_tx_id)
+        return true
+      else
+        return false
+      end
+    rescue
+      return false
+    end
   end
   
   protected

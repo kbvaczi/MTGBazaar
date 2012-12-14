@@ -12,7 +12,7 @@
     </tr>
     <tr>
       <td align="left">Number of Items:</td>
-      <td align="right"><%= @transaction.items.count %></td>  
+      <td align="right"><%= @transaction.item_count %></td>  
     </tr>
     <tr>
       <td align="left">Item Value:</td>
@@ -20,7 +20,7 @@
     </tr>    
     <tr>
       <td align="left" style="border-bottom:1px;">MTGBazaar Commission:</td>
-      <td align="right" style="border-bottom:1px;color:#d33;"><%= number_to_currency @transaction.payment.commission %></td>  
+      <td align="right" style="border-bottom:1px;"><%= number_to_currency @transaction.payment.commission %></td>  
     </tr>
     <tr><td colspan=2><hr></td></tr>
     <tr>

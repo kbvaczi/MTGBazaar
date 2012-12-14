@@ -77,6 +77,7 @@ GEM
     arel (3.0.2)
     attr_encrypted (1.2.1)
       encryptor (>= 1.1.1)
+    awesome_print (1.1.0)
     bcrypt-ruby (3.0.1)
     bourbon (2.1.2)
       sass (>= 3.2)
@@ -276,6 +277,7 @@ DEPENDENCIES
   activeadmin (~> 0.5.0)
   activemerchant (~> 1.26.0)
   attr_encrypted (~> 1.2.1)
+  awesome_print (~> 1.1.0)
   carrierwave (~> 0.6.2)
   ckeditor (~> 3.7.1)
   coffee-rails

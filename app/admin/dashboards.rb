@@ -9,6 +9,9 @@ ActiveAdmin.register_page "Dashboard" do
         panel "Users Data" do
           user_info_panel
         end
+        panel "Listings" do
+          listings_info_panel
+        end
         panel "Sales Data" do
           transactions_info_panel
         end
@@ -51,6 +54,19 @@ ActiveAdmin.register_page "Dashboard" do
   end # content
 end
 
+def listings_info_panel
+  info = %{ <table>
+              <tr>
+                <th>Cards Listed:</th>
+                <th style="text-align:right">#{Mtg::Cards::Listing.available.sum("quantity * number_cards_per_item")}</th>
+                <td>&nbsp;</td>                
+                <th>Total Value:</th>
+                <th style="text-align:right">#{number_to_currency(Mtg::Cards::Listing.available.sum("quantity * price"))}</th>
+              </tr>
+            </table>}
+  text_node info.html_safe
+end
+
 def stamps_info_panel
   stamps_account_info ||= Rails.cache.fetch "stamps_account_info", :expires_in => 1.hours do
     Stamps.account
@@ -81,7 +97,7 @@ def stamps_info_panel
 end
 
 def transactions_info_panel
-  info = Rails.cache.fetch "transaction_info_panel", :expires_in => 1.seconds do
+  info = Rails.cache.fetch "transaction_info_panel", :expires_in => 1.hours do
     %{<div >
         <table>
           <tr>

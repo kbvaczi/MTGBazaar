@@ -1,6 +1,6 @@
 # encoding: UTF-8
 ActiveAdmin.register Mtg::Transactions::Item do
-  menu :label => "5 --- Transaction Items", :parent => "MTG"
+  menu :label => "2 - Transaction Items", :parent => "Transactions"
   extend Mtg::CardsHelper   # access mtg_card helpers inside this class
 
   # ------ ACTION ITEMS (BUTTONS) ------- #  
