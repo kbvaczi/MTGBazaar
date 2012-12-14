@@ -82,7 +82,7 @@
 			  </td>
 				<td><%= number_to_currency(item.price) %>
 			  <td><%= item.quantity_available %></td>
-			  <td><%= item.cards_quantity %></td>			  
+			  <td><%= item.number_cards_per_item * item.quantity_available %></td>			  
 				<td><%= number_to_currency(item.price * item.quantity_available) %> </td> 
 			</tr>   
 		   
@@ -91,7 +91,7 @@
 			<tr>
 				<td colspan=7 style="text-align:right; border: 0px; padding-right:5px; ";><strong>Subtotal:</strong></td>
 				<td><%= @transaction.items.count %></td>
-				<td><%= @transaction.items.pluck(:cards_quantity).inject(0) {|sum, cards| sum + cards} %></td>
+				<td><%= @transaction.items.select([:quantity_available, :number_cards_per_item]).inject(0) {|sum, cards| sum + cards[:quantity_available] * cards[:number_cards_per_item]} %></td>
 		    <td><%= number_to_currency @transaction.value %></td>				
 			</tr>
 			<tr>

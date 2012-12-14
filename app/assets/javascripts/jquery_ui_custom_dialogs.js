@@ -27,7 +27,7 @@ function myCustomConfirmBox(message, callback) {
         
         $( "#dialog-confirm" ).dialog({
             resizable: false,
-            height:150,
+            height:180,
             modal: true,
             buttons: {
                 Yes: function() {

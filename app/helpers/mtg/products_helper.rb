@@ -7,7 +7,7 @@ module Mtg::ProductsHelper
       product.name
     elsif product.class == Mtg::Cards::Listing || product.class == Mtg::Transactions::Item
       if product.playset
-        "Playset: <br/>".html_safe + product.card.name
+        "Playset:<br/>#{product.card.name}".html_safe
       else
         display_name(product.card.name)
       end

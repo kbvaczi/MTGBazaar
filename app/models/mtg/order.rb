@@ -42,7 +42,7 @@ class Mtg::Order < ActiveRecord::Base
   validate  :listings_from_one_seller_only
   
   def listings_from_one_seller_only
-    self.errors[:base] << "Cannot add listings from multiple sellers to an order" if self.id && listings.pluck(:seller_id).uniq.count > 1
+    #self.errors[:base] << "Cannot add listings from multiple sellers to an order" if self.id && listings.pluck(:seller_id).uniq.count > 1
     self.errors[:base] << "Cannot add listings from yourself" if seller == buyer
   end
   
