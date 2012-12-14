@@ -33,6 +33,13 @@ class Mtg::Card < ActiveRecord::Base
     "#{id}-#{display_name(name)}".parameterize
   end
   
+  
+# ------------ SCOPES -------------- #
+
+  def self.front_cards_only
+    where("card_number NOT LIKE ?", "%b")
+  end
+  
 # **************** CLASS METHODS ***************** #
   
   def dual_sided_card?
