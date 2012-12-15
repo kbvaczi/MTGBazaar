@@ -36,7 +36,7 @@
       <th> Add to Cart </th>
     </tr>
     
-    <% if cookies[:search_seller_id].present? && params[:filter] != "false"%>
+    <% if cookies[:search_seller_id].present? && @listings_seller.present? %>
       <%= render :partial => "show_listings_teaser", :collection => @listings_seller, :as => :listing, :locals => { :highlight => true } %>
     <% end %>
     
@@ -56,10 +56,16 @@
 <% else %>
 
   <div style="text-align:center;">
-    <%= "There are currently no listings for this card. " %>
-  	<% if params[:filter] == "true" %> 
-      <%= link_to "Remove search filters", params.merge(:filter => false), :remote => true, :id => "filter_link", :style => "font-weight:normal;" %>
+    
+  	<% if params[:filter] == "true" %>
+      <%= render :partial => "mtg/no_results", :locals => { :filter_by => "cookies", :use_card_filters => false } %>
+      <%#= link_to "Remove search filters", params.merge(:filter => false), :remote => true, :id => "filter_link", :style => "font-weight:normal;" %>
+    <% else %>
+      <br/>
+      <%= "There are currently no listings for this card." %>
     <% end %>    
+    
   </div>
+  
 <% end %>
  

@@ -117,7 +117,7 @@ class ApplicationController < ActionController::Base
     query           = SmartTuple.new(" AND ")
 
     # should we filter at all?
-    if options[:activate_filters] != false && options[:activate_filters] != "false" # test for string too if coming in from parameter
+    if options[:activate_filters] || options[:activate_filters] == "true" # test for string too if coming in from parameter
       
       # filtering by cookies, not parameters
       if options[:filter_by] == "cookies"

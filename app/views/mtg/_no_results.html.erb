@@ -64,99 +64,100 @@
   end
 
 %>
+  <div style="margin:25px;">
+    <h5 class="ma t-l"></h5>        
+    <div class="center_wrap">
 
-  <h5 class="ma t-l"></h5>        
-  <div class="center_wrap">
-
-    <div class="group center" style="width:80%">
-      <p><b>Oops! There were no results with your current search filters:</b></p>
-      <table class="fixed data mt">
-        <% if use_card_filters %>
-          <% if name.present? %>
-            <tr class=<%=cycle "odd", "even"%>>
-              <th>Card Name:</th>
-              <td><%= name %></td>
-            </tr>
-          <% end %>
-          <% if set.present? %>
-            <tr class=<%=cycle "odd", "even"%>>
-              <th>Set:</th>
-              <% set_object = Mtg::Set.find_by_code(set) %>
-              <td><div style="display:inline-block;margin-top:auto;margin-bottom:auto;vertical-align:middle;height:100%;"><%= display_set_symbol(set_object) %></div><div class="ml-m" style="margin-top:auto;margin-bottom:auto;vertical-align:middle;display:inline-block;max-width:120px;"><%= set_object.name %></div></td>
-            </tr>
-          <% end %>
-          <% if type.present? %>
-            <tr class=<%=cycle "odd", "even"%>>
-              <th>Card Type:</th>
-              <td><%= type %></td>
-            </tr>
-          <% end %>
-          <% if subtype.present? %>
-            <tr class=<%=cycle "odd", "even"%>>
-              <th>Card Subtype:</th>
-              <td><%= subtype %></td>
-            </tr>
-          <% end %>        
-          <% if rarity.present? %>
-            <tr class=<%=cycle "odd", "even"%>>
-              <th>Rarity:</th>
-              <td><%= display_rarity rarity %></td>
-            </tr>
-          <% end %>         
-          <% if artist.present? %>
-            <tr class=<%=cycle "odd", "even"%>>
-              <th>Artist:</th>
-              <td><%= artist %></td>
-            </tr>
-          <% end %>
-          <% if colors.present?%>
-            <tr class=<%=cycle "odd", "even"%>>
-              <th>Color:</th>
-              <td><%= display_symbols colors %></td>
-            </tr>
-          <% end %>          
-          <% if abilities.present?%>
-            <tr class=<%=cycle "odd", "even"%>>
-              <th>Abilities:</th>
-              <td>
-                <% abilities.each do |ability| %>
-                  <%= ability %><br/>
-                <% end %>
-              </td>
-            </tr>
-          <% end %>
-        <% end # CARDS FILTERS %>
+      <div class="group center" style="width:80%">
+        <p><b>Oops! There were no results with your current search filters:</b></p>
+        <table class="fixed data mt">
+          <% if use_card_filters %>
+            <% if name.present? %>
+              <tr class=<%=cycle "odd", "even"%>>
+                <th>Card Name:</th>
+                <td><%= name %></td>
+              </tr>
+            <% end %>
+            <% if set.present? %>
+              <tr class=<%=cycle "odd", "even"%>>
+                <th>Set:</th>
+                <% set_object = Mtg::Set.find_by_code(set) %>
+                <td><div style="display:inline-block;margin-top:auto;margin-bottom:auto;vertical-align:middle;height:100%;"><%= display_set_symbol(set_object) %></div><div class="ml-m" style="margin-top:auto;margin-bottom:auto;vertical-align:middle;display:inline-block;max-width:120px;"><%= set_object.name %></div></td>
+              </tr>
+            <% end %>
+            <% if type.present? %>
+              <tr class=<%=cycle "odd", "even"%>>
+                <th>Card Type:</th>
+                <td><%= type %></td>
+              </tr>
+            <% end %>
+            <% if subtype.present? %>
+              <tr class=<%=cycle "odd", "even"%>>
+                <th>Card Subtype:</th>
+                <td><%= subtype %></td>
+              </tr>
+            <% end %>        
+            <% if rarity.present? %>
+              <tr class=<%=cycle "odd", "even"%>>
+                <th>Rarity:</th>
+                <td><%= display_rarity rarity %></td>
+              </tr>
+            <% end %>         
+            <% if artist.present? %>
+              <tr class=<%=cycle "odd", "even"%>>
+                <th>Artist:</th>
+                <td><%= artist %></td>
+              </tr>
+            <% end %>
+            <% if colors.present?%>
+              <tr class=<%=cycle "odd", "even"%>>
+                <th>Color:</th>
+                <td><%= display_symbols colors %></td>
+              </tr>
+            <% end %>          
+            <% if abilities.present?%>
+              <tr class=<%=cycle "odd", "even"%>>
+                <th>Abilities:</th>
+                <td>
+                  <% abilities.each do |ability| %>
+                    <%= ability %><br/>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          <% end # CARDS FILTERS %>
         
-        <% if use_listing_filters %>
-          <% if language.present? %>
-            <tr class=<%=cycle "odd", "even"%>>
-              <th>Language:</th>
-              <td><%= display_flag_symbol language %></td>
-            </tr>
-          <% end %>  
-          <% if options.present?%>
-            <tr class=<%=cycle "odd", "even"%>>
-              <th>Advanced Options:</th>
-              <td>
-                <div style="position:relative; top:2px;">
-                  <%= listing_option_foil_icon      if options.include?('f') %>
-                  <%= listing_option_signed_icon    if options.include?('s') %>
-                  <%= listing_option_altart_icon    if options.include?('a') %>
-                  <%= listing_option_misprint_icon  if options.include?('m') %>
-                </div>
-              </td>
-            </tr>
-          <% end %>
-          <% if seller.present? and use_seller_filter %>
-            <tr class=<%=cycle "odd", "even"%>>
-              <th>Seller:</th>
-              <td><%= seller %></td>
-            </tr>
-          <% end %>
-        <% end # listing filters %>
-      </table>
-      <br/>
-      <p class="mt">Please update your filters and try again...</p>
-    </div>
+          <% if use_listing_filters %>
+            <% if language.present? %>
+              <tr class=<%=cycle "odd", "even"%>>
+                <th>Language:</th>
+                <td><%= display_flag_symbol language %></td>
+              </tr>
+            <% end %>  
+            <% if options.present?%>
+              <tr class=<%=cycle "odd", "even"%>>
+                <th>Options:</th>
+                <td>
+                  <div style="position:relative; top:2px;">
+                    <%= listing_option_foil_icon      if options.include?('f') %>
+                    <%= listing_option_signed_icon    if options.include?('s') %>
+                    <%= listing_option_altart_icon    if options.include?('a') %>
+                    <%= listing_option_misprint_icon  if options.include?('m') %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+            <% if seller.present? and use_seller_filter %>
+              <tr class=<%=cycle "odd", "even"%>>
+                <th>Seller:</th>
+                <td><%= seller %></td>
+              </tr>
+            <% end %>
+          <% end # listing filters %>
+        </table>
+        <br/>
+        <p class="mt">Please update or <%= link_to "remove", url_for(params.merge(:filter => nil, :page => nil)), :remote => false %> your current filters and try again...</p>
+      </div>
     
+    </div>
   </div>

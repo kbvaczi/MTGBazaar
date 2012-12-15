@@ -2,10 +2,17 @@
   
   <div id="rightBar3" class="hidden">
   
-  	<% cache("top_cards", :expires_in => 1.days) do %>  
+  	<% cache("top_cards", :expires_in => 2.hours) do %>  
   	  <div class="right_bar3">	
   	    <h1>Top Cards</h1>
-  		  <% top_cards = Mtg::Card.includes(:set, :statistics).order('mtg_card_statistics.number_sales DESC').limit(7) %>
+  		  <%  
+		      top_cards = Mtg::Card.includes(:set).joins(:sales).
+                      where("mtg_transaction_items.created_at > ?", 30.days.ago).
+                      group("mtg_transaction_items.card_id").
+                      select("mtg_cards.id, mtg_cards.name, count(mtg_transaction_items.card_id) AS sales_count, max(mtg_transaction_items.created_at) AS latest_sale").
+                      order("sales_count DESC, latest_sale DESC").
+                      limit(7)
+  		  %>
   		  <div class="mr-m ml-s">
   		    <table class="data fixed">
   		      <% top_cards.each do |card| %>
@@ -20,7 +27,7 @@
   		</div>
   	<% end %>	
 	
-  	<% cache("recent_expansions", :expires_in => 1.days) do %>  	
+  	<% cache("recent_expansions", :expires_in => 2.hours) do %>  	
   	  <div class="right_bar3">	
     	  <h1>Recent Expansions</h1>
     	  <% recent_added = Mtg::Set.order('release_date DESC').limit(7) %>
@@ -37,7 +44,7 @@
     	</div>
   	<% end %>
   	
-  	<% cache("top_sellers", :expires_in => 1.days) do %>  	
+  	<% cache("top_sellers", :expires_in => 2.hours) do %>  	
   	  <div class="right_bar3">	
     	  <h1>Top Sellers</h1>
     	  <% top_sellers = User.active.includes(:statistics).where("user_statistics.approval_percent > \'90.0\'").order("user_statistics.number_sales DESC").limit(7) %>
