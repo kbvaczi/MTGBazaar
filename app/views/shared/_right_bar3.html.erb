@@ -9,7 +9,7 @@
 		      top_cards = Mtg::Card.includes(:set).joins(:sales).
                       where("mtg_transaction_items.created_at > ?", 30.days.ago).
                       group("mtg_transaction_items.card_id").
-                      select("mtg_cards.id, mtg_cards.name, count(mtg_transaction_items.card_id) AS sales_count, max(mtg_transaction_items.created_at) AS latest_sale").
+                      select("mtg_cards.set_id, mtg_cards.id, mtg_cards.name, count(mtg_transaction_items.card_id) AS sales_count, max(mtg_transaction_items.created_at) AS latest_sale").
                       order("sales_count DESC, latest_sale DESC").
                       limit(7)
   		  %>
