@@ -38,7 +38,7 @@ class Mtg::CardsController < ApplicationController
 
     filter_query    = mtg_filters_query(:card_filters => false, :seller => false, :activate_filters => params[:filter])
     
-    @sort_string    = table_sort( :price => "mtg_listings.price", :condition => "mtg_listings.condition", :language => "mtg_listings.language",
+    @sort_string    = table_sort( :default => "mtg_listings.price", :price => "mtg_listings.price", :condition => "mtg_listings.condition", :language => "mtg_listings.language",
                                   :quantity => "mtg_listings.quantity_available", :seller => "LOWER(users.username)", :sales => "user_statistics.number_sales",
                                   :feedback => "user_statistics.approval_percent")                      
     

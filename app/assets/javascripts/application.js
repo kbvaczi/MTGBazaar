@@ -20,6 +20,7 @@
 
 //= require jquery-cookie
 //= require jquery.maskMoney
+//= require jquery-numeric
 //= require spin
 
 //= require_tree .
