@@ -51,7 +51,11 @@
         <th>Number</th>
         <th>Card Name</th>
         <th>Asking Price</th>
-        <th>Quantity</th>
+        <th>
+          <span class="quantity_minus_all button t-l mr-s" style="padding:0px 6px 1px 6px;" title="Decrease all">-</span>            
+          Quantity
+          <span class="quantity_plus_all button t-l ml-s" style="padding:0px 6px 1px 6px;" title="Increase all">+</span>                      
+        </th>
       </tr>
       <% @cards.each do |card| %>
         <tr class=<%= cycle("odd", "even") %>>
@@ -82,9 +86,9 @@
               </div>
           </td>
           <td>
-            <span class="quantity_minus button t-l" style="padding:0px 6px 1px 6px;">-</span>            
-            <%= text_field_tag "sales[#{card.id}][quantity]", (params[:sales] && params[:sales]["#{card.id}"]) ? params[:sales]["#{card.id}"][:quantity] : 0, :style => "width:30px;text-align:center;", :class => "numeric", :maxlength => 3 %>
-            <span class="quantity_plus button t-l" style="padding:0px 5px 1px 5px;">+</span>
+            <span class="quantity_minus button t-l mr-s" style="padding:0px 6px 1px 6px;">-</span>            
+            <%= text_field_tag "sales[#{card.id}][quantity]", (params[:sales] && params[:sales]["#{card.id}"]) ? params[:sales]["#{card.id}"][:quantity] : 0, :style => "width:30px;text-align:center;", :class => "numeric listings_quantity", :maxlength => 3 %>
+            <span class="quantity_plus button t-l ml-s" style="padding:0px 5px 1px 5px;">+</span>
           </td>
         </tr>
       <% end %>
@@ -96,6 +100,24 @@
     </table>
     
     <script>
+      $('.quantity_plus_all').live('click', function() {
+        $('#content input[type="text"].listings_quantity').each(function(index) {
+           var input = $(this);
+           var value = parseInt(input.val()) || 0;
+           if (value < 999) {
+             input.val(value + 1);
+           }
+        });     
+      });
+      $('.quantity_minus_all').live('click', function() {
+        $('#content input[type="text"].listings_quantity').each(function(index) {
+          var input = $(this);
+          var value = parseInt(input.val()) || 0;
+          if (value > 0) {
+            input.val(value - 1);
+          }
+        });     
+      });  
       $('.quantity_plus').live('click', function() {
         var input = $(this).siblings('input');
         var value = parseInt(input.val()) || 0;

@@ -179,7 +179,7 @@ class Mtg::Cards::ListingsController < ApplicationController
     # we have to declare these @ variables just in case we have form errors and have to render the form again... otherwise we get errors when we render the form without these declared
     @set = Mtg::Set.where(:code => params[:mtg_cards_listing][:set]).first
     if params[:sort] == "name"
-      @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("name ASC")
+      @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("mtg_cards.name ASC")
     else
       @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("CAST(mtg_cards.card_number AS SIGNED) ASC")
     end
