@@ -21,7 +21,7 @@
         </tr>
         <tr>
           <td> <%= mtg_card.set.name %> </td>
-          <td class="t-l t-b" style="text-align:right;"> <%= number_to_currency(mtg_card.statistics.price_med.dollars) %> - <%= number_to_currency(mtg_card.statistics.price_high.dollars) %> </td>
+          <td class="t-l t-b" style="text-align:right;"> <%= number_to_currency(mtg_card.statistics.price_low.dollars) %> - <%= number_to_currency(mtg_card.statistics.price_high.dollars) %> </td>
         </tr>
         <tr>
           <td> <i><%= "(#{display_rarity(mtg_card.rarity)})" %></i> </td>
