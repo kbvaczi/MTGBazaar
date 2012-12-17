@@ -35,7 +35,7 @@ ActiveAdmin.register Mtg::Transactions::Payment do
         when "unpaid"
           status_tag "Unpaid", :warning
         when "completed"
-          statust_tag "Completed", :ok
+          status_tag "Completed", :ok
         when "refunded"
           status_tag "Refunded", :error
         else
