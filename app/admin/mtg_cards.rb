@@ -101,6 +101,9 @@ ActiveAdmin.register Mtg::Card do
       link_to 'Edit Card', edit_admin_mtg_card_path(mtg_card)
     end    
     action_item :only => :show do
+      link_to "#{mtg_card.active ? "Deactivate Card" : "Activate Card"}", toggle_active_admin_mtg_card_path(mtg_card), :confirm => "Are you sure you want to change active status on this card?"
+    end
+    action_item :only => :show do
       link_to 'Delete Card', delete_card_admin_mtg_card_path(mtg_card), :confirm => "Are you sure you want to delete this card?"
     end
     action_item :only => :index do
@@ -294,6 +297,14 @@ ActiveAdmin.register Mtg::Card do
       Mtg::Card.find(params[:id]).destroy
       respond_to do |format|
         format.html { redirect_to admin_mtg_cards_path, :notice => "Card Deleted..."}
+      end
+    end
+    
+    member_action :toggle_active do
+      card = Mtg::Card.find(params[:id])
+      card.update_attribute(:active, !card.active)
+      respond_to do |format|
+        format.html { redirect_to admin_mtg_card_path(card), :notice => "Card is Now #{card.active ? "Active" : "Inactive"}..."}
       end
     end
     

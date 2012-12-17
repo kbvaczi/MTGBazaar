@@ -86,7 +86,7 @@ def stamps_info_panel
                 <th style="text-align:right">#{stamps_this_month.count}</th>
                 <td>&nbsp;</td>                
                 <th>Postage This Month:</th>
-                <th style="text-align:right">#{number_to_currency stamps_this_month.sum}</th>
+                <th style="text-align:right">#{number_to_currency Money.new(stamps_this_month.sum)}</th>
               </tr>
               <tr>
                 <th colspan=4>Money Made On Postage This Month:</th>
@@ -97,35 +97,35 @@ def stamps_info_panel
 end
 
 def transactions_info_panel
-  info = Rails.cache.fetch "transaction_info_panel", :expires_in => 1.hours do
+  info = Rails.cache.fetch "transaction_info_panel", :expires_in => 5.minutes do
     %{<div >
         <table>
           <tr>
             <th>Today:</th>
-            <th style="text-align:right">#{Mtg::Transaction.where("created_at > ?", Time.now.midnight).count}</th>
+            <th style="text-align:right">#{Mtg::Transaction.paid.where("created_at > ?", Time.now.midnight).count}</th>
             <td>&nbsp;</td>                
             <th>Value:</th>
-            <th style="text-align:right">#{number_to_currency Money.new(Mtg::Transaction.where("created_at > ?", Time.now.midnight).pluck(:value).sum)}</th>
+            <th style="text-align:right">#{number_to_currency Money.new(Mtg::Transaction.paid.where("created_at > ?", Time.now.midnight).pluck(:value).sum)}</th>
             <td>&nbsp;</td>                          
             <th>Commission:</th>
             <th style="text-align:right">#{number_to_currency Money.new( Mtg::Transactions::Payment.where("created_at > ?", Time.now.midnight).pluck(:commission).sum)}</th>
           </tr>
           <tr>
             <th>This Month:</th>
-            <th style="text-align:right">#{Mtg::Transaction.where("created_at > ?", Time.now.beginning_of_month).count}</th>
+            <th style="text-align:right">#{Mtg::Transaction.paid.where("created_at > ?", Time.now.beginning_of_month).count}</th>
             <td>&nbsp;</td>                
             <th>Value:</th>
-            <th style="text-align:right">#{number_to_currency Money.new(Mtg::Transaction.where("created_at > ?", Time.now.beginning_of_month).pluck(:value).sum)}</th>
+            <th style="text-align:right">#{number_to_currency Money.new(Mtg::Transaction.paid.where("created_at > ?", Time.now.beginning_of_month).pluck(:value).sum)}</th>
             <td>&nbsp;</td>                          
             <th>Commission:</th>
             <th style="text-align:right">#{number_to_currency Money.new( Mtg::Transactions::Payment.where("created_at > ?", Time.now.beginning_of_month).pluck(:commission).sum)}</th>
           </tr>
           <tr>
             <th>This Year:</th>
-            <th style="text-align:right">#{Mtg::Transaction.where("created_at > ?", Time.now.beginning_of_year).count}</th>
+            <th style="text-align:right">#{Mtg::Transaction.paid.where("created_at > ?", Time.now.beginning_of_year).count}</th>
             <td>&nbsp;</td>                
             <th>Value:</th>
-            <th style="text-align:right">#{number_to_currency Money.new(Mtg::Transaction.where("created_at > ?", Time.now.beginning_of_year).pluck(:value).sum)}</th>
+            <th style="text-align:right">#{number_to_currency Money.new(Mtg::Transaction.paid.where("created_at > ?", Time.now.beginning_of_year).pluck(:value).sum)}</th>
             <td>&nbsp;</td>                          
             <th>Commission:</th>
             <th style="text-align:right">#{number_to_currency Money.new( Mtg::Transactions::Payment.where("created_at > ?", Time.now.beginning_of_year).pluck(:commission).sum)}</th>
@@ -137,18 +137,18 @@ def transactions_info_panel
 end
 
 def user_info_panel
-  info = Rails.cache.fetch("user_info_panel", :expires_in => 1.hours) do
+  info = Rails.cache.fetch("user_info_panel", :expires_in => 5.minutes) do
     %{<table>
         <tr>
-          <th>New Users Today:</th>
+          <th>New Accounts Today:</th>
           <th style="text-align:right">#{User.where("created_at > ?", Time.now.midnight).count}</th>
           <td>&nbsp;</td>                
-          <th>Total Users:</th>
+          <th>Total Accounts:</th>
           <th style="text-align:right">#{User.count}</th>
         </tr>
         <tr>
-          <th>Users Logged In Now:</th>
-          <th style="text-align:right">#{Session.where("updated_at > ?", 30.minutes.ago).count}</th>
+          <th>Users Online Now:</th>
+          <th style="text-align:right">#{Session.where("updated_at > ?", 10.minutes.ago).count}</th>
           <td>&nbsp;</td>
           <th>Users Logged In Today:</th>
           <th style="text-align:right">#{User.where("users.current_sign_in_at > ?", Time.now.midnight).count}</th>
@@ -160,7 +160,7 @@ def user_info_panel
 end
 
 def total_income_panel
-  Rails.cache.fetch "total_income_panel", :expires_in => 1.hours do
+  Rails.cache.fetch "total_income_panel", :expires_in => 5.minutes do
     # Today
     commission_today      = Money.new(Mtg::Transactions::Payment.where("created_at > ?", Time.now.midnight).pluck(:commission).sum)
     commission_this_month = Money.new(Mtg::Transactions::Payment.where("created_at > ?", Time.now.beginning_of_month).pluck(:commission).sum)

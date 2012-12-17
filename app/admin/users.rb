@@ -129,9 +129,6 @@ ActiveAdmin.register User do
             row :state
             row :city
             row :zipcode
-            row :address_verification do
-              pretty_print_hash(user.account.address_verification.to_hash)
-            end
           end    
         end
         panel "Seller Info" do
