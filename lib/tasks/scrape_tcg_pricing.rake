@@ -57,7 +57,7 @@ task :scrape_tcg_pricing => :environment do
 end
 
 def scrape_pricing_for_one_set(our_set_name = "", tcg_set_name = "")
-  url = "http://magic.tcgplayer.com/db/price_guide.asp?setname=" + tcg_set_name.gsub(" ", "%20")    
+  url = URI.escape "http://magic.tcgplayer.com/db/price_guide.asp?setname=#{tcg_set_name}"
   file = Nokogiri::HTML(open(url)) #open file containing block/set information
   card_info_hash = Hash.new
 
@@ -96,7 +96,7 @@ end
 def scrape_pricing_for_single_card(options = {:statistics => nil, :tcg_set_name => nil})
   puts "Attempting to Scrape Pricing for single card: #{options[:statistics].card.name}"
   
-  url = "http://magic.tcgplayer.com/db/magic_single_card.asp?cn=#{options[:statistics].card.name}&sn=#{options[:tcg_set_name]}".gsub(" ", "%20")
+  url = URI.escape "http://magic.tcgplayer.com/db/magic_single_card.asp?cn=#{options[:statistics].card.name}&sn=#{options[:tcg_set_name]}"
   file = Nokogiri::HTML(open(url)) #open file containing card information
   
   price_min     = 0
