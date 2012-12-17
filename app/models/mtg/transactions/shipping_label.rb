@@ -22,8 +22,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
   # make sure there's a transaction before doing anything
   validates_presence_of :transaction
   # if there's a transaction, try to buy stamps
-  # validate              :buy_postage_if_necessary, :if => "transaction"
-  validate              :buy_stamp_if_none_exists, :if => "transaction"
+  validate              :buy_stamp_if_none_exists, :on => :create, :if => "transaction"
   # after stamp purchase, verify stamp was created properly
   validates_presence_of :price, :url, :params, :stamps_tx_id, :if => "postage_created"
   validates             :price, :numericality => {:greater_than => 0, :less_than => 5000, :message => "Must be between $0.01 and $50"}, :if => "postage_created"   #price must be between $0 and $10,000.00  
@@ -72,8 +71,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
       self.tracking       = Stamps.track(self.stamps_tx_id)
       last_tracking_event = self.tracking_events.first # tracking events are in reverse order (newest first)
       self.status         = "delivered" if last_tracking_event.present? && last_tracking_event[:event].downcase == "delivered"
-      self.save
-      return true
+      return self.save
     rescue
       return false
     end 
@@ -172,8 +170,6 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
     self.params = stamp
     self.stamps_tx_id = stamp[:stamps_tx_id]
     self.price = stamp[:rate][:amount]
-    Rails.logger.info "STAMP RESPONSE: #{stamp.inspect}" rescue nil
-    Rails.cache.write "stamps_current_balance", stamp[:postage_balance][:available_postage] rescue nil
     buy_postage_if_necessary(:current_balance => stamp[:postage_balance][:available_postage].to_i, 
                              :control_total   => stamp[:postage_balance][:control_total].to_i)
   end
