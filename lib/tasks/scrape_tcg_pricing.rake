@@ -16,21 +16,41 @@ task :scrape_tcg_pricing => :environment do
   puts "Starting to scrape pricing"
   
   #these are the sets that tcgplayer calles something else than we do
-  different_set_name_list = { "Limited Edition Beta"              => "Beta Edition",
-                              "Limited Edition Alpha"             => "Alpha Edition",
-                              "Planechase 2012 Edition"           => "Planechase 2012",
-                              "Planechase 2012 Edition (Planes)"  => "Planechase 2012",
-                              "Planechase"                        => "Planechase",
-                              "Planechase (Planes)"               => "Planechase",
-                              "Magic 2013"                        => "Magic 2013 (M13)",
-                              "Magic 2012"                        => "Magic 2012 (M12)",
-                              "Magic 2011"                        => "Magic 2011 (M11)",
-                              "Tenth Edition"                     => "10th Edition",
-                              "Ninth Edition"                     => "9th Edition",
-                              "Eighth Edition"                    => "8th Edition",
-                              "Seventh Edition"                   => "7th Edition",
-                              "Classic (Sixth Edition)"           => "Classic Sixth Edition",
-                              "Archenemy \"Schemes\""             => "Archenemy"}
+  different_set_name_list =   { "beta"            =>"beta edition", 
+                                "alpha"           =>"alpha edition", 
+                                "planechase 2012 edition"         =>"planechase 2012", 
+                                "planechase 2012 edition (planes)"=>"planechase 2012", 
+                                "planechase"                      =>"planechase", 
+                                "planechase (planes)"             =>"planechase", 
+                                "magic 2013"                      =>"magic 2013 (m13)", 
+                                "magic 2012"                      =>"magic 2012 (m12)", 
+                                "magic 2011"                      =>"magic 2011 (m11)", 
+                                "tenth edition"                   =>"10th edition", 
+                                "ninth edition"                   =>"9th edition", 
+                                "eighth edition"                  =>"8th edition", 
+                                "seventh edition"                 =>"7th edition", 
+                                "classic (sixth edition)"         =>"classic sixth edition", 
+                                "archenemy \"schemes\""           =>"archenemy", 
+                                "judge reward promos"             =>"judge promos", 
+                                "launch party promos"             =>"launch party cards", 
+                                "media inserts"                   =>"media promos", 
+                                "player rewards promos"           =>"magic player rewards", 
+                                "prerelease promos"               =>"prerelease cards", 
+                                "release promos"                  =>"release event cards", 
+                                "commander arsenal"               =>"commander's arsenal", 
+                                "holiday promos"                  =>"special occasion", 
+                                "grand prix"                      =>"grand prix promos", 
+                                "coldsnap theme decks"            =>"coldsnap", 
+                                "arena league promos"             =>"arena promos", 
+                                "premium deck series: fire & lightning"=>"premium deck series: fire and lightning",
+                                "duel decks: knights vs. dragons" => "duel decks: knights vs dragons",
+                                "beatdown"                        => "beatdown box set",
+                                "battle royale"                   => "battle royale box set",
+                                "portal I"                        => "portal",
+                                "time shifted"                    => "timeshifted",
+                                "ravnica: city of guilds"         => "ravnica", 
+                                } 
+                              
 
   if ENV['set_code'].present?
     sets_to_pull = Mtg::Set.where(:code => ENV['set_code'])
@@ -42,8 +62,8 @@ task :scrape_tcg_pricing => :environment do
     set_name = set.name    
     if set.cards.count > 0
       puts "Scraping data for: #{set_name}"
-      if different_set_name_list[set_name].present?
-        scrape_pricing_for_one_set(set_name, different_set_name_list[set_name])
+      if different_set_name_list[set_name.downcase].present?
+        scrape_pricing_for_one_set(set_name, different_set_name_list[set_name.downcase])
       else
         scrape_pricing_for_one_set(set_name, set_name)
       end
