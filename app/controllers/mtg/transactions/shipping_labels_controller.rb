@@ -18,9 +18,15 @@ class Mtg::Transactions::ShippingLabelsController < ApplicationController
           return
         end
         Rails.logger.info("STAMP CREATED")
+        @error = false
       rescue Exception => message
         Rails.logger.info("STAMPS ERROR MESSAGE: #{message}")
         @error = true
+        if message.to_s.include?("Invalid destination address")
+          @error = "The ship-to address entered for this transaction appears to be invalid.  Please contact an administrator..."
+        else
+          @error = "There was a problem attempting to create your shipping label, please try again later.  If this problem persists, please contact an administrator"
+        end
       end 
     end
     
