@@ -22,6 +22,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
   # ------ CALLBACKS --------- #
   
   before_validation :set_address_information_from_verified_address
+  
   def set_address_information_from_verified_address
     this_transaction = Mtg::Transaction.includes(:payment, {:seller => :account}, {:buyer => :account}).where(:id => self.transaction_id).first
     
@@ -38,13 +39,14 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
       paypal_address  = gateway.get_shipping_addresses(:pay_key => this_transaction.payment.paypal_paykey).selected_address
       
       #TODO: do we need to clean addresses coming from paypal?
-      self.to_address = {   :full_name  =>  paypal_address[:addressee_name], 
-                            :address1   =>  paypal_address.base_address[:line1], 
-                            :address2   =>  paypal_address.base_address[:line2], 
-                            :city       =>  paypal_address.base_address[:city], 
-                            :state      =>  paypal_address.base_address[:state],
-                            :country    =>  "US", #only allow US-based addresses for now
-                            :zip_code   =>  paypal_address.base_address[:postal_code] }
+      our_addresss = {  :full_name  =>  "#{this_transaction.buyer.account.first_name} #{this_transaction.buyer.account.last_name}", 
+                        :address1   =>  paypal_address.base_address[:line1], 
+                        :address2   =>  paypal_address.base_address[:line2], 
+                        :city       =>  paypal_address.base_address[:city], 
+                        :state      =>  paypal_address.base_address[:state],
+                        :country    =>  "US", #only allow US-based addresses for now
+                        :zip_code   =>  paypal_address.base_address[:postal_code] }
+                        
     end
     
   end

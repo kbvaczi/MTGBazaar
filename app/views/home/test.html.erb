@@ -1,5 +1,5 @@
 <h1>test</h1>
-<%
+<%#
 gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(                                                 # setup gateway, login to Paypal API
   :pem =>       PAYPAL_CONFIG[:paypal_cert_pem],
   :login =>     PAYPAL_CONFIG[:api_login],
@@ -10,7 +10,7 @@ gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(                   
 
 %>
 
-<%=  gateway.get_shipping_addresses(:pay_key => 'AP-8H09309221582825D').selected_address[:addressee_name] %>
+<%#=  gateway.get_shipping_addresses(:pay_key => 'AP-8H09309221582825D').selected_address[:addressee_name] %>
 <%# STAMPS %>
 
 
@@ -80,7 +80,7 @@ a = {
   response = http.request(request)
 
 %>
-<%#
+<%
 from_address = Stamps.clean_address(
   :address => {
     :full_name   => 'bazaarTrader',
@@ -91,7 +91,7 @@ from_address = Stamps.clean_address(
     :state       => 'TX',
     :zip_code    => '77380'
 })[:address]
-
+=begin
 to_address = Stamps.clean_address(
   :address => {
     :full_name   => 'Bailyn',
@@ -102,6 +102,9 @@ to_address = Stamps.clean_address(
     :state       => 'TX',
     :zip_code    => '77018'
 })[:address]
+=end 
+to_address = {:first_name=>"KENNETH", :last_name=>"KENNETH", :address1=>"1005 balsamicsuperduper st.", :address2=>"APT 232", :city=>"houston", :state=>"TX", :zip_code=>"23923"}
+Rails.logger.info Stamps.clean_address(:address => to_address)
 %>
 <%#
 # send one burrito
@@ -116,12 +119,12 @@ rates = Stamps.get_rates(
   :insured_value => '50.00'
 )
 %>
-<%#
+<%
  begin
    stamp = Stamps.create!({
-                :sample          => true,
+                :sample          => false,
                 :image_type      => "Pdf",
-                :transaction_id  => "First Stamp",
+                :transaction_id  => "testing#{rand(0..20000)}",
                 :to               => to_address,
                 :from             => from_address,
                 :memo          => "MTGBazaar.com",
@@ -131,11 +134,10 @@ rates = Stamps.get_rates(
                   :weight_oz     => '3',
                   :ship_date     => (Date.today).strftime('%Y-%m-%d'),
                   :service_type  => 'US-FC', :package_type  => 'Package',
-#                  :service_type  => 'US-PM', :package_type  => 'Package',
-#                  :insured_value => '100.00',
+                  :insured_value => '100.00',
                   :add_ons       => {
                     :add_on => [
-  #                    { :type => 'SC-A-INS' },  # Insurance
+                      { :type => 'SC-A-INS' },  # Insurance
                       { :type => 'SC-A-HP' },  # hidden postage
                       { :type => 'US-A-DC' }   # delivery confirmation
                     ]
