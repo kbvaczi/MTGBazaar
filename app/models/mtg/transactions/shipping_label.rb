@@ -39,14 +39,15 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
       paypal_address  = gateway.get_shipping_addresses(:pay_key => this_transaction.payment.paypal_paykey).selected_address
       
       #TODO: do we need to clean addresses coming from paypal?
-      self.to_address = { :full_name  =>  "#{this_transaction.buyer.account.first_name} #{this_transaction.buyer.account.last_name}", 
-                          :address1   =>  paypal_address.base_address[:line1], 
-                          :address2   =>  paypal_address.base_address[:line2], 
-                          :city       =>  paypal_address.base_address[:city], 
-                          :state      =>  paypal_address.base_address[:state],
-                          :country    =>  "US", #only allow US-based addresses for now
-                          :zip_code   =>  paypal_address.base_address[:postal_code] }
-                        
+      unconfirmed_address = { :full_name  =>  "#{this_transaction.buyer.account.first_name} #{this_transaction.buyer.account.last_name}", 
+                              :address1   =>  paypal_address.base_address[:line1], 
+                              :address2   =>  paypal_address.base_address[:line2], 
+                              :city       =>  paypal_address.base_address[:city], 
+                              :state      =>  paypal_address.base_address[:state],
+                              :country    =>  "US", #only allow US-based addresses for now
+                              :zip_code   =>  paypal_address.base_address[:postal_code] }
+                              
+      self.to_address = unconfirmed_address.merge!(:override_hash => Stamps.clean_address(:address => unconfirmed_address)[:address][:override_hash])
     end
     
   end
@@ -103,10 +104,20 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
   
   def update_tracking
     begin
-      self.tracking       = Stamps.track(self.stamps_tx_id)
-      last_tracking_event = self.tracking_events.first # tracking events are in reverse order (newest first)
-      self.status         = "delivered" if last_tracking_event.present? && last_tracking_event[:event].downcase == "delivered"
-      return self.save
+      if self.status == "active"
+        self.tracking       = Stamps.track(self.stamps_tx_id)
+        last_tracking_event = self.tracking_events.first # tracking events are in reverse order (newest first)
+        if last_tracking_event.present? && last_tracking_event[:event].downcase == "delivered"
+          self.status = "delivered"
+        end
+        if self.tracking_events.size > 1 && self.transaction.status == "confirmed"
+          self.transaction.ship_sale(:shipped_at => (self.tracking_events[-2][:timestamp] rescue Time.now))
+          ApplicationMailer.buyer_shipment_confirmation(self.transaction).deliver # notify buyer that the sale has been shipped
+        end
+        return self.save
+      else
+        return false
+      end
     rescue
       return false
     end 

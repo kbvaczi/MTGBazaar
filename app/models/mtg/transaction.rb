@@ -139,8 +139,8 @@ class Mtg::Transaction < ActiveRecord::Base
   end  
   
   # seller has shipped this transaction
-  def ship_sale
-    self.update_attributes(:seller_shipped_at => Time.now, :status => "shipped")
+  def ship_sale(options = {:shipped_at => Time.now})
+    self.update_attributes(:seller_shipped_at => options[:shipped_at], :status => "shipped")
   end  
   
   # seller has delivered this transaction
