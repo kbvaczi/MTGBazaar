@@ -1,5 +1,5 @@
 <h1>test</h1>
-<%#
+<%
 gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(                                                 # setup gateway, login to Paypal API
   :pem =>       PAYPAL_CONFIG[:paypal_cert_pem],
   :login =>     PAYPAL_CONFIG[:api_login],
@@ -10,7 +10,7 @@ gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(                   
 
 %>
 
-<%#=  gateway.get_shipping_addresses(:pay_key => 'AP-8H09309221582825D').selected_address.base_address.city %>
+<%=  gateway.get_shipping_addresses(:pay_key => 'AP-8H09309221582825D').selected_address.base_address[:postal_code] %>
 <%# STAMPS %>
 
 

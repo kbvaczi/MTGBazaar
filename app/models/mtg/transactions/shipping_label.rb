@@ -3,7 +3,9 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
   
   belongs_to :transaction,  :class_name => "Mtg::Transaction",  :foreign_key => "transaction_id"
   serialize :params
-  serialize :tracking  
+  serialize :tracking
+  serialize :to_address
+  serialize :from_address
   
   # Implement Money gem for price column
   composed_of   :price,
@@ -17,7 +19,38 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
   
   attr_accessor :transaction_number, :postage_created
   
-  # validations
+  # ------ CALLBACKS --------- #
+  
+  before_validation :set_address_information_from_verified_address
+  def set_address_information_from_verified_address
+    this_transaction = Mtg::Transaction.includes(:payment, {:seller => :account}, {:buyer => :account}).where(:id => self.transaction_id).first
+    
+    if this_transaction.present?
+      self.from_address = build_address(:user => this_transaction.seller, :full_name => this_transaction.seller.username)
+      
+      gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(         # setup gateway, login to Paypal API
+        :pem =>       PAYPAL_CONFIG[:paypal_cert_pem],
+        :login =>     PAYPAL_CONFIG[:api_login],
+        :password =>  PAYPAL_CONFIG[:api_password],
+        :signature => PAYPAL_CONFIG[:api_signature],
+        :appid =>     PAYPAL_CONFIG[:appid] )
+      
+      paypal_address  = gateway.get_shipping_addresses(:pay_key => this_transaction.payment.paypal_paykey).selected_address.base_address
+      
+      #TODO: do we need to clean addresses coming from paypal?
+      self.to_address = {   :first_name =>  this_transaction.buyer.account.first_name, 
+                            :last_name  =>  this_transaction.buyer.account.first_name, 
+                            :address1   =>  paypal_address[:line1], 
+                            :address2   =>  paypal_address[:line2], 
+                            :city       =>  paypal_address[:city], 
+                            :state      =>  paypal_address[:state], 
+                            :zip_code   =>  paypal_address[:postal_code] }
+    end
+    
+  end
+  
+  
+  # ------ VALIDATIONS --------- #
 
   # make sure there's a transaction before doing anything
   validates_presence_of :transaction
@@ -115,15 +148,17 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
       postage_created = false
     else
       postage_created = true      
-      from_address = build_address(:user => transaction.seller, :full_name => transaction.seller.username)
-      to_address   = build_address(:user => transaction.buyer)    
-      create_stamp(:from          => from_address, 
-                   :to            => to_address, 
+      # old implimentation before verified address 
+      #from_address = build_address(:user => transaction.seller, :full_name => transaction.seller.username)
+      #to_address   = build_address(:user => transaction.buyer)
+      create_stamp(:from          => self.from_address, 
+                   :to            => self.to_address, 
                    :stamps_tx_id  => transaction.transaction_number,
+                   :certified     => false,
                    :insurance     => false,
                    :insured_value => '0')               
     end
-    #TODO: Code insurance algorithm    
+    #TODO: Code insurance and certified mail algorithms
   end
 
   def build_address(options={})
@@ -147,7 +182,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
     stamp = Stamps.create!({
                :sample          => STAMPS_CONFIG[:mode] == "production" ? false : true,  # all labels are test labels if we aren't in production mode....
                :image_type      => "Pdf",
-               :customer_id     => "12345", #TODO: code customer ID
+               :customer_id     => self.transaction.seller.username,
                :transaction_id  => options[:stamps_tx_id],
                :to              => options[:to],
                :from            => options[:from],
