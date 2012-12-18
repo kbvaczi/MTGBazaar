@@ -10,7 +10,7 @@ gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(                   
 
 %>
 
-<%=  gateway.get_shipping_addresses(:pay_key => 'AP-8H09309221582825D').selected_address.base_address[:postal_code] %>
+<%=  gateway.get_shipping_addresses(:pay_key => 'AP-8H09309221582825D').selected_address[:addressee_name] %>
 <%# STAMPS %>
 
 

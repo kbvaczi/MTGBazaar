@@ -35,16 +35,16 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
         :signature => PAYPAL_CONFIG[:api_signature],
         :appid =>     PAYPAL_CONFIG[:appid] )
       
-      paypal_address  = gateway.get_shipping_addresses(:pay_key => this_transaction.payment.paypal_paykey).selected_address.base_address
+      paypal_address  = gateway.get_shipping_addresses(:pay_key => this_transaction.payment.paypal_paykey).selected_address
       
       #TODO: do we need to clean addresses coming from paypal?
-      self.to_address = {   :first_name =>  this_transaction.buyer.account.first_name, 
-                            :last_name  =>  this_transaction.buyer.account.first_name, 
-                            :address1   =>  paypal_address[:line1], 
-                            :address2   =>  paypal_address[:line2], 
-                            :city       =>  paypal_address[:city], 
-                            :state      =>  paypal_address[:state], 
-                            :zip_code   =>  paypal_address[:postal_code] }
+      self.to_address = {   :full_name  =>  paypal_address[:addressee_name], 
+                            :address1   =>  paypal_address.base_address[:line1], 
+                            :address2   =>  paypal_address.base_address[:line2], 
+                            :city       =>  paypal_address.base_address[:city], 
+                            :state      =>  paypal_address.base_address[:state],
+                            :country    =>  "US", #only allow US-based addresses for now
+                            :zip_code   =>  paypal_address.base_address[:postal_code] }
     end
     
   end
