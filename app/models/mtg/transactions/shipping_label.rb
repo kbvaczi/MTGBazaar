@@ -39,7 +39,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
       paypal_address  = gateway.get_shipping_addresses(:pay_key => this_transaction.payment.paypal_paykey).selected_address
       
       #TODO: do we need to clean addresses coming from paypal?
-      unconfirmed_address = { :full_name  =>  "#{this_transaction.buyer.account.first_name} #{this_transaction.buyer.account.last_name}", 
+      self.to_address = { :full_name  =>  paypal_address.addressee_name || "#{this_transaction.buyer.account.first_name} #{this_transaction.buyer.account.last_name}", 
                               :address1   =>  paypal_address.base_address[:line1], 
                               :address2   =>  paypal_address.base_address[:line2], 
                               :city       =>  paypal_address.base_address[:city], 
@@ -47,7 +47,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
                               :country    =>  "US", #only allow US-based addresses for now
                               :zip_code   =>  paypal_address.base_address[:postal_code] }
                               
-      self.to_address = unconfirmed_address.merge!(:override_hash => Stamps.clean_address(:address => unconfirmed_address)[:address][:override_hash])
+      #self.to_address = unconfirmed_address.merge!(:override_hash => Stamps.clean_address(:address => unconfirmed_address)[:address][:override_hash])
     end
     
   end

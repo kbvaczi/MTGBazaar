@@ -1,5 +1,5 @@
 <% if @error %>
-  myCustomAlertBox(<%= @error %>);
+  myCustomAlertBox('<%= escape_javascript @error %>');
 <% else %>
   //$("#shipping_label_button").html('<%= link_to "View Shipping Label", create_shipping_label_path(@transaction), :target => "_blank", :class => "button ma-s", :style => "display:inline-block;" %>');
   var template = '<%= escape_javascript render :template => "mtg/transactions/show", :formats => [:html] %>'

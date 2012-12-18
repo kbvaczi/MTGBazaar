@@ -21,7 +21,6 @@ class Mtg::Transactions::ShippingLabelsController < ApplicationController
         @error = false
       rescue Exception => message
         Rails.logger.info("STAMPS ERROR MESSAGE: #{message}")
-        @error = true
         if message.to_s.include?("Invalid destination address")
           @error = "The ship-to address entered for this transaction appears to be invalid.  Please contact an administrator..."
         else
