@@ -21,7 +21,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
   
   # ------ CALLBACKS --------- #
   
-  before_validation :set_address_information_from_verified_address
+  before_validation :set_address_information_from_verified_address, :on => :create
   
   def set_address_information_from_verified_address
     this_transaction = Mtg::Transaction.includes(:payment, {:seller => :account}, {:buyer => :account}).where(:id => self.transaction_id).first
