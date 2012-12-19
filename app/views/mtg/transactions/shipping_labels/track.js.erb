@@ -1,9 +1,10 @@
-$('#tracking_overlay .tracking_response').remove();
 <% if @error.present? %>
-  $('#tracking_overlay').append("<%= escape_javascript content_tag(:div, @error, :class => "tracking_response") %>");
+  myCustomAlertBox('<%= escape_javascript @error %>');
 <% else %>
   $('#tracking_overlay .tracking_response').remove();
+  $('#tracking_overlay .tracking_response').remove();
   $('#tracking_overlay').append("<%= escape_javascript content_tag(:div, render(:partial => "tracking").html_safe , :class => "tracking_response") %>");
+  $('#tracking_overlay_trigger').trigger('click');
+  $('#tracking_overlay').centerScreen();  
 <% end %>
-$('#tracking_overlay_trigger').trigger('click');
-$('#tracking_overlay').centerScreen();
+

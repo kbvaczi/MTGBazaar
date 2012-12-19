@@ -47,7 +47,7 @@ class Mtg::Transactions::ShippingLabelsController < ApplicationController
           if message.to_s.include?('The underlying connection was closed') # error you get when there is no info
             @error = "No tracking information at this time..."
           else
-            @error = "Cannot connect to tracking service at this time..."
+            @error = "Cannot connect to tracking service at this time, please try again later..."
           end
           Rails.logger.info("Error Tracking #{current_transaction.transaction_number}: #{message}")
         end
