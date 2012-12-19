@@ -21,12 +21,12 @@ $.rails.allowAction = function(element) {
 
 function myCustomConfirmBox(message, callback) {
         // call callback() if the user says yes
-        var dialogHtml = "<div id='dialog-confirm' title='Are you sure?'><p><span class='ui-icon ui-icon-alert' style='float: left; margin: 0 7px 20px 0;'></span>" + message + "</p></div>"
+        var dialogHtml = "<div id='dialog-confirm' title='Are you sure?'><p>" + message + "</p></div>"
         $('#dialog-confirm').remove();
         $('body').append(dialogHtml);
         
         $( "#dialog-confirm" ).dialog({
-            resizable: false,
+            resizable: true,
             height:180,
             modal: true,
             buttons: {

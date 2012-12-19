@@ -9,7 +9,7 @@ class Mtg::Cards::ListingsController < ApplicationController
                                                         :new_playset, :create_playset ]
 
   # user must be owner of listing to perform an action EXCEPT for those listed here                                                     
-  before_filter :verify_owner?, :except => [:new, :create, 
+  before_filter :verify_owner?, :except => [:new, :create, :get_pricing,
                                             :new_generic, :new_generic_set, :new_generic_pricing, :create_generic, 
                                             :new_bulk_prep, :new_bulk, :create_bulk,
                                             :new_playset, :create_playset ]  # prevent a user from editing another user's listings
@@ -104,6 +104,14 @@ class Mtg::Cards::ListingsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to :back , :notice => "Listing set as inactive!"}
     end
+  end
+  
+  def get_pricing
+    @listing = Mtg::Cards::Listing.new()
+    @listing.card_id   = params[:card_id].present? ? params[:card_id] : Mtg::Card.joins(:set).where("mtg_cards.name" => params[:card_name]).where("mtg_sets.code LIKE ? OR mtg_sets.name LIKE ?", params[:set_name], params[:set_name]).first.id
+    @listing.condition = params[:condition] if params[:condition].present?
+    @listing.playset   = true if params[:playset].present?
+    render :json => @listing.product_recommended_pricing.to_json
   end
   
   # ------ LISTING A SINGLE FROM GENERIC FORM ------- #
@@ -210,21 +218,7 @@ class Mtg::Cards::ListingsController < ApplicationController
     redirect_to account_listings_path, :notice => "#{pluralize(array_of_listings.count, "Listing", "Listings")} Created!"
     return #don't display a template
   end
-
-  # ------ LISTING A PLAYSET ------- #
-
-  def new_playset
-    
-  end
   
-  def create_playset
-    
-  end
-  
-  def edit_playset
-    
-  end
-
   # ------ CONTROLLER PROTECTED FUNCTIONS ------- #
 
   protected

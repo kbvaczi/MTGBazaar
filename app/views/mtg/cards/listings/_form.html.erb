@@ -1,4 +1,4 @@
-<%= simple_form_for @listing, :html => {:multipart => true} do |f| %>
+<%= simple_form_for @listing, :html => {:multipart => true, :id => "new_form"} do |f| %>
   <div class="inputs">
     <br class="spacer"/>
     <%= f.input :card_id,       :as => :hidden,
@@ -27,19 +27,6 @@
                                 :as => :string,
                                 :input_html => { :style => "width:50px;" },
                                 :required => 'true' %>                                
-              
-    <%#= f.input :price_options, :label => "Asking Price",
-                                :as => :radio,
-                                :collection => [["Low ($#{@listing.card.statistics.price_low})".html_safe,      @listing.card.statistics.price_low], 
-                                                ["Average ($#{@listing.card.statistics.price_med})".html_safe,  @listing.card.statistics.price_med], 
-                                                ["High ($#{@listing.card.statistics.price_high})".html_safe,    @listing.card.statistics.price_high],
-                                                ["Other $ #{text_field_tag "mtg_listing[price]", "",:style => "width:50px;"}".html_safe, "other"]],
-                                :checked => @listing.card.listing_price_med,                                                                                                
-                                :required => 'true' %>
-                              
-    <%#= f.input :price,         :label => "Asking Price",
-                                :as => :currency,
-                                :required => 'true' %>
 
     <%= f.input :price_options, :label => "Asking Price",
                                 :as => :select,
@@ -112,3 +99,31 @@
   <br class="spacer"/>
 
 <% end %>
+
+<script>
+  $('#mtg_cards_listing_condition').live('change', function(){
+    var path = "/mtg/cards/listings/get_pricing";
+    var params = [{ name:"condition",  value:$('#mtg_cards_listing_condition').val() },
+                  { name:"card_id",    value:$('#mtg_cards_listing_card_id').val() }];
+    var url = path + "?" + $.param(params);
+    $.get(url, function(data) {
+      var price_low  = data["price_low"]["cents"] / 100;
+      var price_med  = data["price_med"]["cents"] / 100;      
+      var price_high = data["price_high"]["cents"] / 100;
+      $("#mtg_cards_listing_price_options option").each(function(index){
+        if (index == 0) {
+          $(this).val(price_low);
+          $(this).text("Low     ($" + price_low.toFixed(2)  + ")");
+        } else if (index == 1){
+          $(this).val(price_med);          
+          $(this).text("Average ($" + price_med.toFixed(2)  + ")");          
+        } else if (index == 2){
+          $(this).val(price_high);
+          $(this).text("High    ($" + price_high.toFixed(2)  + ")");          
+        }
+      });
+      $("#mtg_cards_listing_price_options").trigger("liszt:updated");      
+    });
+
+  });
+</script>

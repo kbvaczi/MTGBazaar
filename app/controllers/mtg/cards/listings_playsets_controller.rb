@@ -111,7 +111,7 @@ class Mtg::Cards::ListingsPlaysetsController < Mtg::Cards::ListingsController
         playset_price_med   = @card.statistics.price_med.dollars * 4
         playset_price_high  = @card.statistics.price_high.dollars * 4
         label_low           = generate_pricing_label "Low", @card.statistics.price_low.dollars
-        label_med           = generate_pricing_label "Med", @card.statistics.price_med.dollars
+        label_med           = generate_pricing_label "Average", @card.statistics.price_med.dollars
         label_high          = generate_pricing_label "High", @card.statistics.price_high.dollars
         render :json => [[label_low, playset_price_low], [label_med, playset_price_med], [label_high, playset_price_high], ["Other", "other"]].to_json
       end
@@ -120,7 +120,7 @@ class Mtg::Cards::ListingsPlaysetsController < Mtg::Cards::ListingsController
   
   def generate_pricing_label(label = "Low", price = 0)
     #adjusted_label = label.center(10)
-    string         = "#{label}: &nbsp;&nbsp;#{number_to_currency (price * 4)}/playset &nbsp;&nbsp; (#{number_to_currency (price)}/card)".html_safe
+    string         = "#{label}: #{number_to_currency (price * 4)}/playset (#{number_to_currency (price)}/card)".html_safe
   end
   helper_method :generate_pricing_label
   

@@ -45,21 +45,21 @@ class UsersController < ApplicationController
     query = mtg_filters_query(:seller => false, :activate_filters => params[:filter])    
     if params[:status] == "active"
       if params[:type] == "playsets"
-        @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => true).active.order("mtg_cards.name ASC").page(params[:page]).per(25)
+        @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => true).active.order("mtg_cards.name ASC").page(params[:page]).per(50)
       else
-        @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => false).active.order("mtg_cards.name ASC").page(params[:page]).per(25)
+        @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => false).active.order("mtg_cards.name ASC").page(params[:page]).per(50)
       end
     elsif params[:status] == "inactive"
       if params[:type] == "playsets"
-        @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => true).inactive.order("mtg_cards.name ASC").page(params[:page]).per(25)
+        @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => true).inactive.order("mtg_cards.name ASC").page(params[:page]).per(50)
       else
-        @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => false).inactive.order("mtg_cards.name ASC").page(params[:page]).per(25)
+        @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => false).inactive.order("mtg_cards.name ASC").page(params[:page]).per(50)
       end
     else
       if params[:type] == "playsets"
-        @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => true).order("mtg_cards.name ASC").page(params[:page]).per(25)
+        @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => true).order("mtg_cards.name ASC").page(params[:page]).per(50)
       else
-        @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => false).order("mtg_cards.name ASC").page(params[:page]).per(25)
+        @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => false).order("mtg_cards.name ASC").page(params[:page]).per(50)
       end
     end
     

@@ -40,11 +40,14 @@
     <% end %>
     
   	<%= form_tag mtg_cards_listings_multiple_process_request_path, :id => "multiple_listing_edit_form", :method => :post do %>
-      <%= submit_tag "Delete", :id => "delete_submit_button", :style => "display:none;", :confirm => "Are you sure you want to permanently delete selected listing(s)?"%>
+      <%= submit_tag "Delete",          :id => "delete_submit_button",  :style => "display:none;", :confirm => "Are you sure you want to permanently delete selected listing(s)?"%>
       <%= hidden_field_tag "action_input" %>
       <div>
         <span class="ml mb">
-          <%= select_tag "action_selector" , options_for_select([["Set checked items to active", "active"], ["Set checked items to inactive", "inactive"], ["Delete checked items","delete"]], :selected => ""), {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Actions...", :id => "multiple_listings_actions", :class => "chzn-select"} %> 
+            <%  grouped_options = [ ['Update Pricing', [["Set to current low pricing", "pricing_low"], ["Set to current average pricing", "pricing_med"], ["Set to current high pricing", "pricing_high"]]],
+                                  ['Change Active Status', [["Set Active", "active"], ["Set Inactive", "inactive"]]],
+                                  ['Other',         [["Delete Listings","delete"]]] ] %>
+          <%= select_tag "action_selector" , grouped_options_for_select(grouped_options, ""), {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Actions for selected listings...", :id => "multiple_listings_actions", :class => "chzn-select chzn-nosearch", :style => "min-width:200px;"} %> 
         </span>
         <%= link_to "List a New Playset", new_mtg_cards_listings_playset_path, :class => "right button mr mb" %>
         <%= link_to "List a New Card", new_generic_mtg_cards_listings_path, :class => "right button mr mb" %>

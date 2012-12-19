@@ -66,16 +66,33 @@
                                   :input_html => { :class => "chzn-select chzn-nosearch" },
                                   :required => false %>
 
+      <div id="scan_upload_wrapper" class=<%= "hidden" if @listing.scan? && !@listing.new_record?%>>
+       	<%= f.input :scan,     		  :label => "Upload Scan", 
+       	                            :hint => "Required only for Signed, Misprints, and Altered",
+       	                            :as => :file %>
+     	</div>
+
       <%= f.input :description,   :label => "Description",
                                   :placeholder => "Optional",
-                                  :as => :string,
-                                  :input_html => { :maxlength => 100 } %>
+                                  :input_html => { :maxlength => 100 },
+                                  :as => :string %>
 
-      <%= f.label "Options" %>
+      <%= f.label "Options",      :style => "height:100px;"%>
 
       <%= f.input :foil,          :label => "All cards are foil",
-                                  :default => false %>                                     
+                                  :default => false %>
 
+      <%= f.input :signed,        :label => "All cards are signed",
+                                  :default => false %> 
+
+      <%= f.input :misprint,      :label => "All cards are misprinted",
+                                  :default => false %>
+
+      <%= f.input :altart,        :label => "All cards contain alternate art",
+                                  :default => false %>
+
+      <%= f.input :playset,       :as => :hidden,
+                                  :input_html => { :value => true } %>                                  
 
     </div>
     <br class="spacer"/>

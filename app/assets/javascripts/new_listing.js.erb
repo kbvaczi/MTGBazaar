@@ -25,7 +25,7 @@ $(document).ready(function() {
   });
   
   $("#mtg_cards_listing_signed, #mtg_cards_listing_misprint, #mtg_cards_listing_altart").change(function(){
-    var target = $("#mtg_cards_listing_scan")
+    var target = $("#mtg_cards_listing_scan");
     if (($('#mtg_cards_listing_signed').attr('checked') || $('#mtg_cards_listing_misprint').attr('checked') || $('#mtg_cards_listing_altart').attr('checked')) && !$("#mtg_cards_listing_scan").val() ){
   		target.siblings('span.error').remove();
   		target.siblings('span.hint').hide();          
@@ -33,6 +33,19 @@ $(document).ready(function() {
     } else {
      	target.siblings('span.error').remove();
      	target.siblings('span.hint').show();     	
+    }
+  });
+  
+  $("#mtg_cards_listing_foil, #mtg_cards_listing_signed, #mtg_cards_listing_misprint, #mtg_cards_listing_altart").live('change', function(){
+    var target = $("#mtg_cards_listing_price_options");
+    if ($('#mtg_cards_listing_signed').attr('checked') || $('#mtg_cards_listing_misprint').attr('checked') || $('#mtg_cards_listing_altart').attr('checked') || $('#mtg_cards_listing_foil').attr('checked')) {
+      target.val("other");
+      $("#mtg_cards_listing_price_options").trigger("liszt:updated");          
+      target.trigger("change");
+      target.siblings('.hint').remove();
+      target.parent().append('<span class="hint">custom pricing is recommended for this listing</span>');		      
+    } else {
+      target.siblings('.hint').remove();
     }
   });
   
@@ -45,6 +58,52 @@ $(document).ready(function() {
       $("#mtg_cards_listing_quantity").siblings('span.error').remove();
   		$("#mtg_cards_listing_quantity").siblings('span.hint').show();
     }
+  });
+  
+  $('#mtg_cards_listing_condition').live('change', function(){
+    var path = "/mtg/cards/listings/get_pricing";
+    var params = [{ name:"condition",  value:$('#mtg_cards_listing_condition').val() },
+                  { name:"card_id",    value:$('#mtg_cards_listing_card_id').val()   },
+                  { name:"card_name",  value:$('#mtg_cards_listing_name').val() },
+                  { name:"set_name",   value:$('#mtg_cards_listing_set').val()  },
+                  { name:"playset",    value:$('#mtg_cards_listing_playset').val()  } ];
+    var url = path + "?" + $.param(params);
+    $.get(url, function(data) {
+      var price_low  = data["price_low"]["cents"] / 100;
+      var price_med  = data["price_med"]["cents"] / 100;      
+      var price_high = data["price_high"]["cents"] / 100;
+      if ($('#mtg_cards_listing_playset').val()) {
+        $("#mtg_cards_listing_price_options option").each(function(index){
+          if (index == 0) {
+            $(this).val(price_low);            
+            $(this).text("Low:   $" + price_low.toFixed(2) + "/playset    ($" + (price_low / 4).toFixed(2) + "/card)");
+          } else if (index == 1){
+            $(this).val(price_med);          
+            $(this).text("Average:   $" + price_med.toFixed(2) + "/playset    ($" + (price_med / 4).toFixed(2) + "/card)");
+          } else if (index == 2){
+            $(this).val(price_high);
+            $(this).text("High:   $" + price_high.toFixed(2) + "/playset   ($" + (price_high / 4).toFixed(2) + "/card)");
+          }
+        });        
+      } else {
+        $("#mtg_cards_listing_price_options option").each(function(index){
+          if (index == 0) {
+            $(this).val(price_low);
+            $(this).text("Low     ($" + price_low.toFixed(2)  + ")");
+          } else if (index == 1){
+            $(this).val(price_med);          
+            $(this).text("Average ($" + price_med.toFixed(2)  + ")");          
+          } else if (index == 2){
+            $(this).val(price_high);
+            $(this).text("High    ($" + price_high.toFixed(2)  + ")");          
+          }
+        });        
+      }
+      $("#mtg_cards_listing_price").val(price_high);
+      $("#mtg_cards_listing_price").trigger('focus');
+      $("#mtg_cards_listing_price_options").trigger("liszt:updated");      
+    });
+
   });
 
 /* GENERIC LISTING JAVASCRIPTS */ 

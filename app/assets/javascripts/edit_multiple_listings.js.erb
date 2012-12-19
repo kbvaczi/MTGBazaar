@@ -4,10 +4,24 @@ $(document).ready(function() {
   
   $("#multiple_listings_actions").chosen().live('change', function() {
     $(this).closest('form').find('#action_input').val($(this).val());
-    if ($(this).val() != "delete") {
-      $(this).closest('form').submit();
-    } else  {
+    if ($(this).val() == "delete") {
       $(this).closest('form').find('#delete_submit_button').trigger('click');
+    } 
+    else if ("pricing".indexOf($(this).val())) {
+      var target = $(this);
+      var pricing_level = "average";
+      if (target.val() == "pricing_low") {
+        pricing_level = "low"
+      } else if (target.val() == "pricing_high") {
+        pricing_level = "high"
+      }
+      var message = "This will update pricing for selected listings to their recommended " + pricing_level + " price level.  <br/><br/><small>Note: This action will not change pricing for foreign, foil, misprinted, signed, or altered listings.</small>";
+      myCustomConfirmBox(message, function() {
+        target.closest('form').submit();        
+      });    
+    } 
+    else  {
+      $(this).closest('form').submit();
     }
     $(this).val("");
     $(this).trigger("liszt:updated");

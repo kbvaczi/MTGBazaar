@@ -17,6 +17,8 @@ class Mtg::Cards::EditMultipleListingsController < ApplicationController
       set_inactive
     elsif params[:action_input] == 'delete'
       delete
+    elsif params[:action_input].include? 'pricing'
+      update_pricing
     else
       flash[:error] = "You don't have permission to perform this action..."
       redirect_to back_path
@@ -25,25 +27,54 @@ class Mtg::Cards::EditMultipleListingsController < ApplicationController
   end
   
   def set_active
-    @listings.each {|l| l.mark_as_active!}
+    selected_listings.each {|l| l.mark_as_active!}
     respond_to do |format|
-      format.html { redirect_to back_path, :notice => "#{pluralize(@listings.length, "Listing", "Listings")} set as active!" }
+      format.html { redirect_to back_path, :notice => "#{pluralize(selected_listings.length, "Listing", "Listings")} set as active!" }
     end
     return
   end
   
   def set_inactive
-    @listings.each {|l| l.mark_as_inactive!}
+    selected_listings.each {|l| l.mark_as_inactive!}
     respond_to do |format|
-      format.html { redirect_to back_path, :notice => "#{pluralize(@listings.length, "Listing", "Listings")} set as inactive!" }
+      format.html { redirect_to back_path, :notice => "#{pluralize(selected_listings.length, "Listing", "Listings")} set as inactive!" }
     end
     return
   end
   
-  def delete
-    @listings.each {|l| l.destroy}
+  def update_pricing
+    listings_updated = 0
+    listings_not_updated = 0
+    
+    selected_listings.includes(:card => :statistics).each do |listing|
+      case params[:action_input].gsub("pricing_", "")
+        when "low"
+          pricepoint = listing.product_recommended_pricing[:price_low]
+        when "high"
+          pricepoint = listing.product_recommended_pricing[:price_high]
+        else
+          pricepoint = listing.product_recommended_pricing[:price_med]
+      end
+      unless listing.misprint || listing.foil || listing.altart || listing.signed || listing.language != "EN"
+        listing.update_attribute(:price, pricepoint)
+        listings_updated += 1
+      else
+        listings_not_updated += 1
+      end
+    end
+    
+    message = listings_not_updated > 0 ? "  #{pluralize(listings_not_updated, "Listing", "Listings")} were not updated..." : ""
+    
     respond_to do |format|
-      format.html { redirect_to back_path, :notice => "#{pluralize(@listings.length, "Listing", "Listings")} Deleted!" }
+      format.html { redirect_to back_path, :notice => "Updated pricing for #{pluralize(listings_updated, "Listing", "Listings")}. #{message}" }
+    end
+    
+  end
+  
+  def delete
+    selected_listings.each {|l| l.destroy}
+    respond_to do |format|
+      format.html { redirect_to back_path, :notice => "#{pluralize(selected_listings.length, "Listing", "Listings")} Deleted!" }
     end
     return
   end
@@ -60,8 +91,7 @@ class Mtg::Cards::EditMultipleListingsController < ApplicationController
   end
   
   def verify_owner?
-    @listings ||= Mtg::Cards::Listing.find(params[:edit_listings_ids].keys)
-    @listings.each do |listing|
+    selected_listings.each do |listing|
       if listing.seller_id != current_user.id
         flash[:error] = "You don't have permission to perform this action..."
         redirect_to back_path
@@ -72,8 +102,7 @@ class Mtg::Cards::EditMultipleListingsController < ApplicationController
   end
   
   def verify_not_in_cart?
-    @listings ||= Mtg::Cards::Listing.find(params[:edit_listings_ids].keys)
-    @listings.each do |listing|
+    selected_listings.each do |listing|
       if listing.in_cart?
         flash[:error] = "Your listing for #{display_name(listing.card.name)} with asking price of #{number_to_currency(listing.price)} is locked due to being in a shopping cart..."
         redirect_to back_path
@@ -81,6 +110,14 @@ class Mtg::Cards::EditMultipleListingsController < ApplicationController
       end
     end
     return true
+  end
+  
+  def selected_listings
+    @listings ||= Mtg::Cards::Listing.where(:id => params[:edit_listings_ids].keys)
+  end
+  
+  def selected_listings_ids
+    params[:edit_listings_ids].keys
   end
   
 end

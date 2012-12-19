@@ -18,7 +18,7 @@ class Mtg::Cards::Listing < ActiveRecord::Base
                 :converter => Proc.new { |value| value.respond_to?(:to_money) ? value.to_money : Money.empty }  
   
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :set, :quantity, :price, :condition, :language, :description, :altart,
+  attr_accessible :name, :set, :quantity, :price, :condition, :language, :description, :altart, :playset,
                   :misprint, :foil, :signed, :price_options, :quantity_available, :scan, :scan_cache, :remove_scan
 
   # not-in-model field for current password confirmation
@@ -89,10 +89,10 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   
   def validate_playset
     errors[:quantity] << "number of cards per playset must be 4, please contact administrator" if self.number_cards_per_item != 4
-    errors[:scan]     << "Cannot have scan with playsets"           if self.scan.present?
-    errors[:altart]   << "Cannot have altered cards in playsets"    if self.altart
-    errors[:misprint] << "Cannot have misprinted cards in playsets" if self.misprint
-    errors[:signed]   << "Cannot have signed cards in playsets"     if self.misprint    
+    #errors[:scan]     << "Cannot have scan with playsets"           if self.scan.present?
+    #errors[:altart]   << "Cannot have altered cards in playsets"    if self.altart
+    #errors[:misprint] << "Cannot have misprinted cards in playsets" if self.misprint
+    #errors[:signed]   << "Cannot have signed cards in playsets"     if self.signed    
   end
 
   # ------------ Universal Product Methods --------- #
@@ -103,6 +103,21 @@ class Mtg::Cards::Listing < ActiveRecord::Base
     output_string += self.card.name
   end
 
+  def product_recommended_pricing(options = {:condition => (self.condition rescue "1")})
+    statistics = self.card.statistics
+    pricing_hash = {:price_low => statistics.price_low, :price_med => statistics.price_med, :price_high => statistics.price_high }
+    pricing_hash.each { |k,v| pricing_hash[k] = v * 4 } if self.playset
+    case options[:condition]
+      when "2"
+        return pricing_hash.each { |k,v| pricing_hash[k] = v * 0.95 }
+      when "3"
+        return pricing_hash.each { |k,v| pricing_hash[k] = v * 0.85 }
+      when "4"      
+        return pricing_hash.each { |k,v| pricing_hash[k] = v * 0.75 }
+      else
+        return pricing_hash
+    end
+  end
 
   # --------------------------------------- #
   # ------------ Public Model Methods ----- #
