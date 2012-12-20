@@ -24,6 +24,11 @@ $(document).ready(function() {
   	}
   });
   
+  // clicking on label for scan doesn't open scan dialog
+  $("label[for='mtg_cards_listing_scan']").live('click', function(event){
+    event.preventDefault();
+  });
+  
   $("#mtg_cards_listing_signed, #mtg_cards_listing_misprint, #mtg_cards_listing_altart").change(function(){
     var target = $("#mtg_cards_listing_scan");
     if (($('#mtg_cards_listing_signed').attr('checked') || $('#mtg_cards_listing_misprint').attr('checked') || $('#mtg_cards_listing_altart').attr('checked')) && !$("#mtg_cards_listing_scan").val() ){
@@ -55,8 +60,9 @@ $(document).ready(function() {
   		$("#mtg_cards_listing_quantity").siblings('span.hint').remove();          
   		$("#mtg_cards_listing_quantity").parent().append('<span class="error">Quantity must be 1 when attaching scan</span>');
     } else {
-      $("#mtg_cards_listing_quantity").siblings('span.error').remove();
+      $("#mtg_cards_listing_quantity").siblings('span.error').hide();
   		$("#mtg_cards_listing_quantity").siblings('span.hint').show();
+  		$("#mtg_cards_listing_quantity").siblings('span.hint').attr('style', 'display:block;');
     }
   });
   
@@ -72,91 +78,22 @@ $(document).ready(function() {
       var price_low  = data["price_low"]["cents"] / 100;
       var price_med  = data["price_med"]["cents"] / 100;      
       var price_high = data["price_high"]["cents"] / 100;
-      if ($('#mtg_cards_listing_playset').val()) {
-        $("#mtg_cards_listing_price_options option").each(function(index){
-          if (index == 0) {
-            $(this).val(price_low);            
-            $(this).text("Low:   $" + price_low.toFixed(2) + "/playset    ($" + (price_low / 4).toFixed(2) + "/card)");
-          } else if (index == 1){
-            $(this).val(price_med);          
-            $(this).text("Average:   $" + price_med.toFixed(2) + "/playset    ($" + (price_med / 4).toFixed(2) + "/card)");
-          } else if (index == 2){
-            $(this).val(price_high);
-            $(this).text("High:   $" + price_high.toFixed(2) + "/playset   ($" + (price_high / 4).toFixed(2) + "/card)");
-          }
-        });        
-      } else {
-        $("#mtg_cards_listing_price_options option").each(function(index){
-          if (index == 0) {
-            $(this).val(price_low);
-            $(this).text("Low     ($" + price_low.toFixed(2)  + ")");
-          } else if (index == 1){
-            $(this).val(price_med);          
-            $(this).text("Average ($" + price_med.toFixed(2)  + ")");          
-          } else if (index == 2){
-            $(this).val(price_high);
-            $(this).text("High    ($" + price_high.toFixed(2)  + ")");          
-          }
-        });        
-      }
-      $("#mtg_cards_listing_price").val(price_high);
-      $("#mtg_cards_listing_price").trigger('focus');
-      $("#mtg_cards_listing_price_options").trigger("liszt:updated");      
+      updateListingPricingInfo(price_low, price_med, price_high);
     });
 
   });
 
 /* GENERIC LISTING JAVASCRIPTS */ 
 
+  // change card name
   $('#New_Generic_Name_Block div #mtg_cards_listing_name').bind('railsAutocomplete.select', function(event, data){
-    $.get('/mtg/cards/listings/new_generic_set.json?name=' + $('#mtg_cards_listing_name').val(), function(data) {
-      $("#New_Generic_Info_Block").hide();
-      $("#New_Generic_Set_Block").show();
-      var selection_array = data;
-      $("#mtg_cards_listing_set").empty();
-      $("#mtg_cards_listing_set").removeAttr('disabled');      
-      $("#mtg_cards_listing_set").append('<option value></option>'); // give null value so label shows      
-      if (selection_array.length > 1) {
-        $(selection_array).each(function(index, item) {
-           $("#mtg_cards_listing_set").append('<option value=' + item[1] + '>' + item[0] + '</option>');           
-        });
-        $("#mtg_cards_listing_set").trigger("liszt:updated");
-      } else if (selection_array.length == 1) {
-        $("#mtg_cards_listing_set").append('<option selected=selected value=' + selection_array[0][1] + '>' + selection_array[0][0] + '</option>');
-        $("#mtg_cards_listing_set").trigger("liszt:updated");
-        $("#mtg_cards_listing_set").trigger("change");
-      }
-    });      
-  });
-  
-  $("#New_Generic_Set_Block #mtg_cards_listing_set").chosen().change( function() {
-    $.get('/mtg/cards/listings/new_generic_pricing.json?name=' + $('#mtg_cards_listing_name').val() + '&set=' + $('#mtg_cards_listing_set').chosen().val(), function(data) {
-      $("#New_Generic_Info_Block").show();             
-      var selection_array = data;
-      $("#mtg_cards_listing_price_options").empty();
-//      $("#mtg_cards_listing_price_options").append('<option value></option>'); // give null value so label shows
-      $(selection_array).each(function(index, item) {
-         $("#mtg_cards_listing_price_options").append('<option value=' + item[1] + '>' + item[0] + '</option>');
-      });           
-      $("#mtg_cards_listing_price_options").removeAttr('disabled');     
-      $("#mtg_cards_listing_price_options").trigger("liszt:updated");      
-    });        
-  });
-  
-  <%# hide and show custom pricing when user selects other for pricing%>
-  $("#mtg_cards_listing_price_options").chosen().change( function() {
-    $("#Custom_Pricing_Block").hide();    
-    if ($(this).val() == "other") {
-      $("#Custom_Pricing_Block").show();
-    }
-  });
-  
-  /* PLAYSET LISTING JAVASCRIPTS */ 
-
-    $('#New_Generic_Name_Block div #mtg_cards_listing_name').bind('railsAutocomplete.select', function(event, data){
-      $.get('/mtg/cards/listings/new_generic_set.json?name=' + $('#mtg_cards_listing_name').val(), function(data) {
+    var path = "/mtg/cards/listings/new_generic_set.json";
+    var params = [{ name: "name",  value: $('#mtg_cards_listing_name').val() }];
+    var url = path + "?" + $.param(params);
+    if ($('#mtg_cards_listing_name').val() != "no existing match") {
+      $.get(url, function(data) {
         $("#New_Generic_Info_Block").hide();
-        $("#New_Playset_Set_Block").show();
+        $("#New_Generic_Set_Block").show();
         var selection_array = data;
         $("#mtg_cards_listing_set").empty();
         $("#mtg_cards_listing_set").removeAttr('disabled');      
@@ -171,29 +108,44 @@ $(document).ready(function() {
           $("#mtg_cards_listing_set").trigger("liszt:updated");
           $("#mtg_cards_listing_set").trigger("change");
         }
-      });      
-    });
-
-    $("#New_Playset_Set_Block #mtg_cards_listing_set").chosen().change( function() {
-      var params = [{ name:"name",  value: $('#mtg_cards_listing_name').val() },
-                    { name:"set",   value: $('#mtg_cards_listing_set').chosen().val() }];
-      var url = "/mtg/cards/listings/playsets/playset_pricing_ajax.json?" + $.param(params);
-      $.get(url, function(data) {
-        $("#New_Generic_Info_Block").show();             
-        var selection_array = data;
-        $("#mtg_cards_listing_price_options").empty();
-        $(selection_array).each(function(index, item) {
-          if (index == 1){
-            $("#mtg_cards_listing_price_options").append('<option value=' + item[1] + ' selected=selected>' + item[0] + '</option>');                        
-          } else {
-            $("#mtg_cards_listing_price_options").append('<option value=' + item[1] + '>' + item[0] + '</option>');      
-          }
-        });           
-        $("#mtg_cards_listing_price_options").removeAttr('disabled');     
-        $("#mtg_cards_listing_price_options").trigger("liszt:updated");      
-      });        
-    });
+      });
+    }
+  });
   
+  //select a set, set pricing
+  $("#New_Generic_Set_Block #mtg_cards_listing_set").chosen().change( function() {
+    var path = "/mtg/cards/listings/new_generic_pricing.json";
+    if ($('#mtg_cards_listing_playset').val()) {
+      path = "/mtg/cards/listings/playsets/playset_pricing_ajax.json";
+    }
+    var params = [{ name: "name",      value: $('#mtg_cards_listing_name').val() },
+                  { name: "set",       value: $('#mtg_cards_listing_set').chosen().val() },
+                  { name: "condition", value: $('#mtg_cards_listing_condition').chosen().val() } ];
+    var url = path + "?" + $.param(params);    
+    $.get(url, function(data) {
+      $("#New_Generic_Info_Block").show();           
+      var selection_array = data;
+      $("#mtg_cards_listing_price_options").empty();
+      $(selection_array).each(function(index, item) {
+        if (index == 1){
+          $("#mtg_cards_listing_price_options").append('<option value=' + item[1] + ' selected=selected>' + item[0] + '</option>'); 
+        } else {
+          $("#mtg_cards_listing_price_options").append('<option value=' + item[1] + '>' + item[0] + '</option>'); 
+        }         
+      });           
+      $("#mtg_cards_listing_price_options").removeAttr('disabled');     
+      $("#mtg_cards_listing_price_options").trigger("liszt:updated");
+    });
+    
+  });
+  
+  <%# hide and show custom pricing when user selects other for pricing%>
+  $("#mtg_cards_listing_price_options").chosen().change( function() {
+    $("#Custom_Pricing_Block").hide();    
+    if ($(this).val() == "other") {
+      $("#Custom_Pricing_Block").show();
+    }
+  });
   
 /* BULK LISTING JAVASCRIPTS */ 
 
@@ -205,8 +157,6 @@ $(document).ready(function() {
     else {
       $(this).parent().find('.bulk_price_custom').hide();
     }
-    
-  
   });
   
 });
@@ -216,5 +166,36 @@ function clearFileUpload() {
   $("#mtg_cards_listing_scan").val("");
   $("#remove_scan_button").remove();
   $('#mtg_cards_listing_scan').trigger('change');
+}
+
+function updateListingPricingInfo(price_low, price_med, price_high) {
+  if ($('#mtg_cards_listing_playset').val()) {
+     $("#mtg_cards_listing_price_options option").each(function(index){
+       if (index == 0) {
+         $(this).val(price_low);            
+         $(this).text("Low:   $" + price_low.toFixed(2) + "/playset    ($" + (price_low / 4).toFixed(2) + "/card)");
+       } else if (index == 1){
+         $(this).val(price_med);          
+         $(this).text("Average:   $" + price_med.toFixed(2) + "/playset    ($" + (price_med / 4).toFixed(2) + "/card)");
+       } else if (index == 2){
+         $(this).val(price_high);
+         $(this).text("High:   $" + price_high.toFixed(2) + "/playset   ($" + (price_high / 4).toFixed(2) + "/card)");
+       }
+     });        
+   } else {
+     $("#mtg_cards_listing_price_options option").each(function(index){
+       if (index == 0) {
+         $(this).val(price_low);
+         $(this).text("Low     ($" + price_low.toFixed(2)  + ")");
+       } else if (index == 1){
+         $(this).val(price_med);          
+         $(this).text("Average ($" + price_med.toFixed(2)  + ")");          
+       } else if (index == 2){
+         $(this).val(price_high);
+         $(this).text("High    ($" + price_high.toFixed(2)  + ")");          
+       }
+     });        
+   }
+   $("#mtg_cards_listing_price_options").trigger("liszt:updated");
 }
 

@@ -91,7 +91,8 @@ def scrape_pricing_for_one_set(our_set_name = "", tcg_set_name = "")
   end
 
   Mtg::Cards::Statistics.includes(:card => :set).where("mtg_sets.name LIKE ?", our_set_name).each do |stat|
-    relative_pricing_factor = rand(0.83..0.88)
+    relative_pricing_factor_high = rand(0.90..0.95)
+    relative_pricing_factor_low  = rand(0.82..0.88)    
     pricing_for_this_card = card_info_hash[stat.card.name]
     if pricing_for_this_card.present?
       if pricing_for_this_card[:price_low] == 0 || pricing_for_this_card[:price_med] == 0 || pricing_for_this_card[:price_low] == pricing_for_this_card[:price_high]
@@ -99,8 +100,8 @@ def scrape_pricing_for_one_set(our_set_name = "", tcg_set_name = "")
         pricing_for_this_card = scrape_pricing_for_single_card(:statistics => stat, :tcg_set_name => tcg_set_name)
       end
       if pricing_for_this_card[:price_low] > 0 && pricing_for_this_card[:price_med] > 0
-        stat.price_low  = (pricing_for_this_card[:price_low] * 100 * relative_pricing_factor).ceil / 100.to_f
-        stat.price_high = (pricing_for_this_card[:price_med] * 100 * relative_pricing_factor).ceil / 100.to_f
+        stat.price_low  = (pricing_for_this_card[:price_low] * 100 * relative_pricing_factor_low).ceil / 100.to_f
+        stat.price_high = (pricing_for_this_card[:price_med] * 100 * relative_pricing_factor_high).ceil / 100.to_f
         stat.price_med  = (( stat.price_low + stat.price_high ) / 2)
         stat.save if stat.changed?
       else

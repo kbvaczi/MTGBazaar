@@ -19,7 +19,7 @@
       </div>
   
       <% if @sets.present? %>
-        <div id="New_Playset_Set_Block">        
+        <div id="New_Generic_Set_Block">        
           <%= f.input :set,           :label => "Set",
                                       :as => :select,                                  
                                       :required => true,
@@ -29,7 +29,7 @@
                                                       "data-placeholder" => "Select a set..." } %>
         </div>
       <% else %>
-        <div id="New_Playset_Set_Block" style="display:none;">        
+        <div id="New_Generic_Set_Block" style="display:none;">        
           <%= f.input :set,           :label => "Set",
                                       :as => :select,                                  
                                       :required => true,
@@ -55,7 +55,7 @@
         <%
           price_low   = (@card.present? && @card.statistics.present?) ? @card.statistics.price_low  : 0.50
           price_med   = (@card.present? && @card.statistics.present?) ? @card.statistics.price_med  : 1.50
-          price_high  = (@card.present? && @card.statistics.present?) ? @card.statistics.price_high : 2.50                
+          price_high  = (@card.present? && @card.statistics.present?) ? @card.statistics.price_high : 2.50                          
         %>
         <%= f.input :price_options, :label => "Playset Asking Price",
                                     :as => :select,

@@ -104,15 +104,17 @@ class Mtg::Cards::ListingsPlaysetsController < Mtg::Cards::ListingsController
   
   # updates cost info based on card selection
   def playset_pricing_ajax
-    @card = Mtg::Card.joins(:set).includes(:statistics).active.where("mtg_cards.name LIKE ? AND mtg_sets.code LIKE ?", "#{params[:name]}", "#{params[:set]}").first
+    card = Mtg::Card.joins(:set).includes(:statistics).active.where("mtg_cards.name LIKE ? AND mtg_sets.code LIKE ?", "#{params[:name]}", "#{params[:set]}").first
+    listing = card.listings.build(:condition => params[:condition], :playset => true)
     respond_to do |format|
-      format.json do 
-        playset_price_low   = @card.statistics.price_low.dollars * 4
-        playset_price_med   = @card.statistics.price_med.dollars * 4
-        playset_price_high  = @card.statistics.price_high.dollars * 4
-        label_low           = generate_pricing_label "Low", @card.statistics.price_low.dollars
-        label_med           = generate_pricing_label "Average", @card.statistics.price_med.dollars
-        label_high          = generate_pricing_label "High", @card.statistics.price_high.dollars
+      format.json do
+        recommended_pricing = listing.product_recommended_pricing
+        playset_price_low   = recommended_pricing[:price_low].dollars
+        playset_price_med   = recommended_pricing[:price_med].dollars
+        playset_price_high  = recommended_pricing[:price_high].dollars
+        label_low           = generate_pricing_label "Low", recommended_pricing[:price_low].dollars
+        label_med           = generate_pricing_label "Average", recommended_pricing[:price_med].dollars
+        label_high          = generate_pricing_label "High", recommended_pricing[:price_high].dollars
         render :json => [[label_low, playset_price_low], [label_med, playset_price_med], [label_high, playset_price_high], ["Other", "other"]].to_json
       end
     end
@@ -120,7 +122,7 @@ class Mtg::Cards::ListingsPlaysetsController < Mtg::Cards::ListingsController
   
   def generate_pricing_label(label = "Low", price = 0)
     #adjusted_label = label.center(10)
-    string         = "#{label}: #{number_to_currency (price * 4)}/playset (#{number_to_currency (price)}/card)".html_safe
+    string         = "#{label}: #{number_to_currency (price)}/playset (#{number_to_currency (price / 4)}/card)".html_safe
   end
   helper_method :generate_pricing_label
   

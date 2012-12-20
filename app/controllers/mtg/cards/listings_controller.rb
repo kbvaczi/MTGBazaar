@@ -138,9 +138,13 @@ class Mtg::Cards::ListingsController < ApplicationController
   
   # updates cost info based on card selection
   def new_generic_pricing
-    @card = Mtg::Card.includes(:set, :statistics).where(:active => true).where("mtg_cards.name LIKE ? AND mtg_sets.code LIKE ?", "#{params[:name]}", "#{params[:set]}").first
+    card    = Mtg::Card.includes(:set, :statistics).where(:active => true).where("mtg_cards.name LIKE ? AND mtg_sets.code LIKE ?", "#{params[:name]}", "#{params[:set]}").first
+    listing = card.listings.build(:condition => (params[:condition] || "1"))
     respond_to do |format|
-      format.json { render :json => [["Low (#{number_to_currency @card.statistics.price_low.dollars})", @card.statistics.price_low.dollars], ["Average (#{number_to_currency @card.statistics.price_med.dollars})", @card.statistics.price_med.dollars], ["High (#{number_to_currency @card.statistics.price_high.dollars})", @card.statistics.price_high.dollars], ["Other", "other"]].to_json }
+      format.json { render :json => [["Low (#{number_to_currency listing.product_recommended_pricing[:price_low].dollars})", listing.product_recommended_pricing[:price_low].dollars],
+                                     ["Average (#{number_to_currency listing.product_recommended_pricing[:price_med].dollars})", listing.product_recommended_pricing[:price_med].dollars],
+                                     ["High (#{number_to_currency listing.product_recommended_pricing[:price_high].dollars})", listing.product_recommended_pricing[:price_high].dollars], 
+                                     ["Other", "other"]].to_json }
     end
   end
   

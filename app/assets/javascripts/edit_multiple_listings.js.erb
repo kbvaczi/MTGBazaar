@@ -5,9 +5,12 @@ $(document).ready(function() {
   $("#multiple_listings_actions").chosen().live('change', function() {
     $(this).closest('form').find('#action_input').val($(this).val());
     if ($(this).val() == "delete") {
-      $(this).closest('form').find('#delete_submit_button').trigger('click');
+      var message = "Are you sure you want to permanently delete selected listing(s)?";
+      myCustomConfirmBox(message, function() {
+        target.closest('form').submit();        
+      });
     } 
-    else if ("pricing".indexOf($(this).val())) {
+    else if ($(this).val() == "pricing_low" || $(this).val() == "pricing_med" || $(this).val() == "pricing_high") {
       var target = $(this);
       var pricing_level = "average";
       if (target.val() == "pricing_low") {

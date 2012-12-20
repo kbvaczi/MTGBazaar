@@ -40,7 +40,6 @@
     <% end %>
     
   	<%= form_tag mtg_cards_listings_multiple_process_request_path, :id => "multiple_listing_edit_form", :method => :post do %>
-      <%= submit_tag "Delete",          :id => "delete_submit_button",  :style => "display:none;", :confirm => "Are you sure you want to permanently delete selected listing(s)?"%>
       <%= hidden_field_tag "action_input" %>
       <div>
         <span class="ml mb">
