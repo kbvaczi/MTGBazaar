@@ -4,24 +4,20 @@
 
   <div class="group center_wrap">
     <ul class="tabs">
-      <li <%= "class=selected" if params[:status] == nil || params[:status] == "" %>> <%= link_to "All (#{current_user.mtg_listings.pluck(:quantity_available).inject(0) {|sum, value| sum + value}})", url_for(params.merge(:status => nil)), :remote => true %> </li>
-      <li <%= "class=selected" if params[:status] == "active" %>>                     <%= link_to "Active (#{current_user.mtg_listings.active.pluck(:quantity_available).inject(0) {|sum, value| sum + value}})", url_for(params.merge(:status => "active")), :remote => true %> </li>
-      <li <%= "class=selected" if params[:status] == "inactive" %>>                   <%= link_to "Inactive (#{current_user.mtg_listings.inactive.pluck(:quantity_available).inject(0) {|sum, value| sum + value}})", url_for(params.merge(:status => "inactive")), :remote => true %> </li>      
+      <li <%= "class=selected" if params[:status] == nil || params[:status] == "active" %>> <%= link_to "Active (#{current_user.mtg_listings.active.pluck(:quantity_available).inject(0) {|sum, value| sum + value}})", url_for(params.merge(:status => "active")), :remote => true %> </li>
+      <li <%= "class=selected" if params[:status] == "inactive" %>>                         <%= link_to "Inactive (#{current_user.mtg_listings.inactive.pluck(:quantity_available).inject(0) {|sum, value| sum + value}})", url_for(params.merge(:status => "inactive")), :remote => true %> </li>      
     </ul>
   </div>
 
   <%#= link_to "Create a New Listing", new_generic_mtg_cards_listings_path, :class => "right", :style => "margin-top:23px;margin-right:10px;" %>
   <div>
     <%
-      if params[:status] == "active"
-        listings_playsets_count  = current_user.mtg_listings.where(:playset => true).active.pluck(:quantity_available).inject(0) {|sum, value| sum + value}
-        listings_singles_count   = current_user.mtg_listings.where(:playset => false).active.pluck(:quantity_available).inject(0) {|sum, value| sum + value}
-      elsif params[:status] == "inactive"
+      if params[:status] == "inactive"
         listings_playsets_count  = current_user.mtg_listings.where(:playset => true).inactive.pluck(:quantity_available).inject(0) {|sum, value| sum + value}
         listings_singles_count   = current_user.mtg_listings.where(:playset => false).inactive.pluck(:quantity_available).inject(0) {|sum, value| sum + value}
       else
-        listings_playsets_count  = current_user.mtg_listings.where(:playset => true).pluck(:quantity_available).inject(0) {|sum, value| sum + value}
-        listings_singles_count   = current_user.mtg_listings.where(:playset => false).pluck(:quantity_available).inject(0) {|sum, value| sum + value}
+        listings_playsets_count  = current_user.mtg_listings.where(:playset => true).active.pluck(:quantity_available).inject(0) {|sum, value| sum + value}
+        listings_singles_count   = current_user.mtg_listings.where(:playset => false).active.pluck(:quantity_available).inject(0) {|sum, value| sum + value}
       end
     %>
     <ul class="tabs2">
@@ -84,7 +80,7 @@
   
     <% if (not current_user.active) && params[:status] == "active" %>
       <p class="ma"><i>Note: All your listings are temporarily inactive due to your seller status</i></p>
-    <% elsif params[:filter] != "false" %>
+    <% elsif params[:filter] == "true" %>
       <%= render :partial => "mtg/no_results", :locals => { :filter_by => "cookies", :use_seller_filter => false } %>
     <% else %>  
       <%= link_to "Create New Listing", new_generic_mtg_cards_listings_path, :class => "right button mr mb" %>  

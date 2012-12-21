@@ -4,6 +4,7 @@ $(document).ready(function() {
   
   $("#multiple_listings_actions").chosen().live('change', function() {
     $(this).closest('form').find('#action_input').val($(this).val());
+    var target = $(this);    
     if ($(this).val() == "delete") {
       var message = "Are you sure you want to permanently delete selected listing(s)?";
       myCustomConfirmBox(message, function() {
@@ -11,7 +12,6 @@ $(document).ready(function() {
       });
     } 
     else if ($(this).val() == "pricing_low" || $(this).val() == "pricing_med" || $(this).val() == "pricing_high") {
-      var target = $(this);
       var pricing_level = "average";
       if (target.val() == "pricing_low") {
         pricing_level = "low"
