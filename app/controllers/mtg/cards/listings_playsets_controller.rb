@@ -19,15 +19,18 @@ class Mtg::Cards::ListingsPlaysetsController < Mtg::Cards::ListingsController
     
   def new
     @listing = Mtg::Cards::Listing.new(params[:mtg_cards_listing])
+    @listing.playset = true
 
     if params[:card_id].present?
       @card = Mtg::Card.includes(:set, :statistics).active.find(params[:card_id])
       @sets = Mtg::Set.joins(:cards).active.where("mtg_cards.name LIKE ?", @card.name).order("release_date DESC").to_a
+      @listing.card = @card
     end   
    
     if params[:mtg_cards_listing] && params[:mtg_cards_listing][:set]
       @sets = Mtg::Set.joins(:cards).active.where("mtg_cards.name LIKE ?", params[:mtg_cards_listing][:name]).order("release_date DESC").to_a    
       @card = Mtg::Card.includes(:set, :statistics).active.where("mtg_cards.name LIKE ? AND mtg_sets.code LIKE ?", "#{params[:mtg_cards_listing][:name]}", "#{params[:set]}").first      
+      @listing.card = @card      
     end
     
     respond_to do |format|

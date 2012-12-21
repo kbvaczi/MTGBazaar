@@ -1,7 +1,11 @@
 $(document).ready(function() {
   
-//  $(".overlay_trigger[rel]").overlay({mask:'#000'});
+  initialize_overlays();
+  initialize_tooltips();
   
+});
+
+function initialize_overlays() {
   //creates overlay appended to body of page to avoid centering conflicts... then runs centerScreen to center object.
   $(".overlay_trigger[rel]").overlay({
     mask:'#000',
@@ -9,10 +13,8 @@ $(document).ready(function() {
       this.getOverlay().appendTo('body').centerScreen();
     }
   });
-  
-  initialize_tooltips();
-  
-});
+}
+
 
 function initialize_tooltips() {
   

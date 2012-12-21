@@ -41,12 +41,9 @@ $(document).ready(function() {
     }
   });
   
-  $("#mtg_cards_listing_foil, #mtg_cards_listing_signed, #mtg_cards_listing_misprint, #mtg_cards_listing_altart").live('change', function(){
+  $("#mtg_cards_listing_foil, #mtg_cards_listing_signed, #mtg_cards_listing_misprint, #mtg_cards_listing_altart, #mtg_cards_listing_language").live('change', function(){
     var target = $("#mtg_cards_listing_price_options");
-    if ($('#mtg_cards_listing_signed').attr('checked') || $('#mtg_cards_listing_misprint').attr('checked') || $('#mtg_cards_listing_altart').attr('checked') || $('#mtg_cards_listing_foil').attr('checked')) {
-      target.val("other");
-      $("#mtg_cards_listing_price_options").trigger("liszt:updated");          
-      target.trigger("change");
+    if ($('#mtg_cards_listing_signed').attr('checked') || $('#mtg_cards_listing_misprint').attr('checked') || $('#mtg_cards_listing_altart').attr('checked') || $('#mtg_cards_listing_foil').attr('checked') || $('#mtg_cards_listing_language').chosen().val() != 'EN') {
       target.siblings('.hint').remove();
       target.parent().append('<span class="hint">custom pricing is recommended for this listing</span>');		      
     } else {

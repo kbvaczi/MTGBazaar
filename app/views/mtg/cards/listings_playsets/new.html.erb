@@ -39,7 +39,7 @@
       <% end %>
   
       <div id="New_Generic_Info_Block" <%= "style=display:none;" if not @sets.present? %>>                      
-        <%= f.input :condition,     :label => "Worst Card Condition",
+        <%= f.input :condition,     :label => "Card Condition",
                                     :as => :select,
                                     :collection => condition_list,
                                     :default => "NM",
@@ -53,17 +53,17 @@
                                     :required => true %>                                
 
         <%
-          price_low   = (@card.present? && @card.statistics.present?) ? @card.statistics.price_low  : 0.50
-          price_med   = (@card.present? && @card.statistics.present?) ? @card.statistics.price_med  : 1.50
-          price_high  = (@card.present? && @card.statistics.present?) ? @card.statistics.price_high : 2.50                          
+          price_low   = @listing.card.present? ? @listing.product_recommended_pricing[:price_low].dollars  : 0.50
+          price_med   = @listing.card.present? ? @listing.product_recommended_pricing[:price_med].dollars  : 1.50
+          price_high  = @listing.card.present? ? @listing.product_recommended_pricing[:price_high].dollars : 2.50                          
         %>
         <%= f.input :price_options, :label => "Playset Asking Price",
                                     :as => :select,
-                                    :collection => @card.present? ? [[generate_pricing_label("Low", price_low),  (price_low * 4)], 
-                                                    [generate_pricing_label("Med", price_med),   (price_med * 4)], 
-                                                    [generate_pricing_label("High", price_high),  (price_high * 4)],
+                                    :collection => @listing.card.present? ? [[generate_pricing_label("Low", price_low),  (price_low)], 
+                                                    [generate_pricing_label("Med", price_med),   (price_med)], 
+                                                    [generate_pricing_label("High", price_high),  (price_high)],
                                                     ["Other", "other"]] : [],
-                                    :selected => @card.present? ? price_med * 4 : nil,
+                                    :selected => @listing.card.present? ? price_med * 4 : nil,
                                     :input_html => { :class => "chzn-select chzn-nosearch" },
                                     :required => true %>
 

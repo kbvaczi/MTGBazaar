@@ -1,6 +1,6 @@
 var template = $("<%= escape_javascript render :template => "users/account_listings", :formats => [:html] %>");
 $('#content').html(template.nextAll('#content').html());
 
-$(".overlay_trigger[rel]").overlay({mask:'#000'});
+initialize_overlays();
 initialize_tooltips();
 $.activateChosenSelect();
