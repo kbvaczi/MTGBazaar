@@ -19,9 +19,8 @@ class Mtg::OrdersController < ApplicationController
     @order.transaction.payment.save!
 
     respond_to do |format|
-      format.mobile do
-        redirect_to @gateway.redirect_url_for(@purchase["payKey"])
-      end
+      format.mobile { redirect_to @gateway.redirect_url_for(@purchase["payKey"])  } 
+      format.html   { redirect_to @gateway.redirect_url_for(@purchase["payKey"])  }       
       format.js {}
     end
   end
@@ -126,7 +125,7 @@ class Mtg::OrdersController < ApplicationController
     current_cart.update_cache       # update the shopping cart
     cookies[:checkout] = "success"  # when show cart page is displayed it will have a success message
     respond_to do |format|
-      format.html { render :layout => false }        # this will just load javascript that will reload the current page (show cart) to get rid of the light box
+      format.html   { render :layout => false }        # this will just load javascript that will reload the current page (show cart) to get rid of the light box
       format.mobile { redirect_to show_cart_path }
     end
   end
@@ -134,7 +133,7 @@ class Mtg::OrdersController < ApplicationController
   def checkout_failure
     cookies[:checkout] = "failure"  # when show cart page is displayed it will have a failure message
     respond_to do |format|
-      format.html { render :layout => false }        # this will just load javascript that will reload the current page (show cart) to get rid of the light box
+      format.html   { render :layout => false }        # this will just load javascript that will reload the current page (show cart) to get rid of the light box
       format.mobile { redirect_to show_cart_path }
     end
 
