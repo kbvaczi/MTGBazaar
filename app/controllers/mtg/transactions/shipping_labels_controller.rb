@@ -42,16 +42,10 @@ class Mtg::Transactions::ShippingLabelsController < ApplicationController
     if label.present?
       if label.updated_at < 3.hours.ago || label.tracking.nil? # tracking doesn't exists or hasn't been updated for awhile
         Rails.logger.info("Attempting to track transaction #{current_transaction.transaction_number}")
-        begin
-          @response = Stamps.track(current_transaction.shipping_label.stamps_tx_id)
-          label.update_attribute(:tracking, @response)
-        rescue Exception => message
-          if message.to_s.include?('The underlying connection was closed') # error you get when there is no info
-            @error = "No tracking information at this time..."
-          else
-            @error = "Cannot connect to tracking service at this time, please try again later..."
-          end
-          Rails.logger.info("Error Tracking #{current_transaction.transaction_number}: #{message}")
+        if label.update_tracking
+          @response = label.tracking
+        else
+          @error = "Cannot update tracking information at this time, please try again later..."
         end
       else # user has updated tracking recently... let's just show them what they saw last time
         @response = label.tracking 

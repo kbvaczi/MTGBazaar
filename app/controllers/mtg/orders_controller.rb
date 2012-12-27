@@ -21,7 +21,7 @@ class Mtg::OrdersController < ApplicationController
     respond_to do |format|
       format.mobile { redirect_to @gateway.redirect_url_for(@purchase["payKey"])  } 
       format.html   { redirect_to @gateway.redirect_url_for(@purchase["payKey"])  }       
-      format.js {}
+      format.js     {}
     end
   end
   
