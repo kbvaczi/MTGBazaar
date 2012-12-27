@@ -12,9 +12,10 @@ MTGBazaar::Application.routes.draw do
 
   post    "mtg/cards/listings/:id/add_to_cart"      => "carts#add_mtg_cards",             :as => 'add_to_cart_mtg_listing'      
   delete  "mtg/cards/listings/:id/remove_from_cart" => "carts#remove_mtg_cards",          :as => 'remove_from_cart_mtg_listing'
-  post    "mtg/cards/listings/:id/update_quantity"  => "carts#update_quantity_mtg_cards", :as => 'update_quantity_in_cart_mtg_cards'  
+  post    "mtg/cards/listings/:id/update_quantity"          => "carts#update_quantity_mtg_cards", :as => 'update_quantity_in_cart_mtg_cards'
 
-  get     'mtg/cart'                          => 'carts#show',                      :as => 'show_cart'
+  get     'mtg/cart'                                      => 'carts#show',                    :as => 'show_cart'
+
   
 # TICKETS ------------------- #
 
@@ -30,9 +31,10 @@ MTGBazaar::Application.routes.draw do
 
   # Orders
   
-  post  'orders/:id/checkout'                 => 'mtg/orders#checkout',             :as => 'order_checkout'
-  get   'orders/:id/checkout_success'         => 'mtg/orders#checkout_success',     :as => 'order_checkout_success'  
-  get   'orders/:id/checkout_failure'         => 'mtg/orders#checkout_failure',     :as => 'order_checkout_failure'
+  post  'orders/:id/checkout'                 => 'mtg/orders#checkout',                :as => 'order_checkout'
+  get   'orders/:id/checkout_success'         => 'mtg/orders#checkout_success',        :as => 'order_checkout_success'  
+  get   'orders/:id/checkout_failure'         => 'mtg/orders#checkout_failure',        :as => 'order_checkout_failure'
+  post  'orders/:id/update_shipping_options'  => 'mtg/orders#update_shipping_options', :as => 'order_update_shipping_options'
   
   # listings
   
@@ -45,10 +47,6 @@ MTGBazaar::Application.routes.draw do
   put   'transactions/:id/confirm'        => 'mtg/transactions#create_seller_sale_confirmation',      :as => 'create_seller_sale_confirmation'    
   get   'transactions/:id/reject'         => 'mtg/transactions#seller_sale_rejection',                :as => 'seller_sale_rejection'
   put   'transactions/:id/reject'         => 'mtg/transactions#create_seller_sale_rejection',         :as => 'create_seller_sale_rejection'  
-  get   'transactions/:id/modify'         => 'mtg/transactions#seller_sale_modification',             :as => 'seller_sale_modification'
-  put   'transactions/:id/modify'         => 'mtg/transactions#create_seller_sale_modification',      :as => 'create_seller_sale_modification'  
-  get   'transactions/:id/review'         => 'mtg/transactions#buyer_sale_modification_review',       :as => 'buyer_sale_modification_review'
-  put   'transactions/:id/review'         => 'mtg/transactions#create_buyer_sale_modification_review',:as => 'create_buyer_sale_modification_review'
   get   'transactions/:id/cancel'         => 'mtg/transactions#buyer_sale_cancellation',              :as => 'mtg_transaction_buyer_sale_cancellation'  
   put   'transactions/:id/cancel'         => 'mtg/transactions#create_buyer_sale_cancellation',       :as => 'mtg_transaction_create_buyer_sale_cancellation'    
   get   'transactions/:id/buyer_feedback' => 'mtg/transactions#buyer_sale_feedback',                  :as => 'buyer_sale_feedback'
@@ -58,6 +56,7 @@ MTGBazaar::Application.routes.draw do
   get   'transactions/:id/delivery'       => 'mtg/transactions#buyer_delivery_confirmation',          :as => 'buyer_delivery_confirmation'
   put   'transactions/:id/delivery'       => 'mtg/transactions#create_buyer_delivery_confirmation',   :as => 'create_buyer_delivery_confirmation'  
   get   'transactions/:id/invoice'        => 'mtg/transactions#show_invoice',                         :as => 'show_invoice'
+  put   'transactions/:id/pickup_confirm' => 'mtg/transactions#pickup_confirmation',                  :as => 'pickup_confirmation'
 
   get   'transactions/:id/feedback'           => 'mtg/transactions/feedback#new',                     :as => 'new_feedback'
   post  'transactions/:id/feedback'           => 'mtg/transactions/feedback#create',                  :as => 'create_feedback'

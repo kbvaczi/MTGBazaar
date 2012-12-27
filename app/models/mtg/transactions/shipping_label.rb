@@ -52,7 +52,6 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
     
   end
   
-  
   # ------ VALIDATIONS --------- #
 
   # make sure there's a transaction before doing anything
@@ -64,43 +63,84 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
   validates             :price, :numericality => {:greater_than => 0, :less_than => 5000, :message => "Must be between $0.01 and $50"}, :if => "postage_created"   #price must be between $0 and $10,000.00  
   
   
-  def self.calculate_shipping_parameters(options = {:card_count => 1})
+  def self.calculate_shipping_parameters(options = {})
+    options = {:card_count => 1, :insurance => false, :insured_value => 0, :signature => false, :shipping_type => 'usps'}.merge(options)
     card_weight_in_oz = (options[:card_count] / 15.to_f) # 15 cards per ounce
     if options[:card_count] <= 150
       service_type = 'US-FC' 
       package_type = 'Package'
       package_weight_in_oz = 1.7
       if options[:card_count] <= 15
-        user_charge = 1.99.to_money # our cost = 1.64 at 3oz, USPS 2.80 with DC
+        basic_shipping_charge = 1.99.to_money # our cost = 1.64 at 3oz, USPS 2.80 with DC
       elsif options[:card_count] <= 50
-        user_charge = 2.99.to_money # our cost = 2.15 at 6oz, USPS 3.31 with DC
+        basic_shipping_charge = 2.99.to_money # our cost = 2.15 at 6oz, USPS 3.31 with DC
       elsif options[:card_count] <= 150
-        user_charge = 3.99.to_money # our cost = 3.28 at 13oz, USPS 4.50 with DC            
-      end 
+        basic_shipping_charge = 3.99.to_money # our cost = 3.28 at 13oz, USPS 4.50 with DC            
+      end
     elsif options[:card_count] <= 500
       service_type = 'US-PM' 
       package_type = 'Small Flat Rate Box'
       package_weight_in_oz = 4
-      user_charge = 5.99.to_money # our cost = 5.15 flat rate, USPS = 6.10 with DC
+      basic_shipping_charge = 5.99.to_money # our cost = 5.15 flat rate, USPS = 6.10 with DC
     elsif options[:card_count] <= 4000
       service_type = 'US-PM' 
       package_type = 'Flat Rate Box'
       package_weight_in_oz = 5
-      user_charge = 11.99.to_money # our cost = 10.85 flat rate, USPS = 12.10 with DC      
+      basic_shipping_charge = 11.99.to_money # our cost = 10.85 flat rate, USPS = 12.10 with DC      
     else
       service_type = 'US-PM' 
       package_type = 'Large Flat Rate Box'
       package_weight_in_oz = 6
-      user_charge = 13.99.to_money # our cost = 10.85 flat rate, USPS = 14.65 with DC            
+      basic_shipping_charge = 13.99.to_money # our cost = 10.85 flat rate, USPS = 14.65 with DC            
     end
     total_weight_in_oz = ((card_weight_in_oz + package_weight_in_oz) * 1.1).round(2) # add up weight, add error margin
     total_weight_in_oz = 3 if total_weight_in_oz <= 3 # flat rate for everything under 3oz, so just round up if so
-    return {:weight_in_oz => total_weight_in_oz, 
-            :service_type => service_type, 
-            :package_type => package_type, 
-            :user_charge => user_charge}
+    shipping_options_pricing = {:basic_shipping         => basic_shipping_charge,
+                                :insurance              => Mtg::Transactions::ShippingLabel.insurance_charge(:insured_value => options[:insured_value].to_money || 0),
+                                :signature_confirmation => 2.49.to_money } # our cost for signature confirmation = 2.1, USPS = 2.55
+    shipping_options_charges = {:basic_shipping         => options[:shipping_type] == 'usps' ? shipping_options_pricing[:basic_shipping] : 0.to_money,
+                                :insurance              => options[:insurance]               ? shipping_options_pricing[:insurance] : nil,
+                                :signature_confirmation => options[:signature]               ? shipping_options_pricing[:signature_confirmation] : nil }
+    total_shipping_charge = shipping_options_charges.values.inject(0.to_money) { |sum, val| sum + (val || 0.to_money) }
+    return {:weight_in_oz             => total_weight_in_oz, 
+            :service_type             => service_type, 
+            :package_type             => package_type, 
+            :shipping_options_pricing => shipping_options_pricing,
+            :shipping_options_charges => shipping_options_charges,
+            :total_shipping_charge    => total_shipping_charge } 
+
   end
   
+  # returns rate of insurance to charge user, returns nil if we cannot insure the package
+  def self.insurance_charge(options = {})
+    options = {:insured_value => 0.to_money}.merge(options)
+    if options[:insured_value] > 0.to_money
+      if options[:insured_value]    <= 50.00.to_money
+        return (1.99 + options[:insured_value].dollars * 0.04).to_money # stamps flat rate $1.66 under $50, $1.99 + 4% = $2.19 @ $5, $3.99 @ $50
+      elsif options[:insured_value] <= 500.to_money
+        return (2.99 + options[:insured_value].dollars * 0.0125).to_money # stamps flat rate $2.61 under $100, $2.99 + 2% = $3.99 @ $50, $12.99 @ $500        
+      elsif options[:insured_value] <= 10000.to_money
+        return (options[:insured_value] * 0.02).to_money # we charge 2% for insurace on items over $150
+      else
+        return nil
+      end
+    else
+      return 0.to_money
+    end
+    
+    #Insured Value	  Stamps Cost	    Stamps %	    USPS Cost	    USPS %
+    #25	              1.66	          6.64%	        1.85	        7.40%
+    #50	              1.66	          3.32%	        1.85	        3.70%
+    #100	            2.11	          2.11%	        2.35	        2.35%
+    #150              2.61                          2.90
+    #500              7.33                          8.15
+    #1000	            11.29	          1.13%	        12.55	        1.26%
+    #2000	            21.19	          1.06%	        23.55	        1.18%
+    #3000	            31.09	          1.04%	        34.55	        1.15%
+    #5000	            50.89	          1.02%	        56.55	        1.13%
+    #10000	          100.39	        1.00%	        111.55	      1.12%
+    #No insurance over $10000
+  end
   
   def update_tracking
     begin
@@ -109,8 +149,9 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
         last_tracking_event = self.tracking_events.first # tracking events are in reverse order (newest first)
         if last_tracking_event.present? && last_tracking_event[:event].downcase == "delivered"
           self.status = "delivered"
-        end
-        if self.tracking_events.size > 1 && self.transaction.status == "confirmed"
+          self.transaction.update_attributes(:seller_delivered_at => (last_tracking_event[:timestamp] rescue Time.now),
+                                             :status              => 'delivered')
+        elsif self.tracking_events.size > 1 && self.transaction.status == "confirmed"
           self.transaction.ship_sale(:shipped_at => (self.tracking_events[-2][:timestamp] rescue Time.now))
           ApplicationMailer.buyer_shipment_confirmation(self.transaction).deliver # notify buyer that the sale has been shipped
         end
@@ -201,25 +242,37 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
                :from            => options[:from],
                :memo            => options[:memo] || "MTGBazaar.com",
                :rate            => {
-                 :from_zip_code => options[:from][:zip_code],
-                 :to_zip_code   => options[:to][:zip_code],
-                 :weight_oz     => details[:weight_in_oz],
-                 :ship_date     => (Date.today).strftime('%Y-%m-%d'),
-                 :package_type  => details[:package_type],
-                 :service_type  => details[:service_type],
-                 :add_ons       => {
-                   :add_on => [
-                     { :type => 'SC-A-HP' }, # Hidden Postage
-                     { :type => 'US-A-DC' }  # Delivery Confirmation
-                   ]
-                 }
+                 :from_zip_code   => options[:from][:zip_code],
+                 :to_zip_code     => options[:to][:zip_code],
+                 :weight_oz       => details[:weight_in_oz],
+                 :ship_date       => (Date.today).strftime('%Y-%m-%d'),
+                 :package_type    => details[:package_type],
+                 :service_type    => details[:service_type],
+                 :insured_value   => self.transaction.value.dollars,
+                 :add_ons         => { :add_on => determine_add_ons }
                }
             })
     self.params = stamp
     self.stamps_tx_id = stamp[:stamps_tx_id]
-    self.price = stamp[:rate][:amount]
+    self.price = stamp[:rate][:amount].to_money + stamp[:rate][:add_ons][:add_on_v2].inject(0.to_money) {|sum, addon| sum + (addon[:amount].to_money rescue 0.to_money) }
     buy_postage_if_necessary(:current_balance => stamp[:postage_balance][:available_postage].to_i, 
                              :control_total   => stamp[:postage_balance][:control_total].to_i)
+  end
+  
+  def determine_add_ons
+    add_on_array        = []
+    transaction_add_ons = self.transaction.shipping_options[:shipping_charges]
+    if transaction_add_ons[:signature_confirmation].present?
+      add_on_array << { :type => 'US-A-SC' }  # Signature Confirmation      
+      add_on_array << { :type => 'SC-A-HP' }  # Hidden Postage
+    elsif transaction_add_ons[:certified].present?
+      add_on_array << { :type => 'US-A-CM' }  # Certified Mail      
+    else
+      add_on_array << { :type => 'US-A-DC' }  # Delivery Confirmation
+      add_on_array << { :type => 'SC-A-HP' }  # Hidden Postage      
+    end
+    add_on_array << { :type => 'SC-A-INS' } if transaction_add_ons[:insurance].present? # Insurance
+    add_on_array
   end
   
   # buy postage if balance is below minimum (only works in STAMPS_CONFIG[:mode] = production)

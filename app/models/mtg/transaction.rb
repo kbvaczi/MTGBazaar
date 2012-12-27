@@ -11,8 +11,7 @@ class Mtg::Transaction < ActiveRecord::Base
   has_one    :shipping_label, :class_name => "Mtg::Transactions::ShippingLabel",    :foreign_key => "transaction_id",     :dependent => :destroy
   has_one    :feedback,       :class_name => "Mtg::Transactions::Feedback",         :foreign_key => "transaction_id",     :dependent => :destroy
   has_many   :items,          :class_name => "Mtg::Transactions::Item" ,            :foreign_key => "transaction_id",     :dependent => :destroy
-
-
+  
   # Implement Money gem for price column
   composed_of   :value,
                 :class_name => 'Money',
@@ -27,6 +26,8 @@ class Mtg::Transaction < ActiveRecord::Base
                 :constructor => Proc.new { |cents| Money.new(cents || 0) },                
                 :converter => Proc.new { |value| value.respond_to?(:to_money) ? value.to_money : Money.empty }                  
 
+  serialize     :shipping_options
+
   # override default route to add username in route.
   def to_param
     "#{id}-#{transaction_number}".parameterize 
@@ -34,13 +35,12 @@ class Mtg::Transaction < ActiveRecord::Base
 
 # ---------------- CALLBACKS ------------------
 
-  before_validation :update_transaction_costs
   before_create     :generate_transaction_number                  
   
 # ---------------- VALIDATIONS ----------------      
 
   validates               :value, :numericality => {:greater_than => 0, :less_than => 5000000, :message => "Must be between $0.01 and $50,000"}   #price must be between $0 and $10,000.00    
-  validates               :shipping_cost, :numericality => {:greater_than => 150, :less_than => 3000, :message => "Must be between $1.50 and $30"}
+  validates               :shipping_cost, :numericality => {:greater_than_or_equal_to => 0, :less_than => 3000, :message => "Must be between $0 and $30"}
   validates_associated    :items
   validate                :self_buying_not_allowed
   
@@ -112,7 +112,7 @@ class Mtg::Transaction < ActiveRecord::Base
   # check whether seller has rejected this transaction or not
   def seller_rejected?
     return self.seller_rejected_at != nil
-  end  
+  end
   
   # returns true if buyer has already reviewed this transaction otherwise returns false
   def buyer_reviewed?
@@ -221,7 +221,6 @@ class Mtg::Transaction < ActiveRecord::Base
   
   def update_transaction_costs
     self.value         = self.items.to_a.inject(0) {|sum, item| sum + item.quantity_requested * item.price.dollars}.to_money
-    self.shipping_cost = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count => self.cards_quantity)[:user_charge]
   end
   
   def generate_transaction_number
@@ -230,5 +229,6 @@ class Mtg::Transaction < ActiveRecord::Base
     end while Mtg::Transaction.where(:transaction_number => token).exists?
     self.transaction_number = token
   end
+  
   
 end

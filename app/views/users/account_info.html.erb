@@ -20,11 +20,11 @@
         <th colspan=2>Account</th>
       </tr>
       <tr>
-        <td width="33%" class="header_row">Username</td>
+        <td width="33%" class="header_row2">Username</td>
         <td width="67%" class=<%= cycle "odd", "even" %>><%= "#{current_user.username}" %></td>
       </tr>
       <tr>
-        <td class="header_row">Email</td>
+        <td class="header_row2">Email</td>
         <td class=<%= cycle "odd", "even" %>><%= current_user.email %></td>
       </tr>
     </table>
@@ -35,19 +35,19 @@
       </tr>
 
       <tr>
-        <td width="33%" class="header_row">Seller Status</td>
+        <td width="33%" class="header_row2">Seller Status</td>
         <td width="67%" class=<%= cycle "odd", "even" %>><%= current_user.active ? "Active" : "Inactive" %></td>
       </tr>
       <tr>
-        <td width="33%" class="header_row">Seller PayPal Email</td>
+        <td width="33%" class="header_row2">Seller PayPal Email</td>
         <td width="67%" class=<%= cycle "odd", "even" %>><%= current_user.account.paypal_username.present? ? current_user.account.paypal_username : "<i>none</i>".html_safe %></td>
       </tr>
       <tr>
-        <td class="header_row">For Sale</td>
+        <td class="header_row2">For Sale</td>
         <td class=<%= cycle "odd", "even" %>><%= pluralize current_user.mtg_listings.to_a.inject(0) {|sum, listing| sum + listing.quantity}, "Card", "Cards" %> / <%= number_to_currency current_user.mtg_listings.to_a.inject(0) {|sum, listing| sum + listing.quantity * listing.price.dollars} %></td>
       </tr>
       <tr>
-        <td class="header_row">Previously Sold</td>
+        <td class="header_row2">Previously Sold</td>
         <td class=<%= cycle "odd", "even" %>><%= pluralize current_user.mtg_sale_items.to_a.inject(0) {|sum, item| sum + item.quantity_requested}, "Card", "Cards" %> / <%= number_to_currency current_user.mtg_sale_items.to_a.inject(0) {|sum, item| sum + item.quantity_requested * item.price.dollars} %></td>
       </tr>
     </table>
@@ -58,23 +58,23 @@
         <th colspan=2>Personal Information</th>
       </tr>
       <tr>
-        <td width="33%" class="header_row">Name</td>
+        <td width="33%" class="header_row2">Name</td>
         <td width="67%" class=<%= cycle "odd", "even" %>><%= "#{current_user.account.first_name} #{current_user.account.last_name}" %></td>
       </tr>
       <tr>
-        <td class="header_row">Address</td>
+        <td class="header_row2">Address</td>
         <td class=<%= cycle "odd", "even" %>><%= current_user.account.address1 %> <%= "<br/> #{current_user.account.address2}".html_safe if current_user.account.address2.present?  %></td>
       </tr>
       <tr>
-        <td class="header_row">City</td>
+        <td class="header_row2">City</td>
         <td class=<%= cycle "odd", "even" %>><%= current_user.account.city %></td>
       </tr>    
       <tr>
-        <td class="header_row">State</td>
+        <td class="header_row2">State</td>
         <td class=<%= cycle "odd", "even" %>><%= current_user.account.state %></td>
       </tr>   
       <tr>
-        <td class="header_row">Zipcode</td>
+        <td class="header_row2">Zipcode</td>
         <td class=<%= cycle "odd", "even" %>><%= current_user.account.zipcode %></td>
       </tr>
     </table>

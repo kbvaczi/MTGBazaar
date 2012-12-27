@@ -52,19 +52,9 @@
       <% end %>
       
       <tr class="header_row">
-      	<td colspan=7 style="text-align:left;padding-left:15px;">Subtotal<div class="right mr-s"><%= @selected_order.item_count %> Items / <%= @selected_order.cards_quantity %> Cards</div></td>
-        <td><%= number_to_currency(@selected_order.item_price_total) %> </td>      
+      	<th colspan=7 style="text-align:left;padding-left:15px;">Subtotal<div class="right mr-s"><%= @selected_order.item_count %> Items / <%= @selected_order.cards_quantity %> Cards</div></th>
+        <th><%= number_to_currency(@selected_order.item_price_total) %> </th>      
       </tr>
-      <% if @selected_order.item_price_total >= minimum_price_for_checkout %>
-        <tr class="header_row">
-        	<td colspan=7 style="text-align:left;padding-left:15px;">Shipping <i><span class="ml-s t-s">(includes delivery confirmation)</span></i></td>
-          <td><%= number_to_currency(@selected_order.shipping_cost) %> </td>      
-        </tr>          
-        <tr class="header_row">
-        	<th colspan=7 style="text-align:left;padding-left:15px;">Total Cost</th>
-          <th><%= number_to_currency(@selected_order.total_cost) %> </th>
-        </tr>
-      <% end %>
     </table>
 
 
@@ -80,6 +70,13 @@
         <%= button_to "Check Out This Order", order_checkout_path(@selected_order), :method => :post, :format => :mobile, :class => "center"%>
 
       <% else %>
+      
+        <br class="spacer"/>
+        
+        <div id="order_options_and_total">
+          <%= render :partial => "order_options_and_total", :locals => { :shipping_params => @shipping_params, :order => @selected_order } %>
+        </div>
+      
       
         <p style="margin: 20px 50px;">In fairness to all buyers, carts will clear after a period of inactivity.<br/>Please make purchases in a timely manner to reserve your items. </p>
       
@@ -97,9 +94,6 @@
         <%# PAYPAL Lightbox embedded flow activate %>
         <script type="text/javascript" charset="utf-8">
         	var dgFlow = new PAYPAL.apps.DGFlow({ trigger: 'checkout_submit'});
-          //dgFlow = top.dgFlow || top.opener.top.dgFlow; 
-        	//dgFlow.closeFlow(); 
-        	//top.close();
         </script>
         
       <% end %>
@@ -111,7 +105,7 @@
     <br class="spacer"/>
 
     <%# UPDATE QUANTITY IN CART WHEN CHANGED %>
-    <%# If ajax is not working properly, the value of the select box won't change to avoid confusion %>
+
     <script type="text/javascript" charset="utf-8">
       $('.quantity_in_cart').each(function() {
         $(this).data('lastSelected', $(this).find('option:selected'));

@@ -553,22 +553,22 @@ table.fixed {
 table.data {
   width: 100%;
 }
-table.data tr:last-child td:first-child, table.data tr:last-child th:first-child {
+table.data tr:last-child td:first-child, table.data tr:last-child th:first-child, table.data .bottom_row {
   -moz-border-radius-bottomleft:8px;
   -webkit-border-bottom-left-radius:8px;
   border-bottom-left-radius:8px
 }
-table.data tr:last-child td:last-child, table.data tr:last-child th:last-child {
+table.data tr:last-child td:last-child, table.data tr:last-child th:last-child, table.data .bottom_row {
   -moz-border-radius-bottomright:8px;
   -webkit-border-bottom-right-radius:8px;
   border-bottom-right-radius:8px  
 }
-table.data tr:first-child th:first-child, table.data tr:first-child td:first-child  {
+table.data tr:first-child th:first-child, table.data tr:first-child td:first-child, table.data .top_row  {
   -moz-border-radius-topleft:8px;
   -webkit-border-top-left-radius:8px;
   border-top-left-radius:8px
 }
-table.data tr:first-child th:last-child, table.data tr:first-child td:last-child{
+table.data tr:first-child th:last-child, table.data tr:first-child td:last-child, table.data .top_row{
   -moz-border-radius-topright:8px;
   -webkit-border-top-right-radius:8px;
   border-top-right-radius:8px
@@ -587,10 +587,10 @@ table.data tr td p, table.data tr th p {
   max-width:95%;
 }
 .odd td, .odd th, td.odd, th.odd {
-  background-color: rgb(245,245,245);  
+  background-color: rgb(251,251,250);  
 }
 .even td, .even th, td.even, th.even {
-  background-color: rgb(252,252,252);  
+  background-color: rgb(254,254,253);  
 }
 .highlight_odd td, .highlight_odd th, td.highlight_odd, th.highlight_odd {
   background-color: #FDF5CE;  
@@ -599,7 +599,10 @@ table.data tr td p, table.data tr th p {
   background-color: #EEE6BF;  
 }
 tr.header_row th, tr.header_row td, th.header_row, td.header_row  {
-  background-color: rgb(235,235,235); 
+  background-color: rgb(240,240,239); 
+}
+tr.header_row2 th, tr.header_row2 td, th.header_row2, td.header_row2  {
+  background-color: rgb(245,245,243);  
 }
 
 

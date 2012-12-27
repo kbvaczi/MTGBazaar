@@ -17,7 +17,10 @@ ActiveAdmin.register Mtg::Transaction do
   scope :shipped do |transaction|
     transaction.where(:status => "shipped")
   end
-  scope "With Feedback" do |transaction|
+  scope :delivered do |transaction|
+    transaction.where(:status => "delivered")
+  end  
+  scope :completed do |transaction|
     transaction.where(:status => "completed")
   end
   

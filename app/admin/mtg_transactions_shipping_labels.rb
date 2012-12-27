@@ -1,9 +1,11 @@
 # encoding: UTF-8
 ActiveAdmin.register Mtg::Transactions::ShippingLabel do
 
-  menu :label => "3 - Shipping Labels", :parent => "Transactions"
-  extend Mtg::CardsHelper   # access mtg_card helpers inside this class
+  extend Mtg::CardsHelper           # access mtg_card helpers inside this class
+  extend Mtg::ShippingLabelsHelper
   extend ApplicationHelper
+
+  menu :label => "3 - Shipping Labels", :parent => "Transactions"
   
   # ------ ACTION ITEMS (BUTTONS) ------- #  
   config.clear_action_items! #clear standard buttons
@@ -110,7 +112,7 @@ ActiveAdmin.register Mtg::Transactions::ShippingLabel do
           row "Add Ons" do
             output_string = ""
             label.params[:rate][:add_ons][:add_on_v2].each do |ao|
-              output_string << "#{ao[:add_on_type]}</br>"
+              output_string << "#{display_add_on ao[:add_on_type]}</br>"
             end
             output_string.html_safe
           end

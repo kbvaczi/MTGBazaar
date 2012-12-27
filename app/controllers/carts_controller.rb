@@ -5,12 +5,13 @@ class CartsController < ApplicationController
   def show
     set_back_path
     @orders                 = current_cart.orders.includes(:seller)
-    
     # don't do this if the cart is empty
     if @orders.present?   
       @selected_order_id    = @orders.to_a.collect {|o| o.id}.include?(params[:order].to_i) ? params[:order].to_i : @orders.first.id
       @selected_order       = current_cart.orders.includes(:reservations, :seller).where("mtg_orders.id" => @selected_order_id).first
       @reservations         = @selected_order.reservations.includes(:listing => {:card => :set}).page(params[:page]).per(25)
+      @shipping_params      = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count    => @selected_order.cards_quantity, 
+                                                                                             :insured_value => @selected_order.item_price_total)
     end
     
     respond_to do |format|
@@ -78,5 +79,6 @@ class CartsController < ApplicationController
     redirect_to back_path, :notice => "Item quantity updated..."
     return #stop method, don't display a view
   end
+
 
 end

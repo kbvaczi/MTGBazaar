@@ -1,0 +1,5 @@
+$('#order_options_and_total').html("<%= escape_javascript render :partial => 'carts/order_options_and_total', :locals => {:order => @order, :shipping_params => @shipping_params}%>");
+
+initialize_overlays();
+initialize_tooltips();
+$.activateChosenSelect();

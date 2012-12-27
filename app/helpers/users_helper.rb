@@ -11,5 +11,13 @@ module UsersHelper
       User.active.joins(:statistics).where("user_statistics.approval_percent > \'60.0\'").order("user_statistics.number_sales DESC").limit(10).values_of :username, :id
     end
   end  
+  
+  def link_to_user_or_you(user)
+    if user == current_user
+      "You"
+    else
+      link_to user.username, user_path(user.username)
+    end
+  end
 
 end

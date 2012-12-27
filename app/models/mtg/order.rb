@@ -21,7 +21,7 @@ class Mtg::Order < ActiveRecord::Base
                 :class_name => 'Money',
                 :mapping => %w(shipping_cost cents),
                 :constructor => Proc.new { |cents| Money.new(cents || 0) },                
-                :converter => Proc.new { |value| value.respond_to?(:to_money) ? value.to_money : Money.empty }                
+                :converter => Proc.new { |value| value.respond_to?(:to_money) ? value.to_money : Money.empty }                          
 
   # Implement Money gem for item_price_total column
   composed_of   :total_cost,
@@ -32,6 +32,8 @@ class Mtg::Order < ActiveRecord::Base
 
   attr_accessible :seller_id, :cart_id, :item_price_total, :item_count, :shipping_cost, :total_cost
   
+  serialize     :shipping_options
+  
   ##### ------ VALIDATIONS ----- #####
 
   validates_presence_of         :seller, :cart
@@ -40,14 +42,22 @@ class Mtg::Order < ActiveRecord::Base
   validates :shipping_cost,     :numericality => {:greater_than_or_equal_to => 0, :less_than => 10000}      #quantity must be between 0 and $100
   validates :item_count,        :numericality => {:greater_than_or_equal_to => 0, :less_than => 10000}  #quantity must be between 0 and 10,000
   validate  :listings_from_one_seller_only
+  validate  :validate_shipping_options
   
   def listings_from_one_seller_only
     #self.errors[:base] << "Cannot add listings from multiple sellers to an order" if self.id && listings.pluck(:seller_id).uniq.count > 1
     self.errors[:base] << "Cannot add listings from yourself" if seller == buyer
   end
   
+  def validate_shipping_options
+    self.shipping_options[:shipping_type]    = 'usps' unless self.seller.ship_option_pickup_available?
+  end
+  
   ##### ------ CALLBACKS ----- #####  
+  
+  after_initialize :set_default_shipping_options
 
+  ##### ------ HELPERS ------------ #####
 
   ##### ------ PUBLIC METHODS ----- #####  
   
@@ -96,7 +106,10 @@ class Mtg::Order < ActiveRecord::Base
   def setup_transaction_for_checkout
     self.transaction.destroy if self.transaction.present?                             # refresh transaction every time we try to check out so we don't get old data
     #TODO: buyer_confirmed_at now obsolete for transactions
-    self.build_transaction(:buyer_confirmed_at => Time.now, :cards_quantity => self.cards_quantity)
+    self.build_transaction(:buyer_confirmed_at => Time.now, 
+                           :cards_quantity     => self.cards_quantity,
+                           :shipping_cost      => self.shipping_cost,
+                           :value              => self.item_price_total)
     self.reservations.each { |r| self.transaction.build_item_from_reservation(r) }   # create transaction items based on these reservations
     calculated_commission_rate = self.buyer.account.commission_rate || SiteVariable.get("global_commission_rate").to_f
     self.transaction.build_payment( :user_id => self.buyer.id, 
@@ -113,9 +126,12 @@ class Mtg::Order < ActiveRecord::Base
     self.transaction.seller = self.seller                                     
     self.transaction.status = "confirmed"                                             # set transaction to confirmed since money has changed hands
     self.transaction.order_id = nil                                                   # disconnect transaction from order so order can be destroyed
+    self.transaction.shipping_cost    = self.shipping_cost
+    self.transaction.shipping_options = self.shipping_options
+    self.transaction.value            = self.item_price_total
     if self.transaction.save
       self.reservations.each { |r| r.purchased! } rescue true                         # update listing quantity and destroy each reservation for this transaction
-      this_transaction.items.each { |i| i.update_attributes({:buyer_id => self.buyer_id, :seller_id => self.seller_id}, :without_protection => true) } rescue true
+      this_transaction.items.update_all(:buyer_id => self.buyer.id, :seller_id => self.seller_id)
       self.destroy
     end
   end
@@ -124,21 +140,33 @@ class Mtg::Order < ActiveRecord::Base
   protected
   
   def update_cache
-    fresh_reservations = self.reservations.includes(:listing)
-    if fresh_reservations.count > 0
-      self.item_count       = fresh_reservations.pluck(:quantity).inject(0) {|sum, value| sum + value }
-      self.cards_quantity   = fresh_reservations.pluck(:cards_quantity).inject(0) {|sum, value| sum + value }      
-      self.item_price_total = Money.new(fresh_reservations.to_a.inject(0) {|sum, res| sum + res[:quantity] * res.listing[:price]})
-      self.shipping_cost    = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count => self.cards_quantity)[:user_charge]        
-      self.total_cost       = item_price_total + shipping_cost
-    else
-      self.item_count       = 0
-      self.cards_quantity   = 0      
-      self.item_price_total = 0
-      self.shipping_cost    = 0
-      self.total_cost       = 0
-    end
-    self.save
-  end
+     fresh_reservations = self.reservations.includes(:listing)
+     if fresh_reservations.count > 0
+       self.item_count       = fresh_reservations.pluck(:quantity).inject(0) {|sum, value| sum + value }
+       self.cards_quantity   = fresh_reservations.pluck(:cards_quantity).inject(0) {|sum, value| sum + value }
+       self.item_price_total = Money.new(fresh_reservations.to_a.inject(0) {|sum, res| sum + res[:quantity] * res.listing[:price]})
+       
+       shipping_parameters   = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count    => self.cards_quantity,
+                                                                                              :insurance     => self.shipping_options[:shipping_charges][:insurance].present?,
+                                                                                              :insured_value => self.item_price_total,
+                                                                                              :signature     => self.shipping_options[:shipping_charges][:signature_confirmation].present?,
+                                                                                              :shipping_type => self.shipping_options[:shipping_type])
+       self.shipping_options[:shipping_charges].merge!(shipping_parameters[:shipping_options_charges])
+       self.shipping_cost    = self.shipping_options[:shipping_type] == 'usps' ? shipping_parameters[:total_shipping_charge] : 0.to_money
+       self.total_cost       = item_price_total + shipping_cost
+     else
+       self.item_count       = 0
+       self.cards_quantity   = 0      
+       self.item_price_total = 0
+       self.shipping_cost    = 0
+       self.total_cost       = 0
+     end
+     self.save
+   end
   
+  def set_default_shipping_options
+    self.shipping_options ||= { :shipping_type    => 'usps', 
+                                :shipping_charges => { } }
+  end
+ 
 end

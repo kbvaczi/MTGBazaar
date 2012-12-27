@@ -80,7 +80,7 @@ a = {
   response = http.request(request)
 
 %>
-<%
+<%#
 from_address = Stamps.clean_address(
   :address => {
     :full_name   => 'bazaarTrader',
@@ -103,23 +103,32 @@ to_address = Stamps.clean_address(
     :zip_code    => '77018'
 })[:address]
 =end 
-to_address = {:full_name=>"Christopher  Odorizzi", :address1=>"1234 MTGBazaar Lane", :zip_code=>"56789", :state=>"TX", :city=>"Houston"}
-Rails.logger.info Stamps.clean_address(:address => to_address)
-%>
-<%#
-# send one burrito
-rates = Stamps.get_rates(
-  :from_zip_code => '78701',
-  :to_zip_code   => '78704',
-  :weight_lb     => '0.5',
-  :ship_date     => '2012-09-19',
-  :service_type  => 'US-FC',
-  :package_type  => 'Large Envelope or Flat',
- :add_ons => {'SC-A-HP' => '20.00', 'US-A-CM' => '0.25'},
-  :insured_value => '50.00'
-)
+#to_address = {:full_name=>"Christopher  Odorizzi", :address1=>"1234 MTGBazaar Lane", :zip_code=>"56789", :state=>"TX", :city=>"Houston"}
+#Rails.logger.info Stamps.clean_address(:address => to_address)
 %>
 <%
+insured_value = 200.to_money
+
+rates = Stamps.get_rate( :from_zip_code  => '78701',
+                          :to_zip_code   => '77008',
+                          :weight_oz     => '13',
+                          :ship_date     => (Date.today).strftime('%Y-%m-%d'),
+                          #:service_type  => 'US-PM', :package_type  => 'Small Flat Rate Box',
+                          :service_type  => 'US-FC', :package_type  => 'Package',                          
+                          :add_ons       => {
+                            :add_on => [
+                              #{ :type => 'US-A-INS' },  # Insurance
+                              #{ :type => 'SC-A-HP', :amount => 10 },  # hidden postage
+                              #{ :type => 'US-A-DC' }   # delivery confirmation
+                            ]
+                          },
+                          :insured_value => insured_value.to_s )
+                          
+%>
+<%= pretty_print_hash rates %>
+
+
+<%#
  begin
    stamp = Stamps.create!({
                 :sample          => false,

@@ -34,28 +34,32 @@ module ApplicationHelper
   def table_sort_header(title, options = {:value => nil, :remote => false, :params => nil})
     sort = options[:value] || title.downcase
     if params[:sort].present? && (params[:sort] == title.downcase || params[:sort] == options[:value])
-      link_to title, params.merge(options[:params] || {}).merge(:sort => sort, :sort_order => (params[:sort_order] == "asc" ? "desc" : "asc")), :remote => options[:remote], :class => "table_header_sort_selected"     
+      link_to title, params.merge(options[:params] || {}).merge(:page => 1, :sort => sort, :sort_order => (params[:sort_order] == "asc" ? "desc" : "asc")), :remote => options[:remote], :class => "table_header_sort_selected"     
     else
-      link_to title, params.merge(options[:params] || {}).merge(:sort => sort, :sort_order => "asc"), :remote => options[:remote], :class => "table_header_sort"
+      link_to title, params.merge(options[:params] || {}).merge(:page => 1, :sort => sort, :sort_order => "asc"), :remote => options[:remote], :class => "table_header_sort"
     end
   end
   
   def pretty_print_hash(input_hash)
+    output_string = ""
     if input_hash.class == Hash
-      output_string = ""
       input_hash.each do |key, value|
         if value.class == Hash
           output_string << "<strong>:#{key} =></strong><div style=\"margin-left:3%\">"
           output_string << pretty_print_hash(value)
           output_string << "</div>"
+        elsif value.class == Array
+          output_string << "<div style=\"margin-left:3%\">"
+          value.each {|v| output_string << ("[" + pretty_print_hash(v) + "]<br/>")}
+          output_string << "</div>"
         else
           output_string << "<div><strong>:#{key} =></strong> #{value}</div>"
         end
       end
-      output_string.html_safe
-    else 
-      ""
+    else
+      output_string << input_hash.inspect
     end
+    output_string.html_safe
   end
     
 end

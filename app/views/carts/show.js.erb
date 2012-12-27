@@ -1,12 +1,6 @@
 $('#center_bar').html("<%= escape_javascript render :template => "carts/show", :formats => [:html] %>");
-$('#right_bar').html("<%= escape_javascript render  :partial => "shared/right_bar.html" %>");
-$.activateChosenSelect();
+$('#right_bar').html("<%= escape_javascript render  :partial => "shared/right_bar", :formats => [:html] %>");
 
-$(".overlay_trigger[rel]").overlay({
-  mask:'#000',
-  onBeforeLoad: function() {
-      this.getOverlay().appendTo('#center_bar');
-  }
-});
-
+initialize_overlays();
 initialize_tooltips();
+$.activateChosenSelect();

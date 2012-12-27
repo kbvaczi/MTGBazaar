@@ -8,10 +8,10 @@ class Mtg::Transactions::ShippingLabelsController < ApplicationController
   def create
     if current_transaction.shipping_label.present?
       @label = current_transaction.shipping_label
-    else
+    elsif current_transaction.shipping_options[:shipping_type] == 'usps'
       begin
         @label = Mtg::Transactions::ShippingLabel.new(:transaction => current_transaction)
-        if not @label.save 
+        if not @label.save
           Rails.logger.info("@label.errors.full_messages")
           flash[:error] = "There was a problem retreiving your shipping label.  Please try again later..."
           redirect_to back_path
@@ -27,8 +27,10 @@ class Mtg::Transactions::ShippingLabelsController < ApplicationController
           @error = "There was a problem attempting to create your shipping label, please try again later.  If this problem persists, please contact an administrator"
         end
       end 
+    else
+      redirect_to back_path
     end
-    
+  
     respond_to do |format|
       format.html { redirect_to @label.params[:url] } 
       format.js  { current_transaction.reload }

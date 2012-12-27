@@ -99,6 +99,10 @@ class User < ActiveRecord::Base
     self
   end
   
+  def ship_option_pickup_available?
+    true
+  end
+  
   def pending_purchases
     Mtg::Transaction.where(:buyer_id => id, :status => "pending")
   end

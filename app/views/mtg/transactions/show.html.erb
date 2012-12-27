@@ -69,8 +69,8 @@
     	  <th colspan=2>Seller</th>      
     	</tr>
     	<tr class="odd">
-    	  <td>  <%= link_to @transaction.buyer.username, user_path(@transaction.buyer.username) %> </td>
-    	  <td colspan=2>  <%= link_to @transaction.seller.username, user_path(@transaction.seller.username) %> </td>
+    	  <td>            <%= link_to_user_or_you @transaction.buyer  %> </td>
+    	  <td colspan=2>  <%= link_to_user_or_you @transaction.seller %> </td>
     	</tr>      
   	  <tr class="header_row">
     	  <th style="width:50%;">Transaction ID</th>      	    
@@ -81,34 +81,27 @@
     	  <td><%= "#{@transaction.transaction_number}" %></td>
     	  <td><%= number_to_currency(@transaction.value) %> </td>  
     	  <td><%= display_time(@transaction.created_at) %> </td>
-    	</tr> 
+    	</tr>
+  	</table>
+  	<br class="spacer"/>
+  	<table class="data fixed">
       <tr class="header_row">
-        <th>Tracking Number</th>
+        <th>Shipping Type</th>
+    	  <th>Shipping Options</th>
     	  <th>Shipping Cost</th>
-    	  <th>Shipped Date</th>      
+    	  <th>Ship Date</th>
+    	  <th>Delivery Date</th>    	        
     	</tr>
     	<tr class="odd">
-    	  <td style="width:50%;">
-    	    <% if not @transaction.shipping_label.present? %>
-  	          No shipping information yet
-  	      <% else %>
-    	        <%= link_to @transaction.shipping_label.params[:tracking_number], track_shipping_path(@transaction), :remote => true %>
-              <%= content_tag(:div, "", :class => "overlay_trigger hidden", :id => "tracking_overlay_trigger", :rel => "#tracking_overlay" ) %>
-              <%= content_tag(:div, "", :class => "overlay_window", :id => "tracking_overlay") %>
-  	      <% end %>
-    	  </td>
-    	  <td style="width:25%;"><%= number_to_currency(@transaction.shipping_cost) %></td>
-    	  <td style="width:25%;"> 
-    	    <% if @transaction.seller_shipped_at.present? %> 
-            <%= display_time(@transaction.seller_shipped_at) %>
-    	    <% else %>
-            not yet shipped
-    	    <% end %>
-    	  </td>
+    	  <td> <%= display_shipping_type    @transaction %> </td>
+    	  <td> <%= display_shipping_options @transaction %> </td>
+    	  <td> <%= number_to_currency       @transaction.shipping_cost %> </td>
+    	  <td> <%= display_ship_date        @transaction %> </td>
+    	  <td> <%= display_delivery_date    @transaction %> </td>
     	</tr>	
     </table>
-
-    <%# STEP 1 %>
+    
+    <%# STEP 1 (Invoice) SELLER ONLY %>
     <% if current_user.id == @transaction.seller_id %>
       <br class="spacer"/>
       <table class="data fixed">
@@ -128,8 +121,8 @@
     	</table>  
   	<% end %>
 
-    <%# STEP 2 %>
-    <% if current_user.id == @transaction.seller_id %>
+    <%# STEP 2 (Shipping Label) SELLER ONLY %>
+    <% if current_user.id == @transaction.seller_id and @transaction.shipping_options[:shipping_type] != 'pickup' %>
       <br class="spacer"/>
       <table class="data fixed">
         <tr class="header_row">
@@ -164,9 +157,55 @@
       	  </td>
         </tr>
     	</table>
+  	<% end # step 2 %>
+  	
+  	<% if @transaction.shipping_options[:shipping_type] == 'pickup' and @transaction.status != 'delivered' %>
+  	  <br class='spacer'/>
+  	  <% if current_user.id == @transaction.seller_id %>
+        <table class="data fixed">
+          <tr class="header_row">
+            <th colspan=3>Step 2: Transfer Items</th>
+        	</tr>   
+          <tr class="odd">
+            <td colspan=2><p>The buyer has selected In-Store Pickup for this transaction and will contact you shortly to organize pick-up.  After buyer has picked up his/her items, please confirm item pick-up.</p></td>      
+            <td> <%= link_to "Confirm Item Pick-Up", pickup_confirmation_path(@transaction), :method => :put, :class => "button ma-s", :confirm => "Are you sure you want to confirm pickup of these items?" %></td>
+          </tr>         
+      	</table>  	
+    	<% else %>
+        <table class="data fixed">
+          <tr class="header_row">
+            <th colspan=3>Pickup Items</th>
+        	</tr>   
+          <tr class="odd">
+            <td colspan=2><p>You have selected In-Store Pickup for this transaction.  It is your responsibility to contact seller to organize pickup. Please confirm after picking up your items.</p></td>      
+            <td> <%= link_to "Confirm Item Pick-Up", pickup_confirmation_path(@transaction), :method => :put, :class => "button ma-s", :confirm => "Are you sure you want to confirm pickup of these items?" %></td>
+          </tr>         
+      	</table>    	
+    	<% end %>
+  	<% end %>
+  	
+  	<% if shipment_trackable?(@transaction) && @transaction.seller_shipped_at.present? && @transaction.created_at > 1.month.ago %>
+      <br class="spacer"/>
+      <table class="data fixed">
+        <tr class="header_row">
+          <th colspan=3>Shipment Tracking</th>
+      	</tr>   
+        <tr class="odd">
+          <td colspan=2><p>Your items have been shipped! You may track your shipment here. Your tracking number is: <%= @transaction.shipping_label.params[:tracking_number] %></p></td>
+          <td>
+      	    <% if not @transaction.shipping_label.present? %>
+    	          No shipping information yet
+    	      <% else %>
+      	        <%= link_to "Track Shipment", track_shipping_path(@transaction), :remote => true, :class => 'button' %>
+                <%= content_tag(:div, "", :class => "overlay_trigger hidden", :id => "tracking_overlay_trigger", :rel => "#tracking_overlay" ) %>
+                <%= content_tag(:div, "", :class => "overlay_window", :id => "tracking_overlay") %>
+    	      <% end %>
+      	  </td>       
+        </tr>
+    	</table>
   	<% end %>
 
-    <%# STEP 3 %>
+    <%# STEP 3 (Feedback) BOTH BUYER AND SELLER %>
     <br class="spacer"/>  		
 	  <% if current_user.id == @transaction.seller_id %>    
   
@@ -180,7 +219,7 @@
             <th>Buyer Rated You</th>
          	</tr>
          	<tr class="odd">
-            <td colspan=2 rowspan=3 class="odd"><p><%= @transaction.feedback.comment rescue "None" %></p></td>
+            <td colspan=2 rowspan=3 class="odd"><p><%= @transaction.feedback.comment.present? ? @transaction.feedback.comment : 'None' rescue "None" %></p></td>
          	  <td><%= @transaction.feedback.display_rating %></td>
          	</tr>
          	<tr>

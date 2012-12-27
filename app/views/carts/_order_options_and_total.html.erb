@@ -1,0 +1,73 @@
+<%= form_tag order_update_shipping_options_path(:id => order.id), :remote => true, :id => "shipping_options_form" do %>
+  <table class="data">
+    <col width="85%">		  
+	 	<col width="14.5%">
+    <tr class="header_row">
+      <th>Shipping Options</th>
+      <th>Price</th>
+    </tr>                      
+
+    <tr class="header_row2">
+    	<td style="text-align:left;padding-left:15px;">
+        <% unless order.seller.ship_option_pickup_available? %>
+          <%= hidden_field_tag 'shipping_type', 'usps' %>          	  
+        <% else %>
+          <%= radio_button_tag 'shipping_type', 'usps', order.shipping_options[:shipping_type] == 'usps' %>          	                  
+        <% end %>
+    	  USPS Shipping (<%= number_to_currency shipping_params[:shipping_options_pricing][:basic_shipping] %>)<i><span class="ml-s t-s">includes shipment tracking and delivery confirmation</span></i>
+    	</td>
+      <td><%= number_to_currency(order.shipping_options[:shipping_charges][:basic_shipping] || 0.to_money)%> </td>      
+    </tr>
+    <% if (order.shipping_options[:shipping_type] == 'usps') %>
+      <tr class=<%= cycle "odd", "even" %>>
+      	<td style="text-align:left;padding-left:25px;">
+      	  <%= check_box_tag 'shipping_option_insurance', true, order.shipping_options[:shipping_charges][:insurance] ? true : false %>
+      	  Add Insurance (<%= number_to_currency(shipping_params[:shipping_options_pricing][:insurance]) %>)<i><span class="ml-s t-s">protect your investment from loss or damage during shipment</span></i>
+      	</td>
+        <td><%= number_to_currency(order.shipping_options[:shipping_charges][:insurance] || 0.to_money)%> </td>      
+      </tr>                   
+      <tr class=<%= cycle "odd", "even" %>>
+      	<td style="text-align:left;padding-left:25px;">
+      	  <%= check_box_tag 'shipping_option_signature', true, order.shipping_options[:shipping_charges][:signature_confirmation] ? true : false %>
+      	  Add Signature Confirmation (<%= number_to_currency(shipping_params[:shipping_options_pricing][:signature_confirmation]) %>)<i><span class="ml-s t-s">require signature upon delivery</span></i>
+      	</td>
+        <td><%= number_to_currency(order.shipping_options[:shipping_charges][:signature_confirmation] || 0.to_money) %> </td>      
+      </tr>
+    <% end %>
+    <% if order.seller.ship_option_pickup_available? %>
+      <tr class="header_row2">
+      	<td style="text-align:left;padding-left:15px;">
+          <%= radio_button_tag 'shipping_type', 'pickup', order.shipping_options[:shipping_type] == "pickup" %>  	  
+      	  In-Store Pickup (FREE)<i><span class="ml-s t-s">you accept responsibility of acquiring items yourself</span></i>
+      	</td>
+        <td><%= number_to_currency(0) %> </td>      
+      </tr>            
+    <% end %>
+    <tr class="header_row">
+    	<th style="text-align:left;padding-left:15px;">Total Shipping</th>
+      <th><%= number_to_currency(order.shipping_cost) %> </th>              
+    </tr>                
+  </table>
+<% end %>
+
+<br class="spacer"/>
+
+<table class="data">
+  <tr class="header_row">
+  	<th style="text-align:left;padding-left:15px;">Grand Total for this Order</th>
+    <th><%= number_to_currency(order.total_cost) %> </th>
+  </tr>
+</table>
+
+<script type="text/javascript" charset="utf-8">
+
+  $('#shipping_type_usps, #shipping_type_pickup, #shipping_option_signature, #shipping_option_insurance').click(function(){
+	  $(this).closest('form').submit();
+    $(this).delay(2000).queue(function () {
+      $(this).attr('checked', false);
+      $(this).attr('selected', false);      
+      $(this).dequeue();
+    });
+	});
+
+</script>

@@ -22,12 +22,16 @@ class UsersController < ApplicationController
     end
     
     if params[:section] == "feedback"
-      @sales = @user.mtg_sales.includes(:feedback).where("mtg_transactions_feedback.id > 0").order("mtg_transactions_feedback.created_at DESC").page(params[:page]).per(10) 
+      @sales = @user.mtg_sales.with_feedback.order('mtg_transactions.created_at DESC').page(params[:page]).per(10)
     elsif params[:section] == "mtg_cards"
       query = mtg_filters_query(:seller => false, :activate_filters => params[:filter])    
       listings_sort_string = table_sort(:default => "LOWER(mtg_cards.name)", :price => "price", :condition => "mtg_listings.condition", :language => "mtg_listings.language",
                                         :quantity => "mtg_listings.quantity", :name => "LOWER(mtg_cards.name)", :set => "mtg_sets.release_date")
-      @listings = @user.mtg_listings.includes(:card => :set).where(query).available.order(listings_sort_string).page(params[:page]).per(15)
+      if params[:type] == 'playsets'
+        @listings = @user.mtg_listings.includes(:card => :set).where('mtg_listings.playset' => true).where(query).available.order(listings_sort_string).page(params[:page]).per(15)
+      else 
+        @listings = @user.mtg_listings.includes(:card => :set).where('mtg_listings.playset' => false).where(query).available.order(listings_sort_string).page(params[:page]).per(15)
+      end
     end
     
     respond_to do |format|
