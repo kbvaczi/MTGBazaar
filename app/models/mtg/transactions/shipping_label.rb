@@ -147,7 +147,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
       begin
         self.tracking       = Stamps.track(self.stamps_tx_id)
       rescue Exception => message
-        rails.logger.info("ERROR TRACKING: #{message}")
+        Rails.logger.info("ERROR TRACKING: #{message}")
       end
       last_tracking_event = self.tracking_events.first # tracking events are in reverse order (newest first)
       if last_tracking_event.present? && last_tracking_event[:event].downcase == "delivered"

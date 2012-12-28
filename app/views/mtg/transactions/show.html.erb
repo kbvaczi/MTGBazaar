@@ -111,7 +111,7 @@
       	<tr class="odd">
       	  <td colspan=2><p>Please print out an invoice for this transaction and confirm your inventory matches the order.  If there is an issue, please contact the buyer promptly to work out a solution.</p></td>      	  
         	<td> 
-  	   	    <% if not @transaction.seller_shipped_at.present? %>
+  	   	    <% if @transaction.seller_shipped_at.nil? and @transaction.seller_delivered_at.nil? %>
             	<%= link_to 'View & Print Invoice', show_invoice_path(@transaction), :class => "button", :target => "_blank" %>
             <% else %>
               <i>Items Confirmed</i>
