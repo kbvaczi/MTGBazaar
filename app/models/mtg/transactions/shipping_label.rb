@@ -64,7 +64,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
   
   
   def self.calculate_shipping_parameters(options = {})
-    options = {:card_count => 1, :insurance => false, :insured_value => 0, :signature => false, :shipping_type => 'usps'}.merge(options)
+    options = {:card_count => 1, :insurance => false, :item_value => 0, :signature => false, :shipping_type => 'usps'}.merge(options)
     card_weight_in_oz = (options[:card_count] / 15.to_f) # 15 cards per ounce
     if options[:card_count] <= 150
       service_type = 'US-FC' 
@@ -96,12 +96,17 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
     total_weight_in_oz = ((card_weight_in_oz + package_weight_in_oz) * 1.1).round(2) # add up weight, add error margin
     total_weight_in_oz = 3 if total_weight_in_oz <= 3 # flat rate for everything under 3oz, so just round up if so
     shipping_options_pricing = {:basic_shipping         => basic_shipping_charge,
-                                :insurance              => Mtg::Transactions::ShippingLabel.insurance_charge(:insured_value => options[:insured_value].to_money || 0),
+                                :insurance              => Mtg::Transactions::ShippingLabel.insurance_charge(:item_value => options[:item_value].to_money || 0),
                                 :signature_confirmation => 2.49.to_money } # our cost for signature confirmation = 2.1, USPS = 2.55
     shipping_options_charges = {:basic_shipping         => options[:shipping_type] == 'usps' ? shipping_options_pricing[:basic_shipping] : 0.to_money,
                                 :insurance              => options[:insurance]               ? shipping_options_pricing[:insurance] : nil,
                                 :signature_confirmation => options[:signature]               ? shipping_options_pricing[:signature_confirmation] : nil }
     total_shipping_charge = shipping_options_charges.values.inject(0.to_money) { |sum, val| sum + (val || 0.to_money) }
+    # paypal requires all purchases over $250 to have signature confirmation
+    if total_shipping_charge + options[:item_value] - (shipping_options_charges[:signature_confirmation] || 0.to_money) >= 250.to_money    
+      shipping_options_charges[:signature_confirmation] = shipping_options_pricing[:signature_confirmation] 
+      total_shipping_charge = shipping_options_charges.values.inject(0.to_money) { |sum, val| sum + (val || 0.to_money) }      
+    end
     return {:weight_in_oz             => total_weight_in_oz, 
             :service_type             => service_type, 
             :package_type             => package_type, 
@@ -113,14 +118,14 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
   
   # returns rate of insurance to charge user, returns nil if we cannot insure the package
   def self.insurance_charge(options = {})
-    options = {:insured_value => 0.to_money}.merge(options)
-    if options[:insured_value] > 0.to_money
-      if options[:insured_value]    <= 50.00.to_money
-        return (1.99 + options[:insured_value].dollars * 0.04).to_money # stamps flat rate $1.66 under $50, $1.99 + 4% = $2.19 @ $5, $3.99 @ $50
-      elsif options[:insured_value] <= 500.to_money
-        return (2.99 + options[:insured_value].dollars * 0.0125).to_money # stamps flat rate $2.61 under $100, $2.99 + 2% = $3.99 @ $50, $12.99 @ $500        
-      elsif options[:insured_value] <= 10000.to_money
-        return (options[:insured_value] * 0.02).to_money # we charge 2% for insurace on items over $150
+    options = {:item_value => 0.to_money}.merge(options)
+    if options[:item_value] > 0.to_money
+      if options[:item_value]    <= 50.00.to_money
+        return (1.99 + options[:item_value].dollars * 0.04).to_money # stamps flat rate $1.66 under $50, $1.99 + 4% = $2.19 @ $5, $3.99 @ $50
+      elsif options[:item_value] <= 500.to_money
+        return (2.99 + options[:item_value].dollars * 0.0125).to_money # stamps flat rate $2.61 under $100, $2.99 + 2% = $3.99 @ $50, $12.99 @ $500        
+      elsif options[:item_value] <= 10000.to_money
+        return (options[:item_value] * 0.02).to_money # we charge 2% for insurace on items over $150
       else
         return nil
       end
@@ -215,7 +220,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
                    :stamps_tx_id  => transaction.transaction_number,
                    :certified     => false,
                    :insurance     => false,
-                   :insured_value => '0')               
+                   :item_value => '0')               
     end
     #TODO: Code insurance and certified mail algorithms
   end

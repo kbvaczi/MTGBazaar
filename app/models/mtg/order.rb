@@ -50,7 +50,12 @@ class Mtg::Order < ActiveRecord::Base
   end
   
   def validate_shipping_options
+    # only users authorized to have pickup 
     self.shipping_options[:shipping_type]    = 'usps' unless self.seller.ship_option_pickup_available?
+    # signature confirmation is required for all orders over $250
+    if self.item_price_total >= 250.to_money and self.shipping_options[:shipping_charges][:signature_confirmation].nil?
+      self.shipping_options[:shipping_charges][:signature_confirmation] = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:signature => true)[:shipping_options_charges][:signature_confirmation] 
+    end
   end
   
   ##### ------ CALLBACKS ----- #####  
@@ -148,7 +153,7 @@ class Mtg::Order < ActiveRecord::Base
        
        shipping_parameters   = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count    => self.cards_quantity,
                                                                                               :insurance     => self.shipping_options[:shipping_charges][:insurance].present?,
-                                                                                              :insured_value => self.item_price_total,
+                                                                                              :item_value    => self.item_price_total,
                                                                                               :signature     => self.shipping_options[:shipping_charges][:signature_confirmation].present?,
                                                                                               :shipping_type => self.shipping_options[:shipping_type])
        self.shipping_options[:shipping_charges].merge!(shipping_parameters[:shipping_options_charges])

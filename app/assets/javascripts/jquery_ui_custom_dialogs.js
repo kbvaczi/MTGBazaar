@@ -27,7 +27,7 @@ function myCustomConfirmBox(message, callback) {
         
         $( "#dialog-confirm" ).dialog({
             resizable: true,
-            height:180,
+            height:'auto',
             modal: true,
             buttons: {
                 Yes: function() {
@@ -43,12 +43,12 @@ function myCustomConfirmBox(message, callback) {
 
 function myCustomAlertBox(message) {
   // call callback() if the user says yes
-  var dialogHtml = "<div id='dialog-confirm' title='Attention'><p><span class='ui-icon ui-icon-alert' style='float: left; margin: 0 7px 20px 0;'></span>" + message + "</p></div>"
+  var dialogHtml = "<div id='dialog-confirm' title='Attention'><p>" + message + "</p></div>"
   $('#dialog-confirm').remove();
   $('body').append(dialogHtml);
   $( "#dialog-confirm" ).dialog({
     resizable: false,
-    height:150,
+    height:'auto',
     modal: true,
     buttons: {
       OK: function() {

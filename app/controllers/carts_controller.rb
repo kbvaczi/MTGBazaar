@@ -10,8 +10,8 @@ class CartsController < ApplicationController
       @selected_order_id    = @orders.to_a.collect {|o| o.id}.include?(params[:order].to_i) ? params[:order].to_i : @orders.first.id
       @selected_order       = current_cart.orders.includes(:reservations, :seller).where("mtg_orders.id" => @selected_order_id).first
       @reservations         = @selected_order.reservations.includes(:listing => {:card => :set}).page(params[:page]).per(25)
-      @shipping_params      = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count    => @selected_order.cards_quantity, 
-                                                                                             :insured_value => @selected_order.item_price_total)
+      @shipping_params      = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count => @selected_order.cards_quantity, 
+                                                                                             :item_value => @selected_order.item_price_total)
     end
     
     respond_to do |format|

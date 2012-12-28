@@ -11,7 +11,7 @@ class Mtg::OrdersController < ApplicationController
     checkout_setup_purchase
     checkout_set_purchase_options
 
-    Rails.logger.debug "GATEWAY: #{@gateway.debug}"  rescue ""
+    Rails.logger.debug "GATEWAY:  #{@gateway.debug}"    rescue ""
     Rails.logger.debug "PURCHASE: #{@purchase.inspect}" rescue ""
     
     @order.transaction.payment.paypal_paykey            = @purchase["payKey"]
@@ -143,7 +143,7 @@ class Mtg::OrdersController < ApplicationController
     @order            = current_cart.orders.where(:id => params[:id]).first
     new_shipping_type = params[:shipping_type] == 'pickup' && @order.seller.ship_option_pickup_available? ? 'pickup' : 'usps'
     @shipping_params  = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters( :card_count    => @order.cards_quantity, 
-                                                                                        :insured_value => @order.item_price_total,
+                                                                                        :item_value    => @order.item_price_total,
                                                                                         :insurance     => params[:shipping_option_insurance] == 'true' && new_shipping_type == 'usps',
                                                                                         :signature     => params[:shipping_option_signature] == 'true' && new_shipping_type == 'usps',
                                                                                         :shipping_type => new_shipping_type )

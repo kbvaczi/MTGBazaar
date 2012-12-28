@@ -107,7 +107,7 @@ to_address = Stamps.clean_address(
 #Rails.logger.info Stamps.clean_address(:address => to_address)
 %>
 <%
-insured_value = 200.to_money
+item_value = 200.to_money
 
 rates = Stamps.get_rate( :from_zip_code  => '78701',
                           :to_zip_code   => '77008',
@@ -122,7 +122,7 @@ rates = Stamps.get_rate( :from_zip_code  => '78701',
                               #{ :type => 'US-A-DC' }   # delivery confirmation
                             ]
                           },
-                          :insured_value => insured_value.to_s )
+                          :item_value => item_value.to_s )
                           
 %>
 <%= pretty_print_hash rates %>
