@@ -87,7 +87,7 @@
     	  <col width='15%'>    	  
     	  <col width='70%'>    	      	  
         <tr class="header_row">
-          <th colspan=3> <%= pluralize(@sales.total_count, "User Review", "User Reviews") %> </th>
+          <th colspan=3> <%= pluralize(sales_with_comments.count, "User Review", "User Reviews") %> </th>
         </tr>
         <tr class="header_row">
           <th>Date</th>

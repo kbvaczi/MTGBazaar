@@ -150,13 +150,14 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
         Rails.logger.info("ERROR TRACKING: #{message}")
       end
       last_tracking_event = self.tracking_events.first # tracking events are in reverse order (newest first)
+      if self.tracking_events.size > 1 && self.transaction.status == "confirmed"
+        self.transaction.ship_sale(:shipped_at => (self.tracking_events[-2][:timestamp] rescue Time.now))
+        ApplicationMailer.buyer_shipment_confirmation(self.transaction).deliver # notify buyer that the sale has been shipped
+      end
       if last_tracking_event.present? && last_tracking_event[:event].downcase == "delivered"
         self.status = "delivered"
         self.transaction.update_attributes(:seller_delivered_at => (last_tracking_event[:timestamp] rescue Time.now),
                                            :status              => 'delivered')
-      elsif self.tracking_events.size > 1 && self.transaction.status == "confirmed"
-        self.transaction.ship_sale(:shipped_at => (self.tracking_events[-2][:timestamp] rescue Time.now))
-        ApplicationMailer.buyer_shipment_confirmation(self.transaction).deliver # notify buyer that the sale has been shipped
       end
       if defined?(message) and message.present?
         return false
