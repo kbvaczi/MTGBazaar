@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
 
+  caches_action :sitemap
   
   def index
     set_back_path
@@ -8,6 +9,10 @@ class HomeController < ApplicationController
     else
       @news_feeds = NewsFeed.where(:id => 1)
     end
+  end
+  
+  def sitemap
+    redirect_to "http://mtgbazaar-public.s3.amazonaws.com/sitemaps/sitemap_index.xml.gz"
   end
   
   def test

@@ -46,6 +46,8 @@ gem "geocoder", "~> 1.1.5"
 gem "httpclient", "~> 2.3.0.1"                                      # for paypal verify account code
 gem "xml-simple", "~> 1.1.2"                                        # for paypal verify account code
 
+gem "sitemap_generator", "~> 3.4"                                   # create XML sitemaps for search engines to use
+
 # -------------
 # STANDARD GEMS
 # -------------

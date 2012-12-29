@@ -5,6 +5,8 @@
 <div class ="content">
       
   <% if params[:set] %>
+    <% page_description "Magic the Gathering single cards and playsets for sale from #{@set.name}" %>
+    
     <table class="data">
       <tr class="header_row">
         <td>Set</td>
@@ -21,8 +23,6 @@
 
     </table>
     
-
-
     <%= render :partial => "teaser", :collection => @mtg_cards, :as => "mtg_card" %>
     
     <div class="paginator center_wrap">
@@ -31,6 +31,8 @@
     
   <% else %>
 
+    <% page_description "Magic the Gathering single cards and playsets for sale" %>
+    
     <table class="data">
       <tr class="header_row">
         <td>Set</td>
