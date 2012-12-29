@@ -13,7 +13,7 @@
         <%= f.input :name,          :label => "Card Name",
                                     :input_html => { :class => "ui-autocomplete-input" , 
                                                      :placeholder => "Name..." , 
-                                                     "data-autocomplete" => autocomplete_name_mtg_cards_path,
+                                                     "data-autocomplete" => mtg_cards_autocomplete_name_path,
                                                      :value => (@card.name if defined?(@card)) },
                                     :required => true %>
       </div>
