@@ -12,7 +12,7 @@ class HomeController < ApplicationController
   end
   
   def sitemap
-    render :layout => false
+    redirect_to "http://mtgbazaar-public.s3.amazonaws.com/sitemaps/sitemap_index.xml.gz"
   end
   
   def test
