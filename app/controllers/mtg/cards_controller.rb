@@ -26,7 +26,7 @@ class Mtg::CardsController < ApplicationController
   end
 
   # GET /mtg/cards/:id
-  def show    
+  def show
     @mtg_card = Mtg::Card.includes(:set, :listings => [:seller => :statistics]).where(:id => params[:id]).first
     
     if @mtg_card.dual_sided_card?

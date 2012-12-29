@@ -1,0 +1,17 @@
+<% title 'Site Map' %>
+<% page_description 'Site map for MTGBazaar' %>
+
+<h1>Magic the Gathering Cards</h1>
+<p><%= link_to "Magic The Gathering cards for sale", mtg_cards_path, :alt => 'MTG cards for sale' %></p>
+
+<h1>Magic the Gathering Cards by Set</h1>
+<% Mtg::Set.find_each do |set| %>
+  <%= link_to "#{set.name}", mtg_cards_path(:set => set.code), :alt => "MTG cards for sale from #{set.name}", :title => "MTG cards for sale from #{set.name}" %><br/>
+<% end %>
+
+<% Mtg::Set.find_each do |set| %>
+  <h1>Magic the Gathering Cards in the <%= set.name %> Set</h1>
+  <% set.cards.each do |card| %>
+    <%= link_to "#{card.name} (#{set.name})", mtg_card_path(card), :title => "#{card.name} (#{set.name}) cards for sale", :alt => "#{card.name} (#{set.name}) cards for sale" %><br/>
+  <% end %>
+<% end %>

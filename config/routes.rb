@@ -36,8 +36,8 @@ MTGBazaar::Application.routes.draw do
   
   # listings
   
-  put     "mtg/cards/listings/:id/set_active"       => "mtg/cards/listings#set_active",         :as => 'mtg_cards_listing_set_active'  
-  put     "mtg/cards/listings/:id/set_inactive"     => "mtg/cards/listings#set_inactive",       :as => 'mtg_cards_listing_set_inactive'  
+  put   "mtg/cards/listings/:id/set_active"       => "mtg/cards/listings#set_active",         :as => 'mtg_cards_listing_set_active'  
+  put   "mtg/cards/listings/:id/set_inactive"     => "mtg/cards/listings#set_inactive",       :as => 'mtg_cards_listing_set_inactive'  
 
   # transactions
   get   'transactions/:id'                => 'mtg/transactions#show',                                 :as => 'show_mtg_transaction'
@@ -95,7 +95,10 @@ MTGBazaar::Application.routes.draw do
 
     end
     
-    resources :cards, :only => [:index, :show] do # don't allow users to create/destroy mtg cards by only allowing index and show routes
+    get 'cards/(:set)'     => 'cards#index',    :as => 'cards'
+    get 'card/:id'         => 'cards#show',     :as => 'card'
+    
+    resources :cards, :only => [] do # don't allow users to create/destroy mtg cards by only allowing index and show routes
       get  "autocomplete_name", :on => :collection
       get  "search", :as => 'search', :on => :collection  # can't figure out how to send autocorrect click link via post so we need get too for now
       post "search", :as => 'search', :on => :collection      
@@ -147,6 +150,7 @@ MTGBazaar::Application.routes.draw do
   match 'faq'                 => 'home#faq'
   match 'feedback'            => 'home#feedback'
   match 'welcome'             => 'home#welcome'
+  match 'sitemap'             => 'home#sitemap'
   mount Ckeditor::Engine      => "/ckeditor"
   
   

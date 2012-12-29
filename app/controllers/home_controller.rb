@@ -10,6 +10,10 @@ class HomeController < ApplicationController
     end
   end
   
+  def sitemap
+    render :layout => false
+  end
+  
   def test
     Rails.logger.info(GirlFriday.status)
   end
