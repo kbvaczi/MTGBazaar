@@ -210,7 +210,15 @@ class ApplicationController < ActionController::Base
       end
     end
   end
-
+  
+  def default_js_render(options={})
+    options = {:template => 'home/index', :update_right_bar => false}.merge(options)
+    script  = %{$('#center_bar').html("<%= escape_javascript render :template => "#{options[:template]}", :formats => [:html] %>");
+                initialize_overlays();
+                initialize_tooltips();}
+    script  = %{$('#right_bar').html("<%= escape_javascript render  :partial => "shared/right_bar", :formats => [:html] %>");} + script if options[:update_right_bar]
+    render :inline => script, :content_type => 'text/javascript'
+  end
   
 end
 

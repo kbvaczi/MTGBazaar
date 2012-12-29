@@ -74,6 +74,10 @@ class UsersController < ApplicationController
     else
       @sales = current_user.mtg_sales.includes(:items).order("created_at DESC").page(params[:page]).per(12)
     end
+    respond_to do |format|
+      format.html
+      format.js  { default_js_render :template => 'users/account_sales' }
+    end
   end
   
   def account_purchases
@@ -82,6 +86,11 @@ class UsersController < ApplicationController
       @sales = current_user.mtg_purchases.includes(:items).where(:status => params[:status]).order("created_at DESC").page(params[:page]).per(12)
     else
       @sales = current_user.mtg_purchases.includes(:items).order("created_at DESC").page(params[:page]).per(12)
+
+    end
+    respond_to do |format|
+      format.html
+      format.js  { default_js_render :template => 'users/account_purchases' }
     end
   end  
   

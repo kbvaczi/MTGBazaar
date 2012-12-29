@@ -63,7 +63,7 @@
 
   $('#shipping_type_usps, #shipping_type_pickup, #shipping_option_signature, #shipping_option_insurance').click(function(){
     if ($(this).attr('id') == 'shipping_option_signature' && <%= escape_javascript (order.total_cost - (order.shipping_options[:shipping_charges][:signature_confirmation] || 0.to_money)) >= 250.to_money ? 'true' : 'false' %>){
-      myCustomAlertBox("Signature Confirmation is required on all orders with a total cost over $250 accordance with PayPal's seller protection program.");
+      myCustomAlertBox("Signature Confirmation is required on all orders with a total cost over $250 in accordance to PayPal's seller protection program.");
       return false;
     }
 	  $(this).closest('form').submit();

@@ -32,6 +32,10 @@ class TicketsController < ApplicationController
     else
       @tickets = Ticket.includes(:updates).where(:author_id => current_user.id, :author_type => "User").order("created_at DESC").page(params[:page]).per(20) 
     end
+    respond_to do |format|
+      format.html
+      format.js  { default_js_render :template => 'tickets/index' }
+    end
   end
   
   # show details for a specific ticket authored by current logged in user
