@@ -1,4 +1,5 @@
-<% title "Card Sales - #{display_name(@mtg_card.name)}" #title is first 30 characters in card name %>
+<% title "Card Sales: #{display_name @mtg_card.name} (#{@mtg_card.set.name})" #title is first 30 characters in card name %>
+<% page_description "Single cards and playsets on sale for #{@mtg_card.name} from #{@mtg_card.set.name}" %>
 
 <h1><%= display_name(@mtg_card.name) %></h1>
 

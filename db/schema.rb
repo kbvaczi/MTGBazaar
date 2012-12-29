@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121218142200) do
+ActiveRecord::Schema.define(:version => 20121222234629) do
 
   create_table "accounts", :force => true do |t|
     t.integer  "user_id"
@@ -208,6 +208,7 @@ ActiveRecord::Schema.define(:version => 20121218142200) do
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
     t.integer  "cards_quantity"
+    t.text     "shipping_options"
   end
 
   add_index "mtg_orders", ["cart_id"], :name => "index_mtg_orders_on_cart_id"
@@ -348,6 +349,7 @@ ActiveRecord::Schema.define(:version => 20121218142200) do
     t.integer  "shipping_cost"
     t.integer  "order_id"
     t.integer  "cards_quantity"
+    t.text     "shipping_options"
   end
 
   add_index "mtg_transactions", ["buyer_id"], :name => "index_mtg_transactions_on_buyer_id"

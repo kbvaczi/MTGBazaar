@@ -92,7 +92,7 @@ MTGBazaar::Application.routes.draw do
         post "create_bulk", :as => "create_bulk", :on => :collection
         get "get_pricing", :on => :collection        
       end
-      
+
     end
     
     resources :cards, :only => [:index, :show] do # don't allow users to create/destroy mtg cards by only allowing index and show routes

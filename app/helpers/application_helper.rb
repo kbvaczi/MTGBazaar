@@ -4,6 +4,10 @@ module ApplicationHelper
     provide :title, " | #{page_title.gsub(/[\[\]\^\$\.\|\?\*\+\\~`\!@#%\+={}'"<>;,]{1,}/, "").gsub("&", "and")}"
   end
   
+  def page_description(page_description = nil)
+    provide :description, page_description
+  end
+  
   def capitalize_first_letters(word)
     word.downcase.split(' ').map {|w| w.capitalize }.join(' ')
   end
