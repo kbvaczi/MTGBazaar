@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
 
+  caches_action :sitemap
   
   def index
     set_back_path
