@@ -230,6 +230,8 @@ GEM
     simple_form (2.0.4)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
+    sitemap_generator (3.4)
+      builder
     smart_tuple (0.1.2)
     sprockets (2.2.2)
       hike (~> 1.2)
@@ -297,6 +299,7 @@ DEPENDENCIES
   rails3-jquery-autocomplete (~> 1.0.6)
   sass-rails
   simple_form (~> 2.0.3)
+  sitemap_generator (~> 3.4)
   smart_tuple (~> 0.1.2)
   sqlite3
   stamps!
