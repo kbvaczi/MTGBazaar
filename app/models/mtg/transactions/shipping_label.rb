@@ -64,7 +64,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
   
   
   def self.calculate_shipping_parameters(options = {})
-    options = {:card_count => 1, :insurance => false, :item_value => 0, :signature => false, :shipping_type => 'usps'}.merge(options)
+    options = {:card_count => 1, :insurance => false, :item_value => 0.to_money, :signature => false, :shipping_type => 'usps'}.merge(options)
     card_weight_in_oz = (options[:card_count] / 15.to_f) # 15 cards per ounce
     if options[:card_count] <= 150
       service_type = 'US-FC' 
