@@ -26,12 +26,8 @@
 	    </tr>
 	  <% end %>
 
+    <%= table_paginate_footer :variable => @users, :colspan => 5 %>
+    
   </table>
-
-  <br class="spacer"/>
-
-  <div class="paginator center_wrap">
-    <%= paginate @users, :method => :get %>
-  </div>
 
 </div>

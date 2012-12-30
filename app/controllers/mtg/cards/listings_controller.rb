@@ -187,13 +187,13 @@ class Mtg::Cards::ListingsController < ApplicationController
     end
   end
   
-  def create_bulk
+  def create_bulk_backup
     # we have to declare these @ variables just in case we have form errors and have to render the form again... otherwise we get errors when we render the form without these declared
     @set = Mtg::Set.where(:code => params[:mtg_cards_listing][:set]).first
     if params[:sort] == "name"
-      @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("mtg_cards.name ASC")
+      @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("mtg_cards.name ASC")
     else
-      @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("CAST(mtg_cards.card_number AS SIGNED) ASC")
+      @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("CAST(mtg_cards.card_number AS SIGNED) ASC")
     end
     array_of_listings = Array.new # blank array
     params[:sales].each do |key, value| # iterate through all of our individual listings from the bulk form
@@ -218,9 +218,36 @@ class Mtg::Cards::ListingsController < ApplicationController
       end
     end
     # all listings passed validation, let's go back through our stored listings in the array and save them to database
-    array_of_listings.each { |listing| listing.save } # save all the listings
+    Mtg::Cards::Listing.transaction do
+      array_of_listings.each { |listing| listing.save } # save all the listings
+    end
     redirect_to account_listings_path, :notice => "#{pluralize(array_of_listings.count, "Listing", "Listings")} Created!"
     return #don't display a template
+  end
+  
+  def create_bulk
+    # we have to declare these @ variables just in case we have form errors and have to render the form again... otherwise we get errors when we render the form without these declared
+    test_listing = Mtg::Cards::Listing.new(:foil => params[:mtg_cards_listing][:foil], :condition => params[:mtg_cards_listing][:condition], :language => params[:mtg_cards_listing][:language],
+                                           :price => 100, :quantity => 1) # create the listing in memory 
+    if test_listing.valid?
+      columns = [:card_id, :seller_id, :foil, :condition, :language, :price, :quantity, :quantity_available]
+      rows    = []  
+      params[:sales].each do |key, value| # iterate through all of our individual listings from the bulk form
+        if value[:quantity].to_i > 0 && value[:quantity].to_i < 1000
+          asking_price = (value[:price] == "other") ? value[:custom_price].to_f * 100 : value[:price].to_f * 100 # set price either from pre-select options or custom price if they have other selected in price options        
+          rows << [key.to_i, current_user.id, params[:mtg_cards_listing][:foil].to_i, params[:mtg_cards_listing][:condition], params[:mtg_cards_listing][:language], asking_price.to_i, value[:quantity].to_i, value[:quantity].to_i]
+        end
+      end
+      Mtg::Cards::Listing.transaction do
+        Mtg::Cards::Listing.bulk_insert columns, rows[0..5]
+      end
+      redirect_to account_listings_path, :notice => "#{pluralize(rows.count, "Listing", "Listings")} Created!"      
+    else
+      flash[:error] = "There were one or more problems with your request"
+      render 'new_bulk'
+      return
+    end
+    
   end
   
   # ------ CONTROLLER PROTECTED FUNCTIONS ------- #

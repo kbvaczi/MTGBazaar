@@ -83,6 +83,8 @@ GEM
       sass (>= 3.2)
       thor
     builder (3.0.4)
+    bulk_update (1.0.0)
+      activerecord
     carrierwave (0.6.2)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
@@ -270,6 +272,7 @@ DEPENDENCIES
   activemerchant (~> 1.26.0)
   attr_encrypted (~> 1.2.1)
   awesome_print (~> 1.1.0)
+  bulk_update (~> 1.0.0)
   carrierwave (~> 0.6.2)
   ckeditor (~> 3.7.1)
   coffee-rails
