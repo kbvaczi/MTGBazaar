@@ -18,10 +18,29 @@
       <td align="left">Item Value:</td>
       <td align="right"><%= number_to_currency @transaction.value %></td>  
     </tr>    
-    <tr>
-      <td align="left" style="border-bottom:1px;">Shipping Cost:</td>
-      <td align="right" style="border-bottom:1px;"><%= number_to_currency @transaction.shipping_cost %></td>  
-    </tr>
+    <% if @transaction.shipping_options[:shipping_type] == 'pickup' %>
+      <tr>
+        <td align="left" style="border-bottom:1px;">In-Store Pickup:</td>
+        <td align="right" style="border-bottom:1px;"><%= number_to_currency 0 %></td>  
+      </tr>
+    <% else %>
+      <tr>
+        <td align="left" style="border-bottom:1px;">Basic Shipping Cost:</td>
+        <td align="right" style="border-bottom:1px;"><%= number_to_currency @transaction.shipping_options[:shipping_charges][:basic_shipping] %></td>  
+      </tr>
+      <% if @transaction.shipping_options[:shipping_charges][:insurance] %>
+        <tr>
+          <td align="left" style="border-bottom:1px;">Shipping Insurance:</td>
+          <td align="right" style="border-bottom:1px;"><%= number_to_currency @transaction.shipping_options[:shipping_charges][:insurance] %></td>  
+        </tr>      
+      <% end %>
+      <% if @transaction.shipping_options[:shipping_charges][:signature_confirmation] %>
+        <tr>
+          <td align="left" style="border-bottom:1px;">Signature Confirmation:</td>
+          <td align="right" style="border-bottom:1px;"><%= number_to_currency @transaction.shipping_options[:shipping_charges][:signature_confirmation] %></td>  
+        </tr>      
+      <% end %>      
+    <% end %>
     <tr><td colspan=2><hr></td></tr>
     <tr>
       <td align="left" style="font-weight:bold;">TOTAL:</td>

@@ -74,30 +74,32 @@ class Mtg::OrdersController < ApplicationController
       Rails.logger.debug "GATEWAY: #{@gateway.debug}"  rescue ""
       Rails.logger.debug "PURCHASE: #{@purchase.inspect}" rescue ""    
   end
-  
+
   def checkout_set_purchase_options
+    items_first_leg  = [{ :name => "Purchase of #{@order.item_count} Item(s)", :item_price => @order.item_price_total, :price => @order.item_price_total }]
+    items_second_leg = [{ :name => "Sale Commission", :item_price => @order.transaction.payment.commission, :price => @order.transaction.payment.commission }]
+    if @order.shipping_options[:shipping_type] == 'usps'
+      common_items     =  [{ :name => 'Shipping',               :item_price => @order.shipping_options[:shipping_charges][:basic_shipping] , :price => @order.shipping_options[:shipping_charges][:basic_shipping]}]
+      common_items     <<  { :name => 'Shipping Insurance',     :item_price => @order.shipping_options[:shipping_charges][:insurance], :price => @order.shipping_options[:shipping_charges][:insurance] } if @order.shipping_options[:shipping_charges][:insurance].present?
+      common_items     <<  { :name => 'Signature Confirmation', :item_price => @order.shipping_options[:shipping_charges][:signature_confirmation], :price => @order.shipping_options[:shipping_charges][:signature_confirmation] } if @order.shipping_options[:shipping_charges][:signature_confirmation].present?      
+      items_first_leg  += common_items
+      items_second_leg += common_items
+    else
+      items_first_leg << { :name => 'In-Store Pickup', :item_price => 0, :price => 0 }
+    end
     options_hash = {:display_options => { :business_name => "MTGBazaar" },
                     :pay_key => @purchase["payKey"],
                     # force buyer to select an address or enter an address when they make a payment.
                     :sender => @order.shipping_options[:shipping_type] == 'usps' ? { :share_address => true, :require_shipping_address_selection => true } : {},
                     :receiver_options => [
                       { :invoice_data => {
-                          :item => [
-                            { :name => "Purchase of #{@order.item_count} Item(s)",  
-                              :item_price => @order.item_price_total, 
-                              :price => @order.item_price_total },
-                            { :name => @order.shipping_options[:shipping_type] == 'usps' ? "Shipping" : "In-Store Pickup",                                  
-                              :item_price => @order.shipping_cost,    
-                              :price => @order.shipping_cost } 
-                          ]
+                          :item => items_first_leg
                         },
                         :receiver => { :email => @order.seller.account.paypal_username }
                       },
                       { :description => "MTGBazaar Fees and Shipping",
                         :invoice_data => {
-                          :item => [
-                            { :name => "MTGBazaar Sale Commission", :item_price => @order.transaction.payment.commission,    :price => @order.transaction.payment.commission },
-                            { :name => "Shipping",                  :item_price => @order.shipping_cost,                     :price => @order.shipping_cost }]
+                          :item => items_second_leg
                         },
                         :receiver => { :email => PAYPAL_CONFIG[:account_email] }
                       }] }
