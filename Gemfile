@@ -31,7 +31,10 @@ gem "active_paypal_adaptive_payment", "~> 0.3.15"                   # Adaptive P
 
 gem "ckeditor", "~> 3.7.1"                                          # blog editor
 gem "mini_magick", "~> 3.4"                                         # image manipulation for ckeditor
-gem "girl_friday", "~> 0.10.0"                                      # background processing for unicorn... disabled due to issues
+gem "girl_friday", "~> 0.10.0"                                      # background processing for unicorn...
+
+
+
 gem 'unicorn'                                                       # custom webserver with multi-threaded application capabilities
 #gem "stamps", "~> 0.3.0"                                           # API interface for stamps.com for printing shipping labels
 gem 'stamps', :git => 'https://github.com/darnovo/stamps.git'       # forked repo with updated gem dependencies
@@ -41,7 +44,7 @@ gem "honeypot-captcha", "~> 0.0.2"                                  # alternativ
 
 gem "valium", "~> 0.5.0"                                            # improved activerecord queries?
 gem "bulk_update", "~> 1.0.0"                                       # improved bulk update/create for activerecord
-gem "hirefireapp", "~> 0.0.8"                                       # auto-scaling dynos
+#gem "hirefireapp", "~> 0.0.8"                                       # auto-scaling dynos
 gem "geocoder", "~> 1.1.5"
 
 gem "httpclient", "~> 2.3.0.1"                                      # for paypal verify account code

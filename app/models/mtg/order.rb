@@ -122,20 +122,23 @@ class Mtg::Order < ActiveRecord::Base
                                     :shipping_cost => self.shipping_cost, 
                                     :commission_rate => calculated_commission_rate,
                                     :commission => Money.new((calculated_commission_rate * self.item_price_total.cents).ceil)  )  # Calculate commision as commission_rate * item value (without shipping), round up to nearest cent
-    self.transaction.save!
+    ActiveRecord::Base.transaction do                                 
+      self.transaction.save!
+    end
   end
     
   def checkout_transaction
-    this_transaction = self.transaction                                               # remember this for later
-    self.transaction.buyer = self.buyer                                               # setup buyer and seller for transaction
-    self.transaction.seller = self.seller                                     
-    self.transaction.status = "confirmed"                                             # set transaction to confirmed since money has changed hands
-    self.transaction.order_id = nil                                                   # disconnect transaction from order so order can be destroyed
+    this_transaction = self.transaction                          # remember this for later
+    self.transaction.buyer            = self.buyer               # setup buyer and seller for transaction
+    self.transaction.seller           = self.seller                                     
+    self.transaction.status           = "confirmed"              # set transaction to confirmed since money has changed hands
+    self.transaction.order_id         = nil                      # disconnect transaction from order so order can be destroyed
     self.transaction.shipping_cost    = self.shipping_cost
     self.transaction.shipping_options = self.shipping_options
     self.transaction.value            = self.item_price_total
-    if self.transaction.save
-      self.reservations.each { |r| r.purchased! } rescue true                         # update listing quantity and destroy each reservation for this transaction
+    ActiveRecord::Base.transaction do                                 
+      self.transaction.save!
+      self.reservations.each { |r| r.purchased! } rescue true    # update listing quantity and destroy each reservation for this transaction
       this_transaction.items.update_all(:buyer_id => self.buyer.id, :seller_id => self.seller_id)
       self.destroy
     end

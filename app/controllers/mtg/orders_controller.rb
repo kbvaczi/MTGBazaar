@@ -10,9 +10,6 @@ class Mtg::OrdersController < ApplicationController
     
     checkout_setup_purchase
     checkout_set_purchase_options
-
-    Rails.logger.debug "GATEWAY:  #{@gateway.debug}"    rescue ""
-    Rails.logger.debug "PURCHASE: #{@purchase.inspect}" rescue ""
     
     @order.transaction.payment.paypal_paykey            = @purchase["payKey"]
     @order.transaction.payment.paypal_purchase_response = @purchase.inspect 
