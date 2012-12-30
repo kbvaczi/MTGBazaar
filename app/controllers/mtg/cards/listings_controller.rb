@@ -239,7 +239,7 @@ class Mtg::Cards::ListingsController < ApplicationController
         end
       end
       Mtg::Cards::Listing.transaction do
-        Mtg::Cards::Listing.bulk_update columns, rows
+        Mtg::Cards::Listing.bulk_insert columns, rows
       end
       redirect_to account_listings_path, :notice => "#{pluralize(rows.count, "Listing", "Listings")} Created!"      
     else
