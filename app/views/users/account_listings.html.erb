@@ -61,7 +61,8 @@
       	</tr>
   	
         <%= render :partial => "mtg/cards/listings/teaser" , :collection => @listings, :as => "listing" %>
-    
+        <%= table_paginate_footer :variable => @listings, :colspan => 9 %>
+        
         <% if @listings.count == 0 %>
           <tr>          
             <% if (not current_user.active) && params[:section] == "active" %>
@@ -87,21 +88,6 @@
       <p class="ma"><i>No Listings...</i></p>
     <% end %>
 
-  
   <% end %>
   
-  <br class="spacer"/>
-  
-  <div class="center_wrap">
-    <div class="paginator center">
-      <%= paginate @listings, :method => :get %>
-    </div>
-  </div>
-    
-</div>
-
-
-
-<div id="dialog-confirm" class="hidden" title="Empty the recycle bin?">
-    <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>These items will be permanently deleted and cannot be recovered. Are you sure?</p>
 </div>

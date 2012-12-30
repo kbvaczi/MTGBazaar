@@ -12,30 +12,28 @@
     </ul>
   </div>
   
-<h2><%= pluralize @sales.total_count, "#{params[:status].capitalize if params[:status].present?} Sale", "#{params[:status].capitalize if params[:status].present?} Sales" %></h2>
+  <h2><%= pluralize @sales.total_count, "#{params[:status].capitalize if params[:status].present?} Sale", "#{params[:status].capitalize if params[:status].present?} Sales" %></h2>
 
-<table class="data">
-  <tr class="header_row">
-    <th>Date</th>
-    <th>Transaction ID</th>      
-    <th>Buyer</th>
-    <th>Status</th>
-    <th>Items</th>
-    <th>Value</th>
-  </tr>
-  
-  <%= render :partial => "mtg/transactions/teaser", :collection => @sales, :as => "transaction" %>
-
-  <% if @sales.count == 0 %>
-    <tr>
-      <td colspan=6 class="odd"><i>None</i></td>
+  <table class="data">
+    <tr class="header_row">
+      <th>Date</th>
+      <th>Transaction ID</th>      
+      <th>Buyer</th>
+      <th>Status</th>
+      <th>Items</th>
+      <th>Value</th>
     </tr>
-  <% end %>
+  
+    <%= render :partial => "mtg/transactions/teaser", :collection => @sales, :as => "transaction" %>
 
-</table>
+    <%= table_paginate_footer :variable => @sales, :colspan => 6 %>
+  
+    <% if @sales.count == 0 %>
+      <tr>
+        <td colspan=6 class="odd"><i>None</i></td>
+      </tr>
+    <% end %>
 
-  <div class="paginator center_wrap">
-    <%= paginate @sales, :method => :get %>
-  </div>
+  </table>
   
 </div>

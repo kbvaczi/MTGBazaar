@@ -44,6 +44,20 @@ module ApplicationHelper
     end
   end
   
+  def table_paginate_footer(options={})
+    options = {:variable => nil, :window => 5, :remote => true, :colspan => 1, :class => 'header_row2', :method => 'get'}.merge(options)
+    paginate_string = paginate options[:variable], :window => options[:window], :remote => options[:remote], :method => options[:method]
+    if options[:variable].num_pages > 1
+      %{<tr class='#{options[:class]}'>
+          <td colspan=#{options[:colspan]} style="padding:2px">
+            <div class='paginator'>#{paginate_string}</div>
+          </td>
+        </tr>}.html_safe
+    else
+      ""
+    end
+  end
+  
   def pretty_print_hash(input_hash)
     output_string = ""
     if input_hash.class == Hash

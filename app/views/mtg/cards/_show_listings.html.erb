@@ -41,17 +41,10 @@
     <% end %>
     
     <%= render :partial => "show_listings_teaser", :collection => @listings,        :as => :listing %>
-
-  	
+    
+    <%= table_paginate_footer :variable => @listings, :colspan => 7 %>
+    
   </table>
-  
-  <br class="spacer"/>
-  
-  <div class="center_wrap">
-    <div class="paginator center">
-      <%= paginate @listings, :method => :get, :remote => true %>
-    </div>
-  </div>
 
 <% else %>
 
