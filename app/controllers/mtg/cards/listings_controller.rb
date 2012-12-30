@@ -187,7 +187,7 @@ class Mtg::Cards::ListingsController < ApplicationController
     end
   end
   
-  def create_bulk_backup
+  def create_bulk
     # we have to declare these @ variables just in case we have form errors and have to render the form again... otherwise we get errors when we render the form without these declared
     @set = Mtg::Set.where(:code => params[:mtg_cards_listing][:set]).first
     if params[:sort] == "name"
@@ -225,7 +225,7 @@ class Mtg::Cards::ListingsController < ApplicationController
     return #don't display a template
   end
   
-  def create_bulk
+  def create_bulk_backup
     # we have to declare these @ variables just in case we have form errors and have to render the form again... otherwise we get errors when we render the form without these declared
     test_listing = Mtg::Cards::Listing.new(:foil => params[:mtg_cards_listing][:foil], :condition => params[:mtg_cards_listing][:condition], :language => params[:mtg_cards_listing][:language],
                                            :price => 100, :quantity => 1) # create the listing in memory 
