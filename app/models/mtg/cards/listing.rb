@@ -29,7 +29,7 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   # --------------------------------------- #
 
   before_validation :set_quantity_available, :on => :create
-  after_save       :update_statistics_cache_on_save, :if => "no_cache_update != false && (active_changed? || price_changed? || quantity_available_changed? || self.price == Money.new(100))"
+  after_save        :update_statistics_cache_on_save, :if => "no_cache_update != false && (active_changed? || price_changed? || quantity_available_changed? || self.price == Money.new(100))"
   after_save        :delete_if_empty
   after_destroy     :update_statistics_cache_on_delete, :if => "no_cache_update != false"
   
