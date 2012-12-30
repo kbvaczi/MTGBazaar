@@ -23,8 +23,8 @@ $(document).ready(function() {
       $('.spinner').css({
         display:'none',
         position:'fixed',
-        top:'50%',
-        left:'50%',
+        top:'35%',
+        left:'49%',
         width:'50px',                 // adjust width
         height:'50px',                // adjust height
         zIndex:99999,

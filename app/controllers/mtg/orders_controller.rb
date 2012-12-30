@@ -76,11 +76,11 @@ class Mtg::OrdersController < ApplicationController
   end
 
   def checkout_set_purchase_options
-    items_first_leg  = [{ :name => "Purchase of #{@order.item_count} Item(s)", :item_price => @order.item_price_total, :price => @order.item_price_total }]
-    items_second_leg = [{ :name => "Sale Commission", :item_price => @order.transaction.payment.commission, :price => @order.transaction.payment.commission }]
+    items_first_leg  = [{ :name => "Purchase of #{@order.item_count} Item(s)", :item_price => @order.item_price_total,               :price => @order.item_price_total }]
+    items_second_leg = [{ :name => "Sale Commission",                          :item_price => @order.transaction.payment.commission, :price => @order.transaction.payment.commission }]
     if @order.shipping_options[:shipping_type] == 'usps'
-      common_items     =  [{ :name => 'Shipping',               :item_price => @order.shipping_options[:shipping_charges][:basic_shipping] , :price => @order.shipping_options[:shipping_charges][:basic_shipping]}]
-      common_items     <<  { :name => 'Shipping Insurance',     :item_price => @order.shipping_options[:shipping_charges][:insurance], :price => @order.shipping_options[:shipping_charges][:insurance] } if @order.shipping_options[:shipping_charges][:insurance].present?
+      common_items     =  [{ :name => 'Shipping',               :item_price => @order.shipping_options[:shipping_charges][:basic_shipping] ,        :price => @order.shipping_options[:shipping_charges][:basic_shipping]}]
+      common_items     <<  { :name => 'Shipping Insurance',     :item_price => @order.shipping_options[:shipping_charges][:insurance],              :price => @order.shipping_options[:shipping_charges][:insurance] }              if @order.shipping_options[:shipping_charges][:insurance].present?
       common_items     <<  { :name => 'Signature Confirmation', :item_price => @order.shipping_options[:shipping_charges][:signature_confirmation], :price => @order.shipping_options[:shipping_charges][:signature_confirmation] } if @order.shipping_options[:shipping_charges][:signature_confirmation].present?      
       items_first_leg  += common_items
       items_second_leg += common_items

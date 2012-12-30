@@ -38,6 +38,34 @@ class Mtg::Reservation < ActiveRecord::Base
     self.destroy                                                  # we no longer need this reservation, let's get rid of it
   end
 
+  def product_name(truncate = false)
+    product = self.listing
+    product_type = ""
+    product_name = ""
+    if product.class.name == "Mtg::Cards::Listing"
+      product_type = "Playset" if product.playset
+      product_name = product.card.name
+    elsif product.class.name == "Mtg::Sets::Listing"
+      product_type = "Full Set"
+      product_name = product.set.name
+    else
+      product_name = "Unknown"
+    end
+    if product_type != ""
+      if truncate
+        "#{product_type}: #{product_name.truncate(30, :omission => "...")}"
+      else
+        "#{product_type}: #{product_name}"
+      end
+    else
+      if truncate
+        product_name.html_safe.truncate(30, :omission => "...")
+      else
+        product_name.html_safe
+      end
+    end
+  end
+
   ##### ------ PRIVATE METHODS ----- #####          
   private
   
