@@ -135,7 +135,6 @@ GEM
     has_scope (0.5.1)
     hashie (1.2.0)
     hike (1.2.1)
-    hirefireapp (0.0.8)
     honeypot-captcha (0.0.2)
     hooves (0.7)
       unicorn (> 0)
@@ -284,7 +283,6 @@ DEPENDENCIES
   formtastic (~> 2.1.1)
   geocoder (~> 1.1.5)
   girl_friday (~> 0.10.0)
-  hirefireapp (~> 0.0.8)
   honeypot-captcha (~> 0.0.2)
   hooves
   httpclient (~> 2.3.0.1)

@@ -123,30 +123,40 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
     options = {:item_value => 0.to_money}.merge(options)
     if options[:item_value] > 0.to_money
       if options[:item_value]    <= 50.00.to_money
-        return (1.99 + options[:item_value].dollars * 0.04).to_money # stamps flat rate $1.66 under $50, $1.99 + 4% = $2.19 @ $5, $3.99 @ $50
-      elsif options[:item_value] <= 500.to_money
-        return (2.99 + options[:item_value].dollars * 0.0125).to_money # stamps flat rate $2.61 under $100, $2.99 + 2% = $3.99 @ $50, $12.99 @ $500        
-      elsif options[:item_value] <= 10000.to_money
-        return (options[:item_value] * 0.02).to_money # we charge 2% for insurace on items over $150
+        return 1.85.to_money
+      elsif options[:item_value] <= 100.00.to_money
+        return 2.35.to_money
+      elsif options[:item_value] <= 200.00.to_money
+        return 2.90.to_money        
+      elsif options[:item_value] <= 300.00.to_money
+        return 4.85.to_money        
+      elsif options[:item_value] <= 400.00.to_money
+        return 5.95.to_money                
+      elsif options[:item_value] <= 500.00.to_money
+        return 7.05.to_money 
+      elsif options[:item_value] <= 600.00.to_money
+        return 8.15.to_money
+      elsif options[:item_value] <= 10000.00.to_money
+        return (8.15 + ((options[:item_value].to_f / 100).ceil - 6) * 1.10).to_money
       else
         return nil
       end
     else
-      return 0.to_money
+      return nil
     end
     
     #Insured Value	  Stamps Cost	    Stamps %	    USPS Cost	    USPS %
-    #25	              1.66	          6.64%	        1.85	        7.40%
-    #50	              1.66	          3.32%	        1.85	        3.70%
-    #100	            2.11	          2.11%	        2.35	        2.35%
-    #150              2.61                          2.90
-    #500              7.33                          8.15
-    #1000	            11.29	          1.13%	        12.55	        1.26%
-    #2000	            21.19	          1.06%	        23.55	        1.18%
-    #3000	            31.09	          1.04%	        34.55	        1.15%
-    #5000	            50.89	          1.02%	        56.55	        1.13%
-    #10000	          100.39	        1.00%	        111.55	      1.12%
+    #0.1-50	          1.66	          6.64%	        1.85	        7.40%
+    #50.1 - 100	      2.11	          2.11%	        2.35	        2.35%
+    #100.1 - 200      2.61                          2.90
+    #200.1 - 300      4.36                          4.85
+    #300.1 - 400      5.35                          5.95
+    #400.1 - 500      6.34                          7.05
+    #500.1 - 600      7.33                          8.15
+    #over 600 for stamps 7.33 + $0.99 for every $100 (rounded up) over $600
+    #over 600 for usps   8.15 + $1.10 for every $100 (rounded up) over $600    
     #No insurance over $10000
+    
   end
   
   def update_tracking

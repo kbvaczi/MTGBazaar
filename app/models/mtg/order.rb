@@ -53,9 +53,13 @@ class Mtg::Order < ActiveRecord::Base
     # only users authorized to have pickup 
     self.shipping_options[:shipping_type]    = 'usps' unless self.seller.ship_option_pickup_available?
     # signature confirmation is required for all orders over $250
-    if self.item_price_total >= 250.to_money and self.shipping_options[:shipping_charges][:signature_confirmation].nil?
+    if self.item_price_total + self.shipping_cost >= 250.to_money and self.shipping_options[:shipping_charges][:signature_confirmation].nil?
       self.shipping_options[:shipping_charges][:signature_confirmation] = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:signature => true)[:shipping_options_charges][:signature_confirmation] 
     end
+    # maximum insured value is $10k
+    if self.item_price_total + self.shipping_cost >= 10000.00.to_money and self.shipping_options[:insurance].present?
+      self.shipping_options[:shipping_charges].delete(:insurance)
+    end 
   end
   
   ##### ------ CALLBACKS ----- #####  

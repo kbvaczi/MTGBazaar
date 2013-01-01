@@ -19,13 +19,15 @@
       <td><%= number_to_currency(order.shipping_options[:shipping_charges][:basic_shipping] || 0.to_money)%> </td>      
     </tr>
     <% if (order.shipping_options[:shipping_type] == 'usps') %>
-      <tr class=<%= cycle "odd", "even" %>>
-      	<td style="text-align:left;padding-left:25px;">
-      	  <%= check_box_tag 'shipping_option_insurance', true, order.shipping_options[:shipping_charges][:insurance] ? true : false %>
-      	  Add Insurance (<%= number_to_currency(shipping_params[:shipping_options_pricing][:insurance]) %>)<i><span class="ml-s t-s">protect your investment from loss or damage during shipment</span></i>
-      	</td>
-        <td><%= number_to_currency(order.shipping_options[:shipping_charges][:insurance] || 0.to_money)%> </td>      
-      </tr>
+      <% if order.total_cost < 10000.to_money %>
+        <tr class=<%= cycle "odd", "even" %>>
+        	<td style="text-align:left;padding-left:25px;">
+        	  <%= check_box_tag 'shipping_option_insurance', true, order.shipping_options[:shipping_charges][:insurance] ? true : false %>
+        	  Add Insurance (<%= number_to_currency(shipping_params[:shipping_options_pricing][:insurance]) rescue 'Not Available' %>)<i><span class="ml-s t-s">protect your investment from loss or damage during shipment</span></i>
+        	</td>
+          <td><%= number_to_currency(order.shipping_options[:shipping_charges][:insurance] || 0.to_money)%> </td>      
+        </tr>
+      <% end %>
       <tr class=<%= cycle "odd", "even" %>>
       	<td style="text-align:left;padding-left:25px;">
       	  <%= check_box_tag 'shipping_option_signature', true, order.shipping_options[:shipping_charges][:signature_confirmation] ? true : false %>
@@ -66,6 +68,10 @@
       myCustomAlertBox("Signature Confirmation is required on all orders with a total cost over $250 in accordance to PayPal's seller protection program.");
       return false;
     }
+    if ($(this).attr('id') == 'shipping_option_insurance' && <%= escape_javascript order.total_cost >= 10.00.to_money ? 'true' : 'false' %>){
+      myCustomAlertBox("Insurance is only available for orders under $10,000.");
+      return false;
+    }    
 	  $(this).closest('form').submit();
     $(this).delay(2000).queue(function () {
       $(this).attr('checked', false);
