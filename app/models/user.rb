@@ -15,12 +15,9 @@ class User < ActiveRecord::Base
   has_many :tickets,                  :class_name => "Ticket",                    :as => "author"                         # tickets authored by this person... polymorpic relationship (author can either be User or AdminUser)
   has_many :tickets_about,            :class_name => "Ticket",                    :foreign_key => "offender_id"           # tickets written about this person... not polymorphic (offender can only be User)
   
-
-  # Include default devise modules. Others available are:
-  #:token_authenticatable, :encryptable, :confirmable, :lockable, :rememberable, :timeoutable, and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :trackable, :validatable,
-         :token_authenticatable, :confirmable, :lockable
+         :token_authenticatable, :confirmable, :lockable, :async
 
   # Setup accessible (or protected) attributes for your model
   # :account_attributes allows nested model support for account while editing form for user

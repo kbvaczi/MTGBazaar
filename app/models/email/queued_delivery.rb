@@ -5,7 +5,7 @@ class Email::QueuedDelivery < Mail::SMTP
   end
 
   def deliver!(mail)
-    Email::Queue.push(mail)     
+    
   end
 
 end # class QueuedDelivery
