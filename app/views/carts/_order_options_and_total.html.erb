@@ -68,7 +68,7 @@
       myCustomAlertBox("Signature Confirmation is required on all orders with a total cost over $250 in accordance to PayPal's seller protection program.");
       return false;
     }
-    if ($(this).attr('id') == 'shipping_option_insurance' && <%= escape_javascript order.total_cost >= 10.00.to_money ? 'true' : 'false' %>){
+    if ($(this).attr('id') == 'shipping_option_insurance' && <%= escape_javascript order.total_cost >= 10000.00.to_money ? 'true' : 'false' %>){
       myCustomAlertBox("Insurance is only available for orders under $10,000.");
       return false;
     }    
