@@ -20,7 +20,7 @@ class TeamZ::Article < ActiveRecord::Base
   # ----- Scopes ------ #
   
   def self.viewable
-    where("team_z_profiles.active" => true, "team_z_articles.approved" => true, "team_z_articles.active" => true).where("team_z_articles.active_at > ? OR team_z_articles.active_at IS ?", Time.now, nil)
+    where("team_z_profiles.active" => true, "team_z_articles.approved" => true, "team_z_articles.active" => true).where("team_z_articles.active_at < ? OR team_z_articles.active_at IS ?", Time.now, nil)
   end
 
   # ----- Class Methods ----- #
