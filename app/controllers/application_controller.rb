@@ -33,7 +33,8 @@ class ApplicationController < ActionController::Base
   private
   
   def mobile_device?
-    false #request.user_agent =~ /Mobile|webOS/
+    return true
+    request.user_agent =~ /Mobile|webOS/
   end
   helper_method :mobile_device?
   

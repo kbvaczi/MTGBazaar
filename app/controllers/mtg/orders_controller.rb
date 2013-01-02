@@ -16,8 +16,8 @@ class Mtg::OrdersController < ApplicationController
     @order.transaction.payment.save!
 
     respond_to do |format|
-      format.mobile { redirect_to @gateway.redirect_url_for(@purchase["payKey"])  } 
-      format.html   { redirect_to @gateway.redirect_url_for(@purchase["payKey"])  }       
+      format.mobile { redirect_to "#{@gateway.embedded_flow_url}?paykey=#{@purchase['payKey']}" } 
+      format.html   { redirect_to "#{@gateway.embedded_flow_url}?paykey=#{@purchase['payKey']}" }       
       format.js     {}
     end
   end

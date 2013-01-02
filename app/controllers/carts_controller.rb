@@ -1,6 +1,7 @@
 class CartsController < ApplicationController
   
   before_filter :authenticate_user!
+  #before_filter :verify_not_mobile_user
   
   def show
     set_back_path
@@ -78,6 +79,15 @@ class CartsController < ApplicationController
     end # standard cases satisfied
     redirect_to back_path, :notice => "Item quantity updated..."
     return #stop method, don't display a view
+  end
+  
+  protected
+  
+  def verify_not_mobile_user
+    if mobile_device?
+      flash[:error] = "Mobile purchases are currently not supported. Mobile site coming soon!"
+      redirect_to back_path
+    end
   end
 
 
