@@ -1,0 +1,11 @@
+<div class='article_bar'>
+  <h1><%= article.profile.article_series_name %></h1>
+  <div>
+    <div class='avatar left' style="background-image:url(<%= article.profile.avatar %>)"></div>
+    <div style="height:75px;vertical-align:middle;">
+      <div class="left ml-m title"><h2><%= article.title.truncate(50, :omission => "...") %></h2></div>
+      <div class="left ml postdate">Posted: <%= display_time article.posted_at %></div>
+    </div>
+  </div>
+  <div class="description"><%= article.summary.truncate(100, :omission => "...") %></div>
+</div>

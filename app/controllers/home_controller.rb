@@ -9,6 +9,7 @@ class HomeController < ApplicationController
     else
       @news_feeds = NewsFeed.where(:id => 1)
     end
+    render :layout => 'homepage'
   end
   
   def sitemap

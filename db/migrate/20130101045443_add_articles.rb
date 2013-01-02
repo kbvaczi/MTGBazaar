@@ -10,11 +10,14 @@ class AddArticles < ActiveRecord::Migration
         #foreign keys      
 
         #table data
-        t.text      :privileges
         t.string    :display_name
         t.string    :avatar
-        t.text      :article_series_names
         t.text      :description
+        
+        t.boolean   :can_write_articles
+        t.boolean   :active
+        t.string    :article_series_name
+
         t.timestamps      
       end
     end
@@ -24,7 +27,6 @@ class AddArticles < ActiveRecord::Migration
         #foreign keys      
         t.integer   :team_z_profile_id
         #table data
-        t.string    :series_name
         t.string    :title
         t.string    :summary
         t.text      :body   
@@ -33,10 +35,10 @@ class AddArticles < ActiveRecord::Migration
         t.datetime  :active_at
         t.timestamps
       end
-      add_index :team_z_articles, :team_z_profile_id      
+      add_index :team_z_articles, :team_z_profile_id
       add_index :team_z_articles, :approved
       add_index :team_z_articles, :active    
-    end    
+    end  
 
   end
 

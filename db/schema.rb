@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121222234629) do
+ActiveRecord::Schema.define(:version => 20130101045443) do
 
   create_table "accounts", :force => true do |t|
     t.integer  "user_id"
@@ -432,6 +432,33 @@ ActiveRecord::Schema.define(:version => 20121222234629) do
   add_index "site_variables", ["active"], :name => "index_site_variables_on_active"
   add_index "site_variables", ["name"], :name => "index_site_variables_on_name"
 
+  create_table "team_z_articles", :force => true do |t|
+    t.integer  "team_z_profile_id"
+    t.string   "title"
+    t.string   "summary"
+    t.text     "body"
+    t.boolean  "approved"
+    t.boolean  "active"
+    t.datetime "active_at"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "team_z_articles", ["active"], :name => "index_team_z_articles_on_active"
+  add_index "team_z_articles", ["approved"], :name => "index_team_z_articles_on_approved"
+  add_index "team_z_articles", ["team_z_profile_id"], :name => "index_team_z_articles_on_team_z_profile_id"
+
+  create_table "team_z_profiles", :force => true do |t|
+    t.string   "display_name"
+    t.string   "avatar"
+    t.text     "description"
+    t.boolean  "can_write_articles"
+    t.boolean  "active"
+    t.string   "article_series_name"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+  end
+
   create_table "ticket_updates", :force => true do |t|
     t.integer  "ticket_id"
     t.integer  "author_id"
@@ -515,6 +542,7 @@ ActiveRecord::Schema.define(:version => 20121222234629) do
     t.datetime "updated_at",                                :null => false
     t.integer  "user_level",             :default => 0
     t.boolean  "active",                 :default => true
+    t.integer  "team_z_profile_id"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true

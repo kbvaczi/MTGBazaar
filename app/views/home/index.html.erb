@@ -1,10 +1,28 @@
 <% title "A Better Way to Buy and Sell MTG" %>
 
-<h1></h1>
+<div id='news_bar'>
+  <h1>News Article Titles</h1>
+</div>
 
-<div class="ma">
+<div id='articles_wrapper'>
+  <% articles = TeamZ::Article.includes(:profile).viewable.
+                order('team_z_articles.created_at DESC').
+                group("team_z_profiles.id").
+                limit(4)
+  %>
+  <% articles.each do |article| %>
+    <%= render :partial => 'team_z/articles/teaser', :locals => {:article => article} %>
   
-  <%= render :inline => SiteVariable.get("homepage") %>
-  
+  <% end %>
+  <div class='article_bar'>
+    <h1></h1>
+  </div>
+  <div class='article_bar'>
+    <h1></h1>
+  </div>
+  <div class='article_bar'>
+    <h1></h1>
+  </div>
+   
 </div>
 
