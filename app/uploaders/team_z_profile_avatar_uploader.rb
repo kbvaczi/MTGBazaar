@@ -39,18 +39,16 @@ class TeamZProfileAvatarUploader < CarrierWave::Uploader::Base
   #   # do something
   # end
   process :convert => 'jpg' 
+  process :resize_to_fill => [200, 200]  
   
   # Create different versions of your uploaded files:
      #version :thumb do
      #process :resize_to_limit => [170, 240]
   #end
   version :thumb do
-    process :resize_to_fill => [50, 50]
+    process :resize_to_fill => [75, 75]
   end
-
-  version :content do
-    process :resize_to_fill => [200, 200]
-  end
+    
 
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
