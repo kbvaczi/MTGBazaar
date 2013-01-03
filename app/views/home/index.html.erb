@@ -6,14 +6,12 @@
 
 <div id='articles_wrapper'>
   <% articles = TeamZ::Article.includes(:profile).viewable.
-                order('team_z_articles.created_at DESC').
+                order('team_z_articles.active_at DESC').
                 group("team_z_profiles.id").
-                limit(4)
+                limit(6)
   %>
   <% articles.each do |article| %>
     <%= render :partial => 'team_z/articles/teaser', :locals => {:article => article} %>
-  
-  <% end %>
-   
+  <% end %>   
 </div>
 

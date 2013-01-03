@@ -12,6 +12,7 @@ class AddArticles < ActiveRecord::Migration
         #table data
         t.string    :display_name
         t.string    :avatar
+        t.string    :picture        
         t.text      :description
         
         t.boolean   :can_write_articles

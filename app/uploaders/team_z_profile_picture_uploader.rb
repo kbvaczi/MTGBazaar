@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-class TeamZProfileAvatarUploader < CarrierWave::Uploader::Base
+class TeamZProfilePictureUploader < CarrierWave::Uploader::Base
 
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
@@ -21,7 +21,7 @@ class TeamZProfileAvatarUploader < CarrierWave::Uploader::Base
   #{}"uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   #end
   def store_dir
-    "uploads/team_z/avatars"
+    "uploads/team_z/pictures"
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
@@ -39,7 +39,7 @@ class TeamZProfileAvatarUploader < CarrierWave::Uploader::Base
   #   # do something
   # end
   process :convert => 'jpg' 
-  process :resize_to_fill => [65, 65]  
+  process :resize_to_fill => [200, 200]  
   
   # Create different versions of your uploaded files:
      #version :thumb do
