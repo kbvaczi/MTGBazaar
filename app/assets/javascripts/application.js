@@ -22,5 +22,6 @@
 //= require jquery.maskMoney
 //= require jquery-numeric
 //= require spin
+//= require jquery.bxslider
 
 //= require_tree .

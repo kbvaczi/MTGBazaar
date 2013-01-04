@@ -421,11 +421,11 @@ textarea {
   -webkit-box-shadow: 0px 1px 1px 0px #bbb;
   box-shadow:         0px 1px 1px 0px #bbb;
 }
-#right_bar, #right_bar2, #right_bar3, .right_bar2, .right_bar3 {
+#right_bar {
   float:left;
   margin: 10px 0 0 0;
   width: 230px;
-  min-height: 195px;
+  height: 195px;
   background: #FFF;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
@@ -434,13 +434,54 @@ textarea {
   -webkit-box-shadow: 0px 1px 1px 0px #bbb;
   box-shadow:         0px 1px 1px 0px #bbb;
 }
-.right_bar2 {
+#right_bar2, #right_bar3 {
+  float: left;
+  margin: 10px 0 0 0;
+  padding: 0px;
+  width: 230px;
+  height: 195px;
+  background: #FFF;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  -moz-box-shadow:    0px 1px 1px 0px #bbb;
+  -webkit-box-shadow: 0px 1px 1px 0px #bbb;
+  box-shadow:         0px 1px 1px 0px #bbb;  
+}
+#right_bar3 h1{
+  position: absolute;
+  width:230px;
+  padding:0px;
+}
+#slider_right_bar2, #slider_right_bar3 {
+  width: 230px;
+  height: 195px;  
+  background: none;
+}
+.right_bar_slider_object {
+  position:relative;
+  background:none;
+  width: 230px;
+  height: 195px;  
+}
+.right_bar_slider_object h1 {
+  position: relative !important;
+  background: none;
+  display:block;
+}
+.right_bar2_slider_object {
   position:relative;
 	cursor:pointer;
+	width: 230px;
+  height: 195px;
 	background-size:100% 100%;
 	background-repeat:no-repeat;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+	
 }
-#adlink { 
+.external_link { 
   position: absolute; 
   width: 100%; 
   height: 100%; 
@@ -1047,103 +1088,6 @@ ul.tabs li.selected a:hover {
 	font: bold 26px Arial, Helvetica, sans-serif;
 	line-height: 26px;
 	text-decoration: none;
-}
-
-/* @override http://localhost/bxslider_v3_plugin/css/styles.css */
-
-/*
- * To change the color scheme of slider change each 
- * background property for each of the five styles below
- */
-
-/*next button*/
-.bx-next {
-	position:absolute;
-	top:16px;
-	right:10px;
-	z-index:0;
-	width: 15px;
-	height: 15px;
-	text-indent: -999999px;
-	background: url(gray_next.png) no-repeat 0 -15px;
-}
-
-/*previous button*/
-.bx-prev {
-	position:absolute;
-	top:16px;
-	left:10px;
-	z-index:0;
-	width: 15px;
-	height: 15px;
-	text-indent: -999999px;
-	background: url(gray_prev.png) no-repeat 0 -15px;
-}
-
-/*pager links*/
-.bx-pager a {
-	margin-right: 5px;
-	color: #fff;
-	padding: 3px 8px 3px 6px;
-	font-size: 12px;
-	zoom:1;
-	background: url(gray_pager.png) no-repeat 0 -20px;
-}
-
-/*auto start button*/
-.bx-auto .start {
-	background: url(gray_auto.png) no-repeat 0 2px;
-	padding-left: 13px;
-}
-
-/*auto stop button*/
-.bx-auto .stop {
-	background: url(gray_auto.png) no-repeat 0 -14px;
-	padding-left: 13px;
-}
-
-/*
- * End color scheme styles
- */
-
-
-/*next/prev button hover state*/
-.bx-next:hover,
-.bx-prev:hover {
-	background-position: 0 0;
-}
-
-/*pager links hover and active states*/
-.bx-pager .pager-active,
-.bx-pager a:hover {
-	background-position: 0 0;
-}
-
-/*pager wrapper*/
-.bx-pager {
-	text-align:center;
-	padding-top: 7px;
-	font-size:12px;
-	color:#666;
-}
-
-/*captions*/
-.bx-captions {
-	text-align:center;
-	font-size: 12px;
-	padding: 7px 0;
-	color: #333;
-}
-
-/*auto controls*/
-.bx-auto {
-	text-align: center;
-	padding-top: 15px;
-}
-
-.bx-auto a {
-	color: #333;
-	font-size: 12px;
 }
 
 /* DELETE ICON FOR TEXT INPUTS, SEE delete_icon.js.erb */
