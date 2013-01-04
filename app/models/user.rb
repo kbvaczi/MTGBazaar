@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :account_attributes, :terms, :age
   
   # not-in-model fields for age and agree-to-terms fields in sign-up
-  attr_accessor :terms
+  attr_accessor :terms, :active_was_modified
   cattr_accessor :current_user
   
   # allow form for accounts nested inside user signup/edit forms
@@ -41,18 +41,27 @@ class User < ActiveRecord::Base
 # ---------------- CALLBACKS ----------------      
 
   after_create   :create_statistics
-  after_update   :update_statistics_when_active_changed, :if => "active_changed?"
+  before_update  :set_active_was_modified_if_modified
+  after_commit   :update_statistics_when_active_changed, :on => :update, :if => Proc.new { |record| record.active_was_modified }
 
   def create_statistics
     self.statistics = UserStatistics.create
   end
   
+  def set_active_was_modified_if_modified
+    self.active_was_modified = true if self.active_changed?
+  end
+  
   def update_statistics_when_active_changed
-    self.mtg_listings.each { |l| l.update_statistics_cache_on_save }
-    if self.active
-      self.statistics.update_listings_mtg_cards_count if self.statistics.present?
-    else
-      self.statistics.update_attribute(:listings_mtg_cards_count, 0) if self.statistics.present?
+    ActiveRecord::Base.transaction do
+      if self.active
+        self.statistics.update_listings_mtg_cards_count if self.statistics.present?
+      else
+        self.statistics.update_attribute(:listings_mtg_cards_count, 0) if self.statistics.present?
+      end
+    end
+    ActiveRecord::Base.transaction do
+      self.mtg_listings.each { |l| l.update_statistics_cache_on_save }
     end
   end
   
