@@ -39,17 +39,17 @@
         </div>
         <div id="center_bar_wrapper">
           <%= back_link(:message => "Back", :path => back_path) unless request.fullpath == root_path %>       
-          <div id="center_bar">
+          <div id="center_bar" class='content_shadow'>
             <%= yield %>
           </div>        
         </div>
-        <div id="right_bar">
+        <div id="right_bar" class='content_shadow'>
           <%= render :partial => 'shared/right_bar' %>
         </div>
         <div id="right_bar2">
           <%= render :partial => 'shared/right_bar2' %>
         </div>
-        <div id='right_bar3'>
+        <div id='right_bar3' class='content_shadow'>
           <%= render :partial => 'shared/right_bar3' %>    
         </div>   
       </div>

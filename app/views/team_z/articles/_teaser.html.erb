@@ -1,12 +1,13 @@
-<div class='article_bar'>
+<div class='article_bar content_shadow'>
   <h1><%= article.profile.article_series_name %></h1>
   <div>
     <div class='avatar_wrapper left'>
       <div class='avatar' style="background-image:url(<%= article.profile.avatar_url.to_s %>);"></div>
     </div>
-    <div style="height:90px;">
+    <div class="shadow" style="height:90px;">
       <div class="left title"><h2><%= article.title.truncate(50, :omission => "...") %></h2></div>
       <div class="left description"><%= article.summary.truncate(90, :omission => "...") %></div>          
+      
     </div>
 
   </div>

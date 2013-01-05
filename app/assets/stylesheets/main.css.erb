@@ -310,16 +310,18 @@ textarea {
 }
 #navbar ul li.navbar_drop {
   position:relative;
+  z-index: 52;
 }
 #navbar ul li.navbar_drop a {
   position:relative;
-  z-index: 10;
+  z-index:53;
+
 }
 #navbar ul li.navbar_drop a:hover, #navbar ul li.navbar_drop a:focus, #navbar ul li.navbar_drop a:active  {
   background-color: #BEC1C4;
   text-decoration: none;
   text-shadow: 0 -1px 0px rgb(100,100,100);
-  cursor: pointer;
+  cursor: pointer;  
 }
 #navbar ul li.navbar_drop div.navbar_drop_child {
    display:none;
@@ -331,6 +333,7 @@ textarea {
    background: #fff;
    border: 1px solid #ABB0B1;
    color: #333;
+   -webkit-border-radius: 0px 0px 8px 8px;
    -moz-border-radius: 0px 0px 8px 8px;
    border-radius:      0px 0px 8px 8px;
    -moz-box-shadow:    0px 1px 3px 0px rgba(106,108,110,0.8);
@@ -347,7 +350,12 @@ textarea {
   width:100%;
   border-bottom: 1px solid #ddd;
   line-height:2;
-  text-align: left;   
+  text-align: left;  
+}
+#navbar ul li.navbar_drop div.navbar_drop_child ul li:last-child {
+  -webkit-border-radius: 0px 0px 8px 8px;
+  -moz-border-radius: 0px 0px 8px 8px;
+  border-radius:      0px 0px 8px 8px;
 }
 #navbar ul li.navbar_drop div.navbar_drop_child ul li.heading {
   font-weight:bold;
@@ -557,17 +565,16 @@ textarea {
   pointer-events: none;
   position:absolute;
   display:block;
-  z-index: 99999999;
+  z-index: 51;
   width:540px;
   height:195px;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px;
-  -webkit-box-shadow: inset 0px 0px 2px 0px #222;
-  box-shadow: inset 0px 0px 2px 0px #222;
+  -webkit-box-shadow: inset 0px 0px 2px 0px #333;
+  box-shadow: inset 0px 0px 2px 0px #333;
 }
 #news_bar .news_article .news_article_text {
-  
   -moz-border-radius-bottomleft:10px;
   -webkit-border-bottom-left-radius:10px;
   border-bottom-left-radius:10px;
@@ -639,6 +646,9 @@ textarea {
   box-shadow:         0px 1px 1px 0px #bbb;
 }
 .article_bar .avatar_wrapper {
+  background:#FFF;
+  position:relative;
+  z-index:3;
   margin-left: 10px;
   height: 75px;
   width: 75px;
@@ -725,7 +735,18 @@ textarea {
 /*--generic content classes ----------*/
 /*------------------------------------*/
 #content, .content {
-  margin:10px;  
+  margin:10px;
+}
+.content_shadow {
+  background-repeat:no-repeat;    
+  background-image: -moz-linear-gradient(45deg,  rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.05) 50px, rgba(0,0,0,0) 100px) !important; /* FF3.6+ */
+  background-image: -webkit-gradient(linear, left bottom, right top, color-stop(0%,rgba(0,0,0,0.2)), color-stop(50px,rgba(0,0,0,0.05)), color-stop(100px,rgba(0,0,0,0))) !important; /* Chrome,Safari4+ */
+  background-image: -webkit-linear-gradient(45deg,  rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.01) 50px,rgba(0,0,0,0) 100px) !important; /* Chrome10+,Safari5.1+ */
+  background-image: -o-linear-gradient(45deg,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.05) 50px,rgba(0,0,0,0) 100px) !important; /* Opera 11.10+ */
+  background-image: -ms-linear-gradient(45deg,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.05) 50px,rgba(0,0,0,0) 100px) !important; /* IE10+ */
+  background-image: linear-gradient(45deg,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.05) 50px,rgba(0,0,0,0) 100px) !important; /* W3C */
+
+  
 }
 .table_header_sort {
   color:#333;

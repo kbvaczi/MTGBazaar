@@ -6,7 +6,7 @@ class NewsFeed < ActiveRecord::Base
   
   mount_uploader :teaser_picture,  NewsFeedTeaserPictureUploader
     
-  def self.available_to_view
+  def self.viewable
     NewsFeed.where("active LIKE ?", true)
             .where("start_at < \'#{Time.now}\' OR start_at IS null")
             .where("end_at > \'#{Time.now}\' OR end_at IS null")    
