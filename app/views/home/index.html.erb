@@ -1,14 +1,34 @@
 <% title "A Better Way to Buy and Sell MTG" %>
 
 <div id='news_bar'>
-  <h1>News Article Titles</h1>
+    <% 
+    
+    recent_news_feeds = NewsFeed.available_to_view.limit(5) 
+    
+    %>
+    <div id='slider_news_bar'>
+
+      <% recent_news_feeds.each do |news_feed| %>      
+        <a class='news_article' href='<%= news_feed_path(news_feed) %>'>
+          <div class='news_article_teaser_picture' style="background-image:url(<%= news_feed.teaser_picture_url %>)"></div>
+          <div class='news_article_text'>
+            <h2 class='news_article_title'><%= news_feed.title %></h2>
+            <div class='news_article_description'><%= news_feed.description %></div>
+          </div>
+        </a>
+      <% end %>      
+    </div>
+
 </div>
 
 <div id='articles_wrapper'>
-  <% articles = TeamZ::Article.includes(:profile).viewable.
+  <% 
+  
+  articles = TeamZ::Article.includes(:profile).viewable.
                 order('team_z_articles.active_at DESC').
                 group("team_z_profiles.id").
                 limit(6)
+                
   %>
   <% articles.each do |article| %>
     <%= render :partial => 'team_z/articles/teaser', :locals => {:article => article} %>

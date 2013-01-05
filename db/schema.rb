@@ -399,14 +399,16 @@ ActiveRecord::Schema.define(:version => 20130101045443) do
 
   create_table "news_feeds", :force => true do |t|
     t.integer  "author_id"
-    t.string   "title",       :default => ""
+    t.string   "title",              :default => ""
     t.text     "data"
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
     t.datetime "start_at"
     t.datetime "end_at"
-    t.boolean  "active",      :default => true
+    t.boolean  "active",             :default => true
     t.string   "description"
+    t.string   "background_picture"
+    t.string   "teaser_picture"
   end
 
   create_table "sessions", :force => true do |t|
@@ -451,6 +453,7 @@ ActiveRecord::Schema.define(:version => 20130101045443) do
   create_table "team_z_profiles", :force => true do |t|
     t.string   "display_name"
     t.string   "avatar"
+    t.string   "picture"
     t.text     "description"
     t.boolean  "can_write_articles"
     t.boolean  "active"

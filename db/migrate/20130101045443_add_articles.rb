@@ -1,6 +1,10 @@
 class AddArticles < ActiveRecord::Migration
   def up
     
+    unless column_exists? :news_feeds, :teaser_picture
+      add_column :news_feeds, :teaser_picture, :string
+    end
+    
     unless column_exists? :users, :team_z_profile_id
       add_column :users, :team_z_profile_id, :integer
     end
@@ -48,6 +52,10 @@ class AddArticles < ActiveRecord::Migration
     if column_exists? :users, :team_z_profile_id
       remove_column :users, :team_z_profile_id
     end
+
+    if column_exists? :news_feeds, :teaser_picture
+      remove_column :news_feeds, :teaser_picture
+    end    
 
     drop_table    :team_z_profiles if table_exists? :team_z_profiles
     drop_table    :team_z_articles if table_exists? :team_z_articles    

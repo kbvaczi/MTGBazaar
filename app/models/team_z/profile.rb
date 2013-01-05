@@ -11,7 +11,7 @@ class TeamZ::Profile < ActiveRecord::Base
   
   # ----- Validations ----- #
 
-  validates_presence_of :display_name, :avatar, :article_series_name, :description
+  validates_presence_of :display_name, :article_series_name, :description
 
   # ----- Callbacks ----- #    
 
