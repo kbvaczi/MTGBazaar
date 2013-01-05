@@ -61,7 +61,7 @@ def listings_info_panel
                 <th style="text-align:right">#{Mtg::Cards::Listing.available.sum("quantity * number_cards_per_item").to_i}</th>
                 <td>&nbsp;</td>                
                 <th>Total Value:</th>
-                <th style="text-align:right">#{number_to_currency(Mtg::Cards::Listing.available.sum("quantity * price")/100)}</th>
+                <th style="text-align:right">#{number_to_currency(Mtg::Cards::Listing.available.sum("quantity * price").to_f / 100)}</th>
               </tr>
             </table>}
   text_node info.html_safe
