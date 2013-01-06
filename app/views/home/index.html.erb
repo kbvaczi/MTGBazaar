@@ -23,7 +23,7 @@
     <%   
         articles = []
         TeamZ::Profile.scoped.each {|profile| articles << TeamZ::Article.where(:team_z_profile_id => profile.id).order('active_at DESC').limit(1).first}
-        articles = articles.sort_by(&:active_at).reverse         
+        articles = articles.sort_by(&:active_at).reverse rescue nil
     %>
     <% articles.each do |article| %>
       <%= render :partial => 'team_z/articles/teaser', :locals => {:article => article} %>

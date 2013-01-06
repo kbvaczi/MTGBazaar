@@ -10,7 +10,7 @@
     </div>
   </div>
   <div class='article_body'>
-    <%= @article.body %>
+    <%= @article.body.html_safe %>
   </div>
   <div class='article_footer'>
     <% if @other_articles.present? %>

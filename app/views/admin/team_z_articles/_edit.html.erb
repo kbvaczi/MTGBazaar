@@ -1,0 +1,36 @@
+<%= semantic_form_for [:admin, @team_z_article] do |f| %>
+
+  <%= f.inputs "Form" do %>
+  
+    <%= f.input :team_z_profile_id,   :label => "Author",
+                                      :as => :select,
+                                      :include_blank => false,
+                                      :collection => TeamZ::Profile.select([:id,:display_name]).collect {|a| [a.display_name, a.id]} %>                 
+    <%= f.input :title %>
+    <%= f.input :summary %>
+
+    <div style="margin:20px;">
+      <%#= f.input :data,        :label => false,
+                                :input_html => { :class => :ckeditor } %>
+      <%= f.cktext_area :body, :ckeditor => {:uiColor => "#000", :toolbar => "Easy"}, :width => '100%', :height => 500 %>  
+    </div>
+    
+    <script type="text/javascript">
+      CKEDITOR.config.contentsCss = '/assets/ckeditor.css';
+      CKEDITOR.config.enterMode = CKEDITOR.ENTER_DIV;
+    </script>
+    
+    <%= f.input :approved,    :default => true,
+                              :required => false %>    
+    <%= f.input :active_at,   :as => :date, 
+                              :hint => "post will go live on this date. Leave blank to make post live immediately",
+                              :discard_minutes => true, :discard_seconds => true %>
+    <%= f.input :active,      :as => :boolean,
+                              :default => true,
+                              :required => false %>
+                                                
+  <% end %>
+  
+  <%= f.submit %>
+  
+<% end %>
