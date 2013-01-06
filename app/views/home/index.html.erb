@@ -22,7 +22,7 @@
   <%= cache "newest_articles", :expires_in => 1.hours do %>
     <%   
         articles = []
-        TeamZ::Profile.scoped.each {|profile| articles << profile.articles.order('active_at DESC').limit(1).first}
+        TeamZ::Profile.scoped.each {|profile| articles << TeamZ::Article.where(:team_z_profile_id => profile.id).order('active_at DESC').limit(1).first}
         articles = articles.sort_by(&:active_at).reverse         
     %>
     <% articles.each do |article| %>
