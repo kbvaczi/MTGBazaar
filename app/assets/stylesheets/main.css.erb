@@ -645,7 +645,7 @@ textarea {
   -webkit-box-shadow: 0px 1px 1px 0px #bbb;
   box-shadow:         0px 1px 1px 0px #bbb;
 }
-.article_bar .avatar_wrapper {
+.article_bar .avatar_wrapper, .article_avatar_wrapper {
   background:#FFF;
   position:relative;
   z-index:3;
@@ -654,20 +654,20 @@ textarea {
   width: 75px;
   border: 1px solid #ddd;
 }
-.article_bar .avatar {
+.article_bar .avatar, .article_avatar {
   height:65px;
   width:65px;
   background-size: 100%;
   margin: 5px;
 }
-.article_bar .title {
+.article_bar .title, .article_title {
   width:160px;
   max-height:35px;
   overflow:hidden;
   margin: 0px 0px 0px 7px;  
   border-bottom:1px solid #ddd;  
 }
-.article_bar .title h2 {
+.article_bar .title h2, .article_title h2 {
   padding: 0px 0px 3px 3px;
   margin:0px;
   font-size:13px;
@@ -677,20 +677,18 @@ textarea {
   /*white-space:nowrap;*/
   overflow:hidden;
   /*text-overflow:ellipsis;*/
-
-
   text-shadow:none;
   -moz-box-shadow:    none;
   -webkit-box-shadow: none;
   box-shadow:         none;
     
 }
-.article_bar .postdate {
+.article_bar .postdate, .article_postdate {
   width:150px;
   font-size: 10px;
   text-align:right;
 }
-.article_bar .description {
+.article_bar .description, .article_description {
   font-style: italic;  
   text-align:justify;
   font-size:11px;
@@ -739,12 +737,12 @@ textarea {
 }
 .content_shadow {
   background-repeat:no-repeat;    
-  background-image: -moz-linear-gradient(45deg,  rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.05) 50px, rgba(0,0,0,0) 100px) !important; /* FF3.6+ */
-  background-image: -webkit-gradient(linear, left bottom, right top, color-stop(0%,rgba(0,0,0,0.2)), color-stop(50px,rgba(0,0,0,0.05)), color-stop(100px,rgba(0,0,0,0))) !important; /* Chrome,Safari4+ */
-  background-image: -webkit-linear-gradient(45deg,  rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.01) 50px,rgba(0,0,0,0) 100px) !important; /* Chrome10+,Safari5.1+ */
-  background-image: -o-linear-gradient(45deg,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.05) 50px,rgba(0,0,0,0) 100px) !important; /* Opera 11.10+ */
-  background-image: -ms-linear-gradient(45deg,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.05) 50px,rgba(0,0,0,0) 100px) !important; /* IE10+ */
-  background-image: linear-gradient(45deg,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.05) 50px,rgba(0,0,0,0) 100px) !important; /* W3C */
+  background-image: -moz-linear-gradient(45deg,  rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.05) 30px, rgba(0,0,0,0) 100px) !important; /* FF3.6+ */
+  background-image: -webkit-gradient(linear, left bottom, right top, color-stop(0%,rgba(0,0,0,0.2)), color-stop(30px,rgba(0,0,0,0.05)), color-stop(100px,rgba(0,0,0,0))) !important; /* Chrome,Safari4+ */
+  background-image: -webkit-linear-gradient(45deg,  rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.01) 30px,rgba(0,0,0,0) 100px) !important; /* Chrome10+,Safari5.1+ */
+  background-image: -o-linear-gradient(45deg,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.05) 30px,rgba(0,0,0,0) 100px) !important; /* Opera 11.10+ */
+  background-image: -ms-linear-gradient(45deg,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.05) 30px,rgba(0,0,0,0) 100px) !important; /* IE10+ */
+  background-image: linear-gradient(45deg,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.05) 30px,rgba(0,0,0,0) 100px) !important; /* W3C */
 
   
 }

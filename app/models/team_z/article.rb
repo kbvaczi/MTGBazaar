@@ -5,6 +5,11 @@ class TeamZ::Article < ActiveRecord::Base
   
   belongs_to :profile, :class_name => "TeamZ::Profile", :foreign_key => "team_z_profile_id"
 
+  # override default route to add username in route.
+  def to_param
+    "#{id}-#{self.title}".parameterize
+  end
+
   # ----- Validations ----- #
 
   validates_presence_of :team_z_profile_id, :title, :summary, :body, :approved, :active

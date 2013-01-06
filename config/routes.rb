@@ -131,6 +131,11 @@ MTGBazaar::Application.routes.draw do
 
   resources :news_feeds, :only => [:show, :index], :path => '/news'
   
+# TEAM Z
+  namespace :team_z do
+    resources :articles, :only => [:show]
+  end
+
 # MISC ROUTES -------------- #
 
   root :to => "home#index"

@@ -3,8 +3,8 @@ class TeamZ::Profile < ActiveRecord::Base
 
   self.table_name = 'team_z_profiles'    
   
-  has_one    :user,    :class_name => "User",           :foreign_key => "team_z_profile_id"
-  has_one    :article, :class_name => "TeamZ::Article", :foreign_key => "team_z_profile_id"  
+  has_one    :user,     :class_name => "User",           :foreign_key => "team_z_profile_id"
+  has_many   :articles, :class_name => "TeamZ::Article", :foreign_key => "team_z_profile_id"  
 
   mount_uploader :avatar,  TeamZProfileAvatarUploader
   mount_uploader :picture, TeamZProfilePictureUploader  
