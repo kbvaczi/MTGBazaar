@@ -1,21 +1,21 @@
 <% title "A Better Way to Buy and Sell MTG" %>
 
 <div id='news_bar'>
-  <%= cache "newest_news_feeds", :expires_in => 1.hours do %>
-    <% recent_news_feeds = NewsFeed.viewable.order(:start_at).limit(5) %>
+  <%#= cache "newest_news_feeds", :expires_in => 1.hours do %>
+    <% slides = Admin::SliderCenterSlide.viewable %>
     <div class='news_article_shadow'> </div>
     <div id='slider_news_bar'>
-      <% recent_news_feeds.each do |news_feed| %>      
-        <a class='news_article' href='<%= news_feed_path(news_feed) %>'>
-          <div class='news_article_teaser_picture' style="background-image:url(<%= news_feed.teaser_picture_url %>)"></div>
+      <% slides.each do |slide| %>      
+        <a class='news_article' href='<%= slide.link %>'>
+          <div class='news_article_teaser_picture' style="background-image:url(<%= slide.image %>)"></div>
           <div class='news_article_text'>
-            <h2 class='news_article_title'><%= news_feed.title %></h2>
-            <div class='news_article_description'><%= news_feed.description %></div>
+            <h2 class='news_article_title'><%= slide.title %></h2>
+            <div class='news_article_description'><%= slide.description %></div>
           </div>
         </a>
       <% end %>      
     </div>
-  <% end %>
+  <%# end %>
 </div>
 
 <div id='articles_wrapper'>

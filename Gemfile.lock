@@ -273,7 +273,7 @@ DEPENDENCIES
   awesome_print (~> 1.1.0)
   bulk_update (~> 1.0.0)
   carrierwave (~> 0.6.2)
-  ckeditor (~> 3.7.1)
+  ckeditor (~> 3.7.3)
   coffee-rails
   dalli
   devise (~> 2.1.2)

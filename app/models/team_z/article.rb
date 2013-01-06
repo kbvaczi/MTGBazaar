@@ -12,7 +12,7 @@ class TeamZ::Article < ActiveRecord::Base
 
   # ----- Validations ----- #
 
-  validates_presence_of :team_z_profile_id, :title, :summary, :body, :approved, :active
+  validates_presence_of :team_z_profile_id, :title, :description, :body, :approved, :active
 
   # ----- Callbacks ----- #    
 

@@ -1,4 +1,7 @@
 ActiveAdmin.register SiteVariable do
+  
+  menu :label => "Site Variables", :parent => 'Site Configuration'
+    
   # ------ INDEX ------- #
    # Customize columns displayed on the index screen in the table   
     index do

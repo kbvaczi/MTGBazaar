@@ -50,6 +50,18 @@ ActiveRecord::Schema.define(:version => 20130101045443) do
   add_index "active_admin_comments", ["namespace"], :name => "index_active_admin_comments_on_namespace"
   add_index "active_admin_comments", ["resource_type", "resource_id"], :name => "index_admin_notes_on_resource_type_and_resource_id"
 
+  create_table "admin_slider_center_slides", :force => true do |t|
+    t.integer  "news_feed_id"
+    t.string   "title"
+    t.string   "description"
+    t.string   "image"
+    t.string   "link_type",    :default => "URL"
+    t.string   "link"
+    t.integer  "slide_number"
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+  end
+
   create_table "admin_users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
     t.string   "encrypted_password",     :default => "", :null => false
@@ -408,7 +420,6 @@ ActiveRecord::Schema.define(:version => 20130101045443) do
     t.boolean  "active",             :default => true
     t.string   "description"
     t.string   "background_picture"
-    t.string   "teaser_picture"
   end
 
   create_table "sessions", :force => true do |t|
@@ -437,7 +448,7 @@ ActiveRecord::Schema.define(:version => 20130101045443) do
   create_table "team_z_articles", :force => true do |t|
     t.integer  "team_z_profile_id"
     t.string   "title"
-    t.string   "summary"
+    t.string   "description"
     t.text     "body"
     t.boolean  "approved"
     t.boolean  "active"

@@ -1,6 +1,6 @@
 ActiveAdmin.register NewsFeed do
   
-  menu :label => "News Feeds"
+  menu :label => "News Feeds", :parent => 'Site Configuration'
   
   # ----- CUSTOMIZE EDIT FORM ----- #
   # ----- CUSTOMIZE EDIT FORM ----- #

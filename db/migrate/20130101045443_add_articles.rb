@@ -1,10 +1,6 @@
 class AddArticles < ActiveRecord::Migration
   def up
     
-    unless column_exists? :news_feeds, :teaser_picture
-      add_column :news_feeds, :teaser_picture, :string
-    end
-    
     unless column_exists? :users, :team_z_profile_id
       add_column :users, :team_z_profile_id, :integer
     end
@@ -33,8 +29,8 @@ class AddArticles < ActiveRecord::Migration
         t.integer   :team_z_profile_id
         #table data
         t.string    :title
-        t.string    :summary
-        t.text      :body   
+        t.string    :description
+        t.text      :body
         t.boolean   :approved
         t.boolean   :active
         t.datetime  :active_at
@@ -45,6 +41,21 @@ class AddArticles < ActiveRecord::Migration
       add_index :team_z_articles, :active    
     end  
 
+    unless table_exists? :admin_slider_center_slides
+      create_table  :admin_slider_center_slides do |t|   
+        #foreign keys      
+        t.integer   :news_feed_id
+        #table data
+        t.string    :title
+        t.string    :description
+        t.string    :image
+        t.string    :link_type,   :default => 'URL'
+        t.string    :link
+        t.integer   :slide_number
+        t.timestamps      
+      end
+    end
+
   end
 
   def down
@@ -53,12 +64,9 @@ class AddArticles < ActiveRecord::Migration
       remove_column :users, :team_z_profile_id
     end
 
-    if column_exists? :news_feeds, :teaser_picture
-      remove_column :news_feeds, :teaser_picture
-    end    
-
     drop_table    :team_z_profiles if table_exists? :team_z_profiles
     drop_table    :team_z_articles if table_exists? :team_z_articles    
+    drop_table    :admin_slider_center_slides if table_exists? :admin_slider_center_slides
   end
   
 end

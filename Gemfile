@@ -29,7 +29,7 @@ gem "active_paypal_adaptive_payment", "~> 0.3.15"                   # Adaptive P
 #gem "paypal-permissions", "~> 0.2.0",
 #    :git => "https://github.com/paulca/paypal-permissions.git"
 
-gem "ckeditor", "~> 3.7.1"                                          # blog editor
+gem "ckeditor", "~> 3.7.3"                                          # blog editor
 gem "mini_magick", "~> 3.4"                                         # image manipulation for ckeditor
 gem "girl_friday", "~> 0.10.0"                                      # background processing for unicorn...
 

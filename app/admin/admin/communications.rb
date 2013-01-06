@@ -1,6 +1,6 @@
 ActiveAdmin.register Communication do
 
-  menu :label => "Communications"
+  menu :label => "Communications", :parent => 'Admin Controls'
   
   # ------ SCOPES (auto sorts) ------ #
     scope "Sent by users", :default => true do |comms|

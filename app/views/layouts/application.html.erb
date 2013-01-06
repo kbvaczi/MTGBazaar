@@ -39,7 +39,7 @@
         </div>
         <div id="center_bar_wrapper">
           <%= back_link(:message => "Back", :path => back_path) unless request.fullpath == root_path %>       
-          <div id="center_bar" class='content_shadow'>
+          <div id="center_bar">
             <%= yield %>
           </div>        
         </div>

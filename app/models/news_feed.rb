@@ -2,9 +2,11 @@ class NewsFeed < ActiveRecord::Base
 
   belongs_to  :author,    :class_name => "AdminUser",   :foreign_key => "author_id"
   
-  validates_presence_of :data, :teaser_picture, :title, :description
+  validates_presence_of :data, :title, :description
   
-  mount_uploader :teaser_picture,  NewsFeedTeaserPictureUploader
+  def to_param
+    "#{id}-#{title}".parameterize
+  end
     
   def self.viewable
     NewsFeed.where("active LIKE ?", true)

@@ -7,7 +7,7 @@
                                       :include_blank => false,
                                       :collection => TeamZ::Profile.select([:id,:display_name]).collect {|a| [a.display_name, a.id]} %>                 
     <%= f.input :title %>
-    <%= f.input :summary %>
+    <%= f.input :description %>
 
     <div style="margin:20px;">
       <%#= f.input :data,        :label => false,
