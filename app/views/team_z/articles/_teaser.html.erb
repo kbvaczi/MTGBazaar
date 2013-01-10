@@ -2,7 +2,7 @@
   <h1><%= article.profile.article_series_name %></h1>
   <div>
     <div class='avatar_wrapper left'>
-      <div class='avatar' style="background-image:url(<%= article.profile.avatar_url.to_s %>);"></div>
+      <%= link_to content_tag(:div, '', {:class => 'avatar', :style => "background-image:url(#{article.profile.avatar_url.to_s});" }), team_z_profile_path(article.profile), :title => 'More about this author' %>
     </div>
     <div class="shadow" style="height:90px;">
       <div class="left title"><h2><%= link_to article.title.truncate(50, :omission => "..."), team_z_article_path(article) %></h2></div>

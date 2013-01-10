@@ -1,9 +1,10 @@
-class TeamZ::Article < ActiveRecord::Base
+class TeamZ::MtgoVideoSeries < ActiveRecord::Base
   # ----- Table Setup ----- #
 
-  self.table_name = 'team_z_articles'    
+  self.table_name = 'team_z_mtgo_video_series'    
   
-  belongs_to :profile, :class_name => "TeamZ::Profile", :foreign_key => "team_z_profile_id"
+  belongs_to :profile, :class_name => "TeamZ::Profile",   :foreign_key => "team_z_profile_id"
+  has_many   :videos,  :class_name => "TeamZ::MtgoVideo", :foreign_key => 'video_series_id'
 
   # override default route to add username in route.
   def to_param
@@ -12,7 +13,7 @@ class TeamZ::Article < ActiveRecord::Base
 
   # ----- Validations ----- #
 
-  validates_presence_of :team_z_profile_id, :title, :description, :body, :approved, :active
+  validates_presence_of :team_z_profile_id, :title, :description, :active
 
   # ----- Callbacks ----- #    
 
@@ -25,7 +26,7 @@ class TeamZ::Article < ActiveRecord::Base
   # ----- Scopes ------ #
   
   def self.viewable
-    joins(:profile).where("team_z_profiles.active" => true, "team_z_articles.approved" => true, 'team_z_articles.active' => true).where("team_z_articles.active_at < ? OR team_z_articles.active_at IS ?", Time.now, nil)
+    joins(:profile).where("team_z_profiles.active" => true, 'team_z_mtgo_video_series.active' => true).where("team_z_mtgo_video_series.active_at < ? OR team_z_mtgo_video_series.active_at IS ?", Time.now, nil)
   end
 
   # ----- Class Methods ----- #

@@ -1,24 +1,15 @@
 <% title @article.title %>
 <% page_description @article.description %>
 
-<h1><%= @article.profile.article_series_name %> | <%= @article.title %></h1>
+<h1><%= @article.title %></h1>
 
 <div id='content'>
-  <div class='article_header' style='height:100px;'>
-    <div class='article_avatar_wrapper left' style="margin-left:0px">
-      <div class='article_avatar' style="background-image:url(<%= @article.profile.avatar_url.to_s %>);"></div>
-    </div>
+  <div class='team_z_profile'>
+    <%= render :partial => 'team_z/profiles/show_header', :locals => {:profile => @article.profile, :section => 'articles' } %>
   </div>
+  
   <div class='article_body'>
     <%= @article.body.html_safe %>
-  </div>
-  <div class='article_footer'>
-    <% if @other_articles.present? %>
-      <h2>Other Articles by this Author</h2>
-      <% @other_articles.each do |article| %>
-        <%= render :partial => 'team_z/articles/show_teaser', :locals => {:article => article} %>
-      <% end %>
-    <% end %>
   </div>
   
 </div>

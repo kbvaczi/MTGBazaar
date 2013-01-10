@@ -1,0 +1,146 @@
+#team_z_profile_header_image {
+  position:relative;
+  display:inline-block;
+  width: 450px;
+  height: 150px;
+  padding:0px;
+  background-size: 100%;
+  background: #FFF;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;  
+  -webkit-box-shadow: inset 0px 0px 2px 0px #333;
+  box-shadow: inset 0px 0px 2px 0px #333;
+}
+#team_z_profile_header_image .shadow {
+  pointer-events: none;
+  position:absolute;
+  display:block;
+  z-index: 51;
+  left:-1px;
+  top:-1px;
+  width:452px;
+  height:152px;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+
+}
+#team_z_profile_header_image .text_wrapper {
+  -moz-border-radius-bottomleft:10px;
+  -webkit-border-bottom-left-radius:10px;
+  border-bottom-left-radius:10px;
+  -moz-border-radius-bottomright:10px;
+  -webkit-border-bottom-right-radius:10px;
+  border-bottom-right-radius:10px;
+  background: -moz-linear-gradient(45deg,  rgba(12,12,12,0.9) 0%, rgba(26,26,26,0.85) 24%, rgba(0,0,0,0.8) 49%, rgba(27,27,27,0.8) 50%, rgba(62,62,62,0.7) 75%, rgba(46,46,46,0.6) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,rgba(12,12,12,0.9)), color-stop(24%,rgba(26,26,26,0.85)), color-stop(49%,rgba(0,0,0,0.8)), color-stop(50%,rgba(27,27,27,0.8)), color-stop(75%,rgba(62,62,62,0.7)), color-stop(100%,rgba(46,46,46,0.6))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(45deg,  rgba(12,12,12,0.9) 0%,rgba(26,26,26,0.85) 24%,rgba(0,0,0,0.8) 49%,rgba(27,27,27,0.8) 50%,rgba(62,62,62,0.7) 75%,rgba(46,46,46,0.6) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(45deg,  rgba(12,12,12,0.9) 0%,rgba(26,26,26,0.85) 24%,rgba(0,0,0,0.8) 49%,rgba(27,27,27,0.8) 50%,rgba(62,62,62,0.7) 75%,rgba(46,46,46,0.6) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(45deg,  rgba(12,12,12,0.9) 0%,rgba(26,26,26,0.85) 24%,rgba(0,0,0,0.8) 49%,rgba(27,27,27,0.8) 50%,rgba(62,62,62,0.7) 75%,rgba(46,46,46,0.6) 100%); /* IE10+ */
+  background: linear-gradient(45deg,  rgba(12,12,12,0.9) 0%,rgba(26,26,26,0.85) 24%,rgba(0,0,0,0.8) 49%,rgba(27,27,27,0.8) 50%,rgba(62,62,62,0.7) 75%,rgba(46,46,46,0.6) 100%); /* W3C */
+  position:relative;
+  top: 105px;
+  height: 30px;
+  width:450px;  
+  margin: 0px;
+  padding: 5px 10px 10px 10px;
+  border:none;  
+}
+#team_z_profile_header_image .text_wrapper h2{
+  color: #eee;
+  padding: 0px;
+  margin: 0px 0px 0px 10px;
+  font-size:15px;
+  line-height:1.1;
+  height:16px;
+  width:450px;
+  border-bottom:none;
+  box-shadow:none;
+  text-shadow: 1px 1px 0px #000;  
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;  
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+}
+
+/* team_z_profile articles list */
+
+.team_z_profile ul.tabs2 li a{
+  padding: 10px 30px 10px 30px;
+  margin: -10px;
+}
+.team_z_profile ul.tabs2 li#live_stream_offline {
+  background-image: url('https://s3.amazonaws.com/mtgbazaar/images/mtg/misc/offline.png');
+  background-repeat: no-repeat;
+  background-position: 88% 50%;
+}
+.team_z_profile ul.tabs2 li#live_stream_online {
+  background-image: url('https://s3.amazonaws.com/mtgbazaar/images/mtg/misc/online.png');
+  background-repeat: no-repeat;
+  background-position: 88% 50%;
+}
+.team_z_profile ul.tabs2 li#live_stream_pending a, .team_z_profile ul.tabs2 li#live_stream_offline a, .team_z_profile ul.tabs2 li#live_stream_online a {
+  padding: 10px 60px 10px 10px;
+}
+
+
+
+.profile_show_content {
+  
+}
+.profile_show_content_teaser {
+  display:inline-block;
+  text-align:left;
+  padding: 10px;
+  margin:  3px;
+  width: 230px;
+  height:60px;
+  vertical-align:top;
+  border: 1px solid #f9f9f9;
+  border-radius:10px;
+  box-shadow:1px 1px 1px 0px #ddd;
+}
+.profile_show_content_teaser .profile_show_content_title {
+  width:100%;
+  margin:0px;
+  display:block;
+  padding: 0px;
+  margin-bottom:5px;
+  font-size:13px;
+  line-height:1.3;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  text-shadow:none;
+}
+.profile_show_content_teaser .profile_show_content_description {
+  font-style: italic;
+  text-align:justify;  
+  font-size:11px;
+  padding:0px;
+  margin:0px;
+  width:230px;
+  height:24px;
+  line-height:1.1;
+  overflow: hidden;
+  word-wrap: break-word;
+}
+.profile_show_content_teaser .profile_show_post_date {
+  float:right;
+  margin-top:3px;
+  font-size:10px;
+}
+
+/* ----- VIDEOS ----- */
+.team_z_mtgo_video {
+  display:inline-block;
+  text-align: center;
+	width: 420px;
+}
+.team_z_mtgo_video h2 {
+  box-shadow:none;
+  border-bottom:none;
+  margin: 5px 0px 10px 0px;
+}

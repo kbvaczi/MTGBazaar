@@ -16,8 +16,13 @@ class AddArticles < ActiveRecord::Migration
         t.text      :description
         
         t.boolean   :can_write_articles
+        t.boolean   :can_post_videos
+        t.boolean   :can_stream
+        t.text      :live_stream_object
+        
         t.boolean   :active
         t.string    :article_series_name
+
 
         t.timestamps      
       end
@@ -40,6 +45,34 @@ class AddArticles < ActiveRecord::Migration
       add_index :team_z_articles, :approved
       add_index :team_z_articles, :active    
     end  
+    
+    unless table_exists? :team_z_mtgo_video_series
+      create_table  :team_z_mtgo_video_series do |t|
+        #foreign keys      
+        t.integer   :team_z_profile_id
+        #table data
+        t.string    :title
+        t.string    :description
+        t.boolean   :active
+        t.datetime  :active_at
+        t.timestamps
+      end
+      add_index :team_z_mtgo_video_series, :team_z_profile_id
+      add_index :team_z_mtgo_video_series, :active
+    end
+    
+    unless table_exists? :team_z_mtgo_videos
+      create_table  :team_z_mtgo_videos do |t|
+        #foreign keys      
+        t.integer   :video_series_id
+        #table data
+        t.string    :title
+        t.string    :video_link
+        t.string    :video_number        
+        t.timestamps
+      end
+      add_index :team_z_mtgo_videos, :video_series_id
+    end    
 
     unless table_exists? :admin_slider_center_slides
       create_table  :admin_slider_center_slides do |t|   
@@ -64,8 +97,10 @@ class AddArticles < ActiveRecord::Migration
       remove_column :users, :team_z_profile_id
     end
 
-    drop_table    :team_z_profiles if table_exists? :team_z_profiles
-    drop_table    :team_z_articles if table_exists? :team_z_articles    
+    drop_table    :team_z_profiles    if table_exists? :team_z_profiles
+    drop_table    :team_z_articles    if table_exists? :team_z_articles
+    drop_table    :team_z_mtgo_videos if table_exists? :team_z_mtgo_videos
+    drop_table    :team_z_mtgo_video_series   if table_exists? :team_z_mtgo_video_series
     drop_table    :admin_slider_center_slides if table_exists? :admin_slider_center_slides
   end
   

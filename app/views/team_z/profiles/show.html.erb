@@ -1,0 +1,18 @@
+<% title            "TeamZ Profile for #{@profile.display_name}" %>
+<% page_description "TeamZ Profile for featuring articles and videos for TeamZ member:#{@profile.display_name}" %>
+
+<h1><%= @profile.display_name %></h1>
+
+<div id='content'>
+  
+  <div class='team_z_profile'>
+
+    <%= render :partial => 'team_z/profiles/show_header', :locals => {:profile => @profile} %>
+    <%= render :partial => 'team_z/profiles/show_articles', :locals => {:profile => @profile} if params[:section] == 'articles' %>
+    <%= render :partial => 'team_z/profiles/show_mtgo_videos', :locals => {:profile => @profile} if params[:section] == 'mtgo_videos' %>        
+    <%= render :partial => 'team_z/profiles/show_live_stream', :locals => {:profile => @profile} if params[:section] == 'stream' %>    
+    
+    
+  </div>
+  
+</div>

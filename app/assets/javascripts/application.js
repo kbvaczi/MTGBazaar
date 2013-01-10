@@ -7,6 +7,8 @@
 
 //= require jquery
 //= require jquery_ujs
+//= require bx-slider/jquery.bxslider
+//= require bx-slider/jquery.fitvids
 
 //= require jquery_tools
 //= require chosen.jquery
@@ -22,6 +24,6 @@
 //= require jquery.maskMoney
 //= require jquery-numeric
 //= require spin
-//= require jquery.bxslider
+
 
 //= require_tree .

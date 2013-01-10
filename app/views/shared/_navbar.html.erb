@@ -28,7 +28,6 @@
       	    <li><%= link_to "Sell Singles", new_generic_mtg_cards_listings_path %></li>
       	    <li><%= link_to "Bulk Sell Singles",  new_bulk_prep_mtg_cards_listings_path  %></li>
       	    <li><%= link_to "Sell Playsets", new_mtg_cards_listings_playset_path %></li>      	          	    
-
         	</ul>
         </div>
       </li>
@@ -67,6 +66,18 @@
 	  </li>
 			
 		<li><%#= link_to "News", news_feeds_path %></li>		   			
+
+		<li class="navbar_drop">
+			<%= link_to 'Team Z', root_path %>
+			<div class="navbar_drop_child">
+  			<ul>
+  			  <% TeamZ::Profile.active.order('LOWER(display_name) ASC').each do |profile| %>
+  					<li><%= link_to "#{profile.display_name}", team_z_profile_path(profile) %></li>
+					<% end %>
+  			</ul>
+			</div>
+	  </li>		
+	  
 		<li><%= link_to "Home", root_path %></li>
 
   </ul>

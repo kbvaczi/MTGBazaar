@@ -1,0 +1,22 @@
+<% @articles = @profile.articles.viewable.order('active_at DESC').page(params[:page]).per(10) %>
+
+<div class='profile_show_content'>
+  <% @articles.each do |article| %>
+    <div class='profile_show_content_teaser content_shadow'>
+      <h2 class='profile_show_content_title'><%= link_to article.title, team_z_article_path(article, :section => 'articles'), :remote => true %></h2>
+      <div class='profile_show_content_description'>
+        <%= article.description.truncate(100, :ommission => '...') %>
+      </div>
+      <div class='profile_show_post_date'>
+        <%= display_time article.active_at %>
+      </div>
+    </div>
+  <% end %>
+  
+  <br class='spacer'/>
+<br class='spacer'/>  
+  
+  <div class='paginator center_wrap'>
+    <%= paginate @articles, :method => :get, :remote => true %>
+  </div>
+</div>

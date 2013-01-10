@@ -39,7 +39,7 @@ class TeamZProfilePictureUploader < CarrierWave::Uploader::Base
   #   # do something
   # end
   process :convert => 'jpg' 
-  process :resize_to_fill => [200, 200]  
+  process :resize_to_fill => [450, 150]  
   
   # Create different versions of your uploaded files:
      #version :thumb do

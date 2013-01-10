@@ -9,7 +9,7 @@ $(document).ready(function() {
 		controls:    false,
 		randomStart: true,
 		pager:       true,
-    slideWidth:  '540px'
+    slideWidth:  540
   });
 	
 	$('#slider_right_bar2').bxSlider({
@@ -21,7 +21,7 @@ $(document).ready(function() {
 		controls:    false,
 		randomStart: true,
 		pager:       false,
-    slideWidth:  '230px'
+    slideWidth:  230
   });
 	  
 	$('#slider_right_bar_3').bxSlider({
@@ -33,7 +33,7 @@ $(document).ready(function() {
 		controls:    true,
 		randomStart: true,
 		pager:       false, 
-    slideWidth:  '230px'
+    slideWidth:  230
   });
 
 });

@@ -134,6 +134,8 @@ MTGBazaar::Application.routes.draw do
 # TEAM Z
   namespace :team_z do
     resources :articles, :only => [:show]
+    resources :profiles, :only => [:show]
+    resources :mtgo_video_series, :only => [:show]
   end
 
 # MISC ROUTES -------------- #
