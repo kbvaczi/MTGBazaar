@@ -8,6 +8,7 @@
   <div class='team_z_profile'>
 
     <%= render :partial => 'team_z/profiles/show_header', :locals => {:profile => @profile} %>
+    <%= render :partial => 'team_z/profiles/show_profile', :locals => {:profile => @profile} if params[:section].nil? || params[:section] == 'profile' %>
     <%= render :partial => 'team_z/profiles/show_articles', :locals => {:profile => @profile} if params[:section] == 'articles' %>
     <%= render :partial => 'team_z/profiles/show_mtgo_videos', :locals => {:profile => @profile} if params[:section] == 'mtgo_videos' %>        
     <%= render :partial => 'team_z/profiles/show_live_stream', :locals => {:profile => @profile} if params[:section] == 'stream' %>    

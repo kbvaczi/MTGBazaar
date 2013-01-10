@@ -8,7 +8,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require bx-slider/jquery.bxslider
-//= require bx-slider/jquery.fitvids
 
 //= require jquery_tools
 //= require chosen.jquery

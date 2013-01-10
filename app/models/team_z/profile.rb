@@ -11,9 +11,17 @@ class TeamZ::Profile < ActiveRecord::Base
   mount_uploader :avatar,  TeamZProfileAvatarUploader
   mount_uploader :picture, TeamZProfilePictureUploader  
   
+  # override default route to add username in route.
+  def to_param
+    "#{id}-#{self.display_name}".parameterize
+  end
+  
+  serialize :data
+  
   # ----- Validations ----- #
 
-  validates_presence_of :display_name, :article_series_name, :description
+  validates_presence_of   :display_name, :article_series_name, :data
+  validates_uniqueness_of :display_name
 
   # ----- Callbacks ----- #    
 
@@ -25,5 +33,12 @@ class TeamZ::Profile < ActiveRecord::Base
   end
 
   # ----- Class Methods ----- #
+  
+  def self.default_profile_fields
+    ['Description', 'Age', 'Occupation', 'Twitter Hashtag', 'Magic Online Username', 'Hometown', 'Guild affiliation', 'How long have you played Magic', 
+     'How did you learn to play Magic', 'What is your biggest achievement in Magic so far', 'How often do you draft on Magic Online',
+     'How often do you play Constructed on Magic Online', 'Favorite formats to play', 'Favorite Draft Format', 'Favorite Magic Card',
+     'Favorite piece of Magic art', 'Favorite Planeswalker card', 'If you could play Magic against anyone, who would it be and why']
+  end
   
 end

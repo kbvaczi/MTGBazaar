@@ -13,7 +13,7 @@ class AddArticles < ActiveRecord::Migration
         t.string    :display_name
         t.string    :avatar
         t.string    :picture        
-        t.text      :description
+        t.text      :data
         
         t.boolean   :can_write_articles
         t.boolean   :can_post_videos

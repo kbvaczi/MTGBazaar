@@ -477,9 +477,10 @@ ActiveRecord::Schema.define(:version => 20130101045443) do
   create_table "team_z_mtgo_videos", :force => true do |t|
     t.integer  "video_series_id"
     t.string   "title"
-    t.text     "video_embed_object"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.string   "video_link"
+    t.string   "video_number"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   add_index "team_z_mtgo_videos", ["video_series_id"], :name => "index_team_z_mtgo_videos_on_video_series_id"
@@ -488,7 +489,7 @@ ActiveRecord::Schema.define(:version => 20130101045443) do
     t.string   "display_name"
     t.string   "avatar"
     t.string   "picture"
-    t.text     "description"
+    t.text     "data"
     t.boolean  "can_write_articles"
     t.boolean  "can_post_videos"
     t.boolean  "can_stream"

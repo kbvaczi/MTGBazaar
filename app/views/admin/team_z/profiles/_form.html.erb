@@ -1,0 +1,39 @@
+<%= semantic_form_for [:admin, @team_z_profile] do |f| %>
+
+  <%= f.inputs "Form" do %>
+  
+    <%= f.input :display_name %>
+    <%= f.input :avatar %>    
+    <%= f.input :picture %>
+    <%= f.input :active, :hint => 'Member must be active to have any content viewable on site' %>       
+
+    <br class='spacer'/>    
+    <h3 style='margin-left:20px'>Member Info</h3>
+        
+    <%= f.inputs :for => [:data, (f.object.data || {})], :name => 'Data' do |data_fields| %>
+      <% TeamZ::Profile.default_profile_fields.each do |profile_field| %>            
+        <%= data_fields.input profile_field.to_sym, :as => 'text',
+                                                    :required => false,
+                                                    :input_html => { :style => 'height:50px;', 
+                                                                     :value => f.object.data[profile_field] } %>        
+      <% end %>
+    <% end %>
+    
+
+    <br class='spacer'/>    
+    <h3 style='margin-left:20px'>Permissions</h3>
+    
+    <%= f.input :can_write_articles, :label => 'This team member can write articles' %>    
+    <%= f.input :article_series_name, :hint => 'only fill out if user can write articles',
+                                      :required => false %>
+                                      
+    <%= f.input :can_post_videos,     :label => 'This team member can post videos' %>                                      
+    
+    <%= f.input :can_stream,          :label => 'This team member can live stream' %>
+    <%= f.input :live_stream_object,  :required => false %>                                          
+    
+  <% end %>
+  
+  <%= f.submit %>
+  
+<% end %>
