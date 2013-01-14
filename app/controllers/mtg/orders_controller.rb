@@ -67,8 +67,8 @@ class Mtg::OrdersController < ApplicationController
           :receiver => { :email => PAYPAL_CONFIG[:account_email] }
         }] )
 
-    Rails.logger.debug "GATEWAY: #{@gateway.debug.inspect}"  rescue ""
-    Rails.logger.debug "PURCHASE: #{@purchase.inspect}" rescue ""
+    puts "\nGATEWAY: #{@gateway.debug.inspect}\n"  rescue "Gateway: RESCUED"
+    puts "\nPURCHASE: #{@purchase.inspect}\n" rescue "Purchase: RESCUED"
     
     @order.transaction.payment.paypal_paykey            = @purchase["payKey"]
     @order.transaction.payment.paypal_purchase_response = @purchase.inspect 
