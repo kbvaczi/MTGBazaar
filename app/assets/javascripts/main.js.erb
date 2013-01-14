@@ -1,11 +1,11 @@
 $(document).ready(function() {
 
-  $("#navbar ul li.navbar_drop a").mouseover(function() {
+  $("#navbar ul li.navbar_drop a").live('mouseover', function() {
     $(this).parent().find(".navbar_drop_child").delay(100).show(50);
   });
   
-  $("#navbar ul li.navbar_drop").mouseleave(function() {
-    $(this).find(".navbar_drop_child").hide(50);
+  $("#navbar ul li.navbar_drop").live('mouseleave', function() {
+    $(this).find(".navbar_drop_child").stop(1).hide(50);
   });
   
 });

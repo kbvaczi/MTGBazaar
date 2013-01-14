@@ -450,7 +450,7 @@ ActiveRecord::Schema.define(:version => 20130101045443) do
     t.string   "title"
     t.string   "description"
     t.text     "body"
-    t.boolean  "approved"
+    t.string   "status"
     t.boolean  "active"
     t.datetime "active_at"
     t.datetime "created_at",        :null => false
@@ -458,7 +458,7 @@ ActiveRecord::Schema.define(:version => 20130101045443) do
   end
 
   add_index "team_z_articles", ["active"], :name => "index_team_z_articles_on_active"
-  add_index "team_z_articles", ["approved"], :name => "index_team_z_articles_on_approved"
+  add_index "team_z_articles", ["status"], :name => "index_team_z_articles_on_status"
   add_index "team_z_articles", ["team_z_profile_id"], :name => "index_team_z_articles_on_team_z_profile_id"
 
   create_table "team_z_mtgo_video_series", :force => true do |t|
@@ -491,11 +491,12 @@ ActiveRecord::Schema.define(:version => 20130101045443) do
     t.string   "picture"
     t.text     "data"
     t.boolean  "can_write_articles"
+    t.string   "article_series_name"
     t.boolean  "can_post_videos"
     t.boolean  "can_stream"
-    t.text     "live_stream_object"
+    t.string   "twitch_tv_username"
+    t.boolean  "can_manage_content"
     t.boolean  "active"
-    t.string   "article_series_name"
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
   end

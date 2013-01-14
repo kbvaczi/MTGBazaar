@@ -1,13 +1,16 @@
 <% title @article.title %>
 <% page_description @article.description %>
 
-<h1><%= @article.title %></h1>
+<h1><%= @article.profile.display_name %></h1>
 
 <div id='content'>
   <div class='team_z_profile'>
     <%= render :partial => 'team_z/profiles/show_header', :locals => {:profile => @article.profile, :section => 'articles' } %>
   </div>
-  
+  <div class='article_header'>
+    <%= link_to 'View all Articles', team_z_profile_path(@article.profile, :section => 'articles'), :remote => true, :class => 'right mr mt-s' %>
+    <h2><%= @article.title %></h2>    
+  </div>
   <div class='article_body'>
     <%= @article.body.html_safe %>
   </div>

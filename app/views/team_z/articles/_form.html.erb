@@ -1,0 +1,49 @@
+<%= f.input :title %>
+<%= f.input :description, :as => :text,
+                          :input_html => {:style => 'height: 50px;'},
+                          :maxlength => 90,
+                          :hint => 'Max length 90 characters' %>
+
+<br class='spacer'/>
+<h2 style="width:680px;margin-left:-100px">Article Body</h2>
+<br class='spacer'/>  
+<div style='margin-left:-50px;'>
+  <%= f.cktext_area :body, :ckeditor => {:uiColor => "#000", :toolbar => "Easy"}, 
+                           :width => 600, 
+                           :height => 500 %>  
+</div>
+
+<%= f.input :action,       :as => :hidden,
+                           :input_html => {:value => 'save'} %>
+
+<div class='center_wrap ma'>
+  <div class='ma left'>
+    <%#= f.submit 'Save to Finish Later' %>
+    <div class='button noselect ma-m left' id='article_save'>Save & Finish Later</div>
+  </div>
+  <div class='ma right'>
+    <%#= f.submit 'Submit Finished Article for Review' %>
+    <div class='button noselect ma-m right' id='article_finish'>Submit Finished Article</div>      
+  </div>
+</div>
+<br class='spacer'/>
+
+<script type="text/javascript">
+
+  CKEDITOR.config.contentsCss = '/assets/ckeditor.css';
+  CKEDITOR.config.enterMode = CKEDITOR.ENTER_DIV;
+  
+  $('#article_save').live('click', function(){
+    $('#team_z_article_action').val('save');
+    $(this).closest('form').submit();
+  });
+  
+  $('#article_finish').live('click', function(){
+    var message = 'Are you sure you want to submit this article as finished? You will be unable to edit after submission...'
+    myCustomConfirmBox(message, function() {
+      $('#team_z_article_action').val('create');              
+      $('#team_z_article_action').closest('form').submit();
+    });    
+  });
+  
+</script>

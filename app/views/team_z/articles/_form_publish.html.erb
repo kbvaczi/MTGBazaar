@@ -1,0 +1,17 @@
+
+<%= simple_form_for @article,:url => publish_team_z_article_path(@article), :method => :put do |f| %>
+  
+  <br class='spacer'/>
+                                             
+  <%= f.input :active_at,   :label => 'Publish This Article On',
+                            :as => :date,
+                            :hint => 'Article will go live on this date. Leave blank to make post live immediately',
+                            #:input_html => {:class => 'chzn-select chzn-nosearch'},
+                            :discard_minutes => true, :discard_seconds => true %>
+
+  <br class='spacer'/>
+  <br class='spacer'/>  
+  
+  <%= f.submit 'Publish This Article' %>
+  
+<% end %>

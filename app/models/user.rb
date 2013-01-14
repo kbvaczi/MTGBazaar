@@ -2,19 +2,19 @@ class User < ActiveRecord::Base
 # ---------------- MODEL SETUP ----------------
   
   # database relationships
-  has_one  :account,                  :dependent => :destroy
-  has_one  :statistics,               :class_name => "UserStatistics",            :foreign_key => "user_id",        :dependent => :destroy
-  has_one  :cart
-  has_many :communications_sent,      :class_name => "Communication",             :foreign_key => "sender_id",      :dependent => :destroy
-  has_many :communications_received,  :class_name => "Communication",             :foreign_key => "receiver_id",    :dependent => :destroy  
-  has_many :mtg_listings,             :class_name => "Mtg::Cards::Listing",       :foreign_key => "seller_id"
-  has_many :mtg_purchases,            :class_name => "Mtg::Transaction",          :foreign_key => "buyer_id"
-  has_many :mtg_purchase_items,       :class_name => "Mtg::Transactions::Item",   :through => :mtg_purchases,       :source => :items
-  has_many :mtg_sales,                :class_name => "Mtg::Transaction",          :foreign_key => "seller_id"
-  has_many :mtg_sale_items,           :class_name => "Mtg::Transactions::Item",   :through => :mtg_sales,           :source => :items
-  has_many :tickets,                  :class_name => "Ticket",                    :as => "author"                         # tickets authored by this person... polymorpic relationship (author can either be User or AdminUser)
-  has_many :tickets_about,            :class_name => "Ticket",                    :foreign_key => "offender_id"           # tickets written about this person... not polymorphic (offender can only be User)
-  
+  has_one    :account,                  :dependent => :destroy
+  has_one    :statistics,               :class_name => "UserStatistics",            :foreign_key => "user_id",        :dependent => :destroy
+  has_one    :cart
+  has_many   :communications_sent,      :class_name => "Communication",             :foreign_key => "sender_id",      :dependent => :destroy
+  has_many   :communications_received,  :class_name => "Communication",             :foreign_key => "receiver_id",    :dependent => :destroy  
+  has_many   :mtg_listings,             :class_name => "Mtg::Cards::Listing",       :foreign_key => "seller_id"
+  has_many   :mtg_purchases,            :class_name => "Mtg::Transaction",          :foreign_key => "buyer_id"
+  has_many   :mtg_purchase_items,       :class_name => "Mtg::Transactions::Item",   :through => :mtg_purchases,       :source => :items
+  has_many   :mtg_sales,                :class_name => "Mtg::Transaction",          :foreign_key => "seller_id"
+  has_many   :mtg_sale_items,           :class_name => "Mtg::Transactions::Item",   :through => :mtg_sales,           :source => :items
+  has_many   :tickets,                  :class_name => "Ticket",                    :as => "author"                         # tickets authored by this person... polymorpic relationship (author can either be User or AdminUser)
+  has_many   :tickets_about,            :class_name => "Ticket",                    :foreign_key => "offender_id"           # tickets written about this person... not polymorphic (offender can only be User)
+  belongs_to :team_z_profile,           :class_name => "TeamZ::Profile",            :foreign_key => "team_z_profile_id"
 
   # Include default devise modules. Others available are:
   #:token_authenticatable, :encryptable, :confirmable, :lockable, :rememberable, :timeoutable, and :omniauthable

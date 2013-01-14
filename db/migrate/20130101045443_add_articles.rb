@@ -16,14 +16,13 @@ class AddArticles < ActiveRecord::Migration
         t.text      :data
         
         t.boolean   :can_write_articles
-        t.boolean   :can_post_videos
+        t.string    :article_series_name        
+        t.boolean   :can_post_videos        
         t.boolean   :can_stream
-        t.text      :live_stream_object
+        t.string    :twitch_tv_username
+        t.boolean   :can_manage_content
         
         t.boolean   :active
-        t.string    :article_series_name
-
-
         t.timestamps      
       end
     end
@@ -36,13 +35,14 @@ class AddArticles < ActiveRecord::Migration
         t.string    :title
         t.string    :description
         t.text      :body
-        t.boolean   :approved
+        
+        t.string    :status
         t.boolean   :active
         t.datetime  :active_at
         t.timestamps
       end
       add_index :team_z_articles, :team_z_profile_id
-      add_index :team_z_articles, :approved
+      add_index :team_z_articles, :status
       add_index :team_z_articles, :active    
     end  
     

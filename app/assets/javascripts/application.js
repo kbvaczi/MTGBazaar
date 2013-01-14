@@ -24,5 +24,7 @@
 //= require jquery-numeric
 //= require spin
 
+//= require ckeditor/init
+
 
 //= require_tree .

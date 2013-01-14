@@ -48,10 +48,15 @@ ActiveAdmin.register User do
     end  
     column :email
     column "PayPal Email", :sortable => :'accounts.paypal_username' do |user|
-      user.account.paypal_username
+      
+      if user.account.paypal_username.present?
+          status_tag "Yes", :ok
+        else
+          status_tag "No", :error
+      end      
     end 
     column "Current Sign-in", :current_sign_in_at
-    column "Last Sign-in", :last_sign_in_at
+    #column "Last Sign-in", :last_sign_in_at
     column "Cards Listed", :sortable => "user_statistics.listings_mtg_cards_count" do |user|
       user.statistics.listings_mtg_cards_count
     end

@@ -1,0 +1,10 @@
+<% title 'Edit Article' %>
+<% page_description 'Edit Article' %>
+
+<h1>Edit Article</h1>
+
+<%= simple_form_for @article, :method => :put do |f| %>
+
+  <%= render :partial => 'form', :locals => { :article => @article, :f => f } %>
+  
+<% end %>

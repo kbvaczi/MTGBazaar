@@ -10,25 +10,39 @@ class TeamZ::Article < ActiveRecord::Base
     "#{id}-#{self.title}".parameterize
   end
 
+  attr_accessor :action
+  
   # ----- Validations ----- #
 
-  validates_presence_of :team_z_profile_id, :title, :description, :body, :approved, :active
+  validates_presence_of :team_z_profile_id, :title, :description, :body, :status
 
   # ----- Callbacks ----- #    
 
   before_create :set_active_at
   
   def set_active_at
-    self.active_at = Time.now unless self.active_at
+    self.active_at = Time.zone.now if self.active and self.active_at.nil?
   end
 
   # ----- Scopes ------ #
   
   def self.viewable
-    joins(:profile).where("team_z_profiles.active" => true, "team_z_articles.approved" => true, 'team_z_articles.active' => true).where("team_z_articles.active_at < ? OR team_z_articles.active_at IS ?", Time.now, nil)
+    joins(:profile).where("team_z_profiles.active" => true, "team_z_articles.status" => 'approved', 'team_z_articles.active' => true).where("team_z_articles.active_at < ? OR team_z_articles.active_at IS ?", Time.now, nil)
+  end
+  
+  def self.working
+    joins(:profile).where('team_z_articles.status' => 'working')
+  end
+  
+  def self.complete
+    joins(:profile).where('team_z_articles.status' => 'complete')    
+  end
+  
+  def self.approved
+    joins(:profile).where('team_z_articles.status' => 'approved')        
   end
 
-  # ----- Class Methods ----- #
+  # ----- Instance Methods ----- #
   
   def posted_at
     if self.active_at == nil || self.created_at >= self.active_at 
@@ -36,6 +50,12 @@ class TeamZ::Article < ActiveRecord::Base
     else
       self.active_at
     end
+  end
+
+  # ----- Model Methods Methods ----- #
+  
+  def self.cache_key
+    'content_newest_articles'
   end
   
 end

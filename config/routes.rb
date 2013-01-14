@@ -133,9 +133,13 @@ MTGBazaar::Application.routes.draw do
   
 # TEAM Z
   namespace :team_z do
-    resources :articles, :only => [:show]
+    resources :articles do
+      get  'edit_to_publish', :on => :member
+      put  'publish',         :on => :member
+      put  'unpublish',       :on => :member
+    end
     resources :profiles, :only => [:show]
-    resources :mtgo_video_series, :only => [:show]
+    resources :mtgo_video_series, :only => [:show, :index]
   end
 
 # MISC ROUTES -------------- #

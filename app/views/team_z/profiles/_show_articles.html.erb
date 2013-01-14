@@ -5,10 +5,10 @@
     <div class='profile_show_content_teaser content_shadow'>
       <h2 class='profile_show_content_title'><%= link_to article.title, team_z_article_path(article, :section => 'articles'), :remote => true %></h2>
       <div class='profile_show_content_description'>
-        <%= article.description.truncate(100, :ommission => '...') %>
+        <%= article.description.truncate(90, :ommission => '...') %>
       </div>
       <div class='profile_show_post_date'>
-        <%= display_time article.active_at %>
+        <%= display_time (article.active_at || article.created_at) %>
       </div>
     </div>
   <% end %>

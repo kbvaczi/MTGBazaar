@@ -1,0 +1,10 @@
+<% title 'Create New Article' %>
+<% page_description 'Create New Article' %>
+
+<h1>Create New Article</h1>
+
+<%= simple_form_for @article, :method => :post do |f| %>
+
+  <%= render :partial => 'form', :locals => { :article => @article, :f => f } %>
+  
+<% end %>

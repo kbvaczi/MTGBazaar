@@ -16,8 +16,8 @@
   <% profile.data.each do |key, value| %>
     <% if value.present? && key != 'Description'%>
       <tr class='<%= cycle 'odd', 'even' %>'>
-        <th class='header_row2' style='text-align:left;padding:10px;'><%= key.html_safe %></th>
-        <td><p><%= value %></p></td>
+        <th class='header_row2' style='text-align:left;padding:10px;'><%= key.to_s %></th>
+        <td style='padding:10px;'><%= value.html_safe %></td>
       </tr>
     <% end %>
   <% end %>
