@@ -76,11 +76,11 @@
 					<% if user_signed_in? && current_user.team_z_profile_id.present? %>
     			  <li class="heading"><%= current_user.team_z_profile.display_name %></li>
     			  <%= content_tag :li, link_to("My Articles", team_z_articles_path) if current_user.team_z_profile.can_write_articles %>    			  
-    			  <%= content_tag :li, link_to("My Videos", root_path) if current_user.team_z_profile.can_post_videos %>
+    			  <%= content_tag :li, link_to("My Videos"  , team_z_mtgo_video_series_index_path) if current_user.team_z_profile.can_post_videos %>
     			  <% if current_user.team_z_profile.can_manage_content? %>
       			  <li class="heading">Content Manager</li>
-      			  <%= content_tag :li, link_to("Manage All Articles", team_z_articles_path(:role => 'content_manager')) %>    			  
-    			  <%= content_tag :li, link_to("Manage All Videos", root_path) %>
+      			  <%= content_tag :li, link_to("Manage Team Articles", team_z_articles_path(:role => 'content_manager')) %>    			  
+      			  <%= content_tag :li, link_to("Manage Team Videos"  , team_z_mtgo_video_series_index_path(:role => 'content_manager')) %>    			  
     			  <% end %>
     			<% end %>
   			</ul>

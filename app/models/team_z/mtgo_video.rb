@@ -12,10 +12,29 @@ class TeamZ::MtgoVideo < ActiveRecord::Base
 
   # ----- Validations ----- #
 
-  validates_presence_of :video_series_id, :title
+  validates_presence_of :video_link
 
-  # ----- Callbacks ----- #    
-
+  # ----- Callbacks ----- #
+  
+  before_save :format_video_link
+  
+  def format_video_link
+    #http://youtu.be/1E1e6D2zvGQ&whatever=whatever
+    #http://www.youtube.com/watch?v=1E1e6D2zvGQ&feature=youtu.be
+    #http://www.youtube.com/embed/1E1e6D2zvGQ"
+    Rails.logger.info(self.video_link)
+    Rails.logger.info(self.video_link)    
+    case self.video_link
+      when /\/watch\?/
+        self.video_link = "https://www.youtube.com/embed/#{self.video_link.split('?v=')[1].split('&')[0]}"
+      when /\/embed\//
+        self.video_link = "https://#{self.video_link.gsub('https://','').gsub('http://','')}"
+      when /youtu.be/
+        self.video_link = "https://www.youtube.com/embed/#{self.video_link.split('tu.be/')[1].split('&')[0]}"
+    end
+          Rails.logger.info(self.video_link)
+                Rails.logger.info(self.video_link)
+  end
 
   # ----- Scopes ------ #
   
@@ -31,6 +50,10 @@ class TeamZ::MtgoVideo < ActiveRecord::Base
     else
       self.active_at
     end
+  end
+  
+  def video_embed_object
+    %{<iframe width="420" height="315" src="#{self.video_link}" frameborder="0" allowfullscreen></iframe>}
   end
   
 end

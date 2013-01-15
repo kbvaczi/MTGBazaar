@@ -138,8 +138,12 @@ MTGBazaar::Application.routes.draw do
       put  'publish',         :on => :member
       put  'unpublish',       :on => :member
     end
+    resources :mtgo_video_series do
+      get  'edit_to_publish', :on => :member
+      put  'publish',         :on => :member
+      put  'unpublish',       :on => :member
+    end    
     resources :profiles, :only => [:show]
-    resources :mtgo_video_series, :only => [:show, :index]
   end
 
 # MISC ROUTES -------------- #
