@@ -72,7 +72,7 @@ class Mtg::OrdersController < ApplicationController
     
     @order.transaction.payment.paypal_paykey            = @purchase["payKey"]
     @order.transaction.payment.paypal_purchase_response = @purchase.inspect 
-    @order.transaction.payment.save!
+    @order.transaction.payment.save
 
     respond_to do |format|
       format.mobile do
