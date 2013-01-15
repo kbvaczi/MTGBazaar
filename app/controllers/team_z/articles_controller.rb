@@ -146,7 +146,7 @@ class TeamZ::ArticlesController < ApplicationController
   end
   
   def current_article
-    if current_user.team_z_profile.present? 
+    if user_signed_in? and current_user.team_z_profile.present? 
       @article ||= TeamZ::Article.includes(:profile).find(params[:id])
     else
       @article ||= TeamZ::Article.includes(:profile).viewable.where(:id => params[:id]).first
