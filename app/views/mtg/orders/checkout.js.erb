@@ -1,4 +1,4 @@
-<% if @purchase["payKey"].present? %>
+<% unless @error = true %>
   $('#checkout_paykey').val("");
   $('#checkout_paykey').val("<%= escape_javascript @purchase["payKey"] %>");
   $('#checkout_submit').trigger('click');
