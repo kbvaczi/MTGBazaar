@@ -164,7 +164,7 @@ MTGBazaar::Application.routes.draw do
   mount Ckeditor::Engine      => "/ckeditor"
   
   
-  if Rails.env.development?
+  if Rails.env.development? or Rails.env.staging?
     match 'test'              => 'home#test'
   end
   

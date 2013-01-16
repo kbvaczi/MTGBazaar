@@ -53,7 +53,7 @@ class TeamZ::MtgoVideo < ActiveRecord::Base
   end
   
   def video_embed_object
-    %{<iframe width="420" height="315" src="#{self.video_link}" frameborder="0" allowfullscreen></iframe>}
+    %{<iframe width="350" height="263" src="#{self.video_link}" frameborder="0" allowfullscreen></iframe>}
   end
   
 end
