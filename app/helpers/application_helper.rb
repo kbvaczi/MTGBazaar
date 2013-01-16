@@ -15,7 +15,9 @@ module ApplicationHelper
   def display_time(time, options = {})
     if options[:day] == false
       time.strftime("%m/%Y")
-    else 
+    elsif options[:format] == 'long'
+      time.strftime("%B #{time.day.ordinalize}, %Y")
+    else
       time.strftime("%m/%d/%y")
     end
   end
