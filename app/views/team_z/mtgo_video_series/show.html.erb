@@ -22,5 +22,8 @@
       <%= paginate videos, :method => :get, :remote => true, :theme => 'dots', :window => 15 %>
     </div>
   </div>
+  <div class='mt'>
+    <div class="fb-comments" data-href="<%= team_z_mtgo_video_series_url(@video_series) %>" data-width="520" data-num-posts="5"></div>
+  </div>  
   
 </div>
