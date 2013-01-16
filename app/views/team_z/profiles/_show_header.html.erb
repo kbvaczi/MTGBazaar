@@ -13,7 +13,7 @@
     <li <%= "class=selected" if section == "mtgo_videos" %>> <%= link_to "Team Z TV", team_z_profile_path(params.merge(:section => "mtgo_videos", :id => profile.id)), :remote => true %> </li>  
   <% end %>
   <% if profile.can_stream %>
-    <li id='live_stream_offline' <%= "class=selected" if section == "stream"   %>> <%= link_to "Live Stream", team_z_profile_path(params.merge(:section => "stream", :id => profile.id)), :remote => true %> </li>  
+    <li id='live_stream_offline' <%= "class=selected" if section == "stream"   %>> <%= link_to "Live Stream", "http://www.twitch.tv/#{profile.twitch_tv_username}", :remote => false, :target => '_blank' %> </li>  
   <% end %>  
   <li class="tab2 message">
   </li>  
