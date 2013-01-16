@@ -1,0 +1,12 @@
+var form = "<%= escape_javascript render :partial => 'team_z/mtgo_video_series/form_publish', :formats => [:html] %>";
+$('#video_series_publish_form').remove();
+$('#center_bar').append("<div id='video_series_publish_form' class='overlay_window content_shadow'><table class='data' style='margin-left:-5px;'><tr class='header_row'><th>Publish <%= escape_javascript @video_series.title %></th></tr><tr class='odd'><td>" + form + "</td></tr></table></div>");
+
+$('#video_series_publish_form').overlay({
+  mask: '#000',
+  load: true,
+  onBeforeLoad: function() {
+    this.getOverlay().appendTo('body').centerScreen();
+  },
+});
+

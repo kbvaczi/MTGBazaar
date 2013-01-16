@@ -83,7 +83,6 @@ class TeamZ::MtgoVideoSeriesController < ApplicationController
   
   def publish
     current_video_series.assign_attributes(params[:team_z_mtgo_video_series].merge(:team_z_profile_id => current_video_series.team_z_profile_id, :active => true))
-    Rails.cache.clear(TeamZ::MtgoVideoSeries.cache_key) if current_video_series.active_at < Time.zone.now
     if current_video_series.save
       redirect_to back_path, :notice => 'The video series was published'
     else
