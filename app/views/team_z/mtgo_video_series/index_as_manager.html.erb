@@ -1,0 +1,17 @@
+<% title 'Manage Team Z Videos' %>
+<% page_description 'Manage Team Z Videos' %>
+
+<% @video_series_index = TeamZ::MtgoVideoSeries.where(:active => params[:status] == 'active' ? true : false).order('created_at DESC').page(params[:page]).per(15) %>
+
+<h1>Manage Team Z Videos</h1>
+
+<div class="group center_wrap">
+  <ul class="tabs">
+    <li <%= "class=selected" if params[:status].in? [nil, "inactive"] %>> <%= link_to "Un-published (#{TeamZ::MtgoVideoSeries.inactive.count})", url_for(params.merge(:status => "inactive")), :remote => true %> </li>
+    <li <%= "class=selected" if params[:status] == "active" %>>           <%= link_to "Published (#{TeamZ::MtgoVideoSeries.active.count})",      url_for(params.merge(:status => "active")),   :remote => true %> </li>
+  </ul>
+</div>
+
+<div id='content'>
+  <%= render :partial => 'index_table', :locals => { :video_series_index => @video_series_index, :role => 'manager' } %>  
+</div>

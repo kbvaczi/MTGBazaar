@@ -1,0 +1,14 @@
+<% title 'Edit Video Series' %>
+<% page_description 'Edit Video Series' %>
+
+<h1>Edit Video Series</h1>
+
+<%= simple_form_for @video_series, :method => :put do |f| %>
+
+  <%= render :partial => 'form', :locals => { :video_series => @video_series, :f => f } %>
+  <div class='center_wrap'>
+    <%= link_to_add_fields({:name => "+ Add Video", :form => f, :association => 'videos', :class => 'mr center button'}) %>
+    <%= f.submit 'Update Video Series' %>
+  </div>
+  
+<% end %>

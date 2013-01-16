@@ -1,0 +1,12 @@
+<div class="pb-s mb mt-s fields" style='position:relative;width:450px;'>
+                                
+  <%= f.input :title,      :label => "Video Title",
+                           :required => false %>
+                                    
+  <%= f.input :video_link, :label => "Video Link",
+                           :required => true,
+                           :hint => '' %>
+                         
+  <div style='position:absolute;top:15px;right:25px;' title='remove this video'><%= link_to_remove_fields(:name => "X", :form => f, :class => 'button') %></div>
+
+</div>
