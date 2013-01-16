@@ -7,9 +7,11 @@
   <div class='team_z_profile'>
     <%= render :partial => 'team_z/profiles/show_header', :locals => {:profile => @article.profile, :section => 'articles' } %>
   </div>
-  <div class='article_header'>
+  <div class='article_header group content_shadow'>
     <%= link_to 'View all Articles', team_z_profile_path(@article.profile, :section => 'articles'), :remote => true, :class => 'right mr mt-s' %>
-    <h2><%= @article.title %></h2>    
+    <h2><%= @article.title %></h2>
+    <div class='left ml-m mb-s'><%= display_time(@article.active_at || @article.created_at) %></div>
+    <div class='right'><div class="fb-like" data-href="<%= team_z_article_url(@article) %>" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false" data-font="arial" style='text-align:right;'></div></div>
   </div>
   <div class='article_body'>
     <%= @article.body.html_safe %>
