@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130101045443) do
+ActiveRecord::Schema.define(:version => 20130117144431) do
 
   create_table "accounts", :force => true do |t|
     t.integer  "user_id"
@@ -179,6 +179,28 @@ ActiveRecord::Schema.define(:version => 20130101045443) do
   create_table "mtg_cards_abilities", :force => true do |t|
     t.string "name", :default => ""
   end
+
+  create_table "mtg_decklists", :force => true do |t|
+    t.string   "name"
+    t.boolean  "active"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "mtg_decklists_card_references", :force => true do |t|
+    t.integer  "decklist_id"
+    t.integer  "card_id"
+    t.string   "card_name"
+    t.string   "deck_section"
+    t.string   "deck_subsection"
+    t.integer  "quantity"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "mtg_decklists_card_references", ["card_id"], :name => "index_mtg_decklists_card_references_on_card_id"
+  add_index "mtg_decklists_card_references", ["card_name"], :name => "index_mtg_decklists_card_references_on_card_name"
+  add_index "mtg_decklists_card_references", ["decklist_id"], :name => "index_mtg_decklists_card_references_on_decklist_id"
 
   create_table "mtg_listings", :force => true do |t|
     t.integer  "card_id"
