@@ -6,12 +6,12 @@
   </div>
   <div class="mtg_teaser_info">
     <h2>
-      <div class="right mt-s">
+      <div class="right mb-s">
         <%= display_symbols(mtg_card.mana_string)%>
       </div>
       <%= display_name(mtg_card.name)%>
       &nbsp;
-      <%= display_set_symbol(mtg_card.set) %>            
+      <div class='left mr-s mb-s'><%= display_set_symbol(mtg_card.set) %></div>
     </h2>
     <div class= "mtg_teaser_info_details">
       <table style="width:100%">

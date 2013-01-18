@@ -73,6 +73,9 @@ MTGBazaar::Application.routes.draw do
   post   'transactions/:id/payment_notification' => 'mtg/transactions/payment_notifications#payment_notification', :as => 'payment_notification'
   
   namespace :mtg do 
+    
+    resources :decklists
+    
     namespace :cards do
       post   "listings/multiple/set_active"       => "edit_multiple_listings#set_active",         :as => 'listings_multiple_set_active'  
       post   "listings/multiple/set_inactive"     => "edit_multiple_listings#set_inactive",       :as => 'listings_multiple_set_inactive'        

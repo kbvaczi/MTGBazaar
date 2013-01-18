@@ -1,0 +1,180 @@
+.decklist_package {
+
+  position:relative;
+}
+.decklist_wrapper {
+  position:relative;
+  z-index:2;
+  border-radius: 10px;
+  box-shadow:0px 0px 1px 0px #BBB;
+  background: rgb(255,255,255);
+  background: -moz-linear-gradient(left,  rgba(255,255,255,1) 0%, rgba(243,243,243,1) 50%, rgba(237,237,237,1) 51%, rgba(255,255,255,1) 100%);
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,1)), color-stop(50%,rgba(243,243,243,1)), color-stop(51%,rgba(237,237,237,1)), color-stop(100%,rgba(255,255,255,1)));
+  background: -webkit-linear-gradient(left,  rgba(255,255,255,1) 0%,rgba(243,243,243,1) 50%,rgba(237,237,237,1) 51%,rgba(255,255,255,1) 100%),
+              -webkit-linear-gradient(80deg,  rgba(255,255,255,0.5) 0%,rgba(255,255,255,0) 20px), 
+              -webkit-linear-gradient(100deg, rgba(255,255,255,0.5) 0%,rgba(255,255,255,0) 20px) !important; /* Chrome10+,Safari5.1+ */;
+  background: -o-linear-gradient(left,  rgba(255,255,255,1) 0%,rgba(243,243,243,1) 50%,rgba(237,237,237,1) 51%,rgba(255,255,255,1) 100%);
+  background: -ms-linear-gradient(left,  rgba(255,255,255,1) 0%,rgba(243,243,243,1) 50%,rgba(237,237,237,1) 51%,rgba(255,255,255,1) 100%);
+  background: linear-gradient(to right,  rgba(255,255,255,1) 0%,rgba(243,243,243,1) 50%,rgba(237,237,237,1) 51%,rgba(255,255,255,1) 100%);
+  background-: 
+  overflow:hidden;
+  padding:10px;
+
+}
+.decklist_shadow_left {
+  display:inline-block;
+  position:absolute;
+  bottom:-5px;
+  left:2px;
+  z-index:1;
+  background: -moz-linear-gradient(top,  rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.3)), color-stop(50%,rgba(0,0,0,0.1)), color-stop(100%,rgba(0,0,0,0)));
+  background: -webkit-linear-gradient(top,  rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.1) 50%,rgba(0,0,0,0) 100%);
+  background: -o-linear-gradient(top,  rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.1) 50%,rgba(0,0,0,0) 100%);
+  background: -ms-linear-gradient(top,  rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.1) 50%,rgba(0,0,0,0) 100%);
+  background: linear-gradient(to bottom,  rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.1) 50%,rgba(0,0,0,0) 100%);
+  width:259px;
+  height:20px;
+  border-bottom-left-radius:15px;
+  transform:rotate(-1.5deg);
+  -ms-transform:rotate(-1.5deg); /* IE 9 */
+  -moz-transform:rotate(-1.5deg); /* Firefox */
+  -webkit-transform:rotate(-1.5deg); /* Safari and Chrome */
+  -o-transform:rotate(-1.5deg); /* Opera */
+}
+.decklist_shadow_right {
+  display:inline-block;
+  position:absolute;
+  bottom:-5px;
+  right:2px;
+  z-index:1;
+  background: -moz-linear-gradient(top,  rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.3)), color-stop(50%,rgba(0,0,0,0.1)), color-stop(100%,rgba(0,0,0,0)));
+  background: -webkit-linear-gradient(top,  rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.1) 50%,rgba(0,0,0,0) 100%);
+  background: -o-linear-gradient(top,  rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.1) 50%,rgba(0,0,0,0) 100%);
+  background: -ms-linear-gradient(top,  rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.1) 50%,rgba(0,0,0,0) 100%);
+  background: linear-gradient(to bottom,  rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.1) 50%,rgba(0,0,0,0) 100%);
+  width:259px;
+  height:20px;
+  border-bottom-right-radius:15px;
+  transform:rotate(1.5deg);
+  -ms-transform:rotate(1.5deg); /* IE 9 */
+  -moz-transform:rotate(1.5deg); /* Firefox */
+  -webkit-transform:rotate(1.5deg); /* Safari and Chrome */
+  -o-transform:rotate(1.5deg); /* Opera */
+}
+.decklist_wrapper .decklist_title {
+  margin:-10px;
+  box-shadow:0px 0px 1px 0px #EEE;  
+  background: -moz-linear-gradient(45deg,  rgba(200,200,0,0.07) 0%, rgba(0,0,0,0) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,rgba(200,200,0,0.07)), color-stop(100%,rgba(0,0,0,0))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(45deg,  rgba(200,200,0,0.07) 0%,rgba(0,0,0,0) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(45deg,  rgba(200,200,0,0.07) 0%,rgba(0,0,0,0) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(45deg,  rgba(200,200,0,0.07) 0%,rgba(0,0,0,0) 100%); /* IE10+ */
+  background: linear-gradient(45deg,  rgba(200,200,0,0.07) 0%,rgba(0,0,0,0) 100%); /* W3C */
+}
+.decklist_wrapper .decklist_title h2 {
+  border:none;
+  box-shadow:none;
+  margin:0px 0px 10px 0px;
+  padding:5px 0px 5px 15px;
+  font-size:13px;
+}
+.decklist_wrapper .decklist_title h2 a {
+  margin-top:2px;
+  font-weight:normal; 
+}
+.decklist_wrapper .decklist_image_wrapper {
+  text-align:center;
+  display:inline-block;
+  margin:15px 0px 0px 18px;
+  padding:0px;
+  background:#444;
+  border-radius:12px;
+  overflow:hidden;
+     
+}
+.decklist_wrapper .decklist_image_wrapper .decklist_image {
+  height:310px;
+  width:223px;
+  border-radius:12px;  
+  padding:0px;
+  margin:0px;
+  background-size:100%;
+  background-repeat:none;
+  box-shadow: inset 0px 0px 2px 1px #000;     
+}
+.decklist_image_wrapper .decklist_image .decklist_image_shadow {
+  height:310px;
+  width:223px;
+  border-radius:12px;  
+  position:absolute;
+  z-index:3;
+  background: -moz-linear-gradient(left,  rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 100%);
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(0,0,0,0.2)), color-stop(100%,rgba(0,0,0,0)));
+  background: -webkit-linear-gradient(left,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%);
+  background: -o-linear-gradient(left,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%);
+  background: -ms-linear-gradient(left,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%);
+  background: linear-gradient(to right,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%);
+}
+.decklist_wrapper .decklist_content {
+  vertical-align:top;  
+  width:50%;
+  padding:0px;
+  margin:0px;
+  margin-top:5px;
+  display:inline-block;
+}
+.decklist_wrapper .decklist_content .decklist_section {
+  padding:5px;
+}
+.decklist_wrapper .decklist_section .decklist_section_title {
+  padding-left:10px;
+  margin-left:-5px;
+  margin-right:5px;
+  text-align:left;
+  border:none;
+  background: -moz-linear-gradient(45deg,  rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,rgba(0,0,0,0.05)), color-stop(100%,rgba(0,0,0,0))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(45deg,  rgba(0,0,0,0.05) 0%,rgba(0,0,0,0) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(45deg,  rgba(0,0,0,0.05) 0%,rgba(0,0,0,0) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(45deg,  rgba(0,0,0,0.05) 0%,rgba(0,0,0,0) 100%); /* IE10+ */
+  background: linear-gradient(45deg,  rgba(0,0,0,0.05) 0%,rgba(0,0,0,0) 100%); /* W3C */
+  border-radius: 10px; 
+}
+.decklist_section_title h3 {
+  text-decoration:none;
+  padding:3px 0px 1px 0px;
+}
+.decklist_section .decklist_subsection {
+  
+}
+.decklist_subsection .decklist_subsection_title {
+  text-align:center;
+  margin-right:20px;
+}
+.decklist_subsection .decklist_subsection_title h3 {
+  font-size:12px;
+  text-decoration:none;
+  margin-bottom:5px;
+  padding-bottom:0px;  
+
+}
+.decklist_subsection .decklist_card {
+  display:inline-block;
+  text-align:center;  
+}
+.decklist_card .card_quantity {
+  display:inline-block;
+  width:15px;
+  padding-right:5px;
+  text-align:right; 
+}
+.decklist_card .card_name_wrapper {
+  display:inline-block;
+  width:115px;  
+  overflow:hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align:left;
+}

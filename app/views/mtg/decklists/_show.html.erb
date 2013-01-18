@@ -1,0 +1,35 @@
+<div class='decklist_package group'>
+  <div class='decklist_wrapper'>
+    <div class='decklist_title'>
+      <h2>Decklist:&nbsp; <%= decklist.name %><%= link_to 'View sales for these cards', mtg_cards_search_path(:names => decklist.card_references.collect {|card_reference| card_reference.card_name }), :class => 'right mr' %></h2>
+    </div>
+    <div class='decklist_content'>
+      <% decklist.card_references.includes(:card).order(:card_name).group_by(&:deck_section).sort.each do |deck_section, card_references_in_this_section| %>
+        <div class='decklist_section'>
+          <div class='decklist_section_title'><h3><%= deck_section %></h3></div>
+          <% card_references_in_this_section.group_by(&:deck_subsection).sort.each do |deck_subsection, card_references_in_this_subsection| %>
+            <div class='decklist_subsection'>
+              <div class='decklist_subsection_title'><h3><%= deck_subsection %></h3></div>
+              <% card_references_in_this_subsection.each do |card_reference| %>          
+                <div class='decklist_card'>            
+                  <span class='card_name_wrapper'>
+                    <span class='card_quantity'><%= card_reference.quantity %></span>
+                    <span class='card_name' data-image='<%= card_reference.card.image_path %>'><%= link_to card_reference.card_name, mtg_card_path(card_reference.card) %></span>
+                  </span>
+                </div>              
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+      <% card_references_hash = %>
+    </div>
+    <div class='decklist_image_wrapper'>
+      <div class='decklist_image'>
+        <div class='decklist_image_shadow'></div>
+      </div>
+    </div>
+  </div>
+  <div class='decklist_shadow_left'></div>
+  <div class='decklist_shadow_right'></div>
+</div>

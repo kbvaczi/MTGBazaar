@@ -1,0 +1,11 @@
+$('.decklist_wrapper .card_name').live('mouseover', function(){
+  var target        = $(this).closest('.decklist_wrapper').find('.decklist_image');
+  var imageUrl      = $(this).data('image');
+  var cssBackground = "url(" + imageUrl + ")";
+  if (target.css('background-image').replace(/"/g,"") != cssBackground){
+    target.fadeOut(50).queue(function(){    
+      target.css('background-image', cssBackground);      
+      $(this).dequeue();
+    }).fadeIn(100);
+  }
+});

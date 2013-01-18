@@ -1,4 +1,4 @@
-module TeamZ::VideoSeriesFormHelper
+module FormsHelper
   def link_to_remove_fields(options)
   options = {:name => 'Add a field', :form => nil, :association => nil}.merge(options)    
    options[:form].hidden_field(:_destroy) + link_to_function(options[:name], "remove_fields(this)", :class => options[:class])
