@@ -9,7 +9,6 @@
   </div>
 
   <%= link_to 'View all Videos', team_z_profile_path(@video_series.profile, :section => 'mtgo_videos'), :remote => true, :class => 'right mr' %>
-  <div class="fb-comments" data-href="http://www.mtgbazaar.com" data-width="500" data-num-posts="2"></div>
   <br class='spacer'/>
   <div class='center_wrap'>
     <% videos = @video_series.videos.page(params[:page]).per(1) %>
