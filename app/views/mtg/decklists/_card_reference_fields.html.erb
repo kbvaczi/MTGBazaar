@@ -7,14 +7,19 @@
   <%= f.input :quantity,          :input_html => {:value => (f.object.quantity || 1 rescue 1), :class => 'card_quantity_select', 'data-oldval' => (f.object.quantity || 1 rescue 1)},
                                   :required => true %>                                  
 
-  <% selected_unprocessed_section = ((f.object.subsection.in? ['Lands','Creatures','Spells'] rescue false) ? f.object.subsection : ((f.object.deck_section == 'Sideboard' rescue false) ? 'Sideboard' : '')) %>
-  <%= f.input :unprocessed_section, :label => 'Section',
-                                    :as => :select,
+  <%# selected_unprocessed_section = ((f.object.subsection.in? ['Lands','Creatures','Spells'] rescue false) ? f.object.subsection : ((f.object.deck_section == 'Sideboard' rescue false) ? 'Sideboard' : '')) %>
+  <%= f.label " " %>
+  <%= f.input :unprocessed_section, :label => 'Sideboard',
+                                    :as => :boolean,
                                     :required => false,
-                                    :include_blank => false,                                  
+                                    :checked_value => 'Sideboard', 
+                                    :unchecked_value => '',
+                                    :input_html => { :check => (f.object.deck_section == 'Sideboard') } %>
+                                    
+                                  <%#   :include_blank => false,                                  
                                     :collection => [['Lands','Lands'], ['Creatures','Creatures'], ['Spells','Spells'], ['Sideboard', 'Sideboard'], ['None', '']],
                                     :selected => selected_unprocessed_section,
-                                    :input_html => { :class => 'card_section_select', 'data-oldval' => selected_unprocessed_section } %>
+                                    :input_html => { :class => 'card_section_select', 'data-oldval' => selected_unprocessed_section }%>                                  
                                   
   <div style='position:absolute;top:0px;right:25px;' title='remove this card'><%= link_to_remove_fields(:name => "X", :form => f, :class => 'button remove_card') %></div>
 

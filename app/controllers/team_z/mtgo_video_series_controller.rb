@@ -1,7 +1,7 @@
-class TeamZ::MtgoVideoSeriesController < ApplicationController
+class TeamZ::MtgoVideoSeriesController < TeamZ::BaseController
 
   before_filter :verify_team_z_member,   :except  => [:show]
-  before_filter :verify_ownership,       :except  => [:show, :index, :new, :create, :publish, :edit_to_publish]
+  before_filter :verify_video_ownership,       :except  => [:show, :index, :new, :create, :publish, :edit_to_publish]
   before_filter :verify_content_manager, :only    => [:publish, :edit_to_publish]
   
   def index
@@ -112,26 +112,9 @@ class TeamZ::MtgoVideoSeriesController < ApplicationController
   end
   
   private 
-  
-  def verify_team_z_member
-    unless current_user.team_z_profile_id.present?
-      flash[:error] = 'You do not have permission to perform this action'
-      redirect_to back_path      
-    end
-  end
-  
-  def verify_ownership
-    unless current_user.present? and (current_user.team_z_profile_id == current_video_series.team_z_profile_id or current_user.team_z_profile.can_manage_content)
-      flash[:error] = 'You do not have permission to perform this action'
-      redirect_to back_path
-    end
-  end
-  
-  def verify_content_manager
-    unless current_user.present? and current_user.team_z_profile.can_manage_content
-      flash[:error] = 'You do not have permission to perform this action'
-      redirect_to back_path
-    end
+
+  def verify_video_ownership
+    verify_ownership(current_video_series.id)
   end
   
   def current_video_series

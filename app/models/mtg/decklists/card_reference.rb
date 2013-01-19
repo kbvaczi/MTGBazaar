@@ -9,7 +9,7 @@ class Mtg::Decklists::CardReference < ActiveRecord::Base
   
   # ----- Validations ----- #
 
-  validates_presence_of :card
+  validates_presence_of :card_id
   validates_presence_of :deck_section
 
   # ----- Callbacks ----- #    
@@ -18,26 +18,17 @@ class Mtg::Decklists::CardReference < ActiveRecord::Base
   before_validation :set_sections
   
   def set_card_id
-    self.card_id = Mtg::Card.joins(:set).active.where(:name => self.card_name).order('mtg_sets.release_date DESC').limit(1).value_of(:id).first
+    self.card_id = Mtg::Card.joins(:set).active.where('mtg_cards.name LIKE ?', self.card_name).order('mtg_sets.release_date DESC').limit(1).value_of(:id).first
   end
   
   def set_sections
     case self.unprocessed_section
       when /Sideboard/i
         self.deck_section     = 'Sideboard'
-        self.deck_subsection  = ''
-      when /Lands/i
-        self.deck_section     = 'Main Deck'
-        self.deck_subsection  = 'Lands'        
-      when /Creatures/i
-        self.deck_section     = 'Main Deck'
-        self.deck_subsection  = 'Creatures'        
-      when /Spells/i
-        self.deck_section     = 'Main Deck'
-        self.deck_subsection  = 'Spells'        
+        self.deck_subsection  = processed_subsection
       else
         self.deck_section     = 'Main Deck'
-        self.deck_subsection  = ''        
+        self.deck_subsection  = processed_subsection
     end
   end
 
@@ -47,7 +38,21 @@ class Mtg::Decklists::CardReference < ActiveRecord::Base
   
   # ----- Instance Methods ----- #
 
-
+  def processed_subsection
+    begin
+      case self.card.card_type
+        # check for lands first... anything but enchant land is legal      
+        when /\A^((?!enchant).)*land/ix
+          'Lands'
+        when /(creature|planeswalker)/ix
+          'Creatures'
+        else
+          'Spells'
+      end
+    rescue
+      ''
+    end
+  end
   
   # ----- Class Methods    ----- #  
   

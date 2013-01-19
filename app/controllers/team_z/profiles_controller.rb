@@ -1,4 +1,4 @@
-class TeamZ::ProfilesController < ApplicationController
+class TeamZ::ProfilesController < TeamZ::BaseController
 
   def show
     @profile = TeamZ::Profile.includes(:articles).find(params[:id])

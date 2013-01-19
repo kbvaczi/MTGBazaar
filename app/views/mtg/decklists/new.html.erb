@@ -3,12 +3,18 @@
 
 <h1>Create New Decklist</h1>
 
-<%= simple_form_for @decklist, :method => :post do |f| %>
+<div class="group center_wrap">
+  <ul class="tabs">
+    <li <%= "class=selected" if params[:section].in? [nil, 'paste'] %>> <%= link_to "Paste Decklist",     url_for(params.merge(:section => "paste")),   :remote => true %> </li>
+    <li <%= "class=selected" if params[:section] == "scratch"       %>> <%= link_to "Build From Scratch", url_for(params.merge(:section => "scratch")), :remote => true %> </li>
+  </ul>
+</div>
 
-  <%= render :partial => 'form', :locals => { :decklist => @decklist, :f => f } %>
-  <div class='center_wrap'>
-    <%= link_to_add_fields({:name => "+ Add Card", :form => f, :association => 'card_references', :class => 'mr center button add_card'}) %>
-    <%= f.submit 'Create Decklist' %>
-  </div>
-  
-<% end %>
+<%=
+  case params[:section]
+    when 'scratch'
+      render :partial => 'mtg/decklists/new_scratch'
+    else 
+      render :partial => 'mtg/decklists/new_paste'    
+  end 
+%>

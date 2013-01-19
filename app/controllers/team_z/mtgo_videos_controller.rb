@@ -1,4 +1,4 @@
-class TeamZ::MtgoVideosController < ApplicationController
+class TeamZ::MtgoVideosController < TeamZ::BaseController
 
   def show
     @video        = TeamZ::MtgoVideo.includes(:profile).find(params[:id])

@@ -1,4 +1,4 @@
-class TeamZ::ArticlesController < ApplicationController
+class TeamZ::ArticlesController < TeamZ::BaseController
 
   before_filter :verify_team_z_member,     :except  => [:show]
   before_filter :verify_article_ownership, :except  => [:show, :index, :new, :create, :publish, :edit_to_publish]
@@ -123,28 +123,11 @@ class TeamZ::ArticlesController < ApplicationController
   end
   
   private 
-  
-  def verify_team_z_member
-    unless current_user.team_z_profile_id.present?
-      flash[:error] = 'You do not have permission to perform this action'
-      redirect_to back_path      
-    end
-  end
-  
+   
   def verify_article_ownership
-    unless current_user.present? and (current_user.team_z_profile_id == current_article.team_z_profile_id or current_user.team_z_profile.can_manage_content)
-      flash[:error] = 'You do not have permission to perform this action'
-      redirect_to back_path
-    end
+    verify_ownership(current_article.id)
   end
-  
-  def verify_content_manager
-    unless current_user.present? and current_user.team_z_profile.can_manage_content
-      flash[:error] = 'You do not have permission to perform this action'
-      redirect_to back_path
-    end
-  end
-  
+
   def current_article
     if user_signed_in? and current_user.team_z_profile.present? 
       @article ||= TeamZ::Article.includes(:profile).find(params[:id])

@@ -7,5 +7,6 @@
 
 <div id='content'>
   <%= link_to 'Create New Article', new_team_z_article_path, :class => 'button right spacer mr mb-m' %>
+  <br/>
   <%= render :partial => 'index_table', :locals => { :articles => @articles } %>  
 </div>

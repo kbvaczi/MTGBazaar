@@ -12,7 +12,7 @@ class Mtg::DecklistsController < ApplicationController
     @decklist ||= Mtg::Decklist.new(params[:mtg_decklist])
     respond_to do |format|
       format.html
-      format.js
+      format.js   { default_js_render :template => 'mtg/decklists/new' }
     end
   end
   
@@ -52,7 +52,7 @@ class Mtg::DecklistsController < ApplicationController
   private 
   
   def verify_team_z_member
-    unless current_user.team_z_profile_id.present?
+    unless user_signed_in? and current_user.team_z_profile_id.present?
       flash[:error] = 'You do not have permission to perform this action'
       redirect_to back_path      
     end
