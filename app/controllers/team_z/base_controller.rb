@@ -9,8 +9,8 @@ class TeamZ::BaseController < ApplicationController
     end
   end  
   
-  def verify_ownership(id)
-    unless current_user.present? and (current_user.team_z_profile_id == id or current_user.team_z_profile.can_manage_content)
+  def verify_ownership(object_team_z_profile_id)
+    unless current_user.present? and (current_user.team_z_profile_id == object_team_z_profile_id or current_user.team_z_profile.can_manage_content)
       flash[:error] = 'You do not have permission to perform this action'
       redirect_to back_path
     end

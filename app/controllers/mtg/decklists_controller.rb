@@ -12,42 +12,79 @@ class Mtg::DecklistsController < ApplicationController
     @decklist ||= Mtg::Decklist.new(params[:mtg_decklist])
     respond_to do |format|
       format.html
-      format.js   { default_js_render :template => 'mtg/decklists/new' }
+      format.js do
+        if params[:position] == 'overlay'
+          overlay_js_render :template => 'mtg/decklists/new'
+        else
+          default_js_render :template => 'mtg/decklists/new'
+        end
+      end
     end
   end
-  
+    
   def create
     @decklist ||= Mtg::Decklist.new(params[:mtg_decklist])
     if @decklist.save
-      redirect_to back_path, :notice => 'Your deck was created...'
+      respond_to do |format|
+        format.html { redirect_to back_path, :notice => 'Your deck was created...' }
+        format.js do 
+          render :js => %{myCustomAlertBox("Decklist: #{@decklist.name} was created!");
+                          $('.overlay_window').overlay().close();} 
+        end
+      end
     else
-      flash[:error] = 'There was a problem with your request...'
-      render 'new'
+      flash[:error] = @decklist.get_relevant_error_message
+      respond_to do |format|
+        format.html { render 'new' }
+        format.js   { render :js => %{myCustomAlertBox("#{@decklist.get_relevant_error_message}");} }
+      end
     end
   end
   
   def edit
-    current_decklist
+    current_decklist.decklist_text_main      = params[:mtg_checklist][:decklist_text_main]      rescue current_decklist.export_format(:section => 'Main Deck')
+    current_decklist.decklist_text_sideboard = params[:mtg_checklist][:decklist_text_sideboard] rescue current_decklist.export_format(:section => 'Sideboard')
+    current_decklist   
     respond_to do |format|
       format.html
+      format.js do
+        if params[:position] == 'overlay'
+          overlay_js_render :template => 'mtg/decklists/edit'
+        else
+          default_js_render :template => 'mtg/decklists/edit'
+        end
+      end
     end
   end
   
   def update
-    current_decklist.assign_attributes(params[:mtg_decklist])
-    if current_decklist.save
-      redirect_to back_path, :notice => 'Your deck was successfully updated'
+    if current_decklist.update_attributes(params[:mtg_decklist])
+      respond_to do |format|
+        format.html { redirect_to back_path, :notice => 'Your deck was updated...' }
+        format.js do 
+          render :js => %{myCustomAlertBox("Decklist: #{current_decklist.name} was Updated!");
+                          $('.overlay_window').overlay().close();} 
+        end
+      end
     else
-      flash[:error] = 'There was a problem with your request...'
-      render 'edit'
-    end    
+      Rails.logger.info (request.format)                      
+      respond_to do |format|
+        format.html do 
+          flash[:error] = @decklist.get_relevant_error_message
+          render 'edit'
+        end
+        format.js do 
+          Rails.logger.info(current_decklist.get_relevant_error_message)
+          render :js => %{myCustomAlertBox("#{current_decklist.get_relevant_error_message}");} 
+        end
+      end
+    end
   end
 
   def destroy
     current_decklist.destroy
     redirect_to back_path, :notice => 'The deck was deleted...'
   end
-  
   
   private 
   

@@ -221,6 +221,26 @@ class ApplicationController < ActionController::Base
     render :inline => script, :content_type => 'text/javascript'
   end
   
+  def overlay_js_render(options={})
+    options = {:template => 'home/index', :partial => ''}.merge(options)
+    script  = %{
+                <% if options[:partial].present? %>
+                  var content = "<%= escape_javascript render  :partial => "shared/right_bar", :formats => [:html] %>";
+                <% else %>
+                  var content = "<%= escape_javascript render :template => "#{options[:template]}", :formats => [:html] %>";                              
+                <% end %>
+                $('#content_overlay').remove(); //remove old overlay to prevent duplicates
+                $('body').append("<div id='content_overlay' class='overlay_window'><div style='overflow-y:auto;overflow-x:hidden;max-height:500px;text-align:left;'>" + content + "</div></div>");
+                $('#content_overlay').overlay({
+                  mask: '#000',
+                  load: true,
+                  onBeforeLoad: function() {this.getOverlay().centerScreen();}
+                });
+                
+              }
+    render :inline => script, :locals => {:options => options }, :content_type => 'text/javascript'
+  end
+  
 end
 
 =begin

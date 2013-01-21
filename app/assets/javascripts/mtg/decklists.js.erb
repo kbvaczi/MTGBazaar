@@ -1,16 +1,23 @@
 $(document).ready(function(){
 
   $('.decklist_wrapper .card_name').live('mouseover', function(){
-    var target        = $(this).closest('.decklist_wrapper').find('.decklist_image');
-    var imageUrl      = $(this).data('image');
-    var cssBackground = "url(" + imageUrl + ")";
-    if (target.css('background-image').replace(/"/g,"") != cssBackground){
-      target.stop(1).fadeOut(50).queue(function(){    
-        target.parent().css('background-image','none');
-        target.css('background-image', cssBackground);
-        $(this).dequeue();
-      }).fadeIn(300);
-    }
+    updateDecklistImage($(this));
   });
+  $('.decklist_wrapper .card_name').live('hover', function(){
+    updateDecklistImage($(this));
+  });  
   
 });
+
+function updateDecklistImage(card_name_object) {
+  var target        = card_name_object.closest('.decklist_wrapper').find('.decklist_image');
+  var imageUrl      = card_name_object.data('image');
+  var cssBackground = "url(" + imageUrl + ")";
+  if (target.css('background-image').replace(/"/g,"") != cssBackground){
+    target.stop(1).fadeOut(50).queue(function(){    
+      target.parent().css('background-image','none');
+      target.css('background-image', cssBackground);
+      $(this).dequeue();
+    }).fadeIn(300);
+  }  
+}

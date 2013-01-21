@@ -9,16 +9,28 @@ class Mtg::Decklists::CardReference < ActiveRecord::Base
   
   # ----- Validations ----- #
 
-  validates_presence_of :card_id
-  validates_presence_of :deck_section
-
+  validates_presence_of :deck_section, :message => "Cards must be in Main Deck or Sideboard"
+  validate :validate_card_presence
+  
+  def validate_card_presence
+    unless self.card_id.present?
+      errors.add(:card_name, "Could not find card named #{self.card_name}")
+    end
+  end
+  
   # ----- Callbacks ----- #    
 
   before_validation :set_card_id
+  before_validation :correct_card_name
   before_validation :set_sections
   
   def set_card_id
     self.card_id = Mtg::Card.joins(:set).active.where('mtg_cards.name LIKE ?', self.card_name).order('mtg_sets.release_date DESC').limit(1).value_of(:id).first
+  end
+  
+  def correct_card_name
+    self.card_name = self.card.name if self.card.present?
+
   end
   
   def set_sections
@@ -34,7 +46,13 @@ class Mtg::Decklists::CardReference < ActiveRecord::Base
 
   # ----- Scopes ------ #
   
+  def self.main_deck
+    where(:deck_section => 'Main Deck')
+  end
 
+  def self.sideboard
+    where(:deck_section => 'Sideboard')
+  end
   
   # ----- Instance Methods ----- #
 

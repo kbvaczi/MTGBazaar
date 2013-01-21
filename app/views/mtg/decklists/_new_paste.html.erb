@@ -1,4 +1,4 @@
-<%= form_for @decklist, :method => :post do |f| %>
+<%= form_for @decklist, :remote => (request.format == 'text/javascript') do |f| %>
   <div class='mt center_wrap'>
     <div class='input center mr' style='text-align:left;'>
       <%= f.label 'Deck Name:', :class => 'pl' %></br>      
@@ -16,7 +16,7 @@
     </div>
     <br class='spacer'/>
     <br class='spacer'/>    
-    <%= f.submit 'Verify Deck' %>    
+    <%= f.submit 'Submit' %>    
   </div>
 
 <% end %>

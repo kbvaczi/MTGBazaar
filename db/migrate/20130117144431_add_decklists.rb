@@ -20,6 +20,7 @@ class AddDecklists < ActiveRecord::Migration
         t.integer   :card_id
         t.string    :card_name
         #table data
+        t.string    :mana_string
         t.string    :deck_section
         t.string    :deck_subsection        
         t.integer   :quantity

@@ -9,16 +9,17 @@ class Mtg::Decklist < ActiveRecord::Base
   # allow form for accounts nested inside user signup/edit forms
   accepts_nested_attributes_for :card_references, :reject_if => lambda { |a| a[:card_name].blank? || a[:quantity].blank? }, :allow_destroy => true
       
-  attr_accessor :decklist_text_main, :decklist_text_sideboard
+  attr_accessor :decklist_text_main, :decklist_text_sideboard, :card_references_to_destroy_after_update
   
   # ----- Validations ----- #
-  validates_uniqueness_of :name
-  validates_presence_of   :card_references
-  validates_associated    :card_references
+  validates_uniqueness_of :name,            :message => "This deck name has already been taken"
+  validates_presence_of   :card_references, :message => "You need at least one card in a decklist"
+  #validates_associated    :card_references, :on => :update
 
   # ----- Callbacks ----- #    
 
   before_validation :import_deck_from_text
+  before_update     :manage_changes_from_text
   
   def import_deck_from_text
     if self.decklist_text_main.present?
@@ -26,7 +27,7 @@ class Mtg::Decklist < ActiveRecord::Base
         split_line = line.strip.partition(/\d+/)
         next if split_line[0].include?('//') or split_line[1].empty? or split_line[2].empty?
         quantity   = split_line[1].to_i
-        card_name  = split_line[2].strip
+        card_name  = split_line[2].strip.squeeze(" ")
         self.card_references.build(:quantity => quantity, :card_name => card_name)
       end
     end
@@ -35,12 +36,35 @@ class Mtg::Decklist < ActiveRecord::Base
         split_line = line.strip.partition(/\d+/)
         next if split_line[0].include?('//') or split_line[1].empty? or split_line[2].empty?
         quantity   = split_line[1].to_i
-        card_name  = split_line[2].strip
+        card_name  = split_line[2].strip.squeeze(" ")
         self.card_references.build(:quantity => quantity, :card_name => card_name, :unprocessed_section => 'Sideboard')
       end
     end    
   end
-
+  
+  def manage_changes_from_text
+    card_references_to_destroy_after_update ||= []
+    self.card_references.main_deck.group_by(&:card_name).each do |card_name, card_references_with_this_name|
+      if card_references_with_this_name.count == 1 # only 1 by this name, it's either new or deleted
+        # if it is a new record, it's newly created, otherwise it's no longer in the text list and needs to be deleted        
+        card_references_to_destroy_after_update << card_references_with_this_name.first.id unless card_references_with_this_name.first.new_record? 
+      else
+        # delete the old ones as the new ones will replace them
+        card_references_with_this_name.to_a.each {|a| card_references_to_destroy_after_update << a.id if a.id.present? }
+      end      
+    end
+    self.card_references.sideboard.group_by(&:card_name).each do |card_name, card_references_with_this_name|
+      if card_references_with_this_name.count == 1 # only 1 by this name, it's either new or deleted
+        # if it is a new record, it's newly created, otherwise it's no longer in the text list and needs to be deleted        
+        card_references_to_destroy_after_update << card_references_with_this_name.first.id unless card_references_with_this_name.first.new_record? 
+      else
+        # delete the old ones as the new ones will replace them
+        card_references_with_this_name.to_a.each {|a| card_references_to_destroy_after_update << a.id if a.id.present? }
+      end      
+    end
+    Mtg::Decklists::CardReference.where(:id => card_references_to_destroy_after_update).destroy_all    
+  end
+  
   # ----- Scopes ------ #
   
   def self.active
@@ -77,6 +101,31 @@ class Mtg::Decklist < ActiveRecord::Base
     self.get_cards(:section => 'Sideboard').count
   end  
   
+  def get_relevant_error_message
+    if self.errors.messages[:name].present?
+      self.errors.messages[:name].first
+    elsif self.errors.messages[:card_references].present? && self.errors.messages[:card_references].first.downcase != 'is invalid'
+      self.errors.messages[:card_references].first    
+    elsif self.errors.messages[:"card_references.card_name"].present?
+      self.errors.messages[:"card_references.card_name"].first
+    else
+      self.errors.messages  
+    end
+  end
+  
+  def export_format(options)
+    options = {:section => 'all', :subsection => nil}.merge(options)
+    output  = ""
+    case options[:section]
+      when /main deck/i
+        self.card_references.select([:quantity, :card_name]).main_deck.each { |card_reference| output << "#{card_reference.quantity} #{card_reference.card_name}\r\n" }
+      when /sideboard/i
+        self.card_references.select([:quantity, :card_name]).sideboard.each { |card_reference| output << "#{card_reference.quantity} #{card_reference.card_name}\r\n" }        
+      else
+        self.card_references.select([:quantity, :card_name]).each { |card_reference| output << "#{card_reference.quantity} #{card_reference.card_name}\r\n" }                
+    end
+    output
+  end
   # ----- Class Methods    ----- #  
   
 end

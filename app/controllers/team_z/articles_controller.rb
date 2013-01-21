@@ -125,7 +125,7 @@ class TeamZ::ArticlesController < TeamZ::BaseController
   private 
    
   def verify_article_ownership
-    verify_ownership(current_article.id)
+    verify_ownership(current_article.team_z_profile_id)
   end
 
   def current_article

@@ -3,3 +3,9 @@
 <div id='content'>
 <%= render :partial => 'mtg/decklists/show', :locals => {:decklist => Mtg::Decklist.last} %>
 </div>
+
+<br class='spacer'/>
+<br class='spacer'/>
+<br class='spacer'/>
+
+<%= link_to "new decklist", new_mtg_decklist_path, :remote => true, :class => 'button' %>

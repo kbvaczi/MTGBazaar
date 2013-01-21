@@ -74,7 +74,7 @@ MTGBazaar::Application.routes.draw do
   
   namespace :mtg do 
     
-    resources :decklists
+    resources :decklists 
     
     namespace :cards do
       post   "listings/multiple/set_active"       => "edit_multiple_listings#set_active",         :as => 'listings_multiple_set_active'  

@@ -114,7 +114,7 @@ class TeamZ::MtgoVideoSeriesController < TeamZ::BaseController
   private 
 
   def verify_video_ownership
-    verify_ownership(current_video_series.id)
+    verify_ownership(current_video_series.team_z_profile.id)
   end
   
   def current_video_series
