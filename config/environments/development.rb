@@ -9,7 +9,6 @@ MTGBazaar::Application.configure do
   config.serve_static_assets = true
   config.assets.compile = true
 
-
   # Log error messages when you accidentally call methods on nil.
   config.whiny_nils = true
 
@@ -44,5 +43,4 @@ MTGBazaar::Application.configure do
   config.active_record.auto_explain_threshold_in_seconds = 0.5
   
   config.log_level = :debug
-  
 end
