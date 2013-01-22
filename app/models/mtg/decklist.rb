@@ -12,9 +12,7 @@ class Mtg::Decklist < ActiveRecord::Base
   attr_accessor :decklist_text_main, :decklist_text_sideboard, :card_references_to_destroy_after_update
   
   # ----- Validations ----- #
-  validates_uniqueness_of :name,            :message => "This deck name has already been taken"
-  validates_presence_of   :card_references, :message => "You need at least one card in a decklist"
-  #validates_associated    :card_references, :on => :update
+  validates_presence_of :card_references, :message => "You need at least one card in a decklist"
 
   # ----- Callbacks ----- #    
 

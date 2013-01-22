@@ -22,7 +22,7 @@ module Mtg::CardsHelper
   
   # Converts mana string to a series of corresponding image links to be displayed
   def display_symbols(string)
-    string = "{0}" if string.empty? # show a 0 mana symbol if mana string is empty      
+    string = "{0}" if string.nil? or string.empty? # show a 0 mana symbol if mana string is empty      
     string.gsub(/[{]([_a-zA-Z0-9 ]*)[}]/) do |letter| #find the pattern "{xy}" where xy are any letters or numbers
         letter = letter.gsub(/[{](.+)[}]/, '\1').downcase #strip the {} and lowercase the letters
         if letter == "t" #if the letters are t, create tap image

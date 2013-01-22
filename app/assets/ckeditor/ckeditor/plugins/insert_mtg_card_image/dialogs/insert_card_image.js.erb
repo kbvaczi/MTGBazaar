@@ -1,13 +1,4 @@
-﻿/*********************************************************************************************************/
-/**
- * inserthtml plugin for CKEditor 3.x (Author: Lajox ; Email: lajox@19www.com)
- * version:	 1.0
- * Released: On 2009-12-11
- * Download: http://code.google.com/p/lajox
- */
-/*********************************************************************************************************/
-
-function getImageInfo(card_name, set_code ){
+﻿function getImageInfo(card_name, set_code ){
   var value  = "";
   var params = [{ name:"card_name",  value: card_name },
                 { name:"set_code",   value: set_code  }];
@@ -65,7 +56,7 @@ CKEDITOR.dialog.add("inserthtml",function(e){
 		  var image_path   = card_info[0];
 		  var card_link    = card_info[1];
 			if ( image_path.length > 0 )
-			e.insertHtml("<a href="+ card_link +" style=\"margin:2px;\"><img style='width:" + image_width + "px;height:" + image_height + "px;' src='" + image_path + "' title=\"" + card_name + "\"/></a>"); 
+			e.insertHtml("<a href="+ card_link +" style=\"margin:2px;\"><img style='width:" + image_width + "px;height:" + image_height + "px;' src='" + image_path + "' title=\"" + card_name + "\" alt=\"" + card_name + "\"/></a>"); 
 		},
 		contents:[
 			{	id:"info",

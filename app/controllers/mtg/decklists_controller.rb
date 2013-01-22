@@ -86,6 +86,13 @@ class Mtg::DecklistsController < ApplicationController
     redirect_to back_path, :notice => 'The deck was deleted...'
   end
   
+  def autocomplete_decklist_name
+    @decklists = Mtg::Decklist.where('mtg_decklists.name LIKE ?', "#{params[:decklist_name]}%").limit(10)
+    respond_to do |format|
+      format.json {}
+    end
+  end
+  
   private 
   
   def verify_team_z_member

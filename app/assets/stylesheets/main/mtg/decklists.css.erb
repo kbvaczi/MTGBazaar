@@ -6,16 +6,14 @@
   position:relative;
   z-index:2;
   border-radius: 10px;
-  box-shadow:0px 0px 1px 0px #BBB;
+  box-shadow:0px 1px 1px 0px #EEE;
   background: rgb(255,255,255);
-  background: -moz-linear-gradient(left,  rgba(255,255,255,1) 0%, rgba(243,243,243,1) 50%, rgba(237,237,237,1) 51%, rgba(255,255,255,1) 100%);
-  background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,1)), color-stop(50%,rgba(243,243,243,1)), color-stop(51%,rgba(237,237,237,1)), color-stop(100%,rgba(255,255,255,1)));
-  background: -webkit-linear-gradient(left,  rgba(255,255,255,1) 0%,rgba(243,243,243,1) 50%,rgba(237,237,237,1) 51%,rgba(255,255,255,1) 100%),
-              -webkit-linear-gradient(80deg,  rgba(255,255,255,0.5) 0%,rgba(255,255,255,0) 20px), 
-              -webkit-linear-gradient(100deg, rgba(255,255,255,0.5) 0%,rgba(255,255,255,0) 20px) !important; /* Chrome10+,Safari5.1+ */;
-  background: -o-linear-gradient(left,  rgba(255,255,255,1) 0%,rgba(243,243,243,1) 50%,rgba(237,237,237,1) 51%,rgba(255,255,255,1) 100%);
-  background: -ms-linear-gradient(left,  rgba(255,255,255,1) 0%,rgba(243,243,243,1) 50%,rgba(237,237,237,1) 51%,rgba(255,255,255,1) 100%);
-  background: linear-gradient(to right,  rgba(255,255,255,1) 0%,rgba(243,243,243,1) 50%,rgba(237,237,237,1) 51%,rgba(255,255,255,1) 100%); 
+  background-image: -moz-linear-gradient(-45deg,  rgba(226,226,226,0.1) 0%, rgba(219,219,219,0.2) 50%, rgba(209,209,209,0.2) 51%, rgba(254,254,254,0.1) 100%);
+  background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(226,226,226,0.1)), color-stop(50%,rgba(219,219,219,0.2)), color-stop(51%,rgba(209,209,209,0.2)), color-stop(100%,rgba(254,254,254,0.1)));
+  background-image: -webkit-linear-gradient(-45deg,  rgba(226,226,226,0.1) 0%,rgba(219,219,219,0.2) 50%,rgba(209,209,209,0.2) 51%,rgba(254,254,254,0.1) 100%);
+  background-image: -o-linear-gradient(-45deg,  rgba(226,226,226,0.1) 0%,rgba(219,219,219,0.2) 50%,rgba(209,209,209,0.2) 51%,rgba(254,254,254,0.1) 100%);
+  background-image: -ms-linear-gradient(-45deg,  rgba(226,226,226,0.1) 0%,rgba(219,219,219,0.2) 50%,rgba(209,209,209,0.2) 51%,rgba(254,254,254,0.1) 100%);
+  background-image: linear-gradient(135deg,  rgba(226,226,226,0.1) 0%,rgba(219,219,219,0.2) 50%,rgba(209,209,209,0.2) 51%,rgba(254,254,254,0.1) 100%);
   overflow:hidden;
   padding:10px;
 }
@@ -41,7 +39,7 @@
   -o-transform:rotate(-1.5deg); /* Opera */
 }
 .decklist_shadow_right {
-  display:inline-block;
+ /* display:inline-block;
   position:absolute;
   bottom:-5px;
   right:2px;
@@ -56,20 +54,20 @@
   height:20px;
   border-bottom-right-radius:15px;
   transform:rotate(1.5deg);
-  -ms-transform:rotate(1.5deg); /* IE 9 */
-  -moz-transform:rotate(1.5deg); /* Firefox */
-  -webkit-transform:rotate(1.5deg); /* Safari and Chrome */
-  -o-transform:rotate(1.5deg); /* Opera */
+  -ms-transform:rotate(1.5deg);
+  -moz-transform:rotate(1.5deg);
+  -webkit-transform:rotate(1.5deg); 
+  -o-transform:rotate(1.5deg); */
 }
 .decklist_wrapper .decklist_title {
   margin:-10px;
   box-shadow:0px 0px 1px 0px #EEE;  
-  background: -moz-linear-gradient(45deg,  rgba(200,200,0,0.07) 0%, rgba(0,0,0,0) 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,rgba(200,200,0,0.07)), color-stop(100%,rgba(0,0,0,0))); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(45deg,  rgba(200,200,0,0.07) 0%,rgba(0,0,0,0) 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(45deg,  rgba(200,200,0,0.07) 0%,rgba(0,0,0,0) 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(45deg,  rgba(200,200,0,0.07) 0%,rgba(0,0,0,0) 100%); /* IE10+ */
-  background: linear-gradient(45deg,  rgba(200,200,0,0.07) 0%,rgba(0,0,0,0) 100%); /* W3C */
+  background: -moz-linear-gradient(-45deg,  rgba(104,138,193,0.07) 0%, rgba(0,0,0,0) 100%);
+  background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(104,138,193,0.07)), color-stop(100%,rgba(0,0,0,0)));
+  background: -webkit-linear-gradient(-45deg,  rgba(104,138,193,0.07) 0%,rgba(0,0,0,0) 100%);
+  background: -o-linear-gradient(-45deg,  rgba(104,138,193,0.07) 0%,rgba(0,0,0,0) 100%);
+  background: -ms-linear-gradient(-45deg,  rgba(104,138,193,0.07) 0%,rgba(0,0,0,0) 100%);
+  background: linear-gradient(135deg,  rgba(104,138,193,0.07) 0%,rgba(0,0,0,0) 100%);
 }
 .decklist_wrapper .decklist_title h2 {
   border:none;
@@ -103,17 +101,7 @@
   box-shadow: inset 0px 0px 2px 1px #000;     
 }
 .decklist_image_wrapper .decklist_image .decklist_image_shadow {
-  height:310px;
-  width:223px;
-  border-radius:12px;  
-  position:absolute;
-  z-index:3;
-  background: -moz-linear-gradient(left,  rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 100%);
-  background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(0,0,0,0.2)), color-stop(100%,rgba(0,0,0,0)));
-  background: -webkit-linear-gradient(left,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%);
-  background: -o-linear-gradient(left,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%);
-  background: -ms-linear-gradient(left,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%);
-  background: linear-gradient(to right,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%);
+
 }
 .decklist_wrapper .decklist_content {
   vertical-align:top;  

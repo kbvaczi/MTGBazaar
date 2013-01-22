@@ -3,8 +3,6 @@ Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
-
-
 CKEDITOR.editorConfig = function( config )
 {
   // Define changes to default configuration here. For example:
@@ -93,7 +91,7 @@ CKEDITOR.editorConfig = function( config )
   });
   
   /* Toolbars */
-  config.extraPlugins = 'timestamp,insert_mtg_card_image';
+  config.extraPlugins = 'insert_mtg_card_image,insert_mtg_decklist';
   config.format_tags = 'p;h2;h3';
   
   config.toolbar = 'Easy';
@@ -105,6 +103,6 @@ CKEDITOR.editorConfig = function( config )
         ['About'], '/',
         ['Bold','Italic','Underline','Strike', 'RemoveFormat'], 
         ['NumberedList','BulletedList','-','Outdent','Indent'],
-        ['Timestamp','insert_mtg_card_image'],['Format']
+        ['insert_mtg_card_image','-','insert_mtg_decklist'],['Format']
     ];
 };

@@ -3,13 +3,15 @@ class AddDecklists < ActiveRecord::Migration
     
     unless table_exists? :mtg_decklists
       create_table  :mtg_decklists do |t|
-        #foreign keys      
+        #foreign keys
         
         #table data
         t.string    :name
+        t.string    :mana_string
+        t.string    :play_format
         t.boolean   :active
         
-        t.timestamps      
+        t.timestamps
       end
     end
     
@@ -20,9 +22,8 @@ class AddDecklists < ActiveRecord::Migration
         t.integer   :card_id
         t.string    :card_name
         #table data
-        t.string    :mana_string
         t.string    :deck_section
-        t.string    :deck_subsection        
+        t.string    :deck_subsection
         t.integer   :quantity
         
         t.timestamps      

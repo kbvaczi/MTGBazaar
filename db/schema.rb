@@ -182,9 +182,11 @@ ActiveRecord::Schema.define(:version => 20130117144431) do
 
   create_table "mtg_decklists", :force => true do |t|
     t.string   "name"
+    t.string   "mana_string"
+    t.string   "play_format"
     t.boolean  "active"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "mtg_decklists_card_references", :force => true do |t|

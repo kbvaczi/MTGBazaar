@@ -11,4 +11,12 @@ class CkeditorController < ApplicationController
     render :text => info
   end
   
+  def get_available_formats_from_decklist_name
+    
+  end
+  
+  def get_decklist_info_from_name_and_format
+    
+  end
+  
 end
