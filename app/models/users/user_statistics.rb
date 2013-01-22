@@ -26,7 +26,7 @@ class UserStatistics < ActiveRecord::Base
     if read_attribute(:listings_mtg_cards_count) && (not overwrite)
       read_attribute(:listings_mtg_cards_count)       
     else
-      write_attribute(:listings_mtg_cards_count, (Mtg::Cards::Listing.where(:seller_id => self.id).select([:quantity_available, :number_cards_per_item]).available.to_a.inject(0) {|sum, listing| sum + listing.quantity_available * listing.number_cards_per_item} || 0))
+      write_attribute(:listings_mtg_cards_count, (Mtg::Cards::Listing.where(:seller_id => self.user_id).select([:quantity_available, :number_cards_per_item]).available.to_a.inject(0) {|sum, listing| sum + listing.quantity_available * listing.number_cards_per_item} || 0))
       self.save
       read_attribute(:listings_available || 0)
     end

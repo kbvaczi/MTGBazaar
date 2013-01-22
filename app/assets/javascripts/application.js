@@ -9,6 +9,7 @@
 //= require jquery_ujs
 //= require bx-slider/jquery.bxslider
 
+
 //= require jquery_tools
 //= require chosen.jquery
 //= require chosen.jquery-ajax_plugin  

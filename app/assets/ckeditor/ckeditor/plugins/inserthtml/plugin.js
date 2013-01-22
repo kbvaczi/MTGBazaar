@@ -17,9 +17,9 @@ CKEDITOR.plugins.add('inserthtml',
 		c.modes={wysiwyg:1,source:0};
 		c.canUndo=false;
 	a.ui.addButton("inserthtml",{
-					label:a.lang.inserthtml.title,
-					command:b,
-					icon:this.path+"inserthtml.gif"
+					label:'Add Card Image',
+					text:'add card',
+					command:b
 	});
 	CKEDITOR.dialog.add(b,this.path+"dialogs/inserthtml.js")}
 });

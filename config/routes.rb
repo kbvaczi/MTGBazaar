@@ -149,6 +149,12 @@ MTGBazaar::Application.routes.draw do
     resources :profiles, :only => [:show]
   end
 
+# CKEDITOR ----------------- #
+
+  mount Ckeditor::Engine      => "/ckeditor"
+  match 'ckeditor/get_available_sets_from_card_name'     => "ckeditor#get_available_sets_from_card_name"
+  match 'ckeditor/get_image_path_from_card_and_set_name' => "ckeditor#get_image_path_from_card_and_set_name"  
+
 # MISC ROUTES -------------- #
 
   root :to => "home#index"
@@ -164,8 +170,7 @@ MTGBazaar::Application.routes.draw do
   match 'feedback'            => 'home#feedback'
   match 'welcome'             => 'home#welcome'
   match 'sitemap'             => 'home#sitemap'
-  mount Ckeditor::Engine      => "/ckeditor"
-  
+
   
   if Rails.env.development? or Rails.env.staging?
     match 'test'              => 'home#test'

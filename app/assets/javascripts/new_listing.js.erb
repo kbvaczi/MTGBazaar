@@ -72,8 +72,8 @@ $(document).ready(function() {
                   { name:"playset",    value:$('#mtg_cards_listing_playset').val()  } ];
     var url = path + "?" + $.param(params);
     $.get(url, function(data) {
-      var price_low  = data["price_low"]["cents"] / 100;
-      var price_med  = data["price_med"]["cents"] / 100;      
+      var price_low  = data["price_low"]["cents"]  / 100;
+      var price_med  = data["price_med"]["cents"]  / 100;      
       var price_high = data["price_high"]["cents"] / 100;
       updateListingPricingInfo(price_low, price_med, price_high);
     });
