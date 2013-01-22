@@ -93,7 +93,7 @@ CKEDITOR.editorConfig = function( config )
   });
   
   /* Toolbars */
-  config.extraPlugins = 'timestamp,inserthtml';
+  config.extraPlugins = 'timestamp,insert_mtg_card_image';
   config.format_tags = 'p;h2;h3';
   
   config.toolbar = 'Easy';
@@ -105,6 +105,6 @@ CKEDITOR.editorConfig = function( config )
         ['About'], '/',
         ['Bold','Italic','Underline','Strike', 'RemoveFormat'], 
         ['NumberedList','BulletedList','-','Outdent','Indent'],
-        ['Timestamp','inserthtml'],['Format']
+        ['Timestamp','insert_mtg_card_image'],['Format']
     ];
 };

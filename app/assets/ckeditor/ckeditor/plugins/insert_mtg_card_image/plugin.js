@@ -7,19 +7,18 @@
  */
 /*********************************************************************************************************/
 
-CKEDITOR.plugins.add('inserthtml',   
+CKEDITOR.plugins.add('insert_mtg_card_image',   
   {    
     requires: ['dialog'],
-	lang : ['en'], 
     init:function(a) { 
 	var b="inserthtml";
 	var c=a.addCommand(b,new CKEDITOR.dialogCommand(b));
 		c.modes={wysiwyg:1,source:0};
 		c.canUndo=false;
-	a.ui.addButton("inserthtml",{
+	a.ui.addButton("insert_mtg_card_image",{
 					label:'Add Card Image',
-					text:'add card',
+          icon: 'https://mtgbazaar.s3.amazonaws.com/images/icons/ckeditor/icon_card_insert.png',
 					command:b
 	});
-	CKEDITOR.dialog.add(b,this.path+"dialogs/inserthtml.js")}
+	CKEDITOR.dialog.add(b,this.path+"dialogs/insert_card_image.js")}
 });
