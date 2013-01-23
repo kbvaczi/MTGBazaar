@@ -13,6 +13,16 @@
                       select("mtg_cards.set_id, mtg_cards.id, mtg_cards.name, count(mtg_transaction_items.card_id) AS sales_count, max(mtg_transaction_items.created_at) AS latest_sale").
                       order("sales_count DESC, latest_sale DESC").
                       limit(7)
+                      
+          if top_cards.length < 7
+            top_cards = Mtg::Card.includes(:set).joins(:sales => :transaction).
+                        where("mtg_transaction_items.created_at > ?", 100.days.ago).
+                        where("mtg_transactions.buyer_id IS NOT ?", nil).
+                        group("mtg_transaction_items.card_id").
+                        select("mtg_cards.set_id, mtg_cards.id, mtg_cards.name, count(mtg_transaction_items.card_id) AS sales_count, max(mtg_transaction_items.created_at) AS latest_sale").
+                        order("sales_count DESC, latest_sale DESC").
+                        limit(7)
+          end
   		  %>
   		  <div class="mr-m ml-s">
   		    <table class="data fixed">

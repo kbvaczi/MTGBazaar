@@ -18,7 +18,7 @@ module Mtg::CardsHelper
     else
       "#{type}"
     end
-  end  
+  end
   
   # Converts mana string to a series of corresponding image links to be displayed
   def display_symbols(string)

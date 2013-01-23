@@ -1,3 +1,7 @@
-$('#checkout_paykey').val("");
-$('#checkout_paykey').val("<%= escape_javascript @purchase["payKey"] %>");
-$('#checkout_submit').trigger('click');
+<% if @error == false %>
+  $('#checkout_paykey').val("");
+  $('#checkout_paykey').val("<%= escape_javascript @purchase["payKey"] %>");
+  $('#checkout_submit').trigger('click');
+<% else %>
+  myCustomAlertBox('There has been an error processing this purchase. We apologize for your inconvenience.');
+<% end %>
