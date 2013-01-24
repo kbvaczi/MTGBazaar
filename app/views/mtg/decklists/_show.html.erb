@@ -1,7 +1,7 @@
 <div class='decklist_package group'>
   <div class='decklist_wrapper'>
     <div class='decklist_title'>
-      <h2>Decklist:&nbsp; <%= decklist.name %><%= link_to 'View sales for these cards', mtg_cards_search_path(:names => decklist.card_references.collect {|card_reference| card_reference.card_name }), :class => 'right mr' %></h2>
+      <h2>Decklist:&nbsp; <%= decklist.name %><%= link_to 'View sales for these cards', mtg_cards_search_path(:ids => decklist.card_references.collect {|card_reference| card_reference.card_id }), :class => 'right mr' %></h2>
     </div>
     <div class='decklist_content'>
       <% decklist.card_references.includes(:card).order(:card_name).group_by(&:deck_section).sort.each do |deck_section, card_references_in_this_section| %>

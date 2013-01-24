@@ -102,8 +102,8 @@ CKEDITOR.editorConfig = function( config )
         ['Undo','Redo'], ['Link','Unlink'],
         ['Image', 'ßSpecialChar'],
         ['About'], '/',
-        ['Bold','Italic','Underline','Strike','RemoveFormat'], 
+        ['Bold','Italic','Underline','Strike','RemoveFormat'],
         ['NumberedList','BulletedList','-','Outdent','Indent'],
-        ['insert_mtg_card_image','-','insert_mtg_decklist'],['Format']
+        ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','Format'], ['insert_mtg_card_image','-','insert_mtg_decklist']
     ];
 };

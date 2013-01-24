@@ -74,6 +74,7 @@ class Mtg::CardsController < ApplicationController
     query << ["mtg_sets.active LIKE ?", true]
     query << ["mtg_cards.name LIKE ?", "%#{params[:name]}%"] if params[:name].present? 
     query << SmartTuple.new(" OR ").add_each(params[:names]) {|v| ["mtg_cards.name LIKE ?", "#{v}"]} if params[:names].present?
+    query << SmartTuple.new(" OR ").add_each(params[:ids]) {|v| ["mtg_cards.id = ?", "#{v}"]} if params[:ids].present?    
     unless params[:search_type].present? #user clicks on autocomplete name for specific card bypass all filters
       query << ["mtg_sets.code LIKE ?", "#{params[:set]}"] if params[:set].present?
       query << ["mana_color LIKE ?", "%W%"] if params[:white].present?
