@@ -30,6 +30,20 @@
 <br class='spacer'/>
 
 <script type="text/javascript">
+
+  CKEDITOR.config.extraPlugins = 'insert_mtg_card_image,insert_mtg_decklist';
+  CKEDITOR.config.format_tags = 'p;h2;h3';
+  config.toolbar = 'Easy';
+  config.toolbar_Easy =
+    [
+        ['Source','-','Cut','Copy','Paste','PasteText','PasteFromWord'],
+        ['Undo','Redo'], ['Link','Unlink'],
+        ['Image', 'ßSpecialChar'],
+        ['About'], '/',
+        ['Bold','Italic','Underline','Strike','RemoveFormat'],
+        ['NumberedList','BulletedList','-','Outdent','Indent'],
+        ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','Format'], ['insert_mtg_card_image','-','insert_mtg_decklist']
+    ];
   
   $('#article_save').live('click', function(){
     $('#team_z_article_action').val('save');
