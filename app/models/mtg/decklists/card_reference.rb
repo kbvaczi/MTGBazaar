@@ -62,10 +62,10 @@ class Mtg::Decklists::CardReference < ActiveRecord::Base
         # check for lands first... anything but enchant land is legal      
         when /\A^((?!enchant).)*land/ix
           'Lands'
-        when /(creature|planeswalker)/ix
+        when /creature/ix
           'Creatures'
         else
-          'Spells'
+          'Other Spells'
       end
     rescue
       ''

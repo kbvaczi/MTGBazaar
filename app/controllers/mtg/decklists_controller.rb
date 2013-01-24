@@ -6,6 +6,11 @@ class Mtg::DecklistsController < ApplicationController
   end
   
   def show
+    respond_to do |format|
+      format.html do
+        render :partial => 'mtg/decklists/show', :locals => {:decklist => current_decklist}
+      end
+    end
   end
   
   def new
@@ -86,8 +91,8 @@ class Mtg::DecklistsController < ApplicationController
     redirect_to back_path, :notice => 'The deck was deleted...'
   end
   
-  def autocomplete_decklist_name
-    @decklists = Mtg::Decklist.where('mtg_decklists.name LIKE ?', "#{params[:decklist_name]}%").limit(10)
+  def autocomplete_name
+    @decklists = Mtg::Decklist.where('mtg_decklists.name LIKE ?', "#{params[:term]}%").limit(10)
     respond_to do |format|
       format.json {}
     end

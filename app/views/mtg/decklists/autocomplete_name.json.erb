@@ -19,7 +19,7 @@
           #{display_time(decklist.created_at)}
         </span>
       </div>}
-    computed_value = "#{decklist.name}(#{decklist.play_format})"
+    computed_value = "#{decklist.id} - #{decklist.name}"
     return_array << Hash[ "label" => computed_label, "value" => computed_value ]
   end
 %>

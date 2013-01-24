@@ -75,7 +75,7 @@ MTGBazaar::Application.routes.draw do
   namespace :mtg do 
     
     resources :decklists do
-      get 'autocomplete_decklist_name', :on => :collection
+      get 'autocomplete_name', :on => :collection
     end
     
     namespace :cards do

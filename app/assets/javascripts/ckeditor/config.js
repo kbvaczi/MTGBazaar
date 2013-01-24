@@ -5,6 +5,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 CKEDITOR.editorConfig = function( config )
 {
+  config.contentsCss = ['/assets/ckeditor.css', '/assets/main/mtg/decklists.css'];
   // Define changes to default configuration here. For example:
   // config.language = 'fr';
   // config.uiColor = '#AADC6E';
@@ -101,7 +102,7 @@ CKEDITOR.editorConfig = function( config )
         ['Undo','Redo'], ['Link','Unlink'],
         ['Image', 'ßSpecialChar'],
         ['About'], '/',
-        ['Bold','Italic','Underline','Strike', 'RemoveFormat'], 
+        ['Bold','Italic','Underline','Strike','RemoveFormat'], 
         ['NumberedList','BulletedList','-','Outdent','Indent'],
         ['insert_mtg_card_image','-','insert_mtg_decklist'],['Format']
     ];

@@ -1,28 +1,12 @@
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  outline: 0;
-  font-size: 12px;
-  vertical-align: baseline;
-  background: transparent;
-}
-html {
-  width: 100%;
-  margin-bottom: 20px;
-  background-color: #CFD5D7;
-}
 body {
   margin:auto;
-  background-color: #eee;
   font-family: "Calibri", "Helvetica Neue", "Arial", sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   color: #333;
   height: 100%;
   line-height: 140%;
   padding: 10px;
   width: 520px;
-  background: #FFF;
   border: 1px solid #bbb;
 }
 h1 {
@@ -52,7 +36,6 @@ h1 {
   background: -ms-linear-gradient(-45deg,  #edf1f2 19%,#e5e9ea 100%); /* IE10+ */
   background: linear-gradient(-45deg,  #edf1f2 19%,#e5e9ea 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#edf1f2', endColorstr='#e5e9ea',GradientType=1 ); /* IE6-8 fallback on horizontal gradient */
-
 }
 
 h2 {

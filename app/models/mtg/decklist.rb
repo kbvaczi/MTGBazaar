@@ -18,6 +18,7 @@ class Mtg::Decklist < ActiveRecord::Base
 
   before_validation :import_deck_from_text
   before_update     :manage_changes_from_text
+  before_save       :generate_mana_string
   
   def import_deck_from_text
     if self.decklist_text_main.present?
@@ -63,6 +64,16 @@ class Mtg::Decklist < ActiveRecord::Base
     Mtg::Decklists::CardReference.where(:id => card_references_to_destroy_after_update).destroy_all    
   end
   
+  def generate_mana_string
+    self.mana_string = ""
+    mana_strings_combined = (self.cards.value_of :mana_string).join
+    self.mana_string << '{W}' if mana_strings_combined.include?('{W}')
+    self.mana_string << '{U}' if mana_strings_combined.include?('{U}')    
+    self.mana_string << '{B}' if mana_strings_combined.include?('{B}')    
+    self.mana_string << '{R}' if mana_strings_combined.include?('{R}')    
+    self.mana_string << '{G}' if mana_strings_combined.include?('{G}')    
+  end
+  
   # ----- Scopes ------ #
   
   def self.active
@@ -88,7 +99,7 @@ class Mtg::Decklist < ActiveRecord::Base
   end  
 
   def cards_count_spells
-    self.get_cards(:subsection => 'Spells').count
+    self.get_cards(:subsection => 'Other Spells').count
   end  
   
   def cards_count_creatures
