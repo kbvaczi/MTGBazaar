@@ -88,7 +88,7 @@ MTGBazaar::Application.configure do
   STDOUT.sync = true
 
   logger = Logger.new(STDOUT)
-  logger.level = 0 # Must be numeric here - 0 :debug, 1 :info, 2 :warn, 3 :error, and 4 :fatal
+  logger.level = 1 # Must be numeric here - 0 :debug, 1 :info, 2 :warn, 3 :error, and 4 :fatal
   # NOTE:   with 0 you're going to get all DB calls, etc.
 
   Rails.logger = Rails.application.config.logger = logger

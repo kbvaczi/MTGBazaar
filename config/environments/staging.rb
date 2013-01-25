@@ -64,7 +64,7 @@ MTGBazaar::Application.configure do
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   # config.assets.precompile += %w( search.js )
   # add these files to be pre-compiled... for some reason they are missed?  This is needed to get CKEditor to work for Heroku
-  config.assets.precompile += ['ckeditor/config.js', 'ckeditor/skins/kama/editor.css', 'ckeditor/lang/en.js']
+  config.assets.precompile += [ /ckeditor\/\w+.(css|js|png|gif)$/, 'ckeditor/config.js', 'ckeditor/skins/kama/editor.css', 'ckeditor/lang/en.js']
 
   # Disable delivery errors, bad email addresses will be ignored
   config.action_mailer.raise_delivery_errors = false
