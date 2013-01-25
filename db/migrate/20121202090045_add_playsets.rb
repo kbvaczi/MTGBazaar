@@ -48,7 +48,7 @@ class AddPlaysets < ActiveRecord::Migration
     
     remove_column(:mtg_reservations,      :cards_quantity)            if column_exists?(:mtg_reservations,      :cards_quantity)        
     remove_column(:mtg_orders,            :cards_quantity)            if column_exists?(:mtg_orders,            :cards_quantity)                
-    remove_column(:transactions,          :cards_quantity)            if column_exists?(:mtg_transactions,      :cards_quantity)                    
+    remove_column(:mtg_transactions,      :cards_quantity)            if column_exists?(:mtg_transactions,      :cards_quantity)                    
   end
   
 end
