@@ -98,7 +98,7 @@ CKEDITOR.editorConfig = function( config )
         ['Image', 'ßSpecialChar'],
         ['About'], '/',
         ['Bold','Italic','Underline','Strike','RemoveFormat'],
-        ['NumberedList','BulletedList','-','Outdent','Indent'],
+        ['NumberedList','BulletedList','-','Outdent', 'Indent', 'Blockquote'],
         ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','Format'], ['insert_mtg_card_image','-','insert_mtg_decklist']
     ];
 };
