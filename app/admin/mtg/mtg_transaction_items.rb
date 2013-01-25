@@ -62,7 +62,7 @@ ActiveAdmin.register Mtg::Transactions::Item do
   end
   
   # ------ FILTERS FOR INDEX ------- #
-  filter :transaction_transaction_number, :as => :select, :collection => Mtg::Transaction.pluck(:transaction_number), :input_html => {:class => "chzn-select"}   
+  filter :transaction_transaction_number, :as => :select, :collection => Proc.new { Mtg::Transaction.pluck(:transaction_number) }, :input_html => {:class => "chzn-select"}   
   filter :buyer,        :as => :select,   :input_html => {:class => "chzn-select"}
   filter :seller,       :as => :select,   :input_html => {:class => "chzn-select"}    
   filter :price,        :label => "Price (in cents)"

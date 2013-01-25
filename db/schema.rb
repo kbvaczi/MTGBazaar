@@ -257,8 +257,6 @@ ActiveRecord::Schema.define(:version => 20130117144431) do
     t.datetime "updated_at",                    :null => false
     t.integer  "order_id"
     t.integer  "cards_quantity"
-    t.integer  "seller_id"
-    t.string   "listing_type"
   end
 
   add_index "mtg_reservations", ["listing_id"], :name => "index_mtg_reservations_on_listing_id"
@@ -266,21 +264,18 @@ ActiveRecord::Schema.define(:version => 20130117144431) do
 
   create_table "mtg_sets", :force => true do |t|
     t.integer  "block_id"
-    t.string   "name",                   :default => "",           :null => false
-    t.string   "code",                   :default => "",           :null => false
-    t.date     "release_date",           :default => '2012-11-01'
-    t.datetime "created_at",                                       :null => false
-    t.datetime "updated_at",                                       :null => false
-    t.boolean  "active",                 :default => false,        :null => false
-    t.integer  "cards_quantity",         :default => 0
-    t.boolean  "set_available_for_sale", :default => false
+    t.string   "name",         :default => "",           :null => false
+    t.string   "code",         :default => "",           :null => false
+    t.date     "release_date", :default => '2013-01-25'
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+    t.boolean  "active",       :default => false,        :null => false
   end
 
   add_index "mtg_sets", ["active"], :name => "index_mtg_sets_on_active"
   add_index "mtg_sets", ["code"], :name => "index_mtg_sets_on_code"
   add_index "mtg_sets", ["name"], :name => "index_mtg_sets_on_name"
   add_index "mtg_sets", ["release_date"], :name => "index_mtg_sets_on_release_date"
-  add_index "mtg_sets", ["set_available_for_sale"], :name => "index_mtg_sets_on_set_available_for_sale"
 
   create_table "mtg_sets_listings", :force => true do |t|
     t.integer  "set_id"
@@ -435,15 +430,14 @@ ActiveRecord::Schema.define(:version => 20130117144431) do
 
   create_table "news_feeds", :force => true do |t|
     t.integer  "author_id"
-    t.string   "title",              :default => ""
+    t.string   "title",       :default => ""
     t.text     "data"
-    t.datetime "created_at",                           :null => false
-    t.datetime "updated_at",                           :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
     t.datetime "start_at"
     t.datetime "end_at"
-    t.boolean  "active",             :default => true
+    t.boolean  "active",      :default => true
     t.string   "description"
-    t.string   "background_picture"
   end
 
   create_table "sessions", :force => true do |t|
@@ -571,11 +565,11 @@ ActiveRecord::Schema.define(:version => 20130117144431) do
     t.integer  "neutral_feedback_count",     :default => 0
     t.text     "ip_log"
     t.integer  "number_strikes",             :default => 0
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
-    t.float    "approval_percent"
-    t.integer  "number_sales_with_feedback"
-    t.integer  "listings_mtg_cards_count"
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
+    t.float    "approval_percent",           :default => 0.0
+    t.integer  "number_sales_with_feedback", :default => 0
+    t.integer  "listings_mtg_cards_count",   :default => 0
   end
 
   add_index "user_statistics", ["approval_percent"], :name => "index_user_statistics_on_approval_percent"
@@ -607,7 +601,7 @@ ActiveRecord::Schema.define(:version => 20130117144431) do
     t.datetime "created_at",                                :null => false
     t.datetime "updated_at",                                :null => false
     t.integer  "user_level",             :default => 0
-    t.boolean  "active",                 :default => true
+    t.boolean  "active",                 :default => false
     t.integer  "team_z_profile_id"
   end
 
