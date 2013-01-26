@@ -84,11 +84,28 @@
 .team_z_profile ul.tabs2 li#live_stream_pending a, .team_z_profile ul.tabs2 li#live_stream_offline a, .team_z_profile ul.tabs2 li#live_stream_online a {
   padding: 10px 60px 10px 10px;
 }
-
-
-
 .profile_show_content {
   
+}
+.team_z_content_header {
+  position:relative;
+  background:rgb(253,253,253);
+  margin-bottom:10px;
+  border:1px solid #EEE;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;  
+  box-shadow:1px 1px 1px 0px #ddd;
+  z-index: 51;
+}
+.team_z_content_header .team_z_content_header_date {
+  color:#888;
+}
+.team_z_content_header h2 {
+  padding:5px;
+  margin:0px 5px;
+  border:none;
+  box-shadow:none;
 }
 .profile_show_content_teaser {
   background: rgb(253,253,253);
@@ -132,17 +149,4 @@
   float:right;
   margin-top:3px;
   font-size:10px;
-}
-
-
-/* ----- VIDEOS ----- */
-.team_z_mtgo_video {
-  display:inline-block;
-  text-align: center;
-	width: 420px;
-}
-.team_z_mtgo_video h2 {
-  box-shadow:none;
-  border-bottom:none;
-  margin: 5px 0px 10px 0px;
 }

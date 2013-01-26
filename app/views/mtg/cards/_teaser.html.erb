@@ -9,7 +9,7 @@
       <div class="right mb-s">
         <%= display_symbols(mtg_card.mana_string)%>
       </div>
-      <%= display_name(mtg_card.name)%>
+      <%= link_to display_name(mtg_card.name), mtg_card_path(mtg_card) %>
       &nbsp;
       <div class='left mr-s mb-s'><%= display_set_symbol(mtg_card.set) %></div>
     </h2>

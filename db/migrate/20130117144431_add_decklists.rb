@@ -9,6 +9,7 @@ class AddDecklists < ActiveRecord::Migration
         t.string    :name
         t.string    :mana_string
         t.string    :play_format
+        t.string    :event        
         t.boolean   :active
         
         t.timestamps

@@ -73,8 +73,8 @@ ActiveAdmin.register Mtg::Cards::Listing do
   
   # ------ FILTERS FOR INDEX ------- #
   filter :card_name, :label => "Card Name", :as => :string, :input_html => {:class => "ui-autocomplete-input" , "data-type" => "search", "data-autocomplete" => '/mtg/cards/autocomplete_name.json' }  
-  filter :card_set_code,      :label => "Set",       :as => :select, :collection => active_set_list,   :input_html => {:class => "chzn-select"}    
-  filter :seller_username,    :label => "Seller",    :as => :select, :collection => users_list, :input_html => {:class => "chzn-select"}  
+  filter :card_set_code,      :label => "Set",       :as => :select, :collection => Proc.new {active_set_list},   :input_html => {:class => "chzn-select"}    
+  filter :seller_username,    :label => "Seller",    :as => :select, :collection => Proc.new {users_list}, :input_html => {:class => "chzn-select"}  
   filter :price,              :label => "Price (in cents)"
   filter :language,     :as => :select,   :collection => language_list,   :input_html => {:class => "chzn-select"}    
   filter :condition,    :as => :select,   :collection => condition_list,  :input_html => {:class => "chzn-select"}    

@@ -66,7 +66,7 @@ class Mtg::Decklist < ActiveRecord::Base
   
   def generate_mana_string
     self.mana_string = ""
-    mana_strings_combined = (self.cards.value_of :mana_string).join
+    mana_strings_combined = (Mtg::Card.where(:id => (self.card_references.value_of :card_id)).value_of :mana_string).join
     self.mana_string << '{W}' if mana_strings_combined.include?('{W}')
     self.mana_string << '{U}' if mana_strings_combined.include?('{U}')    
     self.mana_string << '{B}' if mana_strings_combined.include?('{B}')    
@@ -122,7 +122,7 @@ class Mtg::Decklist < ActiveRecord::Base
     end
   end
   
-  def export_format(options)
+  def export_format(options={})
     options = {:section => 'all', :subsection => nil}.merge(options)
     output  = ""
     case options[:section]

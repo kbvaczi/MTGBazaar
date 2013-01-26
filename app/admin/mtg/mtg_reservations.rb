@@ -70,9 +70,9 @@ ActiveAdmin.register Mtg::Reservation do
   
 # ------ FILTERS FOR INDEX ------- #
   filter :listing_card_name,          :label => "Card Name", :as => :string, :input_html => {:class => "ui-autocomplete-input" , "data-type" => "search", "data-autocomplete" => '/mtg/cards/autocomplete_name.json' }  
-  filter :listing_card_set_code,      :label => "Set",       :as => :select, :collection => active_set_list,   :input_html => {:class => "chzn-select"}    
-  filter :listing_seller_username,    :label => "Seller",    :as => :select, :collection => users_list, :input_html => {:class => "chzn-select"}  
-  filter :cart_user_username,         :label => "Buyer",     :as => :select, :collection => users_list, :input_html => {:class => "chzn-select"}    
+  filter :listing_card_set_code,      :label => "Set",       :as => :select, :collection => Proc.new {active_set_list},   :input_html => {:class => "chzn-select"}    
+  filter :listing_seller_username,    :label => "Seller",    :as => :select, :collection => Proc.new {users_list}, :input_html => {:class => "chzn-select"}  
+  filter :cart_user_username,         :label => "Buyer",     :as => :select, :collection => Proc.new {users_list}, :input_html => {:class => "chzn-select"}    
   filter :listing_price,              :label => "Price (in cents)"
   filter :listing_language,     :as => :select,   :collection => language_list,   :input_html => {:class => "chzn-select"}    
   filter :listing_condition,    :as => :select,   :collection => condition_list,  :input_html => {:class => "chzn-select"}    

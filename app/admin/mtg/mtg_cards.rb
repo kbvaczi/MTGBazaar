@@ -86,8 +86,8 @@ ActiveAdmin.register Mtg::Card do
     filter :name, :label => "Card Name", :as => :string, :input_html => {:class => "ui-autocomplete-input" , "data-type" => "search", "data-autocomplete" => '/mtg/cards/autocomplete_name.json' }
     filter :block,        :as => :select,                                   :input_html => {:class => "chzn-select"}  
     filter :set,                                                            :input_html => {:class => "chzn-select"}  
-    filter :card_type,    :as => :select, :collection => card_type_list,    :input_html => {:class => "chzn-select"}
-    filter :card_subtype, :as => :select, :collection => card_subtype_list, :input_html => {:class => "chzn-select"}
+    filter :card_type,    :as => :select, :collection => Proc.new {card_type_list},    :input_html => {:class => "chzn-select"}
+    filter :card_subtype, :as => :select, :collection => Proc.new {card_subtype_list}, :input_html => {:class => "chzn-select"}
     filter :set_active,   :as => :select,                                   :input_html => {:class => "chzn-select"}
   end 
 
