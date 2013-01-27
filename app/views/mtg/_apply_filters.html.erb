@@ -1,9 +1,9 @@
 <% remote ||= false %>
 <% if params[:filter] == "true" %>
   <b>Using search filters:</b>
-  <%= link_to "&#10004; update".html_safe, url_for(params.merge(:filter => true, :page => nil)), :remote => remote, :class => 'button2' %>
-  <%= link_to "<i>X </i> remove".html_safe, url_for(params.merge(:filter => nil, :page => nil)), :remote => remote, :class => 'button2' %>      
+  <%= link_to "<b>&#10004;</b> update".html_safe, url_for(params.merge(:filter => true, :page => nil)), :remote => remote, :class => 'button2' %>
+  <%= link_to "<b><i>X </b></i> remove".html_safe, url_for(params.merge(:filter => nil, :page => nil)), :remote => remote, :class => 'button2' %>      
 <% else %>
   <b>Not using search filters: &nbsp;</b>
-  <%= link_to "&#10004; apply filters".html_safe, url_for(params.merge(:filter => true, :page => nil)), :remote => remote, :class => 'button2' %>    
+  <%= link_to "<b>&#10004;</b> apply filters".html_safe, url_for(params.merge(:filter => true, :page => nil)), :remote => remote, :class => 'button2' %>    
 <% end %>
