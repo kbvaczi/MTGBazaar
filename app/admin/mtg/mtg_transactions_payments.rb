@@ -115,7 +115,7 @@ ActiveAdmin.register Mtg::Transactions::Payment do
             div do
               payment.payment_notifications.each do |notification|
                 div do
-                  text_node pretty_print_hash(notification.inspect).html_safe rescue ""
+                  text_node notification.inspect rescue ""
                 end
               end
             end

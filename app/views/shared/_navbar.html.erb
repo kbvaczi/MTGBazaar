@@ -20,27 +20,25 @@
     		</div>
       </li>
   		<li><%= link_to "About", about_path %></li>  
-
-    	<li class="navbar_drop">
-    		<%= link_to "Sell", mtg_cards_path %>
-    		<div class="navbar_drop_child noselect">
-    			<ul>
-      	    <li><%= link_to "Sell Singles", new_generic_mtg_cards_listings_path %></li>
-      	    <li><%= link_to "Bulk Sell Singles",  new_bulk_prep_mtg_cards_listings_path  %></li>
-      	    <li><%= link_to "Sell Playsets", new_mtg_cards_listings_playset_path %></li>      	          	    
-        	</ul>
-        </div>
-      </li>
     <% end %>
 
+		<li class="navbar_drop">
+			<%= link_to "Beta"%>
+			<div class="navbar_drop_child">
+  			<ul>
+  		    <li><%= link_to "Change Log", changelog_path %></li>
+  		    <% if user_signed_in? %>
+            <li><%= link_to "Report a Bug", new_ticket_path('ticket[problem]'.to_sym => 'bug') %></li>
+   		    <% end %>
+  			</ul>
+			</div>
+	  </li>
 
 		<li class="navbar_drop">
 			<%= link_to "Support"%>
 			<div class="navbar_drop_child">
   			<ul>
-  		    <li><%= link_to "Leave Feedback", feedback_path %></li>
   		    <% if user_signed_in? %>
-    		    <li class="heading"> Support Issues </li>
             <li><%= link_to "Submit a Ticket", new_ticket_path %></li>
      		    <li><%= link_to "View Ticket History", tickets_path %></li>                   
    		    <% end %>
@@ -50,6 +48,20 @@
   			</ul>
 			</div>
 	  </li>
+	  
+
+	  <% if user_signed_in? %>
+    	<li class="navbar_drop">
+    		<%= link_to "Sell", mtg_cards_path %>
+    		<div class="navbar_drop_child noselect">
+    			<ul>
+      	    <li><%= link_to "Sell Singles", new_generic_mtg_cards_listings_path %></li>
+      	    <li><%= link_to "Bulk Sell Singles",  new_bulk_prep_mtg_cards_listings_path  %></li>
+      	    <li><%= link_to "Sell Playsets", new_mtg_cards_listings_playset_path %></li>      	          	    
+        	</ul>
+        </div>
+      </li>	  
+    <% end %>
 		
 		<li class="navbar_drop">
 			<%= link_to "The Bazaar", users_path %>

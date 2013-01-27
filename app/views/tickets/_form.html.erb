@@ -22,8 +22,8 @@
     <%= f.input :description,               :label => "Description",
                                             :as => :text,
                                             :required => true,
-                                            :hint => "500 Characters Maximum",
-                                            :input_html => {:maxlength => "500"} %>      
+                                            :hint => "1000 Characters Maximum",
+                                            :input_html => {:maxlength => "1000"} %>      
                                 
   </div>
 
@@ -34,3 +34,24 @@
   </div>
   
 <% end %>
+
+<script type='text/javascript'>
+
+  $(document).ready(function(){
+    update_ticket_form();
+  });
+  
+  $('#ticket_problem').change(function(){
+    update_ticket_form();
+  });
+ 
+  function update_ticket_form() {
+    $('#ticket_transaction_number').closest('div.input').hide();
+    $('#ticket_offender_username').closest('div.input').hide();
+    var problem_value = $('#ticket_problem').chosen().val();
+    if (problem_value == 'harassment' || problem_value == 'illegal' || problem_value == 'profanity') {
+      $('#ticket_offender_username').closest('div.input').show();
+    }
+  }
+
+</script>

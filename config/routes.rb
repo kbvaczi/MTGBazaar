@@ -172,6 +172,7 @@ MTGBazaar::Application.routes.draw do
   match 'feedback'            => 'home#feedback'
   match 'welcome'             => 'home#welcome'
   match 'sitemap'             => 'home#sitemap'
+  match 'changelog'           => 'home#changelog'
 
   
   if Rails.env.development? or Rails.env.staging?
