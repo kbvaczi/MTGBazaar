@@ -123,10 +123,8 @@
   	    <%#= select_tag "seller_id" , grouped_options_for_select({"Top 10 Sellers" => top_sellers_list}, :selected => cookies[:serach_seller_id]), {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Only from this seller...", :class => "search-select chzn-select-ajax", "data-url" => '/users/autocomplete_name_chosen.json'} %>
   	  </div>
     	<br/>
-      <div id="clear-search" class="clear_button">
-        Clear
-      </div>
-      <div class="group" style="padding-bottom:10px;">
+    	<div>
+        <div id="clear-search" class="button2 left mt-s"><i>X</i> clear filters</div>
         <%= submit_tag "Search", :class => "submit search-submit right" %>
       </div>
       
