@@ -19,16 +19,15 @@
 </div>
 
 <div id='articles_wrapper'>
-  <%= cache TeamZ::Article.cache_key, :expires_in => (Time.zone.now.end_of_day - Time.zone.now) do %>
-    <%   
-        articles = []
-        TeamZ::Profile.scoped.each {|profile| articles << TeamZ::Article.viewable.where(:team_z_profile_id => profile.id).order('active_at DESC').limit(1).first }
-        articles.delete(nil)
-        articles = articles.sort_by(&:active_at).reverse
-    %>
-    <% articles.each do |article| %>
-      <%= render :partial => 'team_z/articles/teaser', :locals => {:article => article} %>
-    <% end %>   
+
+  <%= cache 'homepage_content', :expires_in => (Time.zone.now.end_of_day - Time.zone.now) do %>
+    <% front_page_articles = TeamZ::Article.viewable.order(:active_at).limit(6) %>
+    <% front_page_videos   = TeamZ::MtgoVideoSeries.viewable.order(:active_at).limit(6) %>
+    <% front_page_content  = (front_page_articles + front_page_videos).sort {|a,b| a.active_at <=> b.active_at}.first(6) %>
+    <% front_page_content.each do |content| %>
+      <%= render :partial => 'team_z/homepage_content_teaser', :locals => {:content => content} %>
+    <% end %>
   <% end %>
+  
 </div>
 

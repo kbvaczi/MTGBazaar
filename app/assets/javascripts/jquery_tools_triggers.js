@@ -24,8 +24,8 @@ function initialize_tooltips() {
       at: "right+5 top", 
       collision: "flipfit" 
     },
-    show: false,
-    hide: false
+    show: { effect: "fade", duration: 100 },
+    hide: { effect: "fade", duration: 50 }
   });  
   
   $("img.mtg_teaser_image").tooltip({
@@ -41,8 +41,8 @@ function initialize_tooltips() {
       at: "right+15 bottom",
       collision: "fit"
     },
-    show: false,
-    hide: false
+    show: { effect: "fade", duration: 300 },
+    hide: { effect: "fade", duration: 50 }
   });
   
 }

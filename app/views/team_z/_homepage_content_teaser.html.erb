@@ -1,0 +1,5 @@
+<% if content.class.name == 'TeamZ::Article' %>
+  <%= render :partial => 'team_z/articles/teaser', :locals => {:article => content} %>
+<% else %>
+  <%= render :partial => 'team_z/mtgo_video_series/teaser', :locals => {:video_series => content} %>
+<% end %>
