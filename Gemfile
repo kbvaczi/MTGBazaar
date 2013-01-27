@@ -75,7 +75,7 @@ group :staging do
 end
 
 group :development do
-  gem 'sqlite3'
+  gem "mysql2"
   gem 'hooves', :require => 'hooves/default'          # unicorn works with "rails s"
 end
 
