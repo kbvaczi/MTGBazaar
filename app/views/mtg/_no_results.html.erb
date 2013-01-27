@@ -156,7 +156,9 @@
           <% end # listing filters %>
         </table>
         <br/>
-        <p class="mt">Please update or <%= link_to "remove", url_for(params.merge(:filter => nil, :page => nil)), :remote => false %> your current filters and try again...</p>
+        <% unless current_path.include? mtg_cards_search_path %>
+          <p class="mt">Please update or <%= link_to "<i>X</i> remove".html_safe, url_for(params.merge(:filter => nil, :page => nil)), :remote => true, :class => 'button2' %> your current filters and try again...</p>
+        <% end %>
       </div>
     
     </div>
