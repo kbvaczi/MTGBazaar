@@ -80,7 +80,10 @@
       Value
     </div>
     <div class="card_show_info_value t-l t-b">
-      <%= number_to_currency(mtg_card.statistics.price_low) %> - <%= number_to_currency(mtg_card.statistics.price_high) %>
+      &nbsp;<%= number_to_currency(mtg_card.statistics.price_low) %> - <%= number_to_currency(mtg_card.statistics.price_high) %>
+      <br/>
+      <%= link_to "<i>$</i> &nbsp;sell this card".html_safe, new_mtg_cards_listing_path(:card_id => @mtg_card.id),          :class => "button2 mt-s" %>
+      <%= link_to "<i>$</i> &nbsp;sell a playset".html_safe, new_mtg_cards_listings_playset_path(:card_id => @mtg_card.id), :class => "button2 mt-s" %>      
     </div>      
   </div>
   <!-- VERSIONS -->
