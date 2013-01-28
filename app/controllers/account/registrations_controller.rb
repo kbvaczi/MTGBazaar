@@ -19,7 +19,7 @@ class Account::RegistrationsController < Devise::RegistrationsController
     user_after_update     = resource.attributes.merge!("updated_at" => nil)
     #account_after_update  = resource.account.attributes.merge!("updated_at" => nil)
     if resource.updated_at > 10.seconds.ago || resource.account.updated_at > 10.seconds.ago #account_before_update != account_after_update || user_before_update != user_after_update
-      ApplicationMailer.account_update_notification(resource).deliver
+      ApplicationMailer.delay(:queue => :email).account_update_notification(resource)
     end
   end
   

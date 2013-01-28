@@ -14,8 +14,8 @@ class Mtg::Transactions::PaymentNotificationsController < ApplicationController
         transaction.buyer.statistics.update_buyer_statistics! rescue nil                  # add a purchase to buyer statistics      
         transaction.seller.statistics.update_seller_statistics! rescue nil                # add a sale to seller statistics              
         Cart.find(params[:cart_id]).update_cache if params[:cart_id].present? rescue nil  # update cart in case user doesn't visit checkout_success_path (i.e. user closes browser or changes pages prior to closing paypal lightbox)      
-        ApplicationMailer.seller_sale_notification(transaction).deliver                   # send sale notification email to seller
-        ApplicationMailer.buyer_checkout_confirmation(transaction).deliver                # send sale notification email to buyer      
+        ApplicationMailer.delay(:queue => :email).seller_sale_notification(transaction)                   # send sale notification email to seller
+        ApplicationMailer.delay(:queue => :email).buyer_checkout_confirmation(transaction)                # send sale notification email to buyer      
       end
     else
       # this will send someone to the "page not found" error page if they dont have the right secret... making it look like this page doesn't exist

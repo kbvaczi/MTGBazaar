@@ -153,6 +153,13 @@ MTGBazaar::Application.routes.draw do
     match 'test'              => 'home#test'
   end
   
+  # this block sets up monitoring service for sidekiq
+  require 'sidekiq/web'
+  constraint = lambda { |request| request.env['warden'].authenticate!({ scope: :admin_user }) }
+  constraints constraint do
+    mount Sidekiq::Web => '/sidekiq'  
+  end  
+  
   # VANITY URLs for users
   get  ':id/(:section)' => 'users#show', :constraints => {:id => /.+?(?<!ico)/, :format => /(html|xml|js|json)/}, :as => 'user'  
   

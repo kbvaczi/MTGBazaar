@@ -69,7 +69,7 @@ class Mtg::TransactionsController < ApplicationController
     @transaction = Mtg::Transaction.where(:seller_id => current_user.id, :id => params[:id]).first
     return if not verify_shipment_privileges?(@transaction)    
     if @transaction.ship_sale
-      ApplicationMailer.buyer_shipment_confirmation(@transaction).deliver # notify buyer that the sale has been confirmed 
+      ApplicationMailer.delay(:queue => :email).buyer_shipment_confirmation(@transaction) # notify buyer that the sale has been confirmed 
       redirect_to show_mtg_transaction_path(@transaction), :notice => "You have confirmed shipment of this sale..."
     else
       flash[:error] = "There were one or more errors while trying to process your request..."

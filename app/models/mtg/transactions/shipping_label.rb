@@ -159,7 +159,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
       last_tracking_event = self.tracking_events.first # tracking events are in reverse order (newest first)
       if self.tracking_events.size > 1 && self.transaction.status == "confirmed"
         self.transaction.ship_sale(:shipped_at => (self.tracking_events[-2][:timestamp] rescue Time.now))
-        ApplicationMailer.buyer_shipment_confirmation(self.transaction).deliver # notify buyer that the sale has been shipped
+        ApplicationMailer.delay(:queue => :email).buyer_shipment_confirmation(self.transaction) # notify buyer that the sale has been shipped
       end
       if last_tracking_event.present? && last_tracking_event[:event].downcase == "delivered"
         self.status = "delivered"

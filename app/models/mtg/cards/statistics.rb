@@ -95,7 +95,11 @@ class Mtg::Cards::Statistics < ActiveRecord::Base
   def update!        
     #gather all sales of this card
     self.number_sales = Mtg::Transactions::Item.where(:card_id => self.card_id).count
-
+    
+    self.save
+  end
+  
+  def update_pricing    
     #get the latest "normal" completed sales to compute pricing
     selection_size = 21
     latest_sold_items_pricing = Mtg::Transactions::Item.where(:card_id => self.card_id).where(:foil => false, :altart => false, :misprint => false, :signed => false).order("created_at DESC").limit(selection_size).pluck(:price).sort!
@@ -132,9 +136,42 @@ class Mtg::Cards::Statistics < ActiveRecord::Base
       Rails.logger.debug "final low     = #{self.price_low}"
       Rails.logger.debug "final average = #{self.price_med}"      
       Rails.logger.debug "final high    = #{self.price_high}"
-    end
+    end    
     
-    self.save
   end
+  
+  def self.bulk_update_listing_information(card_ids_array)
+    card_ids_array_sql = card_ids_array.to_s.gsub('[','(').gsub(']',')')
+    query = %{  UPDATE  mtg_card_statistics
+                  JOIN  ( SELECT    mtg_listings.card_id,
+                                    MIN(mtg_listings.price) AS aggregate_price_min,
+                                    SUM(mtg_listings.quantity_available) AS aggregate_listings_available
+                          FROM      mtg_listings
+                          GROUP BY  mtg_listings.card_id
+                          HAVING    mtg_listings.card_id IN #{card_ids_array_sql} ) aggregate_listing_data
+                    ON  aggregate_listing_data.card_id = mtg_card_statistics.card_id
+                   SET  mtg_card_statistics.price_min = aggregate_listing_data.aggregate_price_min,
+                        mtg_card_statistics.listings_available = aggregate_listing_data.aggregate_listings_available
+                 WHERE  mtg_card_statistics.card_id IN #{card_ids_array_sql};  }
+    ActiveRecord::Base.connection.execute(query);
+    
+  end
+  
+  def self.bulk_update_sales_information(card_ids_array)
+    card_ids_array_sql = card_ids_array.to_s.gsub('[','(').gsub(']',')')
+    query = %{  UPDATE  mtg_card_statistics
+                  JOIN  ( SELECT    mtg_listings.card_id,
+                                    MIN(mtg_listings.price) AS aggregate_price_min,
+                                    SUM(mtg_listings.quantity_available) AS aggregate_listings_available
+                          FROM      mtg_listings
+                          GROUP BY  mtg_listings.card_id
+                          HAVING    mtg_listings.card_id IN #{card_ids_array_sql} ) aggregate_listing_data
+                    ON  aggregate_listing_data.card_id = mtg_card_statistics.card_id
+                   SET  mtg_card_statistics.price_min = aggregate_listing_data.aggregate_price_min,
+                        mtg_card_statistics.listings_available = aggregate_listing_data.aggregate_listings_available
+                 WHERE  mtg_card_statistics.card_id IN #{card_ids_array_sql};  }
+    ActiveRecord::Base.connection.execute(query);
+    
+  end  
 
 end

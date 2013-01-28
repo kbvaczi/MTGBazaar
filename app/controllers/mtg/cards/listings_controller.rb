@@ -195,6 +195,28 @@ class Mtg::Cards::ListingsController < ApplicationController
     else
       @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("CAST(mtg_cards.card_number AS SIGNED) ASC")
     end
+    test_listing      = Mtg::Cards::Listing.new(:foil => params[:mtg_cards_listing][:foil], :condition => params[:mtg_cards_listing][:condition], :language => params[:mtg_cards_listing][:language], :price => 1, :quantity => 1)
+    if test_listing.valid?
+      columns           = [:card_id, :seller_id, :foil, :condition, :language, :price, :quantity, :quantity_available]
+      array_of_listings    = []
+      array_of_listing_ids = []
+      params[:sales].each do |key, value| 
+        asking_price = (value[:price] == "other") ? value[:custom_price].to_money.cents : value[:price].to_money.cents # set price either from pre-select options or custom price if they have other selected in price options
+        if asking_price > 0 and value[:quantity].to_i > 0
+          array_of_listings    << [ key, current_user.id, params[:mtg_cards_listing][:foil], params[:mtg_cards_listing][:condition], params[:mtg_cards_listing][:language], asking_price, value[:quantity].to_i, value[:quantity].to_i ]
+          array_of_listing_ids << key 
+        end
+      end
+      ActiveRecord::Base.transaction do 
+        Mtg::Cards::Listing.bulk_insert columns, array_of_listings
+        Mtg::Cards::Statistics.delay.bulk_update_listing_information array_of_listing_ids
+      end
+    else
+      flash[:error] = "There was an error with your request..."
+      render 'new_bulk'
+      return        
+    end
+=begin    
     array_of_listings = Array.new # blank array
     params[:sales].each do |key, value| # iterate through all of our individual listings from the bulk form
       if value[:quantity].to_i > 0 # we only care if they entered quantity > 0 for a specific card
@@ -221,6 +243,7 @@ class Mtg::Cards::ListingsController < ApplicationController
     Mtg::Cards::Listing.transaction do
       array_of_listings.each { |listing| listing.save } # save all the listings
     end
+=end    
     redirect_to account_listings_path, :notice => "#{pluralize(array_of_listings.count, "Listing", "Listings")} Created!"
     return #don't display a template
   end

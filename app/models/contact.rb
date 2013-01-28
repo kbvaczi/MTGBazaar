@@ -28,7 +28,7 @@ class Contact
   def save
     if self.valid?
       #self.username = User.find(session["warden.user.user.key"][1]).first rescue nil
-      ContactMailer.delay.send_mail(self)
+      ContactMailer.delay(:queue => :email).send_mail(self)
       return true
     end
     return false
