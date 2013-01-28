@@ -143,16 +143,18 @@ class Mtg::Cards::Statistics < ActiveRecord::Base
     card_ids_array_sql = card_ids_array.to_s.gsub('[','(').gsub(']',')')
     query = %{  UPDATE  mtg_card_statistics
                   JOIN  ( SELECT    mtg_listings.card_id,
-                                    MIN(mtg_listings.price) AS aggregate_price_min,
-                                    SUM(mtg_listings.quantity_available) AS aggregate_listings_available
+                                    MIN(CASE WHEN mtg_listings.active = 1 AND users.active = 1 AND users.banned = 0 AND mtg_listings.quantity_available > 0 THEN mtg_listings.price              ELSE NULL END) AS aggregate_price_min,
+                                    SUM(CASE WHEN mtg_listings.active = 1 AND users.active = 1 AND users.banned = 0 AND mtg_listings.quantity_available > 0 THEN mtg_listings.quantity_available ELSE NULL END) AS aggregate_listings_available
                           FROM      mtg_listings
+                          JOIN      users
+                          ON        users.id = mtg_listings.seller_id
                           GROUP BY  mtg_listings.card_id
                           HAVING    mtg_listings.card_id IN #{card_ids_array_sql} ) aggregate_listing_data
                     ON  aggregate_listing_data.card_id = mtg_card_statistics.card_id
                    SET  mtg_card_statistics.price_min = aggregate_listing_data.aggregate_price_min,
                         mtg_card_statistics.listings_available = aggregate_listing_data.aggregate_listings_available
                  WHERE  mtg_card_statistics.card_id IN #{card_ids_array_sql};  }
-    ActiveRecord::Base.connection.execute(query);
+    ActiveRecord::Base.connection.execute(query)
     
   end
   
@@ -160,16 +162,16 @@ class Mtg::Cards::Statistics < ActiveRecord::Base
     card_ids_array_sql = card_ids_array.to_s.gsub('[','(').gsub(']',')')
     query = %{  UPDATE  mtg_card_statistics
                   JOIN  ( SELECT    mtg_transaction_items.card_id,
-                                    SUM(quantity_available) AS aggregate_number_sales
+                                    SUM(CASE WHEN mtg_transactions.status = 'complete' OR mtg_transactions.status = 'confirmed' THEN mtg_transaction_items.quantity_available ELSE NULL END) AS aggregate_number_sales
                           FROM      mtg_transaction_items
                           JOIN      mtg_transactions
-                          ON        mtg_transactions.id = mtg_transaction_items.transaction_id AND (mtg_transactions.status = 'complete' OR mtg_transactions.status = 'confirmed')
+                          ON        mtg_transactions.id = mtg_transaction_items.transaction_id AND ()
                           GROUP BY  mtg_transaction_items.card_id
                           HAVING    mtg_transaction_items.card_id IN #{card_ids_array_sql} ) aggregate_data
                     ON  aggregate_data.card_id = mtg_card_statistics.card_id
                    SET  mtg_card_statistics.number_sales = aggregate_data.aggregate_number_sales
                  WHERE  mtg_card_statistics.card_id IN #{card_ids_array_sql};  }                 
-    ActiveRecord::Base.connection.execute(query);    
+    ActiveRecord::Base.connection.execute(query)    
     
   end  
 

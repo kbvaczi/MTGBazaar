@@ -1,4 +1,6 @@
-$('#right_bar').html("<%= escape_javascript render :partial => "shared/right_bar.html" %>");
-<% unless current_user.account.paypal_username.present? %>
+//$('#right_bar').html("<%= escape_javascript render :partial => "shared/right_bar", :formats => [:html] %>");
+<% if current_user.account.paypal_username.present? %>
+  location.reload();
+<% else %>
   myCustomAlertBox("You must have a Verified PayPal account setup to activate seller status.")
 <% end %>

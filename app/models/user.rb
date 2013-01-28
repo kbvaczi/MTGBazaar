@@ -45,12 +45,13 @@ class User < ActiveRecord::Base
   end
   
   def update_statistics_when_active_changed
-    self.mtg_listings.each { |l| l.update_statistics_cache_on_save }
     if self.active
       self.statistics.update_listings_mtg_cards_count if self.statistics.present?
     else
       self.statistics.update_attribute(:listings_mtg_cards_count, 0) if self.statistics.present?
     end
+    #self.mtg_listings.each { |l| l.update_statistics_cache_on_save }
+    Mtg::Cards::Statistics.delay.bulk_update_listing_information(self.mtg_listings.pluck(:card_id).uniq)    
   end
   
 # ---------------- VALIDATIONS ----------------      
@@ -71,7 +72,7 @@ class User < ActiveRecord::Base
   #validates             :username,  :exclusion => { :in      => eval("["+SiteVariable.get("reserved_usernames")+"]"), :message => "is reserved, please contact us for details" }, :on => :create
   
   # validates account model when user model is saved
-  validates_associated :account, :statistics
+  validates_associated  :account, :statistics
   
   validate              :active_false_when_no_paypal_information
   
