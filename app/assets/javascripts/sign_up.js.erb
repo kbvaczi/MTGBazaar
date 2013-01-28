@@ -42,9 +42,14 @@ $(document).ready(function() {
 });
 
 function verifyPaypalAccount() {
-  var target = $("#user_account_attributes_paypal_username");  
+  var target = $("#user_account_attributes_paypal_username");
+  var path = "/account/sign_up/verify_paypal";
+  var params = [{ name:"first_name",  value:$("#user_account_attributes_first_name").val() },
+                { name:"last_name",   value:$("#user_account_attributes_last_name").val() },
+                { name:"email",       value:target.val() } ];
+  var url = path + "?" + $.param(params);  
 	$.ajax({
-		url: "/account/sign_up/verify_paypal.json?email=" + target.val() + "&first_name=" + $("#user_account_attributes_first_name").val() + "&last_name=" + $("#user_account_attributes_last_name").val(),
+		url: url,
 		type: "GET",
 		dataType: "json",
 		beforeSend: function ( xhr ) {
@@ -63,10 +68,8 @@ function verifyPaypalAccount() {
 			if(data == "verified") {
 				target.parent().append('<span class="hint" style="color:green;">PayPal Account Verified!</span>');		
 			}
-			else if (data == "unverified") {
-				target.parent().append('<span class="error">This PayPal account is not verified...</span>');		
-			} else {
-				target.parent().append('<span class="error">Unable to find account. Please check first name, last name, and PayPal email for accuracy...</span>');						  
+			else {
+				target.parent().append('<span class="error">' + data + '</span>');						  
 			}
 		}
 	});

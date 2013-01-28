@@ -26,27 +26,28 @@ class UserStatistics < ActiveRecord::Base
     if read_attribute(:listings_mtg_cards_count) && (not overwrite)
       read_attribute(:listings_mtg_cards_count)       
     else
-      write_attribute(:listings_mtg_cards_count, (Mtg::Cards::Listing.where(:seller_id => self.id).select([:quantity_available, :number_cards_per_item]).available.to_a.inject(0) {|sum, listing| sum + listing.quantity_available * listing.number_cards_per_item} || 0))
+      write_attribute(:listings_mtg_cards_count, (Mtg::Cards::Listing.where(:seller_id => self.user_id).select([:quantity_available, :number_cards_per_item]).available.to_a.inject(0) {|sum, listing| sum + listing.quantity_available * listing.number_cards_per_item} || 0))
       self.save
-      read_attribute(:listings_available || 0)
+      read_attribute(:listings_mtg_cards_count || 0)
     end
   end
   
   def update_seller_statistics!
-    self.number_sales               = self.user.mtg_sales.count
+    ActiveRecord::Base.transaction do
+      self.number_sales               = self.user.mtg_sales.count
+      sales_with_feedback             = self.user.mtg_sales.includes(:feedback).with_feedback        
+      self.number_sales_with_feedback = sales_with_feedback.to_a.length
+      self.positive_feedback_count    = sales_with_feedback.where("mtg_transactions_feedback.rating = ?", "1").count
+      self.neutral_feedback_count     = sales_with_feedback.where("mtg_transactions_feedback.rating = ?", "0").count
+      self.negative_feedback_count    = self.number_sales_with_feedback - self.positive_feedback_count - self.neutral_feedback_count
+      percent                         = ( ( ( self.positive_feedback_count + self.neutral_feedback_count ).to_f / self.number_sales_with_feedback ) * 100 ) rescue 0
+      self.approval_percent           = percent.nan? ? 0 : percent # handle divide by 0 error
 
-    sales_with_feedback             = self.user.mtg_sales.includes(:feedback).with_feedback        
-    self.number_sales_with_feedback = sales_with_feedback.to_a.length
-    self.positive_feedback_count    = sales_with_feedback.where("mtg_transactions_feedback.rating = ?", "1").count
-    self.neutral_feedback_count     = sales_with_feedback.where("mtg_transactions_feedback.rating = ?", "0").count
-    self.negative_feedback_count    = self.number_sales_with_feedback - self.positive_feedback_count - self.neutral_feedback_count
-    percent                         = ( ( ( self.positive_feedback_count + self.neutral_feedback_count ).to_f / self.number_sales_with_feedback ) * 100 ) rescue 0
-    self.approval_percent           = percent.nan? ? 0 : percent # handle divide by 0 error
-
-    shipped_sales                   = self.user.mtg_sales.shipped
-    self.average_ship_time          = ( ( shipped_sales.sum(&:seller_shipped_at) - shipped_sales.sum(&:created_at) ) / 1.day / shipped_sales.count ).round(2) rescue 0
-    self.listings_mtg_cards_count   = Mtg::Cards::Listing.where(:seller_id => self.id).select([:quantity_available, :number_cards_per_item]).available.to_a.inject(0) {|sum, listing| sum + listing.quantity_available * listing.number_cards_per_item} || 0
-    self.save
+      shipped_sales                   = self.user.mtg_sales.shipped
+      self.average_ship_time          = ( ( shipped_sales.sum(&:seller_shipped_at) - shipped_sales.sum(&:created_at) ) / 1.day / shipped_sales.count ).round(2) rescue 0
+      self.listings_mtg_cards_count   = Mtg::Cards::Listing.select([:seller_id, :quantity_available, :number_cards_per_item]).available.where(:seller_id => self.user_id).to_a.inject(0) {|sum, listing| sum + listing.quantity_available * listing.number_cards_per_item} || 0
+      self.save
+    end
   end
   
   def update_buyer_statistics!

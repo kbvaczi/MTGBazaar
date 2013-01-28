@@ -25,9 +25,11 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
   
   def set_address_information_from_verified_address
     this_transaction = Mtg::Transaction.includes(:payment, {:seller => :account}, {:buyer => :account}).where(:id => self.transaction_id).first
-    
+    Rails.logger.info("line 28")
     if this_transaction.present?
+      Rails.logger.info("transaction Present")      
       self.from_address = build_address(:user => this_transaction.seller, :full_name => this_transaction.seller.username)
+      Rails.logger.info("error?")            
       
       gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(         # setup gateway, login to Paypal API
         :pem =>       PAYPAL_CONFIG[:paypal_cert_pem],
@@ -246,7 +248,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
   def create_stamp(options={})
     details = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count => transaction.cards_quantity)
     stamp = Stamps.create!({
-               :sample          => STAMPS_CONFIG[:mode] == "production" ? false : true,  # all labels are test labels if we aren't in production mode....
+               :sample          => STAMPS_CONFIG[:running_mode] == "production" ? false : true,  # all labels are test labels if we aren't in production mode....
                :image_type      => "Pdf",
                :customer_id     => self.transaction.seller.username,
                :transaction_id  => options[:stamps_tx_id],
@@ -271,6 +273,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
                              :control_total   => stamp[:postage_balance][:control_total].to_i)
   end
   
+<<<<<<< HEAD
   def determine_add_ons
     add_on_array        = []
     transaction_add_ons = self.transaction.shipping_options[:shipping_charges]
@@ -288,11 +291,14 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
   end
   
   # buy postage if balance is below minimum (only works in STAMPS_CONFIG[:mode] = production)
+=======
+  # buy postage if balance is below minimum (only works in STAMPS_CONFIG[:running_mode] = production)
+>>>>>>> master
   def buy_postage_if_necessary(options = {:current_balance => 9999, :control_total => 0})
     min_postage_balance     = 25   # buy postage if balance is under this amount
     postage_purchase_amount = 75   # amount to purchase at a time
     max_control_total       = 1000 # max amount to spend per month?
-    if STAMPS_CONFIG[:mode] == "production" || true 
+    if STAMPS_CONFIG[:running_mode] == "production" || true 
       if options[:current_balance] < min_postage_balance && options[:control_total] < max_control_total
           Rails.logger.info("STAMPS: Postage below #{min_postage_balance}, attempting to purchase #{postage_purchase_amount} in postage")
           begin 

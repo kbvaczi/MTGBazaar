@@ -67,10 +67,35 @@ class Mtg::OrdersController < ApplicationController
       :memo                 => "Purchase of #{@order.item_count} item(s) for a total of #{@order.reservations.pluck(:cards_quantity).inject(0) {|sum, count| sum + count }} cards from #{@order.seller.username} on MTGBazaar.com.  Details of this order can be accessed at any time through your account on the MTGBazaar website. #{'NOTE: By selecting In-Store Pickup, you accept the responsibility of aquiring these purchase items yourself.  In-Store Pickup is not recommended unless you are familiar with the retailer you are purchasing from.' if @order.shipping_options[:shipping_type] == 'pickup'}",
       :receiver_list        => recipients,
       :fees_payer           => @purchase_chained_payment ? "PRIMARYRECEIVER" : "EACHRECEIVER" )
-      
-      Rails.logger.debug "GATEWAY: #{@gateway.debug}"  rescue ""
-      Rails.logger.debug "PURCHASE: #{@purchase.inspect}" rescue ""    
-  end
+
+    @gateway.set_payment_options(
+      :display_options => { :business_name => "MTGBazaar" },
+      :pay_key => @purchase["payKey"],
+      # force buyer to select an address or enter an address when they make a payment.
+      :sender => { :share_address => true, :require_shipping_address_selection => true },
+      :receiver_options => [
+        { :invoice_data => {
+            :item => [
+              { :name => "Purchase of #{@order.item_count} Item(s)",  :item_price => @order.item_price_total, :price => @order.item_price_total },
+              { :name => "Shipping",                                  :item_price => @order.shipping_cost,    :price => @order.shipping_cost }]
+          },
+          :receiver => { :email => @order.seller.account.paypal_username }
+        },
+        { :description => "MTGBazaar Fees and Shipping",
+          :invoice_data => {
+            :item => [
+              { :name => "MTGBazaar Sale Commission", :item_price => @order.transaction.payment.commission,    :price => @order.transaction.payment.commission },
+              { :name => "Shipping",                  :item_price => @order.shipping_cost,                     :price => @order.shipping_cost }]
+          },
+          :receiver => { :email => PAYPAL_CONFIG[:account_email] }
+        }] )
+
+    puts "\nGATEWAY: #{@gateway.debug.inspect}\n"  rescue "Gateway: RESCUED"
+    puts "\nPURCHASE: #{@purchase.inspect}\n" rescue "Purchase: RESCUED"
+    
+    @order.transaction.payment.paypal_paykey            = @purchase["payKey"]
+    @order.transaction.payment.paypal_purchase_response = @purchase.inspect
+    @order.transaction.payment.save ? @error = false : @error = true
 
   def checkout_set_purchase_options
     items_first_leg  = [{ :name => "Purchase of #{@order.item_count} Item(s)", :item_price => @order.item_price_total,               :price => @order.item_price_total }]
