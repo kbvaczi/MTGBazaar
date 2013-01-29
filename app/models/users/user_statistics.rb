@@ -61,8 +61,7 @@ class UserStatistics < ActiveRecord::Base
   end
   
   def update_listings_mtg_cards_count
-    # multiply quantity_available * number_cars_per_listing, sum for every listing
-    self.update_attribute(:listings_mtg_cards_count, (Mtg::Cards::Listing.select([:seller_id, :quantity_available, :number_cards_per_item]).available.where(:seller_id => self.user_id).to_a.inject(0) {|sum, listing| sum + listing.quantity_available * listing.number_cards_per_item}))
+    listings_mtg_cards_count(true)
   end
 
   def display_approval_percent
@@ -99,7 +98,7 @@ class UserStatistics < ActiveRecord::Base
     if current_ip.present?
       current_ip_log = self.ip_log || Array.new
       geocoded_info  = Geocoder.search(current_ip)[0] rescue false
-      self.ip_log    = current_ip_log.push( { :time =>    Time.now.in_time_zone("Central Time (US & Canada)"), 
+      self.ip_log    = current_ip_log.push( { :time =>    Time.zone.now.in_time_zone("Central Time (US & Canada)"), 
                                               :ip =>      current_ip, 
                                               :city =>    (geocoded_info.city    rescue ""),
                                               :state =>   (geocoded_info.state   rescue ""),

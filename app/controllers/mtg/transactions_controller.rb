@@ -91,7 +91,7 @@ class Mtg::TransactionsController < ApplicationController
   def pickup_confirmation
     @transaction = Mtg::Transaction.where('seller_id = ? OR buyer_id = ?', current_user.id, current_user.id).where(:id => params[:id]).first
     if @transaction.present? and @transaction.shipping_options[:shipping_type] == 'pickup'
-      @transaction.update_attributes(:seller_delivered_at => Time.now,
+      @transaction.update_attributes(:seller_delivered_at => Time.zone.now,
                                      :status              => 'delivered')
       redirect_to back_path, :notice => 'Pickup Confirmed...'                                     
     else
@@ -100,22 +100,6 @@ class Mtg::TransactionsController < ApplicationController
     end
   end
     
-##### ------ BUYER DELIVERY CONFIRMATION ----- #####    
-
-  def buyer_delivery_confirmation
-    @transaction = Mtg::Transaction.where(:buyer_id => current_user.id, :id => params[:id]).first
-  end
-  
-  def create_buyer_delivery_confirmation
-    @transaction = Mtg::Transaction.where(:buyer_id => current_user.id, :id => params[:id]).first
-    if @transaction.deliver_sale(params[:mtg_transaction][:buyer_feedback], params[:mtg_transaction][:buyer_feedback_text])
-      redirect_to account_purchases_path, :notice => "Your delivery confirmation was sent..."
-    else
-      flash[:error] = "There were one or more errors while trying to process your request..."
-      render 'buyer_delivery_confirmation'
-    end    
-  end  
-
 ##### ------ BUYER SALE FEEDBACK ----- #####    
   
   def buyer_sale_feedback

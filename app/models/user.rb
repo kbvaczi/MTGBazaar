@@ -110,16 +110,24 @@ class User < ActiveRecord::Base
     Mtg::Transaction.where(:buyer_id => id, :status => "pending")
   end
   
+  def confirmed_purchases
+    self.mtg_purchases.where("status <> \'pending\'")
+  end
+  
   def active_purchases
-    Mtg::Transaction.where(:buyer_id => id).where("status <> \'delivered\' AND status <> \'cancelled\' AND status <> \'rejected\'")
-  end  
+    Mtg::Transaction.where(:buyer_id => id).where("status <> \'completed\' AND status <> \'pending\'")
+  end
   
   def pending_sales
     Mtg::Transaction.where(:seller_id => id, :status => "pending")
   end
   
+  def confirmed_sales
+    self.mtg_sales.where("status <> \'pending\'")
+  end
+  
   def active_sales
-    self.mtg_sales.where("status <> \'completed\'")
+    self.mtg_sales.where("status <> \'completed\' AND status <> \'pending\'")
   end
   
   

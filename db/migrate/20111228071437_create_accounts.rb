@@ -15,7 +15,7 @@ class CreateAccounts < ActiveRecord::Migration
       t.string  :address1           , :default => ""          , :null => false 
       t.string  :address2           , :default => ""          , :null => false 
       t.string  :zipcode            , :default => ""          , :null => false
-      # t.date    :birthdate          , :default => Time.now()  , :null => false      # removed birthday. replaced with age confirmation on sign-up
+      # t.date    :birthdate          , :default => Time.zone.now()  , :null => false      # removed birthday. replaced with age confirmation on sign-up
       t.string  :paypal_username    , :default => ""          , :null => false
       t.string  :security_question  , :default => ""          , :null => false
       t.string  :security_answer    , :default => ""          , :null => false

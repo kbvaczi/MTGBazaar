@@ -44,6 +44,9 @@ ActiveAdmin.register Mtg::Transactions::Item do
     column 'Cnd', :sortable => :condition do |item|
       display_condition(item.condition)
     end
+    column "x4", :sortable => :playset do |item|
+      listing_option_playset_icon if item.playset
+    end
     column "F", :sortable => :foil do |l| 
       listing_option_foil_icon if l.foil
     end    
@@ -68,10 +71,11 @@ ActiveAdmin.register Mtg::Transactions::Item do
   filter :price,        :label => "Price (in cents)"
   filter :language,     :as => :select,   :collection => language_list, :input_html => {:class => "chzn-select"}    
   filter :condition,    :as => :select,   :collection => condition_list, :input_html => {:class => "chzn-select"}    
+  filter :playset,      :as => :select,   :input_html => {:class => "chzn-select"} 
+  filter :foil,         :as => :select,   :input_html => {:class => "chzn-select"}  
   filter :misprint,     :as => :select,   :input_html => {:class => "chzn-select"}    
   filter :altart,       :as => :select,   :input_html => {:class => "chzn-select"}    
   filter :signed,       :as => :select,   :input_html => {:class => "chzn-select"}    
-  filter :foil,         :as => :select,   :input_html => {:class => "chzn-select"}
   filter :created_at
   filter :updated_at
   filter :sold_at  

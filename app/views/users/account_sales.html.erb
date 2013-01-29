@@ -5,10 +5,10 @@
 <div id="content">
   <div class="group center_wrap">
     <ul class="tabs center">
-        <li <%= "class=selected" if request.fullpath ==  account_sales_path %>> <%= link_to "All (#{current_user.mtg_sales.count})", account_sales_path, :remote => true %> </li>
-        <li <%= "class=selected" if params[:status] == "confirmed" %>> <%= link_to "Ready to Ship (#{current_user.mtg_sales.where(:status => "confirmed").count})", account_sales_path(:status => "confirmed"), :remote => true %> </li>      
-        <li <%= "class=selected" if params[:status] == "shipped"   %>> <%= link_to "Shipped   (#{current_user.mtg_sales.where(:status => "shipped").count})", account_sales_path(:status => "shipped"), :remote => true %> </li>
-        <li <%= "class=selected" if params[:status] == "delivered" %>> <%= link_to "Delivered (#{current_user.mtg_sales.where(:status => "delivered").count})", account_sales_path(:status => "delivered"), :remote => true %> </li>        
+        <li <%= "class=selected" if request.fullpath ==  account_sales_path %>> <%= link_to "All (#{current_user.confirmed_sales.count})", account_sales_path, :remote => true %> </li>
+        <li <%= "class=selected" if params[:status] == "confirmed" %>> <%= link_to "Ready to Ship (#{current_user.confirmed_sales.where(:status => "confirmed").count})", account_sales_path(:status => "confirmed"), :remote => true %> </li>      
+        <li <%= "class=selected" if params[:status] == "shipped"   %>> <%= link_to "Shipped   (#{current_user.confirmed_sales.where(:status => "shipped").count})", account_sales_path(:status => "shipped"), :remote => true %> </li>
+        <li <%= "class=selected" if params[:status] == "delivered" %>> <%= link_to "Delivered (#{current_user.confirmed_sales.where(:status => "delivered").count})", account_sales_path(:status => "delivered"), :remote => true %> </li>        
     </ul>
   </div>
   

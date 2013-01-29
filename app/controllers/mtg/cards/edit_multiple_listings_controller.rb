@@ -27,15 +27,28 @@ class Mtg::Cards::EditMultipleListingsController < ApplicationController
   end
   
   def set_active
-    selected_listings.each {|l| l.mark_as_active!}
+    # standard implementation
+    #selected_listings.each {|l| l.mark_as_active!}
+    # bulk implementation
+    selected_listings.update_all(:active => true)
+    card_ids_array = selected_listings.pluck(:card_id).uniq
+    Mtg::Cards::Statistics.delay.bulk_update_listing_information(card_ids_array)
+    selected_listings.first.seller.statistics.update_listings_mtg_cards_count    
     respond_to do |format|
       format.html { redirect_to back_path, :notice => "#{pluralize(selected_listings.length, "Listing", "Listings")} set as active!" }
     end
     return
+    
   end
   
   def set_inactive
-    selected_listings.each {|l| l.mark_as_inactive!}
+    # standard implementation
+    # selected_listings.each {|l| l.mark_as_inactive!}
+    # bulk implementation
+    selected_listings.update_all(:active => false)
+    card_ids_array = selected_listings.pluck(:card_id).uniq
+    Mtg::Cards::Statistics.delay.bulk_update_listing_information(card_ids_array)
+    selected_listings.first.seller.statistics.update_listings_mtg_cards_count
     respond_to do |format|
       format.html { redirect_to back_path, :notice => "#{pluralize(selected_listings.length, "Listing", "Listings")} set as inactive!" }
     end
@@ -44,8 +57,7 @@ class Mtg::Cards::EditMultipleListingsController < ApplicationController
   
   def update_pricing
     listings_updated = 0
-    listings_not_updated = 0
-    
+    listings_not_updated = 0    
     selected_listings.includes(:card => :statistics).each do |listing|
       case params[:action_input].gsub("pricing_", "")
         when "low"

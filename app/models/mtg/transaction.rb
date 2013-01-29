@@ -121,36 +121,26 @@ class Mtg::Transaction < ActiveRecord::Base
   
   # seller has confirmed this transaction
   def confirm_sale
-    self.update_attributes(:seller_confirmed_at => Time.now, :status => "confirmed")
+    self.update_attributes(:seller_confirmed_at => Time.zone.now, :status => "confirmed")
   end
 
   # buyer confirms seller's modifications to sale
   def mark_as_buyer_confirmed_with_modifications!
-    self.update_attributes(:buyer_confirmed_at => Time.now, :status => "confirmed") # record buyer's confirmation time
+    self.update_attributes(:buyer_confirmed_at => Time.zone.now, :status => "confirmed") # record buyer's confirmation time
     self.items.each { |item| item.update_attributes(:quantity_requested => item.quantity_available) if item.quantity_available != item.quantity_requested } # update item quantities in the transaction
   end  
   
   # seller has rejected this transaction
   def reject_sale(rejection_reason, response_message = nil)
-    if self.update_attributes(:seller_rejected_at => Time.now, :status => "rejected", :rejection_reason => rejection_reason, :response_message => response_message)
+    if self.update_attributes(:seller_rejected_at => Time.zone.now, :status => "rejected", :rejection_reason => rejection_reason, :response_message => response_message)
       self.payment.refund
       self.reject_items!
     end
   end  
   
   # seller has shipped this transaction
-  def ship_sale(options = {:shipped_at => Time.now})
+  def ship_sale(options = {:shipped_at => Time.zone.now})
     self.update_attributes(:seller_shipped_at => options[:shipped_at], :status => "shipped")
-  end  
-  
-  # seller has delivered this transaction
-  def deliver_sale(buyer_feedback, buyer_feedback_text)
-    if update_attributes(:buyer_feedback => buyer_feedback, :buyer_feedback_text => buyer_feedback_text, :seller_delivered_at => Time.now, :status => "delivered")
-      self.credit = Mtg::TransactionCredit.create({:seller => self.seller, :transaction => self, :price => self.total_value, :commission => 0, :commission_rate => 0}, :without_protection => true)
-      buyer.statistics.update_buyer_statistics!
-      seller.statistics.update_seller_statistics!
-      update_card_statistics!
-    end
   end  
   
   # buyer has canceled this sale
@@ -164,29 +154,28 @@ class Mtg::Transaction < ActiveRecord::Base
   # creates a dummy copy of listings to be saved with rejected transaction (for tracking purposes) then frees all originals so they can be purchased again
   def reject_items!
     self.items.each do |i|
-      i.update_attribute(:rejected_at, Time.now)
+      i.update_attribute(:rejected_at, Time.zone.now)
       self.create_listing_from_item(i)
     end
   end
   
-  def build_item_from_reservation(reservation)
-    self.items.build(                {:quantity_requested => reservation.quantity,
-                                     :quantity_available => reservation.quantity,
-                                     :price => reservation.listing.price,
-                                     :condition => reservation.listing.condition,
-                                     :language => reservation.listing.language,
-                                     :description => reservation.listing.description,
-                                     :altart => reservation.listing.altart,
-                                     :misprint => reservation.listing.misprint,
-                                     :playset => reservation.listing.playset,                                     
-                                     :number_cards_per_item => reservation.listing.number_cards_per_item,                                                                          
-                                     :foil => reservation.listing.foil,
-                                     :signed => reservation.listing.signed,
-                                     :card_id => reservation.listing.card_id,
-                                     :buyer => self.buyer,
-                                     :seller => self.seller,
-                                     :transaction => self},
-                                     :without_protection => true)
+  def create_item_from_reservation!(reservation)
+    self.items.create!( {:quantity_requested    => reservation.quantity,
+                         :quantity_available    => reservation.quantity,
+                         :price                 => reservation.listing.price,
+                         :condition             => reservation.listing.condition,
+                         :language              => reservation.listing.language,
+                         :description           => reservation.listing.description,
+                         :altart                => reservation.listing.altart,
+                         :misprint              => reservation.listing.misprint,
+                         :playset               => reservation.listing.playset,                                     
+                         :number_cards_per_item => reservation.listing.number_cards_per_item,                                                                          
+                         :foil                  => reservation.listing.foil,
+                         :signed                => reservation.listing.signed,
+                         :card_id               => reservation.listing.card_id,
+                         :buyer_id              => self.buyer_id,
+                         :seller_id             => self.seller_id,
+                         :transaction_id        => self.id  }, :without_protection => true)
   end
   
   def create_listing_from_item(item)
@@ -210,10 +199,6 @@ class Mtg::Transaction < ActiveRecord::Base
     else # there is no duplicate listing, create a new one from item
       listing.save
     end
-  end
-  
-  def update_card_statistics!
-    self.items.includes({:card => :statistics}).each {|i| i.card.statistics.update!}
   end
 
 # ---------------- PRIVATE MEMBER METHODS -------------  

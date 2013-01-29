@@ -27,7 +27,7 @@ class Mtg::Transactions::Item < ActiveRecord::Base
     
   # mark this listing as rejected which permenantly removes it from user view
   def mark_as_rejected!
-    self.update_attribute(:rejected_at, Time.now)
+    self.update_attribute(:rejected_at, Time.zone.now)
     self.update_attribute(:active, false)    
   end  
 

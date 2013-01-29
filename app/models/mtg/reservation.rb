@@ -28,13 +28,14 @@ class Mtg::Reservation < ActiveRecord::Base
   end
   
   def purchased!
-    this_card = self.listing.card                                 # remember listing's card just in case we destroy it
+    this_card = self.listing.card                               # remember listing's card just in case we destroy it
     if self.listing.quantity > self.quantity
       self.listing.decrement(:quantity, self.quantity).save       # update listing quantities
     else  
       self.listing.destroy                                        # listings can't have 0 quantity, so let's just destroy it
     end
-    this_card.statistics.update!                                  # update card statistics
+    # we will handle updating card statistics via bulk update independnet of this action
+    #this_card.statistics.update!                                  # update card statistics
     self.destroy                                                  # we no longer need this reservation, let's get rid of it
   end
 

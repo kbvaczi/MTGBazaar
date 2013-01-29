@@ -160,12 +160,12 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
       end
       last_tracking_event = self.tracking_events.first # tracking events are in reverse order (newest first)
       if self.tracking_events.size > 1 && self.transaction.status == "confirmed"
-        self.transaction.ship_sale(:shipped_at => (self.tracking_events[-2][:timestamp] rescue Time.now))
+        self.transaction.ship_sale(:shipped_at => (self.tracking_events[-2][:timestamp] rescue Time.zone.now))
         ApplicationMailer.delay(:queue => :email).buyer_shipment_confirmation(self.transaction) # notify buyer that the sale has been shipped
       end
       if last_tracking_event.present? && last_tracking_event[:event].downcase == "delivered"
         self.status = "delivered"
-        self.transaction.update_attributes(:seller_delivered_at => (last_tracking_event[:timestamp] rescue Time.now),
+        self.transaction.update_attributes(:seller_delivered_at => (last_tracking_event[:timestamp] rescue Time.zone.now),
                                            :status              => 'delivered')
       end
       if defined?(message) and message.present?
@@ -273,7 +273,6 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
                              :control_total   => stamp[:postage_balance][:control_total].to_i)
   end
   
-<<<<<<< HEAD
   def determine_add_ons
     add_on_array        = []
     transaction_add_ons = self.transaction.shipping_options[:shipping_charges]
@@ -289,11 +288,8 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
     add_on_array << { :type => 'SC-A-INS' } if transaction_add_ons[:insurance].present? # Insurance
     add_on_array
   end
-  
-  # buy postage if balance is below minimum (only works in STAMPS_CONFIG[:mode] = production)
-=======
+
   # buy postage if balance is below minimum (only works in STAMPS_CONFIG[:running_mode] = production)
->>>>>>> master
   def buy_postage_if_necessary(options = {:current_balance => 9999, :control_total => 0})
     min_postage_balance     = 25   # buy postage if balance is under this amount
     postage_purchase_amount = 75   # amount to purchase at a time
@@ -308,7 +304,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
               Rails.logger.info("STAMPS: Postage purchase FAILED!, Rejection reason: #{response[:rejection_reason]}")
             else
               Rails.logger.info("STAMPS: Postage purchase SUCCESS!")          
-              Rails.cache.write "stamps_last_purchased_postage_at", Time.now rescue nil
+              Rails.cache.write "stamps_last_purchased_postage_at", Time.zone.now rescue nil
               Rails.cache.write "stamps_current_balance", response[:postage_balance][:available_postage] rescue nil
             end                                               
           rescue Exception => message

@@ -70,9 +70,9 @@ class UsersController < ApplicationController
   def account_sales
     set_back_path
     if params[:status].present?
-      @sales = current_user.mtg_sales.includes(:items).where(:status => params[:status]).order("created_at DESC").page(params[:page]).per(14)
+      @sales = current_user.confirmed_sales.includes(:items).where(:status => params[:status]).order("created_at DESC").page(params[:page]).per(14)
     else
-      @sales = current_user.mtg_sales.includes(:items).order("created_at DESC").page(params[:page]).per(14)
+      @sales = current_user.confirmed_sales.includes(:items).order("created_at DESC").page(params[:page]).per(14)
     end
     respond_to do |format|
       format.html
@@ -83,9 +83,9 @@ class UsersController < ApplicationController
   def account_purchases
     set_back_path    
     if params[:status].present?
-      @sales = current_user.mtg_purchases.includes(:items).where(:status => params[:status]).order("created_at DESC").page(params[:page]).per(14)
+      @sales = current_user.confirmed_purchases.includes(:items).where(:status => params[:status]).order("created_at DESC").page(params[:page]).per(14)
     else
-      @sales = current_user.mtg_purchases.includes(:items).order("created_at DESC").page(params[:page]).per(14)
+      @sales = current_user.confirmed_purchases.includes(:items).order("created_at DESC").page(params[:page]).per(14)
     end
     respond_to do |format|
       format.html

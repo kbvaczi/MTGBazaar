@@ -54,7 +54,7 @@ class Mtg::OrdersController < ApplicationController
       cancel_url = order_checkout_failure_url(:format => :mobile)
     else
       return_url = order_checkout_success_url(:secret => encoded_secret)
-      cancel_url = order_checkout_failure_url
+      cancel_url = order_checkout_failure_url(:order_id => @order.id)
     end
 
     @purchase = @gateway.setup_purchase(
@@ -96,6 +96,7 @@ class Mtg::OrdersController < ApplicationController
     @order.transaction.payment.paypal_paykey            = @purchase["payKey"]
     @order.transaction.payment.paypal_purchase_response = @purchase.inspect
     @order.transaction.payment.save ? @error = false : @error = true
+  end
 
   def checkout_set_purchase_options
     items_first_leg  = [{ :name => "Purchase of #{@order.item_count} Item(s)", :item_price => @order.item_price_total,               :price => @order.item_price_total }]
@@ -156,11 +157,11 @@ class Mtg::OrdersController < ApplicationController
   
   def checkout_failure
     cookies[:checkout] = "failure"  # when show cart page is displayed it will have a failure message
+    current_cart.orders.where(:id => params[:id]).first.transaction.destroy # destroy transaction
     respond_to do |format|
       format.html   { render :layout => false }        # this will just load javascript that will reload the current page (show cart) to get rid of the light box
       format.mobile { redirect_to show_cart_path }
     end
-
   end
   
   def update_shipping_options
@@ -189,4 +190,5 @@ class Mtg::OrdersController < ApplicationController
       format.js
     end
   end
+  
 end
