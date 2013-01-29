@@ -139,6 +139,15 @@ class Mtg::Cards::Statistics < ActiveRecord::Base
     
   end
   
+  def self.price_reduction_from_condition(condition = nil)
+    price_hash = { 1 => 1.0, 2 => 0.95, 3 => 0.85, 4 => 0.75 }
+    if condition.present?
+      price_hash[condition] 
+    else
+      price_hash
+    end
+  end
+  
   def self.bulk_update_listing_information(card_ids_array)
     card_ids_array_sql = card_ids_array.to_s.gsub('[','(').gsub(']',')')
     query = %{  UPDATE  mtg_card_statistics

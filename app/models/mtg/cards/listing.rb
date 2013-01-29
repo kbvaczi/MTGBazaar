@@ -214,4 +214,40 @@ class Mtg::Cards::Listing < ActiveRecord::Base
     end
   end
   
+  def self.bulk_update_pricing(price_level = 'med', listing_ids_array = nil)
+    # price_level can be 'med', 'high', or 'low'
+    if listing_ids_array.present?
+      listing_ids_array_sql = listing_ids_array.to_s.gsub('[','(').gsub(']',')')
+      price_level_sql = case price_level 
+                          when /low/i 
+                            'price_low' 
+                          when /high/i 
+                            'price_high' 
+                          else 
+                            'price_med'
+                        end
+      query = %{  UPDATE  mtg_listings
+                    JOIN  ( SELECT    mtg_listings.id AS listing_id,
+                                      mtg_card_statistics.#{price_level_sql}
+                                      * (CASE WHEN mtg_listings.condition = 1 THEN #{Mtg::Cards::Statistics.price_reduction_from_condition(1)} 
+                                              WHEN mtg_listings.condition = 2 THEN #{Mtg::Cards::Statistics.price_reduction_from_condition(2)}
+                                              WHEN mtg_listings.condition = 3 THEN #{Mtg::Cards::Statistics.price_reduction_from_condition(3)}
+                                              WHEN mtg_listings.condition = 4 THEN #{Mtg::Cards::Statistics.price_reduction_from_condition(4)}
+                                              ELSE 1 END)
+                                      * (CASE WHEN mtg_listings.playset   = 1 THEN 4 ELSE 1 END) AS calculated_price 
+                            FROM      mtg_listings
+                            JOIN      mtg_card_statistics
+                            ON        mtg_listings.card_id = mtg_card_statistics.card_id 
+                            WHERE         mtg_card_statistics.#{price_level_sql} IS NOT NULL 
+                                      AND mtg_card_statistics.#{price_level_sql} > 0
+                                      AND mtg_listings.foil = 0
+                                      AND mtg_listings.language = 'EN' ) price_data
+                      ON  price_data.listing_id = mtg_listings.id
+                     SET  mtg_listings.price = price_data.calculated_price
+                   WHERE  mtg_listings.id IN #{listing_ids_array_sql};  }
+      ActiveRecord::Base.connection.execute(query)
+      card_ids_affected = Mtg::Cards::Listing.where(:id => listing_ids_array).pluck(:card_id).uniq
+      Mtg::Cards::Statistics.bulk_update_listing_information(card_ids_affected)      
+    end
+  end
 end

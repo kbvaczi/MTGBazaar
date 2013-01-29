@@ -138,6 +138,9 @@ class Mtg::Order < ActiveRecord::Base
       self.reservations.each { |r| r.purchased! } rescue true    # update listing quantity and destroy each reservation for this transaction
       self.destroy
     end
+    #update seller sales count
+    self.seller.statistics.increment(:number_sales).save
+    #update card sales statistics offline using worker
     Mtg::Cards::Statistics.delay.bulk_update_sales_information(this_transaction.items.pluck(:card_id))
   end
   
