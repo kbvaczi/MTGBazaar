@@ -6,8 +6,8 @@
   
   <div class="group center_wrap">
     <ul class="tabs center">
-      <li <%= "class=selected" if not params[:section].present? %>> <%= link_to "Account Info", account_info_path %> </li>
-      <li <%= "class=selected" if params[:section] == "history" %>> <%= link_to "Login History", account_info_path(:section => "history") %> </li>
+      <li <%= "class=selected" if not params[:section].present? %>> <%= link_to "Account Info", account_info_path, :remote => true %> </li>
+      <li <%= "class=selected" if params[:section] == "history" %>> <%= link_to "Login History", account_info_path(:section => "history"), :remote => true %> </li>
     </ul>
   </div>
   

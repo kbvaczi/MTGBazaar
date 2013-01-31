@@ -4,9 +4,9 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   belongs_to :card,         :class_name => "Mtg::Card"
   belongs_to :seller,       :class_name => "User"
   has_one    :statistics,   :class_name => "Mtg::Cards::Statistics",   :through => :card
-  has_many   :reservations, :class_name => "Mtg::Reservation",      :dependent => :destroy
-  has_many   :orders,       :class_name => "Mtg::Order",            :through => :reservations,      :foreign_key => :order_id  
-  has_many   :carts,        :class_name => "Cart",                  :through => :reservations,      :source => :cart
+  has_many   :reservations, :class_name => "Mtg::Reservation",         :dependent => :destroy
+  has_many   :orders,       :class_name => "Mtg::Order",               :through => :reservations,      :foreign_key => :order_id  
+  has_many   :carts,        :class_name => "Cart",                     :through => :reservations,      :source => :cart
   
   mount_uploader :scan, MtgScanUploader
   
@@ -29,7 +29,7 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   # --------------------------------------- #
 
   before_validation :set_quantity_available, :on => :create
-  after_save        :update_statistics_cache_on_save, :if => "no_cache_update != false && (active_changed? || price_changed? || quantity_available_changed? || self.price == Money.new(100))"
+  after_save        :update_statistics_cache_on_save,   :if => "no_cache_update != false && (active_changed? || price_changed? || quantity_available_changed? || self.price == Money.new(100))"
   after_save        :delete_if_empty
   after_destroy     :update_statistics_cache_on_delete, :if => "no_cache_update != false"
   
@@ -214,40 +214,66 @@ class Mtg::Cards::Listing < ActiveRecord::Base
     end
   end
   
+# ----- BULK UPDATE METHODS ----- #
+  
   def self.bulk_update_pricing(price_level = 'med', listing_ids_array = nil)
     # price_level can be 'med', 'high', or 'low'
-    if listing_ids_array.present?
-      listing_ids_array_sql = listing_ids_array.to_s.gsub('[','(').gsub(']',')')
-      price_level_sql = case price_level 
-                          when /low/i 
-                            'price_low' 
-                          when /high/i 
-                            'price_high' 
-                          else 
-                            'price_med'
-                        end
-      query = %{  UPDATE  mtg_listings
-                    JOIN  ( SELECT    mtg_listings.id AS listing_id,
-                                      mtg_card_statistics.#{price_level_sql}
-                                      * (CASE WHEN mtg_listings.condition = 1 THEN #{Mtg::Cards::Statistics.price_reduction_from_condition(1)} 
-                                              WHEN mtg_listings.condition = 2 THEN #{Mtg::Cards::Statistics.price_reduction_from_condition(2)}
-                                              WHEN mtg_listings.condition = 3 THEN #{Mtg::Cards::Statistics.price_reduction_from_condition(3)}
-                                              WHEN mtg_listings.condition = 4 THEN #{Mtg::Cards::Statistics.price_reduction_from_condition(4)}
-                                              ELSE 1 END)
-                                      * (CASE WHEN mtg_listings.playset   = 1 THEN 4 ELSE 1 END) AS calculated_price 
-                            FROM      mtg_listings
-                            JOIN      mtg_card_statistics
-                            ON        mtg_listings.card_id = mtg_card_statistics.card_id 
-                            WHERE         mtg_card_statistics.#{price_level_sql} IS NOT NULL 
-                                      AND mtg_card_statistics.#{price_level_sql} > 0
-                                      AND mtg_listings.foil = 0
-                                      AND mtg_listings.language = 'EN' ) price_data
-                      ON  price_data.listing_id = mtg_listings.id
-                     SET  mtg_listings.price = price_data.calculated_price
-                   WHERE  mtg_listings.id IN #{listing_ids_array_sql};  }
-      ActiveRecord::Base.connection.execute(query)
-      card_ids_affected = Mtg::Cards::Listing.where(:id => listing_ids_array).pluck(:card_id).uniq
-      Mtg::Cards::Statistics.bulk_update_listing_information(card_ids_affected)      
+    listing_ids_array_sql = listing_ids_array.to_s.gsub('[','(').gsub(']',')')        
+    price_level_sql = case price_level 
+                        when /med/i  then 'price_med' 
+                        when /high/i then 'price_high' 
+                        when /low/i  then 'price_low'                             
+                        else 'price_med'
+                      end
+    query = %{  UPDATE  mtg_listings
+                  JOIN  ( SELECT    mtg_listings.id AS listing_id,
+                                    mtg_card_statistics.#{price_level_sql}
+                                    * (CASE WHEN mtg_listings.condition = 1 THEN #{Mtg::Cards::Statistics.price_reduction_from_condition(1)} 
+                                            WHEN mtg_listings.condition = 2 THEN #{Mtg::Cards::Statistics.price_reduction_from_condition(2)}
+                                            WHEN mtg_listings.condition = 3 THEN #{Mtg::Cards::Statistics.price_reduction_from_condition(3)}
+                                            WHEN mtg_listings.condition = 4 THEN #{Mtg::Cards::Statistics.price_reduction_from_condition(4)}
+                                            ELSE 1 END)
+                                    * (CASE WHEN mtg_listings.playset   = 1 THEN 4 ELSE 1 END) AS calculated_price 
+                          FROM      mtg_listings
+                          JOIN      mtg_card_statistics
+                          ON        mtg_listings.card_id = mtg_card_statistics.card_id 
+                          WHERE     mtg_card_statistics.#{price_level_sql} IS NOT NULL 
+                                    AND mtg_card_statistics.#{price_level_sql} > 0
+                                    AND mtg_listings.foil = 0
+                                    AND mtg_listings.language = 'EN' ) price_data
+                    ON  price_data.listing_id = mtg_listings.id
+                   SET  mtg_listings.price = price_data.calculated_price
+              #{"WHERE  mtg_listings.id IN #{listing_ids_array_sql};" if listing_ids_array.present?}; }
+    listings_updated_count = ActiveRecord::Base.connection.update(query)              
+    card_ids_affected      = listing_ids_array.present? ? Mtg::Cards::Listing.where(:id => listing_ids_array).pluck(:card_id).uniq : nil
+    Mtg::Cards::Statistics.bulk_update_listing_information(card_ids_affected)   
+    return listings_updated_count
+  end
+  
+  def self.bulk_delete_listings_with_callbacks(current_user, selected_listings_ids)
+    selected_listings     = Mtg::Cards::Listing.includes(:reservations => {:order => :cart}).select([:id, :card_id, :seller_id]).where(:seller_id => current_user.id, :id => selected_listings_ids)
+    card_ids_affected     = selected_listings.collect {|l| l.card_id}
+    reservations_affected = selected_listings.collect {|l| l.reservations}.flatten
+    orders_affected       = reservations_affected.collect {|r| r.order}
+    carts_affected        = orders_affected.collect {|o| o.cart}
+    Rails.logger.debug "selected_listing_ids #{selected_listings_ids}"
+    Rails.logger.debug "card_ids_affected #{card_ids_affected.inspect}"    
+    Rails.logger.debug "reservations_affected #{reservations_affected.inspect}"
+    Rails.logger.debug "orders_affected #{orders_affected.inspect}"
+    Rails.logger.debug "carts_affected #{carts_affected.inspect}"
+    ActiveRecord::Base.transaction do
+      Mtg::Reservation.delete_all(:id => reservations_affected.collect {|r| r.id})
+      orders_affected.each {|o| o.update_cache}
+      carts_affected.each  {|c| c.update_cache}
+      listings_deleted_count = selected_listings.delete_all
     end
+    Mtg::Cards::Statistics.delay.bulk_update_listing_information
+    current_user.statistics.update_listings_mtg_cards_count    
+    Rails.logger.debug "selected_listing_ids #{selected_listings_ids}"
+    Rails.logger.debug "card_ids_affected #{card_ids_affected.inspect}"    
+    Rails.logger.debug "reservations_affected #{reservations_affected.inspect}"
+    Rails.logger.debug "orders_affected #{orders_affected.inspect}"
+    Rails.logger.debug "carts_affected #{carts_affected.inspect}"
+    return listings_deleted_count
   end
 end

@@ -2,9 +2,6 @@ class Mtg::Cards::EditMultipleListingsController < ApplicationController
   
   before_filter :authenticate_user!   # must be logged in to make or edit listings
   before_filter :verify_listings_selected?
-  before_filter :verify_owner?        # prevent a user from editing another user's listings
-  before_filter :verify_not_in_cart?  # don't allow users to change listings when they're in someone's cart or when they're in a transaction.
-
   
   include ActionView::Helpers::NumberHelper  # needed for number_to_currency  
   include ActionView::Helpers::TextHelper
@@ -30,10 +27,12 @@ class Mtg::Cards::EditMultipleListingsController < ApplicationController
     # standard implementation
     #selected_listings.each {|l| l.mark_as_active!}
     # bulk implementation
+    card_ids_array = selected_listings.collect {|l| l.card_id}.uniq
     selected_listings.update_all(:active => true)
-    card_ids_array = selected_listings.pluck(:card_id).uniq
+    current_user.statistics.delay.update_listings_mtg_cards_count
+    Rails.logger.debug "card_ids_array #{card_ids_array.inspect}"
     Mtg::Cards::Statistics.delay.bulk_update_listing_information(card_ids_array)
-    selected_listings.first.seller.statistics.update_listings_mtg_cards_count    
+
     respond_to do |format|
       format.html { redirect_to back_path, :notice => "#{pluralize(selected_listings.length, "Listing", "Listings")} set as active!" }
     end
@@ -45,10 +44,11 @@ class Mtg::Cards::EditMultipleListingsController < ApplicationController
     # standard implementation
     # selected_listings.each {|l| l.mark_as_inactive!}
     # bulk implementation
+    card_ids_array = selected_listings.collect {|l| l.card_id}.uniq
     selected_listings.update_all(:active => false)
-    card_ids_array = selected_listings.pluck(:card_id).uniq
+    current_user.statistics.delay.update_listings_mtg_cards_count    
+    Rails.logger.debug "card_ids_array #{card_ids_array.inspect}"    
     Mtg::Cards::Statistics.delay.bulk_update_listing_information(card_ids_array)
-    selected_listings.first.seller.statistics.update_listings_mtg_cards_count
     respond_to do |format|
       format.html { redirect_to back_path, :notice => "#{pluralize(selected_listings.length, "Listing", "Listings")} set as inactive!" }
     end
@@ -56,39 +56,21 @@ class Mtg::Cards::EditMultipleListingsController < ApplicationController
   end
   
   def update_pricing
-    listings_updated = 0
-    listings_not_updated = 0    
-    selected_listings.includes(:card => :statistics).each do |listing|
-      case params[:action_input].gsub("pricing_", "")
-        when "low"
-          pricepoint = listing.product_recommended_pricing[:price_low]
-        when "high"
-          pricepoint = listing.product_recommended_pricing[:price_high]
-        else
-          pricepoint = listing.product_recommended_pricing[:price_med]
-      end
-      unless listing.misprint || listing.foil || listing.altart || listing.signed || listing.language != "EN"
-        listing.update_attribute(:price, pricepoint)
-        listings_updated += 1
-      else
-        listings_not_updated += 1
-      end
-    end
-    
-    message = listings_not_updated > 0 ? "  #{pluralize(listings_not_updated, "Listing", "Listings")} were not updated..." : ""
-    
+    Rails.logger.info selected_listings_ids
+    listings_updated     = Mtg::Cards::Listing.bulk_update_pricing(params[:action_input], selected_listings_ids)
+    listings_not_updated = selected_listings_ids.count - listings_updated
+    not_updated_message  = listings_not_updated > 0 ? "  #{pluralize(listings_not_updated, "Listing", "Listings")} were not updated..." : ""    
     respond_to do |format|
-      format.html { redirect_to back_path, :notice => "Updated pricing for #{pluralize(listings_updated, "Listing", "Listings")}. #{message}" }
+      format.html { redirect_to back_path, :notice => "Updated pricing for #{pluralize(listings_updated, "Listing", "Listings")}. #{not_updated_message}" }
     end
     
   end
   
   def delete
-    selected_listings.each {|l| l.destroy}
+    Mtg::Cards::Listing.bulk_delete_listings_with_callbacks(current_user, selected_listings_ids)     
     respond_to do |format|
-      format.html { redirect_to back_path, :notice => "#{pluralize(selected_listings.length, "Listing", "Listings")} Deleted!" }
+      format.html { redirect_to back_path, :notice => "#{pluralize(selected_listings_ids.length, "Listing", "Listings")} deleted!" }
     end
-    return
   end
   
   # CONTROLLER FUNCTIONS
@@ -102,34 +84,15 @@ class Mtg::Cards::EditMultipleListingsController < ApplicationController
     return true
   end
   
-  def verify_owner?
-    selected_listings.each do |listing|
-      if listing.seller_id != current_user.id
-        flash[:error] = "You don't have permission to perform this action..."
-        redirect_to back_path
-        return false
-      end
-    end
-    return true
+  # returns listings owned by the user that they have selected
+  def selected_listings(options = {})
+    options = {:select => '*'}.merge(options)
+    @listings ||= current_user.mtg_listings.select(options[:select]).where(:id => params[:edit_listings_ids].keys)
   end
-  
-  def verify_not_in_cart?
-    selected_listings.each do |listing|
-      if listing.in_cart?
-        flash[:error] = "Your listing for #{display_name(listing.card.name)} with asking price of #{number_to_currency(listing.price)} is locked due to being in a shopping cart..."
-        redirect_to back_path
-        return false
-      end
-    end
-    return true
-  end
-  
-  def selected_listings
-    @listings ||= Mtg::Cards::Listing.where(:id => params[:edit_listings_ids].keys)
-  end
-  
+
+  # returns IDs of listings owned by the user that they have selected  
   def selected_listings_ids
-    params[:edit_listings_ids].keys
+    @listing_ids ||= current_user.mtg_listings.where(:id => params[:edit_listings_ids].keys).value_of :id
   end
   
 end

@@ -216,6 +216,9 @@ class ApplicationController < ActionController::Base
     script  = %{$('#center_bar').html("<%= escape_javascript render :template => "#{options[:template]}", :formats => [:html] %>");
                 initialize_overlays();
                 initialize_tooltips();}
+    script  = %{$('#center_bar').html("<%= escape_javascript render :template => "#{options[:template]}", :formats => [:html] %>");                
+                initialize_overlays();
+                initialize_tooltips();}                       
     script  = %{$('#right_bar').html("<%= escape_javascript render  :partial => "shared/right_bar", :formats => [:html] %>");} + script if options[:update_right_bar]
     render :inline => script, :content_type => 'text/javascript'
   end

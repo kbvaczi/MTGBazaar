@@ -144,9 +144,7 @@ class Mtg::Order < ActiveRecord::Base
     Mtg::Cards::Statistics.delay.bulk_update_sales_information(this_transaction.items.pluck(:card_id))
   end
   
-  ##### ------ PRIVATE METHODS ----- #####          
-  protected
-  
+
   def update_cache
      fresh_reservations = self.reservations.includes(:listing)
      if fresh_reservations.count > 0
@@ -171,6 +169,9 @@ class Mtg::Order < ActiveRecord::Base
      end
      self.save
    end
+  
+   ##### ------ PRIVATE METHODS ----- #####          
+   protected
   
   def set_default_shipping_options
     self.shipping_options ||= { :shipping_type    => 'usps', 

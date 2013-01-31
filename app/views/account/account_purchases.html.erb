@@ -26,7 +26,7 @@
 
     <%= render :partial => "mtg/transactions/teaser", :collection => @sales, :as => "transaction" %>
   
-    <%= table_paginate_footer :variable => @sales, :colspan => 6 %>
+    <%= table_paginate_footer :variable => @sales, :colspan => 6, :method => :get %>
   
     <% if @sales.count == 0 %>
       <tr>

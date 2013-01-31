@@ -42,10 +42,7 @@ class Cart < ActiveRecord::Base
   end
   
   def update_cache
-    Rails.logger.info("Cart.update_cache Called!!")
-    fresh_orders = self.orders
-    Rails.logger.info("Cart BEFORE UPDATE: #{self.inspect}")    
-    Rails.logger.info("Current Orders: #{fresh_orders.inspect}")
+    fresh_orders = self.orders.reload
     if fresh_orders.count > 0
       self.item_count  = fresh_orders.to_a.inject(0) {|sum, order| sum + order[:item_count] }
       self.total_price = Money.new(fresh_orders.to_a.inject(0) {|sum, order| sum + order[:item_price_total] })
@@ -53,7 +50,6 @@ class Cart < ActiveRecord::Base
       self.item_count  = 0
       self.total_price = 0
     end
-    Rails.logger.info("Cart AFTER Update: #{self.inspect}")
     self.save
   end
 

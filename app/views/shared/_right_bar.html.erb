@@ -34,13 +34,13 @@
         <div class="left">Seller Status:</div>
         <% if current_user.active %>
           <div id="active" class="right">
-						<span id="a"><%= link_to "Active", seller_status_toggle_users_path, :remote => true, :method => :post%> </span>
-						<span id="b"><%= link_to "Set to Inactive", seller_status_toggle_users_path, :remote => true, :method => :post, :confirm => "Going inactive will make all your listings temporarily invisible to buyers" %></span>
+						<span id="a"><%= link_to "Active", account_seller_status_toggle_path, :remote => true, :method => :post%> </span>
+						<span id="b"><%= link_to "Set to Inactive", account_seller_status_toggle_path, :remote => true, :method => :post, :confirm => "Going inactive will make all your listings temporarily invisible to buyers" %></span>
 					</div>
         <% else %>
           <div id="inactive" class="right">
-						<span id="c"><%= link_to "Inactive", seller_status_toggle_users_path, :remote => true, :method => :post %> </span>
-						<span id="d"><%= link_to "Set to Active", seller_status_toggle_users_path, :remote => true, :method => :post, :confirm => "Going active will make all your <i>active</i> listings visible to buyers" %></span>
+						<span id="c"><%= link_to "Inactive", account_seller_status_toggle_path, :remote => true, :method => :post %> </span>
+						<span id="d"><%= link_to "Set to Active", account_seller_status_toggle_path, :remote => true, :method => :post, :confirm => "Going active will make all your <i>active</i> listings visible to buyers" %></span>
 					</div>
         <% end %>
       </div>
