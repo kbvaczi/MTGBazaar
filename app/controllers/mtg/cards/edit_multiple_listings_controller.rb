@@ -56,7 +56,6 @@ class Mtg::Cards::EditMultipleListingsController < ApplicationController
   end
   
   def update_pricing
-    Rails.logger.info selected_listings_ids
     listings_updated     = Mtg::Cards::Listing.bulk_update_pricing(params[:action_input], selected_listings_ids)
     listings_not_updated = selected_listings_ids.count - listings_updated
     not_updated_message  = listings_not_updated > 0 ? "  #{pluralize(listings_not_updated, "Listing", "Listings")} were not updated..." : ""    
@@ -87,12 +86,12 @@ class Mtg::Cards::EditMultipleListingsController < ApplicationController
   # returns listings owned by the user that they have selected
   def selected_listings(options = {})
     options = {:select => '*'}.merge(options)
-    @listings ||= current_user.mtg_listings.select(options[:select]).where(:id => params[:edit_listings_ids].keys)
+    @listings ||= current_user.mtg_listings.select(options[:select]).where(:id => (params[:edit_listings_ids].keys rescue params[:edit_listings_ids]) )
   end
 
   # returns IDs of listings owned by the user that they have selected  
   def selected_listings_ids
-    @listing_ids ||= current_user.mtg_listings.where(:id => params[:edit_listings_ids].keys).value_of :id
+    @listing_ids ||= current_user.mtg_listings.where(:id => (params[:edit_listings_ids].keys rescue params[:edit_listings_ids])).value_of :id
   end
   
 end

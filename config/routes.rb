@@ -102,10 +102,10 @@ MTGBazaar::Application.routes.draw do
   
 # ------ ACCOUNTS -------------------- #
 
-  get  'account'           => 'account#account_info',      :as => 'account_info' 
-  get  'account/listings'  => 'account#account_listings',  :as => 'account_listings'
-  get  'account/sales'     => 'account#account_sales',     :as => 'account_sales'
-  get  'account/purchases' => 'account#account_purchases', :as => 'account_purchases'
+  get  'account'               => 'account#account_info',      :as => 'account_info' 
+  get  'account/seller_panel/(:section)/(:status)/(:page)'  => 'account#account_seller_panel',  :as => 'account_seller_panel'
+  get  'account/sales'         => 'account#account_sales',     :as => 'account_sales'
+  get  'account/purchases'     => 'account#account_purchases', :as => 'account_purchases'
   post 'account/seller_status_toggle' => 'account#seller_status_toggle', :as => 'account_seller_status_toggle'
 
 # ------ USERS -------------------- #

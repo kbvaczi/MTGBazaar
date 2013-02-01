@@ -103,7 +103,7 @@ class User < ActiveRecord::Base
   end
   
   def ship_option_pickup_available?
-    true
+    false
   end
   
   def pending_purchases

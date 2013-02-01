@@ -239,7 +239,10 @@ class Mtg::Cards::Listing < ActiveRecord::Base
                           ON        mtg_listings.card_id = mtg_card_statistics.card_id 
                           WHERE     mtg_card_statistics.#{price_level_sql} IS NOT NULL 
                                     AND mtg_card_statistics.#{price_level_sql} > 0
-                                    AND mtg_listings.foil = 0
+                                    AND mtg_listings.foil = 0 
+                                    AND mtg_listings.misprint = 0 
+                                    AND mtg_listings.signed = 0 
+                                    AND mtg_listings.altart = 0
                                     AND mtg_listings.language = 'EN' ) price_data
                     ON  price_data.listing_id = mtg_listings.id
                    SET  mtg_listings.price = price_data.calculated_price
@@ -265,7 +268,7 @@ class Mtg::Cards::Listing < ActiveRecord::Base
       Mtg::Reservation.delete_all(:id => reservations_affected.collect {|r| r.id})
       orders_affected.each {|o| o.update_cache}
       carts_affected.each  {|c| c.update_cache}
-      listings_deleted_count = selected_listings.delete_all
+      @listings_deleted_count = selected_listings.delete_all
     end
     Mtg::Cards::Statistics.delay.bulk_update_listing_information
     current_user.statistics.update_listings_mtg_cards_count    
@@ -274,6 +277,6 @@ class Mtg::Cards::Listing < ActiveRecord::Base
     Rails.logger.debug "reservations_affected #{reservations_affected.inspect}"
     Rails.logger.debug "orders_affected #{orders_affected.inspect}"
     Rails.logger.debug "carts_affected #{carts_affected.inspect}"
-    return listings_deleted_count
+    return @listings_deleted_count
   end
 end

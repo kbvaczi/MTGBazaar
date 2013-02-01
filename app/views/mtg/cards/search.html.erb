@@ -2,19 +2,21 @@
 
 <h1>Search Cards</h1>
 
+<div class="group center_wrap">
+  <ul class="tabs">
+    <% if params[:show] == "listed" %>
+      <li>                  <%= link_to "All Results", url_for(params.merge(:show => "all", :page => 1)), :remote => true %> </li>
+      <li class="selected"> <%= link_to "With Listings", url_for(params.merge(:show => "listed", :page => 1)), :remote => true %> </li>
+    <% else %>
+      <li class="selected"> <%= link_to "All Results", url_for(params.merge(:show => "all", :page => 1)), :remote => true %> </li>
+      <li>                  <%= link_to "With Listings", url_for(params.merge(:show => "listed", :page => 1)), :remote => true %> </li>      
+    <% end %>  
+  </ul>
+</div>
+
+
 <div class ="content">
 
-  <div class="group center_wrap">
-    <ul class="tabs">
-      <% if params[:show] == "listed" %>
-        <li>                  <%= link_to "All Results", url_for(params.merge(:show => "all", :page => 1)), :remote => true %> </li>
-        <li class="selected"> <%= link_to "With Listings", url_for(params.merge(:show => "listed", :page => 1)), :remote => true %> </li>
-      <% else %>
-        <li class="selected"> <%= link_to "All Results", url_for(params.merge(:show => "all", :page => 1)), :remote => true %> </li>
-        <li>                  <%= link_to "With Listings", url_for(params.merge(:show => "listed", :page => 1)), :remote => true %> </li>      
-      <% end %>  
-    </ul>
-  </div>
   <div>
   <div class="text_in_h2">
     <% if params[:seller_id].present? && params[:show] != "all" %>
@@ -30,9 +32,7 @@
       <%= render :partial => "teaser", :collection => @mtg_cards, :as => "mtg_card" %>      
     </div>        
     
-    <div class="center_wrap">
-      <div class="paginator"><%= paginate @mtg_cards, :window => 2, :remote => true ,:collection => @mtg_cards %></div>
-    </div>
+
   
   <% else %>
 
@@ -43,3 +43,8 @@
   <% end %>
   
 </div>
+
+<div class="center_wrap">
+  <div class="paginator"><%= paginate @mtg_cards, :window => 2, :remote => true ,:collection => @mtg_cards %></div>
+</div>
+<br class='spacer'/>

@@ -12,26 +12,23 @@ class AccountController < ApplicationController
     end       
   end
   
-  def account_listings
+  def account_seller_panel
     set_back_path
-    query = mtg_filters_query(:seller => false, :activate_filters => params[:filter])    
-    if params[:status] == "inactive"
-      if params[:type] == "playsets"
-        @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => true).inactive.order("mtg_cards.name ASC").page(params[:page]).per(50)
-      else
-        @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => false).inactive.order("mtg_cards.name ASC").page(params[:page]).per(50)
-      end
-    else
-      if params[:type] == "playsets"
-        @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => true).active.order("mtg_cards.name ASC").page(params[:page]).per(50)
-      else
-        @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => false).active.order("mtg_cards.name ASC").page(params[:page]).per(50)
-      end      
-    end
-    
     respond_to do |format|
-      format.html
-      format.js  { default_js_render :template => 'account/account_listings' }
+      format.html do 
+        if params[:section] == 'listings'
+          render :template => 'account/account_listings'          
+        else
+          render :template => 'account/seller_panel'
+        end
+      end
+      format.js do
+        if params[:section] == 'overview'          
+          default_js_render :template => 'account/seller_panel'
+        else
+          default_js_render :template => 'account/account_listings'
+        end
+      end 
     end
   end
   
