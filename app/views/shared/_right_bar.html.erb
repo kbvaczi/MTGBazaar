@@ -27,7 +27,7 @@
 	    <div class=""> <div class="left">Sales Ready to Ship:</div> <div class="right"><%= link_to current_user.confirmed_sales.ready_to_ship.count, account_sales_path(:status => "confirmed") %></div>  </div> <br/>
 	    
       <div class="mt-m"> <div class="left">New Messages:</div><div class="right"><%= link_to current_user.communications_received.unread.count, communications_path %></div></div> <br/>
-      <div class=""> <div class="left">Active Listings:</div><div class="right"><%= link_to current_user.mtg_listings.active.count, account_listings_path(:status => "active") %></div></div>
+      <div class=""> <div class="left">Active Listings:</div><div class="right"><%= link_to current_user.mtg_listings.active.count, account_seller_panel_path(:status => "active") %></div></div>
       <br/>
         
       <div class="">
