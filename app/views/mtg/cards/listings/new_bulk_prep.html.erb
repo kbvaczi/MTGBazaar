@@ -13,6 +13,17 @@
                                 :collection => active_set_list,
                                 :default => "",                              
                                 :required => true %>
+                                
+    <%= f.input :rarity,        :label => "Rarity",
+                                :as => :check_boxes,
+                                :collection => [["Common",   "C"], 
+                                                ["Uncommon", "U"], 
+                                                ["Rare",     "R"],
+                                                ["Mythic",   "M"]],
+                                :checked => ['C','U','R','M'],
+                                :input_html => {:class => 'ml-s'},
+                                :wrapper_html => {:class => 'pb'},
+                                :required => true %>                                
 
     <%= f.input :condition,     :label => "Condition",
                                 :as => :select,
@@ -28,11 +39,14 @@
                                 :input_html => { :class => "chzn-select chzn-nosearch" },
                                 :required => true %>
 
+
+
     <%= f.input :price,         :label => "Default Pricing",
                                 :as => :select,
                                 :collection => [["Low", "low"], 
                                                 ["Average", "med"], 
-                                                ["High",  "high"]],
+                                                ["High",  "high"],
+                                                ['Other', 'other']],
                                 :default => "med",
                                 :input_html => { :class => "chzn-select chzn-nosearch" },                                  
                                 :required => true %>

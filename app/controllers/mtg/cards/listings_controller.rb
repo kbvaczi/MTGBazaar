@@ -175,15 +175,17 @@ class Mtg::Cards::ListingsController < ApplicationController
   # ------ LISTING A SINGLE FROM BULK IMPORT PAGE ------- #
   
   def new_bulk_prep
+    set_back_path    
     @listing = Mtg::Cards::Listing.new(params[:mtg_cards_listing])
   end
   
   def new_bulk
+
     @set = Mtg::Set.where(:code => params[:mtg_cards_listing][:set]).first
     if params[:sort] == "name"
-      @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).includes(:statistics).front_cards_only.where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("mtg_cards.name ASC")
+      @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).includes(:statistics).front_cards_only.where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).where('mtg_cards.rarity' => params[:mtg_cards_listing][:rarity].push('T').push('O')).order("mtg_cards.name ASC")
     else
-      @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).includes(:statistics).front_cards_only.where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("CAST(mtg_cards.card_number AS SIGNED) ASC")
+      @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).includes(:statistics).front_cards_only.where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).where('mtg_cards.rarity' => params[:mtg_cards_listing][:rarity].push('T').push('O')).order("CAST(mtg_cards.card_number AS SIGNED) ASC")
     end
   end
   
@@ -191,9 +193,9 @@ class Mtg::Cards::ListingsController < ApplicationController
     # we have to declare these @ variables just in case we have form errors and have to render the form again... otherwise we get errors when we render the form without these declared
     @set = Mtg::Set.where(:code => params[:mtg_cards_listing][:set]).first
     if params[:sort] == "name"
-      @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("mtg_cards.name ASC")
+      @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).where('mtg_cards.rarity' => params[:mtg_cards_listing][:rarity].gsub(' ','').split('')).order("mtg_cards.name ASC")
     else
-      @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).order("CAST(mtg_cards.card_number AS SIGNED) ASC")
+      @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).where('mtg_cards.rarity' => params[:mtg_cards_listing][:rarity].gsub(' ','').split('')).order("CAST(mtg_cards.card_number AS SIGNED) ASC")
     end
     array_of_listings = Array.new # blank array
     params[:sales].each do |key, value| # iterate through all of our individual listings from the bulk form

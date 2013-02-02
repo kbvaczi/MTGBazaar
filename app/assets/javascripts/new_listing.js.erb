@@ -144,17 +144,6 @@ $(document).ready(function() {
     }
   });
   
-/* BULK LISTING JAVASCRIPTS */ 
-
-  <%# hide and display custom pricing when user selects other for pricing %>
-  $(".bulk_price_options").chosen().change( function() {
-    if ($(this).val() == "other") {
-      $(this).parent().find('.bulk_price_custom').show();
-    }
-    else {
-      $(this).parent().find('.bulk_price_custom').hide();
-    }
-  });
   
 });
 
