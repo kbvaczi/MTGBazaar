@@ -163,9 +163,9 @@ class Mtg::Cards::ListingsController < ApplicationController
       duplicate_listing.increment(:quantity_available, params[:mtg_cards_listing][:quantity].to_i)
       duplicate_listing.increment(:quantity, params[:mtg_cards_listing][:quantity].to_i)      
       duplicate_listing.save!
-      redirect_to account_seller_status_toggle_path, :notice => "Listing Created!"
+      redirect_to back_path, :notice => "Listing Created!"
     elsif @listing.save
-      redirect_to account_seller_status_toggle_path, :notice => "Listing Created!"
+      redirect_to back_path, :notice => "Listing Created!"
     else
       flash[:error] = "There were one or more errors while trying to process your request"
       render 'new_generic'
@@ -216,7 +216,7 @@ class Mtg::Cards::ListingsController < ApplicationController
       render 'new_bulk'
       return        
     end
-    redirect_to account_seller_status_toggle_path, :notice => "#{pluralize(array_of_listings.count, "Listing", "Listings")} Created!"
+    redirect_to back_path, :notice => "#{pluralize(array_of_listings.count, "Listing", "Listings")} Created!"
     return #don't display a template
   end
   
