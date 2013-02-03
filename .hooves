@@ -1,11 +1,16 @@
 ## SETUP file for unicorn webserver
 
 timeout 10000 # number is in seconds... 20 minutes for development for uploading sets  
-worker_processes 1
+worker_processes 2
 
+# our sidekick worker
+@sidekiq_pid = nil
 
 before_fork do |server, worker|
-  # Replace with MongoDB or whatever
+
+  # Assign one sidekick worker in addition to 3 unicorn processes
+  @sidekiq_pid ||= spawn("bundle exec sidekiq -C ./config/sidekiq.yml")
+
   if defined?(ActiveRecord::Base)
     ActiveRecord::Base.connection.disconnect!
     Rails.logger.info('Disconnected from ActiveRecord')
@@ -14,7 +19,7 @@ before_fork do |server, worker|
 end
 
 after_fork do |server, worker|
-  # Replace with MongoDB or whatever
+
   if defined?(ActiveRecord::Base)
     ActiveRecord::Base.establish_connection
     Rails.logger.info('Connected to ActiveRecord')

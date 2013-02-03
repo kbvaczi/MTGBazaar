@@ -1,34 +1,31 @@
 ## SETUP file for unicorn webserver
 
 preload_app true
-timeout 30 # 30 seconds for production
+
+# determine how long a connection has before timing out.
+timeout 40
+
+# the number of unicorn processes running on each dyno.
 worker_processes 3
 
+# our sidekick worker
+@sidekiq_pid = nil
+  
 before_fork do |server, worker|
-  # Replace with MongoDB or whatever
   if defined?(ActiveRecord::Base)
     ActiveRecord::Base.connection.disconnect!
     Rails.logger.info('Disconnected from ActiveRecord')
   end
 
-  # If you are using Redis but not Resque, change this
-  if defined?(Resque)
-    Resque.redis.quit
-    Rails.logger.info('Disconnected from Redis')
-  end
+  # Assign one sidekick worker in addition to 3 unicorn processes
+  @sidekiq_pid ||= spawn("bundle exec sidekiq -C ./config/sidekiq.yml")
+
 end
 
 after_fork do |server, worker|
-  # Replace with MongoDB or whatever
   if defined?(ActiveRecord::Base)
     ActiveRecord::Base.establish_connection
     Rails.logger.info('Connected to ActiveRecord')
-  end
-
-  # If you are using Redis but not Resque, change this
-  if defined?(Resque)
-    Resque.redis = ENV['REDIS_URI']
-    Rails.logger.info('Connected to Redis')
   end
 
 end
