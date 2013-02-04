@@ -160,7 +160,7 @@ MTGBazaar::Application.routes.draw do
   end  
   
   # VANITY URLs for users
-  get  ':id/(:section)' => 'users#show', :constraints => {:id => /.+?(?<!ico)/, :format => /(html|xml|js|json)/}, :as => 'user'  
+  #get  ':id/(:section)' => 'users#show', :constraints => {:id => /.+?(?<!ico)/, :format => /(html|xml|js|json)/}, :as => 'user'  
   
   
   # ----- RAILS STANDARD COMMENTS ----------- #

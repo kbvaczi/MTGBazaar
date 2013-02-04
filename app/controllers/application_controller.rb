@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   helper :all
 
-  before_filter :staging_authenticate        # simple HTTP authentication for production (TEMPORARY)
+  #before_filter :staging_authenticate        # simple HTTP authentication for staging
   before_filter :admin_panel_authenticate
 
   after_filter  :update_current_session_to_prevent_expiration
@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   # temporary HTTP authentication for production server
   # DELETE THIS METHOD WHEN SITE IS LIVE
   def staging_authenticate
-    if Rails.env.staging? && request.env['PATH_INFO'] != '/admin/login' 
+    if Rails.env.staging? && request.env['PATH_INFO'] != '/admin/login' && !user_signed_in?
       authenticate_or_request_with_http_basic do |username, password|
         username == "site" && password == "test"
       end 
