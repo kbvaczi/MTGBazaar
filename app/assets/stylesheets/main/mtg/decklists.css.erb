@@ -1,8 +1,15 @@
 .decklist_package {
   line-height:16px;
   position:relative;
+
+  text-align:center;
 }
 .decklist_wrapper {
+  text-align:left;
+  display:inline-block; 
+  width:490px;
+  margin-left:auto;
+  margin-right:auto;
   position:relative;
   z-index:2;
   border-radius: 10px;
@@ -15,29 +22,7 @@
   background-image: -o-linear-gradient(-45deg,  rgba(226,226,226,0.1) 0%,rgba(219,219,219,0.1) 50%,rgba(209,209,209,0.1) 51%,rgba(254,254,254,0.1) 100%);
   background-image: -ms-linear-gradient(-45deg,  rgba(226,226,226,0.1) 0%,rgba(219,219,219,0.1) 50%,rgba(209,209,209,0.1) 51%,rgba(254,254,254,0.1) 100%);
   background-image: linear-gradient(135deg,  rgba(226,226,226,0.1) 0%,rgba(219,219,219,0.1) 50%,rgba(209,209,209,0.1) 51%,rgba(254,254,254,0.1) 100%);
-  overflow:hidden;
   padding:10px;
-}
-.decklist_shadow_left {
- /* display:inline-block;
-  position:absolute;
-  bottom:11px;
-  left:2px;
-  z-index:1;
-  background: -moz-linear-gradient(top,  rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.3)), color-stop(50%,rgba(0,0,0,0.1)), color-stop(100%,rgba(0,0,0,0)));
-  background: -webkit-linear-gradient(top,  rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.1) 50%,rgba(0,0,0,0) 100%);
-  background: -o-linear-gradient(top,  rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.1) 50%,rgba(0,0,0,0) 100%);
-  background: -ms-linear-gradient(top,  rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.1) 50%,rgba(0,0,0,0) 100%);
-  background: linear-gradient(to bottom,  rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.1) 50%,rgba(0,0,0,0) 100%);
-  width:259px;
-  height:20px;
-  border-bottom-left-radius:15px;
-  transform:rotate(-1.5deg);
-  -ms-transform:rotate(-1.5deg);
-  -moz-transform:rotate(-1.5deg); 
-  -webkit-transform:rotate(-1.5deg);
-  -o-transform:rotate(-1.5deg); */
 }
 .decklist_wrapper .decklist_title {
   margin:-10px;
@@ -66,25 +51,37 @@
   padding:0px;
   background:#000;
   border-radius:12px;
-  overflow:hidden;
-  background-image: url(https://mtgbazaar.s3.amazonaws.com/images/mtg/logo/logo_card_sleeve.jpg);
 }
 .decklist_wrapper .decklist_image_wrapper .decklist_image {
-  height:310px;
-  width:223px;
+  height:250px;
+  width:180px;
   border-radius:12px;  
   padding:0px;
   margin:0px;
   background-size:100%;
-  background-repeat:none;
-  box-shadow: inset 0px 0px 2px 1px #000;     
+  background-repeat: no-repeat;
+  box-shadow: inset 0px 0px 2px 1px #000;  
+  cursor:-webkit-zoom-in;
+  cursor:-moz-zoom-in;
+  background-color:#FFF;
+  background-image: url(https://mtgbazaar.s3.amazonaws.com/images/mtg/logo/logo_card_sleeve.jpg);
 }
-.decklist_image_wrapper .decklist_image .decklist_image_shadow {
-
+.decklist_image_wrapper .decklist_image:active{
+  position:relative;
+  z-index:5;
+  transform: scale(1.4);
+  -ms-transform: scale(1.4); /* IE 9 */
+  -webkit-transform: scale(1.4); /* Safari and Chrome */
+  -o-transform: scale(1.4); /* Opera */
+  -moz-transform: scale(1.4); /* Firefox */
+  transition-duration: 0.3s;
+  -moz-transition-duration: 0.3s;
+  -webkit-transition-duration: 0.3s;
+  -o-transition-duration: 0.3s;  
 }
 .decklist_wrapper .decklist_content {
   vertical-align:top;  
-  width:54%;
+  width:60%;
   padding:0px;
   margin:0px;
   margin-top:5px;
@@ -145,7 +142,7 @@
 }
 .decklist_card .card_name_wrapper {
   display:inline-block;
-  width:130px;
+  width:140px;
   height:15px;
   overflow:hidden;
   white-space: nowrap;

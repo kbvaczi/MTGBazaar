@@ -1,6 +1,9 @@
 CKEDITOR.editorConfig = function( config )
 {
-  config.contentsCss = ['/assets/ckeditor.css', '/assets/main/mtg/decklists.css'];
+  config.scayt_autoStartup = true;
+  config.bodyClass = "article_body";  
+  
+  config.contentsCss = ['/assets/ckeditor.css', '/assets/main/mtg/decklists.css', '/assets/main/team_z/articles.css'];
   // Define changes to default configuration here. For example:
   // config.language = 'fr';
   // config.uiColor = '#AADC6E';
@@ -93,12 +96,11 @@ CKEDITOR.editorConfig = function( config )
   config.toolbar = 'Easy';
   config.toolbar_Easy =
     [
-        ['Source','-','Cut','Copy','Paste','PasteText','PasteFromWord'],
+        ['Source','-','SpellChecker', 'Scayt'], ['Cut','Copy','Paste','PasteText','PasteFromWord'],
         ['Undo','Redo'], ['Link','Unlink'],
-        ['Image', 'ßSpecialChar'],
-        ['About'], '/',
+        ['About'], ['Image', 'SpecialChar', '-', 'insert_mtg_card_image','-','insert_mtg_decklist'], '/',
         ['Bold','Italic','Underline','Strike','RemoveFormat'],
         ['NumberedList','BulletedList','-','Outdent', 'Indent', 'Blockquote'],
-        ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','Format'], ['insert_mtg_card_image','-','insert_mtg_decklist']
+        ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','Format']
     ];
 };
