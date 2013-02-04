@@ -162,7 +162,13 @@ MTGBazaar::Application.routes.draw do
   # VANITY URLs for users
   get  ':id/(:section)' => 'users#show', :constraints => {:id => /.+?(?<!ico)/, :format => /(html|xml|js|json)/}, :as => 'user'  
   
-# RAILS STANDARD COMMENTS ----------- #
+  
+  # ----- Blitz load testing authorization URLs ----- #
+  get '/mu-3d6ea683-18abea5b-20cd60ee-3e814100' do
+    '42'
+  end
+  
+  # ----- RAILS STANDARD COMMENTS ----------- #
   
   #match "*a" => redirect('/') # send all random routes to home
    
