@@ -3,7 +3,7 @@
 # Options here can still be overridden by cmd line args.
 
 :verbose: true
-:concurrency:  5
+:concurrency:  3
 :queues:
   - [email,   1]
   - [default, 5]

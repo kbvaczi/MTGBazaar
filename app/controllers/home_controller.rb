@@ -16,8 +16,8 @@ class HomeController < ApplicationController
     redirect_to "http://mtgbazaar-public.s3.amazonaws.com/sitemaps/sitemap_index.xml.gz"
   end
   
-  def test
-    Rails.logger.info(GirlFriday.status)
+  def blitz
+    render :text => '42'
   end
 
 end

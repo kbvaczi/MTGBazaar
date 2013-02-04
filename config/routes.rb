@@ -158,9 +158,13 @@ MTGBazaar::Application.routes.draw do
   constraints constraint do
     mount Sidekiq::Web => '/sidekiq'  
   end  
+
+  # ----- Blitz load testing authorization URL ----- #
+  match 'mu-3d6ea683-18abea5b-20cd60ee-3e814100' => 'home#blitz'
   
-  # VANITY URLs for users
-  #get  ':id/(:section)' => 'users#show', :constraints => {:id => /.+?(?<!ico)/, :format => /(html|xml|js|json)/}, :as => 'user'  
+  # ----- VANITY URLs for users ----- # 
+  # Note: this has to be the last route otherwise it will overide other root URL routes...
+  get  ':id/(:section)' => 'users#show', :constraints => {:id => /.+?(?<!ico)/, :format => /(html|xml|js|json)/}, :as => 'user'  
   
   
   # ----- RAILS STANDARD COMMENTS ----------- #
