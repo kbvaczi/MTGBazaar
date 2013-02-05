@@ -1,20 +1,20 @@
 .decklist_package {
   line-height:16px;
   position:relative;
-
+  margin-top:15px;
+  margin-bottom:15px;  
   text-align:center;
 }
 .decklist_wrapper {
-  text-align:left;
+  width:470px;
   display:inline-block; 
-  width:490px;
   margin-left:auto;
-  margin-right:auto;
+  margin-right:auto;  
   position:relative;
   z-index:2;
+  text-align:left;  
   border-radius: 10px;
   border:1px solid #EEE;
-  box-shadow:1px 1px 1px 0px #DDD;
   background: rgb(255,255,255);
   background-image: -moz-linear-gradient(-45deg,  rgba(226,226,226,0.1) 0%, rgba(219,219,219,0.1) 50%, rgba(209,209,209,0.1) 51%, rgba(254,254,254,0.1) 100%);
   background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(226,226,226,0.1)), color-stop(50%,rgba(219,219,219,0.1)), color-stop(51%,rgba(209,209,209,0.1)), color-stop(100%,rgba(254,254,254,0.1)));
@@ -23,6 +23,7 @@
   background-image: -ms-linear-gradient(-45deg,  rgba(226,226,226,0.1) 0%,rgba(219,219,219,0.1) 50%,rgba(209,209,209,0.1) 51%,rgba(254,254,254,0.1) 100%);
   background-image: linear-gradient(135deg,  rgba(226,226,226,0.1) 0%,rgba(219,219,219,0.1) 50%,rgba(209,209,209,0.1) 51%,rgba(254,254,254,0.1) 100%);
   padding:10px;
+  vertical-align:bottom;
 }
 .decklist_wrapper .decklist_title {
   margin:-10px;
@@ -44,12 +45,12 @@
   margin-top:2px;
   font-weight:normal; 
 }
+
 .decklist_wrapper .decklist_image_wrapper {
   text-align:center;
   display:inline-block;
   margin-top:15px;
   padding:0px;
-  background:#000;
   border-radius:12px;
 }
 .decklist_wrapper .decklist_image_wrapper .decklist_image {
@@ -63,7 +64,7 @@
   box-shadow: inset 0px 0px 2px 1px #000;  
   cursor:-webkit-zoom-in;
   cursor:-moz-zoom-in;
-  background-color:#FFF;
+  background-color:#000;
   background-image: url(https://mtgbazaar.s3.amazonaws.com/images/mtg/logo/logo_card_sleeve.jpg);
 }
 .decklist_image_wrapper .decklist_image:active{
@@ -79,9 +80,16 @@
   -webkit-transition-duration: 0.3s;
   -o-transition-duration: 0.3s;  
 }
+.decklist_image_wrapper .decklist_card_sales_frame {
+    display:inline-block;
+    width:150px;
+    height:50px;
+    padding:0px;
+    margin:10px 0px;
+}
 .decklist_wrapper .decklist_content {
   vertical-align:top;  
-  width:60%;
+  width:280px;
   padding:0px;
   margin:0px;
   margin-top:5px;
@@ -89,7 +97,7 @@
   white-space:normal;
 }
 .decklist_wrapper .decklist_content .decklist_section {
-  padding-right:5px;
+
 }
 .decklist_wrapper .decklist_section .decklist_section_title {
   padding-left:10px;
@@ -142,7 +150,7 @@
 }
 .decklist_card .card_name_wrapper {
   display:inline-block;
-  width:140px;
+  width:135px;
   height:15px;
   overflow:hidden;
   white-space: nowrap;

@@ -9,9 +9,9 @@
       <div class="right mb-s">
         <%= display_symbols(mtg_card.mana_string)%>
       </div>
-      <%= link_to display_name(mtg_card.name), mtg_card_path(mtg_card) %>
+      <%= link_to display_name(mtg_card.name), mtg_card_path(mtg_card), :class => 'title' %>
       &nbsp;
-      <div class='left mr-s mb-s'><%= display_set_symbol(mtg_card.set) %></div>
+      <div class='left'><%= display_set_symbol(mtg_card.set) %></div>
     </h2>
     <div class= "mtg_teaser_info_details">
       <table style="width:100%">

@@ -7,7 +7,7 @@
   <div class='team_z_profile'>
     <%= render :partial => 'team_z/profiles/show_header', :locals => {:profile => @article.profile, :section => 'articles' } %>
   </div>
-  <div class='article_header group content_shadow'>
+  <div class='article_header group'>
     <h2><%= @article.title %></h2>
     <div class='article_header_date left ml-m mb-s'><%= display_time(@article.active_at || @article.created_at, :format => 'long') %></div>
 

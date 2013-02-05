@@ -183,7 +183,7 @@ module Mtg::CardsHelper
 
   # displays set symbol for a given set code
   def display_set_symbol(set, options = {})
-    content_tag(:span, "", :class => "set_symbol_sprite set_symbol_#{set.code}", :title => "#{set.name}")
+    content_tag(:span, content_tag(:span, "", :class => "set_symbol_sprite set_symbol_#{set.code}", :title => "#{set.name}"), :class => 'set_symbol_sprite_wrapper')
   end
   
   # displays set symbol for a given set code

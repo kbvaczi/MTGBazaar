@@ -98,6 +98,13 @@ class Mtg::DecklistsController < ApplicationController
     end
   end
   
+  def sales_frame
+    card = Mtg::Card.includes(:statistics).where(:id => params[:id]).first
+    if card.present?
+      render :partial => 'sales_frame', :locals => {:mtg_card => card}
+    end    
+  end
+  
   private 
   
   def verify_team_z_member

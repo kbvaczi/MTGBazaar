@@ -76,6 +76,7 @@ MTGBazaar::Application.routes.draw do
     
     resources :decklists do
       get 'autocomplete_name', :on => :collection
+      get 'sales_frame',      :on => :collection      
     end
     
     namespace :cards do

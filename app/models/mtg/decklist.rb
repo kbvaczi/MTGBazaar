@@ -13,6 +13,7 @@ class Mtg::Decklist < ActiveRecord::Base
   
   # ----- Validations ----- #
   validates_presence_of :card_references, :message => "You need at least one card in a decklist"
+  validates_presence_of :name, :message => "Your decklist must have a name"  
 
   # ----- Callbacks ----- #    
 

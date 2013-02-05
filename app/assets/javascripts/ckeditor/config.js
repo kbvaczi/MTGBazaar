@@ -1,6 +1,5 @@
 CKEDITOR.editorConfig = function( config )
 {
-  config.scayt_autoStartup = true;
   config.bodyClass = "article_body";  
   
   config.contentsCss = ['/assets/ckeditor.css', '/assets/main/mtg/decklists.css', '/assets/main/team_z/articles.css'];
@@ -96,7 +95,7 @@ CKEDITOR.editorConfig = function( config )
   config.toolbar = 'Easy';
   config.toolbar_Easy =
     [
-        ['Source','-','SpellChecker', 'Scayt'], ['Cut','Copy','Paste','PasteText','PasteFromWord'],
+        ['Source','-','SpellChecker'], ['Cut','Copy','Paste','PasteText','PasteFromWord'],
         ['Undo','Redo'], ['Link','Unlink'],
         ['About'], ['Image', 'SpecialChar', '-', 'insert_mtg_card_image','-','insert_mtg_decklist'], '/',
         ['Bold','Italic','Underline','Strike','RemoveFormat'],
