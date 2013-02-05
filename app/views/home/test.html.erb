@@ -1,4 +1,13 @@
 <h1>test</h1>
+
+<%
+  sets      = Mtg::Set.pluck(:id)
+  set_id    = sets[rand(0...sets.length)]
+  card_type = card_type_list[rand(0...card_type_list.length)]
+  cards     = Mtg::Card.includes(:listings => :seller).where(:set_id => set_id, :card_type => card_type)
+%>
+<%= cards.inspect %>
+
 <%#
 gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(                                                 # setup gateway, login to Paypal API
   :pem =>       PAYPAL_CONFIG[:paypal_cert_pem],
@@ -106,26 +115,6 @@ to_address = Stamps.clean_address(
 #to_address = {:full_name=>"Christopher  Odorizzi", :address1=>"1234 MTGBazaar Lane", :zip_code=>"56789", :state=>"TX", :city=>"Houston"}
 #Rails.logger.info Stamps.clean_address(:address => to_address)
 %>
-<%
-item_value = 200.to_money
-
-rates = Stamps.get_rate( :from_zip_code  => '78701',
-                          :to_zip_code   => '77008',
-                          :weight_oz     => '13',
-                          :ship_date     => (Date.today).strftime('%Y-%m-%d'),
-                          #:service_type  => 'US-PM', :package_type  => 'Small Flat Rate Box',
-                          :service_type  => 'US-FC', :package_type  => 'Package',                          
-                          :add_ons       => {
-                            :add_on => [
-                              #{ :type => 'US-A-INS' },  # Insurance
-                              #{ :type => 'SC-A-HP', :amount => 10 },  # hidden postage
-                              #{ :type => 'US-A-DC' }   # delivery confirmation
-                            ]
-                          },
-                          :item_value => item_value.to_s )
-                          
-%>
-<%= pretty_print_hash rates %>
 
 
 <%#
