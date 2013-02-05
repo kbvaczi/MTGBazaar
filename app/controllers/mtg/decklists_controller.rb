@@ -28,7 +28,7 @@ class Mtg::DecklistsController < ApplicationController
   end
     
   def create
-    @decklist ||= Mtg::Decklist.new(params[:mtg_decklist])
+    @decklist ||= Mtg::Decklist.new(params[:mtg_decklist].merge(:author_id => current_user.id))
     if @decklist.save
       respond_to do |format|
         format.html { redirect_to back_path, :notice => 'Your deck was created...' }

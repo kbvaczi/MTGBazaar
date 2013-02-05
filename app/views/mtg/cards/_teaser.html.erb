@@ -9,27 +9,27 @@
       <div class="right mb-s">
         <%= display_symbols(mtg_card.mana_string)%>
       </div>
-      <%= link_to display_name(mtg_card.name), mtg_card_path(mtg_card), :class => 'title' %>
+      <%= link_to display_name(mtg_card.name), mtg_card_path(mtg_card), :class => 'title left' %>
       &nbsp;
-      <div class='left'><%= display_set_symbol(mtg_card.set) %></div>
+      <div class='left'><%= display_set_symbol(mtg_card.set, :wrapper => true) %></div>
     </h2>
     <div class= "mtg_teaser_info_details">
       <table style="width:100%">
         <tr>
-          <td> <%= display_type(mtg_card.card_type, mtg_card.card_subtype) %> </td>
+          <td class='tc-grey t-l'> <%= display_type(mtg_card.card_type, mtg_card.card_subtype) %> </td>
           <td style="text-align:right;"> <u>Estimated Value</u> </td>
         </tr>
         <tr>
-          <td> <%= mtg_card.set.name %> </td>
+          <td class='tc-grey'> <%= mtg_card.set.name %> </td>
           <td class="t-l t-b" style="text-align:right;"> <%= number_to_currency(mtg_card.statistics.price_low.dollars) %> - <%= number_to_currency(mtg_card.statistics.price_high.dollars) %> </td>
         </tr>
         <tr>
-          <td> <i><%= "(#{display_rarity(mtg_card.rarity)})" %></i> </td>
+          <td style='height:5px;'> </td>
         </tr>
         <tr>
-          <td></td>
+          <td class='tc-grey'> <i><%= "(#{display_rarity(mtg_card.rarity)})" %></i> </td>
           <td style="text-align:right;">
-            <div style="margin-top:-10px;">
+            <div>
               <% 
                 if params[:show_level] == "details"
                   #listings        = mtg_card.listings.available.where(mtg_filters_query(:filter_by => "params", :card_filters => false))
@@ -43,9 +43,9 @@
                 end           
               %>
               <% if available_count > 0 %>
-                <%= link_to "#{available_count} For Sale from #{number_to_currency(min_price)}", mtg_card_path(mtg_card) %>        
+                <%= link_to "#{available_count} For Sale from #{number_to_currency(min_price)}", mtg_card_path(mtg_card), :class => 't-b'%>        
               <% else %>
-                <i>None Currently Available</i>
+                <%= link_to "<i><b>$</b></i> &nbsp;sell this card".html_safe, new_mtg_cards_listing_path(:card_id => mtg_card.id),          :class => "button2 mt-s" %>
               <% end %>
             </div>
           </td>

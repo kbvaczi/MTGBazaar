@@ -13,7 +13,10 @@ class Mtg::Decklist < ActiveRecord::Base
   
   # ----- Validations ----- #
   validates_presence_of :card_references, :message => "You need at least one card in a decklist"
-  validates_presence_of :name, :message => "Your decklist must have a name"  
+  validates_presence_of :name, :message => "Your decklist must have a name"
+  validates :name,      :length => {:maximum => 100}
+  validates :event,     :length => {:maximum => 100}
+  validates :format,    :length => {:maximum => 100}    
 
   # ----- Callbacks ----- #    
 
@@ -43,26 +46,28 @@ class Mtg::Decklist < ActiveRecord::Base
   end
   
   def manage_changes_from_text
-    card_references_to_destroy_after_update ||= []
-    self.card_references.main_deck.group_by(&:card_name).each do |card_name, card_references_with_this_name|
-      if card_references_with_this_name.count == 1 # only 1 by this name, it's either new or deleted
-        # if it is a new record, it's newly created, otherwise it's no longer in the text list and needs to be deleted        
-        card_references_to_destroy_after_update << card_references_with_this_name.first.id unless card_references_with_this_name.first.new_record? 
-      else
-        # delete the old ones as the new ones will replace them
-        card_references_with_this_name.to_a.each {|a| card_references_to_destroy_after_update << a.id if a.id.present? }
-      end      
+    if self.decklist_text_main.present? or self.decklist_text_sideboard.present?
+      card_references_to_destroy_after_update ||= []
+      self.card_references.main_deck.group_by(&:card_name).each do |card_name, card_references_with_this_name|
+        if card_references_with_this_name.count == 1 # only 1 by this name, it's either new or deleted
+          # if it is a new record, it's newly created, otherwise it's no longer in the text list and needs to be deleted        
+          card_references_to_destroy_after_update << card_references_with_this_name.first.id unless card_references_with_this_name.first.new_record? 
+        else
+          # delete the old ones as the new ones will replace them
+          card_references_with_this_name.to_a.each {|a| card_references_to_destroy_after_update << a.id if a.id.present? }
+        end      
+      end
+      self.card_references.sideboard.group_by(&:card_name).each do |card_name, card_references_with_this_name|
+        if card_references_with_this_name.count == 1 # only 1 by this name, it's either new or deleted
+          # if it is a new record, it's newly created, otherwise it's no longer in the text list and needs to be deleted        
+          card_references_to_destroy_after_update << card_references_with_this_name.first.id unless card_references_with_this_name.first.new_record? 
+        else
+          # delete the old ones as the new ones will replace them
+          card_references_with_this_name.to_a.each {|a| card_references_to_destroy_after_update << a.id if a.id.present? }
+        end      
+      end
+      Mtg::Decklists::CardReference.where(:id => card_references_to_destroy_after_update).destroy_all    
     end
-    self.card_references.sideboard.group_by(&:card_name).each do |card_name, card_references_with_this_name|
-      if card_references_with_this_name.count == 1 # only 1 by this name, it's either new or deleted
-        # if it is a new record, it's newly created, otherwise it's no longer in the text list and needs to be deleted        
-        card_references_to_destroy_after_update << card_references_with_this_name.first.id unless card_references_with_this_name.first.new_record? 
-      else
-        # delete the old ones as the new ones will replace them
-        card_references_with_this_name.to_a.each {|a| card_references_to_destroy_after_update << a.id if a.id.present? }
-      end      
-    end
-    Mtg::Decklists::CardReference.where(:id => card_references_to_destroy_after_update).destroy_all    
   end
   
   def generate_mana_string

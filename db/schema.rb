@@ -181,13 +181,19 @@ ActiveRecord::Schema.define(:version => 20130117144431) do
   end
 
   create_table "mtg_decklists", :force => true do |t|
+    t.integer  "author_id"
     t.string   "name"
     t.string   "mana_string"
     t.string   "play_format"
+    t.string   "event"
     t.boolean  "active"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
+
+  add_index "mtg_decklists", ["active"], :name => "index_mtg_decklists_on_active"
+  add_index "mtg_decklists", ["author_id"], :name => "index_mtg_decklists_on_author_id"
+  add_index "mtg_decklists", ["name"], :name => "index_mtg_decklists_on_name"
 
   create_table "mtg_decklists_card_references", :force => true do |t|
     t.integer  "decklist_id"
@@ -200,7 +206,6 @@ ActiveRecord::Schema.define(:version => 20130117144431) do
     t.datetime "updated_at",      :null => false
   end
 
-  add_index "mtg_decklists_card_references", ["card_id"], :name => "index_mtg_decklists_card_references_on_card_id"
   add_index "mtg_decklists_card_references", ["card_name"], :name => "index_mtg_decklists_card_references_on_card_name"
   add_index "mtg_decklists_card_references", ["decklist_id"], :name => "index_mtg_decklists_card_references_on_decklist_id"
 

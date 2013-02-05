@@ -1,4 +1,4 @@
-<%= simple_form_for @decklist, :method => :post do |f| %>
+<%= simple_form_for @decklist do |f| %>
 
   <%= render :partial => 'form', :locals => { :decklist => @decklist, :f => f } %>
   <div class='center_wrap'>

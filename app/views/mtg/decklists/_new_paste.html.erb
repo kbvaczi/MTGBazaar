@@ -1,21 +1,25 @@
 <%= form_for @decklist, :remote => (request.format == 'text/javascript') do |f| %>
   <div class='mt center_wrap'>
     <div class='input center mr-s' style='text-align:left;'>
-      <%= f.label 'Deck Name:', :class => 'pl' %></br>      
+      <%= f.label 'Deck Name:', :class => 'pl-m' %></br>      
       <%= f.text_field :name %></br>
     </div>
     <div class='input center ml-s' style='text-align:left;'>
-      <%= f.label 'Format:', :class => 'pl' %></br>      
+      <%= f.label 'Format:', :class => 'pl-m' %></br>      
       <%= f.text_field :play_format %></br>
     </div>    
+    <div class='input center ml-s mt' style='text-align:left;'>
+      <%= f.label 'Event Name:', :class => 'pl-m' %></br>      
+      <%= f.text_field :event %></br>
+    </div>
     <br class='spacer'/>
     <br class='spacer'/>
     <div class='input center mr' style='text-align:left;'>
-      <%= f.label 'Paste Main Deck Here:', :class => 'pl' %></br>      
+      <%= f.label 'Paste Main Deck Here:', :class => 'pl-m' %></br>      
       <%= f.text_area :decklist_text_main, :style => 'height:300px;width:200px;overflow-y:auto;' %>
     </div>
     <div class='input center'  style='text-align:left;'>
-      <%= f.label 'Paste Sideboard Here:', :class => 'pl' %></br>      
+      <%= f.label 'Paste Sideboard Here:', :class => 'pl-m' %></br>      
       <%= f.text_area :decklist_text_sideboard, :style => 'height:300px;width:200px;overflow-y:auto;' %>
     </div>
     <br class='spacer'/>

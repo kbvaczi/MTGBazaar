@@ -4,9 +4,13 @@
 <%= f.input :name,        :label => 'Deck Name' %>
 
 <%= f.input :play_format, :label => 'Format',
-                          :placeholder  => 'ex: Legacy' %>
+                          :placeholder  => 'ex: \'Legacy\'' %>
                           
-<table class='data' style='margin-left:100px;width:60%;'>
+
+<%= f.input :event,       :label => 'Event Name',
+                          :placeholder  => 'ex: \'Grand Prix San Antonio 2012\'' %>                          
+                          
+<table class='data mt mb' style='margin-left:100px;width:65%;'>
   <tr class='header_row'>
     <th>Total Cards</th>
     <th>Lands</th>

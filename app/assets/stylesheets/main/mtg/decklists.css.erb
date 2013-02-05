@@ -27,6 +27,7 @@
 }
 .decklist_wrapper .decklist_title {
   margin:-10px;
+  margin-bottom:0px;
   box-shadow: inset 0px 0px 10px 0px #FFF;  
   background: -moz-linear-gradient(-45deg,  rgba(0,0,0,0.01) 0%, rgba(0,0,0,0.04) 100%);
   background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(0,0,0,0.01)), color-stop(100%,rgba(0,0,0,0.04)));
@@ -38,14 +39,23 @@
 .decklist_wrapper .decklist_title h2 {
   border:none;
   box-shadow:none;
-  margin:0px 0px 10px 0px;
-  padding:5px 0px 5px 15px;
+  margin:0px;
+  padding:5px 0px 0px 15px;
+  overflow:hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width:450px;  
 }
 .decklist_wrapper .decklist_title h2 a {
   margin-top:2px;
   font-weight:normal; 
 }
-
+.decklist_wrapper .decklist_title .decklist_subtitle {
+  display:inline-block;
+  width:490px;
+  padding-bottom:2px;
+  font-style:italic;
+}
 .decklist_wrapper .decklist_image_wrapper {
   text-align:center;
   display:inline-block;

@@ -1,7 +1,12 @@
 <div class='decklist_package group'>
   <div class='decklist_wrapper content_shadow'>
-    <div class='decklist_title'>
-      <h2><%= decklist.name %><%= link_to 'View sales for these cards', mtg_cards_search_path(:ids => decklist.card_references.collect {|card_reference| card_reference.card_id }), :class => 'right mr' %></h2>
+    <div class='decklist_title group'>
+      <h2><%= decklist.name %></h2>
+      <div class='decklist_subtitle'>
+        <div class='left ml'> </div>
+        <div class='left'><%= decklist.event %> &nbsp;</div>        
+        <div class='left'>(<%= decklist.play_format %>)</div>        
+      </div>
     </div>
     <div class='decklist_content'>
       <% decklist.card_references.includes(:card).order(:card_name).group_by(&:deck_section).sort.each do |deck_section, card_references_in_this_section| %>
@@ -46,6 +51,8 @@
       </div>
       <div class='decklist_card_sales_frame'></div>          
     </div>
-
+    <div class='center_wrap'>
+      <%= link_to 'View sales for all cards', mtg_cards_search_path(:ids => decklist.card_references.collect {|card_reference| card_reference.card_id }), :class => 'center mt-s mb-s' %>      
+    </div>
   </div>
 </div>

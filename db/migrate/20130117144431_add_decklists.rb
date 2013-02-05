@@ -4,6 +4,7 @@ class AddDecklists < ActiveRecord::Migration
     unless table_exists? :mtg_decklists
       create_table  :mtg_decklists do |t|
         #foreign keys
+        t.integer   :author_id
         
         #table data
         t.string    :name
@@ -14,6 +15,9 @@ class AddDecklists < ActiveRecord::Migration
         
         t.timestamps
       end
+      add_index :mtg_decklists, :author_id
+      add_index :mtg_decklists, :name
+      add_index :mtg_decklists, :active
     end
     
     unless table_exists? :mtg_decklists_card_references
@@ -30,7 +34,6 @@ class AddDecklists < ActiveRecord::Migration
         t.timestamps      
       end
       add_index :mtg_decklists_card_references, :decklist_id
-      add_index :mtg_decklists_card_references, :card_id
       add_index :mtg_decklists_card_references, :card_name
     end
   end
