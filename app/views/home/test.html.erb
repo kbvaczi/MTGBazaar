@@ -1,12 +1,8 @@
 <h1>test</h1>
 
 <%
-  sets      = Mtg::Set.pluck(:id)
-  set_id    = sets[rand(0...sets.length)]
-  card_type = card_type_list[rand(0...card_type_list.length)]
-  cards     = Mtg::Card.includes(:listings => :seller).where(:set_id => set_id, :card_type => card_type)
+
 %>
-<%= cards.inspect %>
 
 <%#
 gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(                                                 # setup gateway, login to Paypal API
