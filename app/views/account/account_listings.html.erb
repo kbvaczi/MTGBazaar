@@ -1,6 +1,6 @@
 <%
 
-query = mtg_filters_query(:seller => false, :activate_filters => params[:filter])
+query = mtg_filters_query(:seller => false, :activate_filters => params[:filter], :filter_by => params[:filter_by].present? ? 'params' : 'cookies')
 
 if params[:status] == "inactive"
   if params[:type] == "playsets"

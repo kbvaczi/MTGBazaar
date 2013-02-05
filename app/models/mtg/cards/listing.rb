@@ -233,7 +233,7 @@ class Mtg::Cards::Listing < ActiveRecord::Base
                                             WHEN mtg_listings.condition = 3 THEN #{Mtg::Cards::Statistics.price_reduction_from_condition(3)}
                                             WHEN mtg_listings.condition = 4 THEN #{Mtg::Cards::Statistics.price_reduction_from_condition(4)}
                                             ELSE 1 END)
-                                    * (CASE WHEN mtg_listings.playset   = 1 THEN 4 ELSE 1 END) AS calculated_price 
+                                    * mtg_listings.number_cards_per_item AS calculated_price 
                           FROM      mtg_listings
                           JOIN      mtg_card_statistics
                           ON        mtg_listings.card_id = mtg_card_statistics.card_id 

@@ -119,8 +119,6 @@ class ApplicationController < ActionController::Base
     # should we filter at all?
     if options[:activate_filters] || options[:activate_filters] == "true" # test for string too if coming in from parameter
 
-      
-      
       # filtering by cookies, not parameters
       if options[:filter_by] == "cookies"
 
@@ -156,7 +154,8 @@ class ApplicationController < ActionController::Base
         end
       
       else # end filtering by cookies, start filtering by parameters
-      
+        query << SmartTuple.new(" OR ").add_each(params[:listing_ids]) {|v| ["mtg_listings.id = ?", v]}     if params[:listing_ids].present?
+        
         if options[:card_filters] != false
           query << ["mtg_cards.active LIKE ?", true]
           query << ["mtg_sets.active LIKE ?", true]          
@@ -175,8 +174,7 @@ class ApplicationController < ActionController::Base
           query << SmartTuple.new(" AND ").add_each(params[:abilities]) {|v| ["mtg_cards.description LIKE ?", "%#{v}%"]} if params[:abilities].present? && options[:abilities] != false
         end
         if options[:listing_filters] != false
-          # id filters (not working here)
-          # query << SmartTuple.new(" OR ").add_each(params[:listing_ids]) {|v| ["mtg_listings.id = ?", v]}     if params[:listing_ids].present?
+
           # language filters
           query << ["mtg_listings.language LIKE ?", params[:language]]                  if params[:language].present?         && options[:language] != false
           # options filters
