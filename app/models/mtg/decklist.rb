@@ -11,6 +11,11 @@ class Mtg::Decklist < ActiveRecord::Base
       
   attr_accessor :decklist_text_main, :decklist_text_sideboard, :card_references_to_destroy_after_update
   
+  # override default route to add username in route.
+  def to_param
+    "#{id}-#{name}".parameterize 
+  end
+  
   # ----- Validations ----- #
   validates_presence_of :card_references, :message => "You need at least one card in a decklist"
   validates_presence_of :name, :message => "Your decklist must have a name"
