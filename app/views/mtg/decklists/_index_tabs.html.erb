@@ -1,0 +1,7 @@
+<div class="group center_wrap">
+  <ul class="tabs">
+    <li <%= "class=selected" if params[:section].in? [nil, 'index'] %>> <%= link_to "My Decklists",       mtg_decklists_path(:section => 'index'),   :remote => true %> </li>    
+    <li <%= "class=selected" if params[:section] == 'paste'         %>> <%= link_to "Paste Decklist",     new_mtg_decklist_path(params.merge(:section => "paste")),   :remote => true %> </li>
+    <li <%= "class=selected" if params[:section] == "scratch"       %>> <%= link_to "Build From Scratch", new_mtg_decklist_path(params.merge(:section => "scratch")), :remote => true %> </li>
+  </ul>
+</div>

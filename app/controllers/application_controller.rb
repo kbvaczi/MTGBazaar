@@ -225,7 +225,7 @@ class ApplicationController < ActionController::Base
     options = {:template => 'home/index', :partial => ''}.merge(options)
     script  = %{
                 <% if options[:partial].present? %>
-                  var content = "<%= escape_javascript render  :partial => "shared/right_bar", :formats => [:html] %>";
+                  var content = "<%= escape_javascript render :partial => "#{options[:partial]}", :locals => options[:locals], :formats => [:html] %>";
                 <% else %>
                   var content = "<%= escape_javascript render :template => "#{options[:template]}", :formats => [:html] %>";                              
                 <% end %>

@@ -2,7 +2,7 @@ CKEDITOR.editorConfig = function( config )
 {
   config.bodyClass = "article_body";  
   
-  config.contentsCss = ['/assets/ckeditor.css', '/assets/main/mtg/decklists.css', '/assets/main/team_z/articles.css'];
+  config.contentsCss = ['/assets/ckeditor.css', '/assets/main/mtg/decklists.css', '/assets/main/helpers.css', '/assets/main/team_z/articles.css'];
   // Define changes to default configuration here. For example:
   // config.language = 'fr';
   // config.uiColor = '#AADC6E';

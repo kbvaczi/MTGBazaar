@@ -16,8 +16,8 @@ function updateDecklistImage(card_name_object) {
   var imageUrl      = card_name_object.data('image');
   var cssBackground = "url(" + imageUrl + ")";
   if (target.css('background-image').replace(/"/g,"") != cssBackground){
-    target.stop(1).fadeOut(50).queue(function(){    
-      target.parent().css('background-image','none');
+   target.stop(1).fadeOut(20).queue(function(){    
+      //target.parent().css('background-image','none');
       target.css('background-image', cssBackground);
       $(this).dequeue();
     }).fadeIn(300);

@@ -14,60 +14,56 @@ class Mtg::Decklist < ActiveRecord::Base
   # ----- Validations ----- #
   validates_presence_of :card_references, :message => "You need at least one card in a decklist"
   validates_presence_of :name, :message => "Your decklist must have a name"
-  validates :name,      :length => {:maximum => 100}
-  validates :event,     :length => {:maximum => 100}
-  validates :format,    :length => {:maximum => 100}    
+  validates :name,        :length => {:maximum => 100}
+  validates :event,       :length => {:maximum => 100}
+  validates :play_format, :length => {:maximum => 100}    
 
   # ----- Callbacks ----- #    
 
-  before_validation :import_deck_from_text
-  before_update     :manage_changes_from_text
+  before_validation :import_deck_from_text,    :if => Proc.new { self.decklist_text_main.present? }
+  before_update     :manage_changes_from_text, :if => Proc.new { self.decklist_text_main.present? }
   before_save       :generate_mana_string
   
   def import_deck_from_text
-    if self.decklist_text_main.present?
-      self.decklist_text_main.each_line do |line|
-        split_line = line.strip.partition(/\d+/)
-        next if split_line[0].include?('//') or split_line[1].empty? or split_line[2].empty?
-        quantity   = split_line[1].to_i
-        card_name  = split_line[2].strip.squeeze(" ")
-        self.card_references.build(:quantity => quantity, :card_name => card_name)
-      end
+    self.decklist_text_main.each_line do |line|
+      split_line = line.strip.partition(/\d+/)
+      next if split_line[0].include?('//') or split_line[1].empty? or split_line[2].empty?
+      quantity   = split_line[1].to_i
+      card_name  = split_line[2].strip.squeeze(" ")
+      self.card_references.build(:quantity => quantity, :card_name => card_name, :deck_section => 'Main Deck')
     end
-    if self.decklist_text_main.present? && self.decklist_text_sideboard.present?
+    if self.decklist_text_sideboard.present?
       self.decklist_text_sideboard.each_line do |line|
         split_line = line.strip.partition(/\d+/)
         next if split_line[0].include?('//') or split_line[1].empty? or split_line[2].empty?
         quantity   = split_line[1].to_i
         card_name  = split_line[2].strip.squeeze(" ")
-        self.card_references.build(:quantity => quantity, :card_name => card_name, :unprocessed_section => 'Sideboard')
+        self.card_references.build(:quantity => quantity, :card_name => card_name, :deck_section => 'Sideboard')
       end
     end    
   end
   
   def manage_changes_from_text
-    if self.decklist_text_main.present? or self.decklist_text_sideboard.present?
-      card_references_to_destroy_after_update ||= []
-      self.card_references.main_deck.group_by(&:card_name).each do |card_name, card_references_with_this_name|
-        if card_references_with_this_name.count == 1 # only 1 by this name, it's either new or deleted
-          # if it is a new record, it's newly created, otherwise it's no longer in the text list and needs to be deleted        
-          card_references_to_destroy_after_update << card_references_with_this_name.first.id unless card_references_with_this_name.first.new_record? 
-        else
-          # delete the old ones as the new ones will replace them
-          card_references_with_this_name.to_a.each {|a| card_references_to_destroy_after_update << a.id if a.id.present? }
-        end      
-      end
-      self.card_references.sideboard.group_by(&:card_name).each do |card_name, card_references_with_this_name|
-        if card_references_with_this_name.count == 1 # only 1 by this name, it's either new or deleted
-          # if it is a new record, it's newly created, otherwise it's no longer in the text list and needs to be deleted        
-          card_references_to_destroy_after_update << card_references_with_this_name.first.id unless card_references_with_this_name.first.new_record? 
-        else
-          # delete the old ones as the new ones will replace them
-          card_references_with_this_name.to_a.each {|a| card_references_to_destroy_after_update << a.id if a.id.present? }
-        end      
-      end
-      Mtg::Decklists::CardReference.where(:id => card_references_to_destroy_after_update).destroy_all    
+    card_references_to_destroy_after_update = []
+    self.card_references.main_deck.group_by(&:card_name).each do |card_name, card_references_with_this_name|
+      if card_references_with_this_name.count == 1 # only 1 by this name, it's either new or deleted
+        # if it is a new record, it's newly created, otherwise it's no longer in the text list and needs to be deleted        
+        card_references_to_destroy_after_update << card_references_with_this_name.first.id unless card_references_with_this_name.first.new_record? 
+      else
+        # delete the old ones as the new ones will replace them
+        card_references_with_this_name.to_a.each {|a| card_references_to_destroy_after_update << a.id if a.id.present? }
+      end      
     end
+    self.card_references.sideboard.group_by(&:card_name).each do |card_name, card_references_with_this_name|
+      if card_references_with_this_name.count == 1 # only 1 by this name, it's either new or deleted
+        # if it is a new record, it's newly created, otherwise it's no longer in the text list and needs to be deleted        
+        card_references_to_destroy_after_update << card_references_with_this_name.first.id unless card_references_with_this_name.first.new_record? 
+      else
+        # delete the old ones as the new ones will replace them
+        card_references_with_this_name.to_a.each {|a| card_references_to_destroy_after_update << a.id if a.id.present? }
+      end      
+    end
+    Mtg::Decklists::CardReference.where(:id => card_references_to_destroy_after_update).destroy_all    
   end
   
   def generate_mana_string
@@ -133,11 +129,11 @@ class Mtg::Decklist < ActiveRecord::Base
     output  = ""
     case options[:section]
       when /main deck/i
-        self.card_references.select([:quantity, :card_name]).main_deck.each { |card_reference| output << "#{card_reference.quantity} #{card_reference.card_name}\r\n" }
+        self.card_references.select([:quantity, :card_name]).main_deck.order('card_name ASC').each { |card_reference| output << "#{card_reference.quantity} #{card_reference.card_name}\r\n" }
       when /sideboard/i
-        self.card_references.select([:quantity, :card_name]).sideboard.each { |card_reference| output << "#{card_reference.quantity} #{card_reference.card_name}\r\n" }        
+        self.card_references.select([:quantity, :card_name]).sideboard.order('card_name ASC').each { |card_reference| output << "#{card_reference.quantity} #{card_reference.card_name}\r\n" }        
       else
-        self.card_references.select([:quantity, :card_name]).each { |card_reference| output << "#{card_reference.quantity} #{card_reference.card_name}\r\n" }                
+        self.card_references.select([:quantity, :card_name]).order('card_name ASC').each { |card_reference| output << "#{card_reference.quantity} #{card_reference.card_name}\r\n" }                
     end
     output
   end

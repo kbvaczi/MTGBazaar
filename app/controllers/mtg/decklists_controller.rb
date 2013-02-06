@@ -3,12 +3,21 @@ class Mtg::DecklistsController < ApplicationController
   before_filter :verify_team_z_member, :except  => [:show, :index]
   
   def index
+    set_back_path
+    respond_to do |format|
+      format.html
+      format.js { default_js_render :template => 'mtg/decklists/index' }
+    end
   end
   
   def show
     respond_to do |format|
       format.html do
         render :partial => 'mtg/decklists/show', :locals => {:decklist => current_decklist}
+      end
+      format.js { overlay_js_render :partial => 'mtg/decklists/show', :locals => {:decklist => current_decklist} }
+      format.text do
+        render :text => "#{current_decklist.export_format(:section => 'main deck')}\r\n#{current_decklist.export_format(:section => 'sideboard')}"
       end
     end
   end

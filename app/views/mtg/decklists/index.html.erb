@@ -1,0 +1,35 @@
+<% title 'My Decklists' %>
+
+<% @decklists = current_user.mtg_decklists.order('created_at DESC').page(params[:page]).per(15) %>
+
+<h1>My Decklists</h1>
+
+<%= render :partial => 'mtg/decklists/index_tabs' %>
+
+<div id='content'>
+  <table class='data fixed'>
+    <col width='14%'>
+    <col width='47%'>    
+    <col width='14%'>    
+    <col width='25%'>        
+    <tr class='header_row'>
+      <th>Date</th>
+      <th>Decklist</th>
+      <th>Format</th>
+      <th>Options</th>      
+    </tr>
+    <% @decklists.each do |decklist| %>
+      <tr class='<%= cycle 'odd', 'even' %>'>
+        <td><%= display_time decklist.created_at %></td>
+        <td><%= decklist.name %></td>
+        <td><%= decklist.play_format %></td>
+        <td>
+          <%= link_to 'View', mtg_decklist_path(decklist), :class => 'button2', :remote => true %>
+          <%= link_to 'Edit', edit_mtg_decklist_path(decklist), :class => 'button2' %>
+          <%= link_to 'Delete', mtg_decklist_path(decklist), :method => :delete, :confirm => 'Are you sure you want to delete this decklist?', :class => 'button2' %>
+        </td>
+      </tr>    
+    <% end %>
+    <%= table_paginate_footer :variable => @decklists, :colspan => 4 %>  
+  </table>
+</div>

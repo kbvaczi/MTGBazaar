@@ -33,8 +33,8 @@ class Mtg::Decklists::CardReference < ActiveRecord::Base
 
   end
   
-  def set_sections
-    case self.unprocessed_section
+  def set_sections                
+    case self.deck_section
       when /Sideboard/i
         self.deck_section     = 'Sideboard'
         self.deck_subsection  = processed_subsection

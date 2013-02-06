@@ -40,15 +40,14 @@
   			<ul>
   		    <% if user_signed_in? %>
             <li><%= link_to "Submit a Ticket", new_ticket_path %></li>
-     		    <li><%= link_to "View Ticket History", tickets_path %></li>                   
+     		    <li><%= link_to "View Ticket History", tickets_path %></li>
    		    <% end %>
           <li class="heading"> Documentation </li>
           <li><%= link_to "FAQ", faq_path %></li>
-    			<li><%= link_to "Card Condition Guide", condition_path %></li>  
+    			<li><%= link_to "Card Condition Guide", condition_path %></li>
   			</ul>
 			</div>
 	  </li>
-	  
 
 	  <% if user_signed_in? %>
     	<li class="navbar_drop">
@@ -91,7 +90,7 @@
     			  <li class="heading"><%= current_user.team_z_profile.display_name %></li>
     			  <%= content_tag :li, link_to("My Articles"  , team_z_articles_path) if current_user.team_z_profile.can_write_articles %>    			  
     			  <%= content_tag :li, link_to("My Videos"    , team_z_mtgo_video_series_index_path) if current_user.team_z_profile.can_post_videos %>
-    			  <%= content_tag :li, link_to("Add Decklist" , new_mtg_decklist_path) %>    			  
+    			  <%= content_tag :li, link_to("Manage Decklists" , mtg_decklists_path) %>    			  
     			  <% if current_user.team_z_profile.can_manage_content? %>
       			  <li class="heading">Content Manager</li>
       			  <%= content_tag :li, link_to("Manage Team Articles", team_z_articles_path(:role => 'content_manager')) %>    			  

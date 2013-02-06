@@ -3,7 +3,7 @@
   <div class='center'>
     <span class="t-l t-b"><%= number_to_currency(mtg_card.statistics.price_low.dollars) %> - <%= number_to_currency(mtg_card.statistics.price_high.dollars) %></span>
   </div>
-  <div class='center'>
+  <div class='center mt-s'>
     <% if mtg_card.statistics.listings_available > 0 %>
       <%= link_to "#{mtg_card.statistics.listings_available} For Sale from #{number_to_currency(mtg_card.statistics.price_min)}", mtg_card_path(mtg_card) %>        
     <% else %>

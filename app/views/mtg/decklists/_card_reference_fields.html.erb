@@ -1,26 +1,36 @@
-<div class="pb-s mb mt-s fields card_reference_field" style='position:relative;width:450px;'>
-                                
-  <%= f.input :card_name,         :label => "Card Name",
-                                  :input_html => { :class => "search_text ui-autocomplete-input" , :placeholder => "Name..." , "data-autocomplete" => mtg_cards_autocomplete_name_path },
+<div class="fields card_reference_field" style='position:relative;width:450px;text-align:center;'>
+
+  <%= f.text_field   :card_name,  :class => "mr search_text ui-autocomplete-input", 
+                                  :placeholder => "Card Name..." , 
+                                  "data-autocomplete" => mtg_cards_autocomplete_name_path %>  
+  <div class='center pr-m'></div>
+  <%= f.number_field :quantity,   :value => (f.object.quantity || 1 rescue 1), 
+                                  :class => 'mr-m card_quantity_select numeric', 'data-oldval' => (f.object.quantity || 1 rescue 1),
+                                  :style => 'width:50px;line-height:18px' %>
+                               
+  <div class='center'>                                
+    <%= f.check_box :deck_section, {:checked => (f.object.deck_section == 'Sideboard')}, 'Sideboard', 'Mainboard' %>
+    Sideboard
+  </div>
+  
+  <%# f.input :card_name,         :label => "Card Name",
+                                  :input_html => {  },
                                   :required => true %>                              
 
-  <%= f.input :quantity,          :input_html => {:value => (f.object.quantity || 1 rescue 1), :class => 'card_quantity_select', 'data-oldval' => (f.object.quantity || 1 rescue 1)},
+  <%# f.input :quantity,          :input_html => {:value => (f.object.quantity || 1 rescue 1), :class => 'card_quantity_select', 'data-oldval' => (f.object.quantity || 1 rescue 1)},
                                   :required => true %>                                  
 
-  <%# selected_unprocessed_section = ((f.object.subsection.in? ['Lands','Creatures','Spells'] rescue false) ? f.object.subsection : ((f.object.deck_section == 'Sideboard' rescue false) ? 'Sideboard' : '')) %>
-  <%= f.label " " %>
-  <%= f.input :unprocessed_section, :label => 'Sideboard',
+
+  <%# f.label " " %>
+  <%#= f.input :unprocessed_section, :label => 'Sideboard',
                                     :as => :boolean,
                                     :required => false,
                                     :checked_value => 'Sideboard', 
                                     :unchecked_value => '',
                                     :input_html => { :check => (f.object.deck_section == 'Sideboard') } %>
-                                    
-                                  <%#   :include_blank => false,                                  
-                                    :collection => [['Lands','Lands'], ['Creatures','Creatures'], ['Spells','Spells'], ['Sideboard', 'Sideboard'], ['None', '']],
-                                    :selected => selected_unprocessed_section,
-                                    :input_html => { :class => 'card_section_select', 'data-oldval' => selected_unprocessed_section }%>                                  
                                   
-  <div style='position:absolute;top:0px;right:25px;' title='remove this card'><%= link_to_remove_fields(:name => "X", :form => f, :class => 'button remove_card') %></div>
+  <div style='position:absolute;top:5px;right:25px;'>
+    <%= link_to_remove_fields(:name => "<b>X</b>".html_safe, :form => f, :class => 'button2 remove_card') %>
+  </div>
 
 </div>

@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   has_many   :communications_sent,      :class_name => "Communication",             :foreign_key => "sender_id",      :dependent => :destroy
   has_many   :communications_received,  :class_name => "Communication",             :foreign_key => "receiver_id",    :dependent => :destroy  
   has_many   :mtg_listings,             :class_name => "Mtg::Cards::Listing",       :foreign_key => "seller_id"
+  has_many   :mtg_decklists,            :class_name => "Mtg::Decklist",             :foreign_key => "author_id"  
   has_many   :mtg_purchases,            :class_name => "Mtg::Transaction",          :foreign_key => "buyer_id"
   has_many   :mtg_purchase_items,       :class_name => "Mtg::Transactions::Item",   :through => :mtg_purchases,       :source => :items
   has_many   :mtg_sales,                :class_name => "Mtg::Transaction",          :foreign_key => "seller_id"
