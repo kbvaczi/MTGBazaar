@@ -1,0 +1,18 @@
+<% title 'Manage Team Z Articles' %>
+<% page_description 'Manage Team Z Articles' %>
+
+<% @articles = TeamZ::Article.where(:status => params[:status]).order('created_at DESC').page(params[:page]).per(15) %>
+
+<h1>Manage Team Z Articles</h1>
+
+<div class="group center_wrap">
+  <ul class="tabs">
+    <li <%= "class=selected" if params[:status].in? [nil, "working"] %>> <%= link_to "In-Progress (#{TeamZ::Article.working.count})",  url_for(params.merge(:status => "working")), :remote => true %> </li>
+    <li <%= "class=selected" if params[:status] == "complete" %>>        <%= link_to "Ready For Review (#{TeamZ::Article.complete.count})", url_for(params.merge(:status => "complete")), :remote => true %> </li>      
+    <li <%= "class=selected" if params[:status] == "approved" %>>        <%= link_to "Approved (#{TeamZ::Article.approved.count})", url_for(params.merge(:status => "approved")), :remote => true %> </li>          
+  </ul>
+</div>
+
+<div id='content'>
+  <%= render :partial => 'index_table', :locals => { :articles => @articles, :role => 'manager' } %>  
+</div>

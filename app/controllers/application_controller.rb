@@ -216,6 +216,7 @@ class ApplicationController < ActionController::Base
   
   def default_js_render(options={})
     options = {:template => 'home/index', :update_right_bar => false}.merge(options)
+=begin
     script  = %{
                 $('#center_bar').children('.content,#content').fadeOut(250).queue(function() {
                   $('#center_bar').html("<%= escape_javascript render :template => "#{options[:template]}", :formats => [:html] %>");
@@ -225,14 +226,34 @@ class ApplicationController < ActionController::Base
                   $(this).dequeue();
                 });
                }                       
+=end
+    script  = %{$('#center_bar').html("<%= escape_javascript render :template => "#{options[:template]}", :formats => [:html] %>");
+                $.activateChosenSelect();    
+                initialize_overlays();
+                initialize_tooltips();
+                FB.XFBML.parse(document.getElementById('center_bar'));}
     script  = %{$('#right_bar').html("<%= escape_javascript render  :partial => "shared/right_bar", :formats => [:html] %>");} + script if options[:update_right_bar]
     render :inline => script, :content_type => 'text/javascript'
   end
   
+  def overlay_js_render(options={})
+    options = {:template => 'home/index', :partial => ''}.merge(options)
+    script  = %{
+                <% if options[:partial].present? %>
+                  var content = "<%= escape_javascript render :partial => "#{options[:partial]}", :locals => options[:locals], :formats => [:html] %>";
+                <% else %>
+                  var content = "<%= escape_javascript render :template => "#{options[:template]}", :formats => [:html] %>";                              
+                <% end %>
+                $('#content_overlay').remove(); //remove old overlay to prevent duplicates
+                $('body').append("<div id='content_overlay' class='overlay_window'><div style='overflow-y:auto;overflow-x:hidden;max-height:500px;text-align:left;'>" + content + "</div></div>");
+                $('#content_overlay').overlay({
+                  mask: '#000',
+                  load: true,
+                  onBeforeLoad: function() {this.getOverlay().centerScreen();}
+                });
+                
+              }
+    render :inline => script, :locals => {:options => options }, :content_type => 'text/javascript'
+  end
+  
 end
-
-=begin
-
-["darnovo@gmail.com", "ken@mtgbazaar.com", "shennissar@hotmail.com", "johnnyvaleriote@gmail.com", "onislave@gmail.com", "chaosevoker@gmail.com", "nathanlilly@lycos.com", "drshakar@live.com", "anthonysirfalot@yahoo.com", "azariah@azariah.net", "taylor_w87@yahoo.com", "cruzing2001@yahoo.com", "fusionmod@gmail.com", "marcrajotte@shaw.ca", "customerservice@jaxcardsingles.com", "tgpsychoguy@aol.com", "dragbait@yahoo.com", "remeltphoto@gmail.com", "jefemats@hotmail.com", "schaefer.sm@gmail.com", "info@fatogre.com", "schm9400@gmail.com", "mritak@hotmail.com", "shwn@bol.com.br", "sandrete66@gmail.com", "ilovechristiwu@gmail.com", "hugodanobeitia@hotmail.com", "chadwick.j.hewitt@gmail.com", "juan.the-oath@hotmail.com", "fchenard@gmail.com"]
-
-=end

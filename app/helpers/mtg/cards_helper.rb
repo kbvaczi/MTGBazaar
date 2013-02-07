@@ -22,7 +22,7 @@ module Mtg::CardsHelper
   
   # Converts mana string to a series of corresponding image links to be displayed
   def display_symbols(string)
-    string = "{0}" if string.empty? # show a 0 mana symbol if mana string is empty      
+    string = "{0}" if string.nil? or string.empty? # show a 0 mana symbol if mana string is empty      
     string.gsub(/[{]([_a-zA-Z0-9 ]*)[}]/) do |letter| #find the pattern "{xy}" where xy are any letters or numbers
         letter = letter.gsub(/[{](.+)[}]/, '\1').downcase #strip the {} and lowercase the letters
         if letter == "t" #if the letters are t, create tap image
@@ -183,7 +183,11 @@ module Mtg::CardsHelper
 
   # displays set symbol for a given set code
   def display_set_symbol(set, options = {})
-    content_tag(:span, "", :class => "set_symbol_sprite set_symbol_#{set.code}", :title => "#{set.name}")
+    if options[:wrapper] == true
+      content_tag(:span, content_tag(:span, "", :class => "set_symbol_sprite set_symbol_#{set.code}", :title => "#{set.name}"), :class => 'set_symbol_sprite_wrapper')
+    else
+      content_tag(:span, "", :class => "set_symbol_sprite set_symbol_#{set.code}", :title => "#{set.name}")
+    end
   end
   
   # displays set symbol for a given set code

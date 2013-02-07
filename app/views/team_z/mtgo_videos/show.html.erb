@@ -1,0 +1,40 @@
+<% title @video.title %>
+<% page_description @video.description %>
+
+<h1><%= @video.title %></h1>
+
+<div id='content'>
+  
+
+  
+  <div class='team_z_profile'>
+    <%= render :partial => 'team_z/profiles/show_header', :locals => {:profile => @video.profile, :section => 'mtgo_videos' } %>
+  </div>
+  
+  <%= link_to 'View all Videos', team_z_profile_path(@video.profile, :section => 'mtgo_videos'), :remote => true, :class => 'right mr mb' %>
+  <br class='spacer'/>
+  <div id='video_slider_wrapper' class='center_wrap'>
+    <div id='video_slider'>
+      <div class='video_slider_slide'>
+        <iframe width="375" height="281" src="https://www.youtube.com/embed/4AI_3NbC-1Y?rel=0" frameborder="0" allowfullscreen></iframe>
+      </div>
+      <div class='video_slider_slide'></div>    
+    </div>
+  </div>
+  
+</div>
+
+
+<script type="text/javascript">
+  $('#video_slider').bxSlider({
+    useCSS:      false,	  
+    auto:        false,
+//		pause:       10000,
+    mode:        'fade',  
+		controls:    false,
+		randomStart: false,
+		pager:       true,
+    /*slideWidth:  '500px'*/
+  });
+  
+</script>

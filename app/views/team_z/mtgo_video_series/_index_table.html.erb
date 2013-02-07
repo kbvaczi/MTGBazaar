@@ -1,0 +1,29 @@
+<% role ||= 'user' %>
+
+<table class='data fixed'>
+  <col width='14%'>
+  <col width='47%'>    
+  <col width='14%'>    
+  <col width='25%'>        
+  <tr class='header_row'>
+    <th>Date</th>
+    <th>Video Series</th>
+    <th>Status</th>
+    <th>Options</th>      
+  </tr>
+  <% video_series_index.each do |video_series| %>
+    <tr class='<%= cycle 'odd', 'even' %>'>
+      <td><%= display_time video_series.created_at %></td>
+      <td><%= video_series.title %><%= " (#{video_series.profile.display_name})" if role == 'manager' %></td>
+      <td><%= video_series.active ? 'Published' : 'Unpublished' %></td>
+      <td>
+        <%= link_to 'View', team_z_mtgo_video_series_path(video_series), :class => 'mr-s' %>
+        <%= link_to 'Edit', edit_team_z_mtgo_video_series_path(video_series) if video_series.active != true or role == 'manager' %>
+        <%= link_to 'Publish', edit_to_publish_team_z_mtgo_video_series_path(video_series), :remote => true, :class => 'ml-s' if !video_series.active and role == 'manager'%>
+        <%= link_to 'Un-Publish', unpublish_team_z_mtgo_video_series_path(video_series), :method => :put, :class => 'ml-s' if role == 'manager' and video_series.active %>        
+        <%= link_to 'Delete', team_z_mtgo_video_series_path(video_series), :method => :delete, :confirm => 'Are you sure you want to delete this video series?', :class => 'ml-s' if !video_series.active %>
+      </td>
+    </tr>    
+  <% end %>
+  <%= table_paginate_footer :variable => video_series_index, :colspan => 4 %>  
+</table>

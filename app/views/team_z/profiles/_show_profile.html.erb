@@ -1,0 +1,24 @@
+<table class='data'>
+  <tr class='header_row'>
+    <th class='header_row2'>About <%= profile.display_name %></th>
+  </tr>
+  <tr class='odd'>
+    <td> <p><%= profile.data["Description"] %> </p></td>
+  </tr>
+</table>    
+<br class='spacer'/>
+<table class='data'>
+  <col width="40%">
+  <col width="60%">
+  <tr class='header_row'>
+    <th class='header_row2' colspan=2>Member Profile</th>
+  </tr>  
+  <% profile.data.each do |key, value| %>
+    <% if value.present? && key != 'Description'%>
+      <tr class='<%= cycle 'odd', 'even' %>'>
+        <th class='header_row2' style='text-align:left;padding:10px;'><%= key.to_s %></th>
+        <td style='padding:10px;'><%= value.html_safe %></td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>

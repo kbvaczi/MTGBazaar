@@ -28,7 +28,7 @@ function myCustomConfirmBox(message, callback) {
         $( "#dialog-confirm" ).dialog({
             resizable: true,
             height:'auto',
-            modal: true,
+            modal: true,           
             buttons: {
                 Yes: function() {
                     $( this ).dialog( "close" );
@@ -47,9 +47,11 @@ function myCustomAlertBox(message) {
   $('#dialog-confirm').remove();
   $('body').append(dialogHtml);
   $( "#dialog-confirm" ).dialog({
+    title: 'Attention',
     resizable: false,
     height:'auto',
-    modal: true,
+    stack:false,  
+    modal: true,   
     buttons: {
       OK: function() {
         $( this ).dialog( "close" );

@@ -1,49 +1,49 @@
 
-  <% unless user_signed_in? %> <%# user is not logged in %>
+<% unless user_signed_in? %> <%# user is not logged in %>
 
-  	<h1>Start Your Free Membership Today</h1>
-  	<div style="margin-top:25px;">
-  		<center>
-  		  <%= link_to image_tag("https://mtgbazaar.s3.amazonaws.com/images/mtg/misc/z_join_us.png"), new_user_registration_path %>
-  		</center>
-  	</div>
-  	
-  <% else %>
+	<h1>Start Your Free Membership Today</h1>
+	<div style="margin-top:25px;">
+		<center>
+		  <%= link_to image_tag("https://mtgbazaar.s3.amazonaws.com/images/mtg/misc/z_join_us.png"), new_user_registration_path %>
+		</center>
+	</div>
+	
+<% else %>
 
-    <h1>
-      <%= "#{current_user.username}" %>   
-    </h1>
-    <div class="ma-m">
-      <div class="mt-s"> 
-        <div class="left" style="margin-top:-3px;"><%= link_to image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/misc/cart.png", :height => "20px", :width => "auto"), show_cart_path %></div>
-        <div class="left ml-s"> <%= current_cart.item_count > 0 ? link_to("Cart (#{pluralize(current_cart.item_count,"item","items")}):", show_cart_path) : " Cart: 0 items" %></div>  
-        <div class="right"><%= number_to_currency(current_cart.total_price) %></div>  
-      </div>
-      <br/>
-
-      <div class="mt-m"> <div class="left">Recent Purchases:</div>  <div class="right"><%= link_to current_user.confirmed_purchases.recent.count, account_purchases_path %></div> </div> <br/>
-
-      <div class="mt-m"> <div class="left">Recent Sales:</div>  <div class="right"><%= link_to current_user.confirmed_sales.recent.count, account_sales_path %></div>  </div> <br/>
-	    <div class=""> <div class="left">Sales Ready to Ship:</div> <div class="right"><%= link_to current_user.confirmed_sales.ready_to_ship.count, account_sales_path(:status => "confirmed") %></div>  </div> <br/>
-	    
-      <div class="mt-m"> <div class="left">New Messages:</div><div class="right"><%= link_to current_user.communications_received.unread.count, communications_path %></div></div> <br/>
-      <div class=""> <div class="left">Active Listings:</div><div class="right"><%= link_to current_user.mtg_listings.active.count, account_seller_panel_path(:status => "active") %></div></div>
-      <br/>
-        
-      <div class="">
-        <div class="left">Seller Status:</div>
-        <% if current_user.active %>
-          <div id="active" class="right">
-						<span id="a"><%= link_to "Active", account_seller_status_toggle_path, :remote => true, :method => :post%> </span>
-						<span id="b"><%= link_to "Set to Inactive", account_seller_status_toggle_path, :remote => true, :method => :post, :confirm => "Going inactive will make all your listings temporarily invisible to buyers" %></span>
-					</div>
-        <% else %>
-          <div id="inactive" class="right">
-						<span id="c"><%= link_to "Inactive", account_seller_status_toggle_path, :remote => true, :method => :post %> </span>
-						<span id="d"><%= link_to "Set to Active", account_seller_status_toggle_path, :remote => true, :method => :post, :confirm => "Going active will make all your <i>active</i> listings visible to buyers" %></span>
-					</div>
-        <% end %>
-      </div>
+  <h1>
+    <%= "#{current_user.username}" %>   
+  </h1>
+  <div class="ma-m">
+    <div class="mt-s"> 
+      <div class="left" style="margin-top:-3px;"><%= link_to image_tag("https://s3.amazonaws.com/mtgbazaar/images/mtg/misc/cart.png", :height => "20px", :width => "auto"), show_cart_path %></div>
+      <div class="left ml-s"> <%= current_cart.item_count > 0 ? link_to("Cart (#{pluralize(current_cart.item_count,"item","items")}):", show_cart_path) : " Cart: 0 items" %></div>  
+      <div class="right"><%= number_to_currency(current_cart.total_price) %></div>  
     </div>
+    <br/>
+
+    <div class="mt-m"> <div class="left">Recent Purchases:</div>  <div class="right"><%= link_to current_user.confirmed_purchases.recent.count, account_purchases_path %></div> </div> <br/>
+
+    <div class="mt-m"> <div class="left">Recent Sales:</div>  <div class="right"><%= link_to current_user.confirmed_sales.recent.count, account_sales_path %></div>  </div> <br/>
+    <div class=""> <div class="left">Sales Ready to Ship:</div> <div class="right"><%= link_to current_user.confirmed_sales.ready_to_ship.count, account_sales_path(:status => "confirmed") %></div>  </div> <br/>
     
-  <% end %>  
+    <div class="mt-m"> <div class="left">New Messages:</div><div class="right"><%= link_to current_user.communications_received.unread.count, communications_path %></div></div> <br/>
+    <div class=""> <div class="left">Active Listings:</div><div class="right"><%= link_to current_user.mtg_listings.active.count, account_seller_panel_path(:status => "active") %></div></div>
+    <br/>
+      
+    <div class="">
+      <div class="left">Seller Status:</div>
+      <% if current_user.active %>
+        <div id="active" class="right">
+					<span id="a"><%= link_to "Active", account_seller_status_toggle_path, :remote => true, :method => :post%> </span>
+					<span id="b"><%= link_to "Set to Inactive", account_seller_status_toggle_path, :remote => true, :method => :post, :confirm => "Going inactive will make all your listings temporarily invisible to buyers" %></span>
+				</div>
+      <% else %>
+        <div id="inactive" class="right">
+					<span id="c"><%= link_to "Inactive", account_seller_status_toggle_path, :remote => true, :method => :post %> </span>
+					<span id="d"><%= link_to "Set to Active", account_seller_status_toggle_path, :remote => true, :method => :post, :confirm => "Going active will make all your <i>active</i> listings visible to buyers" %></span>
+				</div>
+      <% end %>
+    </div>
+  </div>
+  
+<% end %>  

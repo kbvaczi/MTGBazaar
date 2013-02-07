@@ -1,0 +1,70 @@
+<%= semantic_form_for [:admin, @admin_slider_center_slide] do |f| %>
+  
+  <%= f.inputs "Form" do %>
+  
+    <%= f.input :link_type, :as => :radio,
+                            :collection => ['URL', 'News Feed'],
+                            :default => 'URL' %>
+
+    <%= f.input :link, :as => :string %>
+        
+    <% news_feeds = NewsFeed.viewable.select([:title, :id]).order(:start_at) %>        
+    <%= f.input :news_feed_id, :as         => :select,
+                               :collection => news_feeds,
+                               :include_blank => false,
+                               :selected   => @admin_slider_center_slide.news_feed_id || news_feeds.first %>
+    <%= f.input :title %>
+    <%= f.input :description %>
+    
+    <script>
+      $(document).ready(function() { 
+        if ('<%= escape_javascript @admin_slider_center_slide.link_type %>' == 'URL') {
+          $('#admin_slider_center_slide_link_input').show();                 
+          $('#admin_slider_center_slide_news_feed_id_input').hide();          
+        } else {
+          $('#admin_slider_center_slide_link_input').hide();          
+          $('#admin_slider_center_slide_news_feed_id_input').show();          
+        }
+      });
+      $('#admin_slider_center_slide_link_type_url, #admin_slider_center_slide_link_type_news_feed, #admin_slider_center_slide_news_feed_id').change(function() {
+        if ($('#admin_slider_center_slide_link_type_url').attr('checked') == 'checked'){
+          $('#admin_slider_center_slide_link_input').show();
+          $('#admin_slider_center_slide_news_feed_id_input').hide();
+        } else {
+          get_link();
+          $('#admin_slider_center_slide_news_feed_id_input').show();
+          $('#admin_slider_center_slide_link_input').hide();
+        }
+      });
+      
+      function get_link(){
+        $.ajax({
+      		url: '<%= escape_javascript get_news_feed_link_admin_admin_slider_center_slides_path %>?' + "id=" + $("#admin_slider_center_slide_news_feed_id").val(),
+      		type: "GET",
+      		dataType: "json",
+          error: function (xhr, ajaxOptions, thrownError) {
+            alert('error connecting');
+          },
+      		success: function(data) {
+      			if(data != "") {
+              $('#admin_slider_center_slide_link').val(data['link']);
+              $('#admin_slider_center_slide_title').val(data['title']);              
+              $('#admin_slider_center_slide_description').val(data['description']);              
+      			} else {
+      			  alert('error return value');
+      			}
+      		}
+      	});        
+      } 
+    </script>
+    
+    <%= f.input :image %>
+    <%= f.input :slide_number,    :as => :select,
+                                  :include_blank => false,
+                                  :collection => [['do not display',nil],1,2,3,4,5] %>
+                                                
+  <% end %>
+  
+  <%= f.submit %>
+  
+<% end %>

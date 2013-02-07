@@ -1,0 +1,12 @@
+var form = "<%= escape_javascript render :partial => 'team_z/articles/form_publish', :formats => [:html] %>";
+$('#article_publish_form').remove();
+$('#center_bar').append("<div id='article_publish_form' class='overlay_window'><table class='data' style='margin-left:-5px;'><tr class='header_row'><th>Publish <%= escape_javascript @article.title %></th></tr><tr class='odd'><td>" + form + "</td></tr></table></div>");
+
+$('#article_publish_form').overlay({
+  mask: '#000',
+  load: true,
+  onBeforeLoad: function() {
+    this.getOverlay().appendTo('body').centerScreen();
+  },
+});
+

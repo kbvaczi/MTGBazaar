@@ -1,0 +1,40 @@
+<% section ||= params[:section] %>
+
+<div class='center_wrap'>
+  <div id='team_z_profile_header_image' style="background-image:url(<%= profile.picture %>);"></div>
+</div>
+
+<ul class="tabs2">
+  <li <%= "class=selected" if not section.present? %>> <%= link_to "Profile",  team_z_profile_path(params.merge(:section => nil, :id => profile.id)), :remote => true %> </li>  
+  <% if profile.articles.present? %>
+    <li <%= "class=selected" if section == "articles" %>> <%= link_to "Articles", team_z_profile_path(params.merge(:section => "articles", :id => profile.id)), :remote => true %> </li>  
+  <% end %>  
+  <% if profile.mtgo_video_series.present? %>  
+    <li <%= "class=selected" if section == "mtgo_videos" %>> <%= link_to "Team Z TV", team_z_profile_path(params.merge(:section => "mtgo_videos", :id => profile.id)), :remote => true %> </li>  
+  <% end %>
+  <% if profile.can_stream %>
+    <li id='live_stream_offline' <%= "class=selected" if section == "stream"   %>> <%= link_to "Live Stream", "http://www.twitch.tv/#{profile.twitch_tv_username}", :remote => false, :target => '_blank' %> </li>  
+  <% end %>  
+  <li class="tab2 message">
+  </li>  
+</ul>
+
+<% if profile.can_stream && profile.twitch_tv_username.present? %>
+  <script type="text/javascript">
+    var channelName = '<%= escape_javascript profile.twitch_tv_username %>';
+    check_live_status();
+    setInterval(check_live_status, 30000);
+  
+    function check_live_status() {
+      $.getJSON("http://api.justin.tv/api/stream/summary.json?channel="+ channelName + "&jsonp=?", function(a){
+        if (parseInt(a.streams_count) > 0) {
+          $('#live_stream_pending').attr('id', 'live_stream_online');
+          $('#live_stream_offline').attr('id', 'live_stream_online');        
+        } else {
+          $('#live_stream_pending').attr('id', 'live_stream_offline');
+          $('#live_stream_online').attr('id', 'live_stream_offline');        
+        }
+      });
+    }  
+  </script>
+<% end %>

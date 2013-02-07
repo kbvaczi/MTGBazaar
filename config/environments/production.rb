@@ -13,7 +13,6 @@ MTGBazaar::Application.configure do
 
   # Serving static assets and setting cache headers 
   # which will be used by cloudfront as well
-  config.serve_static_assets = true
   config.static_cache_control = "public, max-age=11536000"
 
   # Code is not reloaded between requests
@@ -24,7 +23,7 @@ MTGBazaar::Application.configure do
   config.action_controller.perform_caching = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
-  config.serve_static_assets = true
+  config.serve_static_assets = false
 
   # Compress JavaScripts and CSS
   config.assets.compress = true
@@ -89,7 +88,7 @@ MTGBazaar::Application.configure do
   STDOUT.sync = true
 
   logger = Logger.new(STDOUT)
-  logger.level = 0 # Must be numeric here - 0 :debug, 1 :info, 2 :warn, 3 :error, and 4 :fatal
+  logger.level = 1 # Must be numeric here - 0 :debug, 1 :info, 2 :warn, 3 :error, and 4 :fatal
   # NOTE:   with 0 you're going to get all DB calls, etc.
 
   Rails.logger = Rails.application.config.logger = logger

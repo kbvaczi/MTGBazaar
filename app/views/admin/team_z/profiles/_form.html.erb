@@ -1,0 +1,53 @@
+<%= semantic_form_for [:admin, @team_z_profile] do |f| %>
+
+  <%= f.inputs "Form" do %>
+    <br class='spacer'/>      
+    <h3 style='margin-left:20px'>Profile Setup</h3>  
+    <%= f.input :user_id, :as => :select,
+                          :hint => 'Select User on MTGBazaar that this profile belongs to.  That user will be able to edit content based on permissions given below.',
+                          :collection => User.select([:username, :id]),
+                          :input_html => {:class => 'chzn-select', :style => 'width:200px'} %>
+    <%= f.input :display_name %>
+    <%= f.input :avatar %>    
+    <%= f.input :picture %>
+    <%= f.input :active, :hint => 'Member must be active to have any content viewable on site' %>       
+
+    <br class='spacer'/>    
+    <h3 style='margin-left:20px'>Member Info</h3>
+        
+    <%= f.inputs :for => [:data, (f.object.data || {})], :style => 'border:none;box-shadow:none;' do |data_fields| %>
+      <% TeamZ::Profile.default_profile_fields.each do |profile_field| %>
+        <% profile_field_value = (f.object.data[profile_field] rescue "") %>
+        <%= data_fields.input profile_field.to_sym, :as => 'text',
+                                                    :required => false,
+                                                    :input_html => { :style => (profile_field.length > 20 or profile_field_value.length  > 20) ? 'height:40px;' : 'height:13px;', 
+                                                                     :value => profile_field_value } %>        
+      <% end %>
+    <% end %>
+    
+
+    <br class='spacer'/>    
+    <h3 style='margin-left:20px'>Permissions</h3>
+    <%= f.input :can_manage_content,  :label => 'This team member is a content manager',
+                                      :hint => 'Content managers can edit and/or publish content for the entire team',
+                                      :required => false %>                                      
+    <br class='spacer'/>         
+                                     
+    <%= f.input :can_write_articles, :label => 'This team member can write articles' %>    
+    <%= f.input :article_series_name, :label => '&nbsp;',
+                                      :hint => 'Article Series Name (only fill out if user can write articles)',
+                                      :required => false %>
+                                      
+    <%= f.input :can_post_videos,     :label => 'This team member can post videos' %>                                      
+    
+    <%= f.input :can_stream,          :label => 'This team member can live stream' %>
+    <%= f.input :twitch_tv_username,  :label => '&nbsp;',
+                                      :hint => 'Twitch TV Username',
+                                      :as => :string,
+                                      :required => false %>                                          
+    
+  <% end %>
+  
+  <%= f.submit %>
+  
+<% end %>

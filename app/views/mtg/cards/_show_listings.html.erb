@@ -1,8 +1,4 @@
-<% if params[:type] == "playsets" %>
-  <%= link_to "Sell a Playset", new_mtg_cards_listings_playset_path(:card_id => @mtg_card.id), :class => "button right mr-s" %>  
-<% else %>
-  <%= link_to "Sell this Card", new_mtg_cards_listing_path(:card_id => @mtg_card.id), :class => "button right mr-s" %>
-<% end %>
+
 
 <br class="spacer"/>
 

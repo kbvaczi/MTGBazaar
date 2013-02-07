@@ -1,0 +1,18 @@
+
+<%= simple_form_for @video_series, :url => publish_team_z_mtgo_video_series_path(@video_series), :method => :put do |f| %>
+  
+  <br class='spacer'/>
+                                             
+  <%= f.input :active_at,   :label => 'Publish This Video Series On',
+                            :hint => 'Video series will go live on this date. Leave blank to make post live immediately',
+                            :discard_minute => true, :discard_seconds => true %>
+
+  <%= f.input :featured,    :label => 'Featured on Front Page',
+                            :as => :boolean %>                            
+
+  <br class='spacer'/>
+  <br class='spacer'/>  
+  
+  <%= f.submit 'Publish This Video series' %>
+  
+<% end %>

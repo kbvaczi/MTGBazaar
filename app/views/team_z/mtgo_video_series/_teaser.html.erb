@@ -1,0 +1,12 @@
+<div class='article_bar content_shadow'>
+  <h1>Team Z TV</h1>
+  <div>
+    <div class='avatar_wrapper left'>
+      <%= link_to content_tag(:div, '', {:class => 'avatar', :style => "background-image:url(#{video_series.profile.avatar_url.to_s});" }), team_z_profile_path(video_series.profile), :title => 'More about this author' %>
+    </div>
+    <div class="shadow" style="height:90px;">
+      <div class="left title"><h2><%= link_to video_series.title.truncate(50, :omission => "..."), team_z_mtgo_video_series_path(video_series) %></h2></div>
+      <div class="left description"><%= video_series.description.truncate(90, :omission => "...") %></div>        
+    </div>
+  </div>
+</div>

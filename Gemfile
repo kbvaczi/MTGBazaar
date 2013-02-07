@@ -18,7 +18,6 @@ gem "smart_tuple", "~> 0.1.2"                                       # Aid for bu
 gem "money", "~> 4.0.2"                                             # handles currency inputs and currency conversions if we need those in the future
 gem "encryptor", "~> 1.1.3"                                         # 2-way encryption using SSL
 gem "attr_encrypted", "~> 1.2.1"                                    # have rails automatically encrypt certain fields
-
 #gem "heroku"                                                        # allows application to talk to heroku web hosting service
                                                                      # this gem is now depreciated to be replaced by the heroku toolbelt  
                                                                      
@@ -29,7 +28,8 @@ gem "fog", "~> 1.3.1"                                               # supports a
 gem "activemerchant", "~> 1.26.0", :require => 'active_merchant'    # integration of PayPal
 gem "active_paypal_adaptive_payment", "~> 0.3.15"                   # Adaptive Payments for ActiveMerchant for withdraws
 
-gem "ckeditor", "~> 3.7.1"                                          # blog editor
+#gem "ckeditor", "~> 4.0.0.rc2"
+gem "ckeditor", "~> 3.7.3"                                          # blog editor
 gem "mini_magick", "~> 3.4"                                         # image manipulation for ckeditor
 
 #gem "girl_friday", "~> 0.10.0"                                     # background processing for unicorn...
@@ -93,16 +93,3 @@ group :assets do
   gem 'yui-compressor'
   # gem 'asset_sync'                                                  # Load assets to S3 during compilation on Heroku, serve assets from S3
 end
-
-
-
-# To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
-
-
-# Deploy with Capistrano
-# gem 'capistrano'
-
-# To use debugger
-# gem 'ruby-debug'
-

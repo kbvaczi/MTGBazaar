@@ -1,0 +1,29 @@
+<% title @article.title %>
+<% page_description @article.description %>
+
+<h1><%= @article.profile.display_name %></h1>
+
+<div id='content'>
+  <div class='team_z_profile'>
+    <%= render :partial => 'team_z/profiles/show_header', :locals => {:profile => @article.profile, :section => 'articles' } %>
+  </div>
+  <div class='article_header group'>
+    <h2><%= @article.title %></h2>
+    <div class='article_header_date left ml-m mb-s'><%= display_time(@article.active_at || @article.created_at, :format => 'long') %></div>
+
+  </div>
+  <div class='right pb-s'>
+    <div class="fb-like" data-href="<%= team_z_article_url(@article) %>" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false" data-font="arial" style='text-align:left;'></div>
+    &nbsp;&nbsp;
+     <iframe allowtransparency="true" frameborder="0" scrolling="no" src="https://platform.twitter.com/widgets/tweet_button.html?url=<%= team_z_article_url(@article)%>" style="width:100px; height:20px;"></iframe>
+  </div>  
+  <div class='mb-s ml' style='text-align:left;'><%= link_to 'View all articles by this author', team_z_profile_path(@article.profile, :section => 'articles'), :remote => true %></div>  
+  <div class='article_body'>
+    <%= @article.body.html_safe %>
+  </div>
+  <div class='article_footer mt'>
+    <div class="fb-comments" data-href="<%= team_z_article_url(@article) %>" data-width="520" data-num-posts="5"></div>
+  </div>
+  
+</div>
+

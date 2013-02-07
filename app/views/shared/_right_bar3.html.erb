@@ -1,9 +1,7 @@
-<div class="left">	
-  
-  <div id="rightBar3" class="hidden">
-  
+<h1></h1>
+  <div id="slider_right_bar_3">  
   	<% cache("top_cards", :expires_in => 2.hours) do %>  
-  	  <div class="right_bar3">	
+  	  <div class="right_bar_slider_object">	
   	    <h1>Top Cards</h1>
   		  <%  
 		      top_cards = Mtg::Card.includes(:set).joins(:sales => :transaction).
@@ -39,14 +37,14 @@
   	<% end %>	
 	
   	<% cache("recent_expansions", :expires_in => 2.hours) do %>  	
-  	  <div class="right_bar3">	
+  	  <div class="right_bar_slider_object">	
     	  <h1>Recent Expansions</h1>
     	  <% recent_added = Mtg::Set.order('release_date DESC').limit(7) %>
     	  <div class="mr-m ml-s">
           <table class="data fixed">
             <% recent_added.each do |set| %>
               <tr style="margin:0px;padding:0;">
-  		          <td width="30px" style="padding:0px;"> <%= display_set_symbol(set) %> </td>
+  		          <td width="30px" style="padding:0px;"> <%= display_set_symbol(set, :wrapper => true) %> </td>
                 <td              style="margin:0;padding:1px;text-align:left;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;"> <%= link_to set.name, mtg_cards_path(:set => set.code) %> </td>          
               </tr>
            	<% end %>
@@ -56,7 +54,7 @@
   	<% end %>
   	
   	<% cache("top_sellers", :expires_in => 2.hours) do %>  	
-  	  <div class="right_bar3">	
+  	  <div class="right_bar_slider_object">	
     	  <h1>Top Sellers</h1>
     	  <% top_sellers = User.active.includes(:statistics).where("user_statistics.approval_percent > \'90.0\'").order("user_statistics.number_sales DESC").limit(7) %>
     	  <div class="mt-s mr-s ml-s">
@@ -73,5 +71,3 @@
   	<% end %>
 
   </div>  
-  
-</div>

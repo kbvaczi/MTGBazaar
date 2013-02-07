@@ -1,0 +1,20 @@
+<% title 'Edit Decklist' %>
+<% page_description 'Edit Decklist' %>
+
+<h1>Edit Decklist: <%= @decklist.name %></h1>
+
+<div class="group center_wrap">
+  <ul class="tabs">
+    <li <%= "class=selected" if params[:section].in? [nil, 'paste'] %>> <%= link_to "Paste Decklist",     edit_mtg_decklist_path(params.merge(:section => "paste")),   :remote => true %> </li>
+    <li <%= "class=selected" if params[:section] == "scratch"       %>> <%= link_to "Build From Scratch", edit_mtg_decklist_path(params.merge(:section => "scratch")), :remote => true %> </li>
+  </ul>
+</div>
+
+<%=
+  case params[:section]
+    when 'scratch'
+      render :partial => 'mtg/decklists/new_scratch'
+    else 
+      render :partial => 'mtg/decklists/new_paste'    
+  end 
+%>

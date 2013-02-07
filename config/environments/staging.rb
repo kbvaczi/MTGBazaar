@@ -10,18 +10,17 @@ MTGBazaar::Application.configure do
 
   # Serving static assets and setting cache headers 
   # which will be used by cloudfront as well
-  config.serve_static_assets = true
   config.static_cache_control = "public, max-age=11536000"
 
   # Code is not reloaded between requests
-  config.cache_classes = true
+  config.cache_classes = false
 
   # Full error reports are disabled and caching is turned on
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
-  config.serve_static_assets = true
+  config.serve_static_assets = false
 
   # Compress JavaScripts and CSS
   config.assets.compress = true
@@ -65,7 +64,8 @@ MTGBazaar::Application.configure do
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   # config.assets.precompile += %w( search.js )
   # add these files to be pre-compiled... for some reason they are missed?  This is needed to get CKEditor to work for Heroku
-  config.assets.precompile += ['ckeditor/config.js', 'ckeditor/skins/kama/editor.css', 'ckeditor/lang/en.js']
+  # config.assets.precompile += [ /ckeditor\/\w+.(css|js)/, 'ckeditor/config.js', 'ckeditor/skins/kama/editor.css', 'ckeditor/lang/en.js']
+  config.assets.precompile += [ 'ckeditor/*' ]  
 
   # Disable delivery errors, bad email addresses will be ignored
   config.action_mailer.raise_delivery_errors = false

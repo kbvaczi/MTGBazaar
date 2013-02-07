@@ -8,7 +8,7 @@ class Ticket < ActiveRecord::Base
   validate :verify_transaction_number, :verify_offender_username, :normal_users_cannot_set_strikes
   validates_presence_of           :problem, :author_id, :author_type
   validates :description,         :presence => true, 
-                                  :length => {:maximum => 500}  
+                                  :length => {:maximum => 1000}  
   after_create :set_ticket_number
   
   # these class variables are accessible to be changed by user when creating a new ticket
@@ -21,8 +21,6 @@ class Ticket < ActiveRecord::Base
   def to_param
     "#{id}-#{ticket_number}".parameterize 
   end
-  
-
   
   # requires user to either 1) submit blank transaction ID, or 2) submit correct transaction ID which is associated with themselves
   def verify_transaction_number

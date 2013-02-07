@@ -1,0 +1,12 @@
+<%= simple_form_for @decklist do |f| %>
+
+  <%= render :partial => 'form', :locals => { :decklist => @decklist, :f => f } %>
+  
+  <div class='center_wrap mt'>
+    <%= link_to_add_fields({:name => "+ Add Card", :form => f, :association => 'card_references', :class => 'mr center button2 add_card'}) %>
+    <br class='spacer'/>
+    <br class='spacer'/>    
+    <%= f.submit 'Submit' %>
+  </div>
+  
+<% end %>

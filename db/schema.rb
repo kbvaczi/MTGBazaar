@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121222234629) do
+ActiveRecord::Schema.define(:version => 20130117144431) do
 
   create_table "accounts", :force => true do |t|
     t.integer  "user_id"
@@ -49,6 +49,18 @@ ActiveRecord::Schema.define(:version => 20121222234629) do
   add_index "active_admin_comments", ["author_type", "author_id"], :name => "index_active_admin_comments_on_author_type_and_author_id"
   add_index "active_admin_comments", ["namespace"], :name => "index_active_admin_comments_on_namespace"
   add_index "active_admin_comments", ["resource_type", "resource_id"], :name => "index_admin_notes_on_resource_type_and_resource_id"
+
+  create_table "admin_slider_center_slides", :force => true do |t|
+    t.integer  "news_feed_id"
+    t.string   "title"
+    t.string   "description"
+    t.string   "image"
+    t.string   "link_type",    :default => "URL"
+    t.string   "link"
+    t.integer  "slide_number"
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+  end
 
   create_table "admin_users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -168,6 +180,35 @@ ActiveRecord::Schema.define(:version => 20121222234629) do
     t.string "name", :default => ""
   end
 
+  create_table "mtg_decklists", :force => true do |t|
+    t.integer  "author_id"
+    t.string   "name"
+    t.string   "mana_string"
+    t.string   "play_format"
+    t.string   "event"
+    t.boolean  "active"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "mtg_decklists", ["active"], :name => "index_mtg_decklists_on_active"
+  add_index "mtg_decklists", ["author_id"], :name => "index_mtg_decklists_on_author_id"
+  add_index "mtg_decklists", ["name"], :name => "index_mtg_decklists_on_name"
+
+  create_table "mtg_decklists_card_references", :force => true do |t|
+    t.integer  "decklist_id"
+    t.integer  "card_id"
+    t.string   "card_name"
+    t.string   "deck_section"
+    t.string   "deck_subsection"
+    t.integer  "quantity"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "mtg_decklists_card_references", ["card_name"], :name => "index_mtg_decklists_card_references_on_card_name"
+  add_index "mtg_decklists_card_references", ["decklist_id"], :name => "index_mtg_decklists_card_references_on_decklist_id"
+
   create_table "mtg_listings", :force => true do |t|
     t.integer  "card_id"
     t.integer  "seller_id"
@@ -230,7 +271,11 @@ ActiveRecord::Schema.define(:version => 20121222234629) do
     t.integer  "block_id"
     t.string   "name",         :default => "",           :null => false
     t.string   "code",         :default => "",           :null => false
+<<<<<<< HEAD
     t.date     "release_date", :default => '2013-01-27'
+=======
+    t.date     "release_date", :default => '2013-01-25'
+>>>>>>> articles
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.boolean  "active",       :default => false,        :null => false
@@ -240,6 +285,44 @@ ActiveRecord::Schema.define(:version => 20121222234629) do
   add_index "mtg_sets", ["code"], :name => "index_mtg_sets_on_code"
   add_index "mtg_sets", ["name"], :name => "index_mtg_sets_on_name"
   add_index "mtg_sets", ["release_date"], :name => "index_mtg_sets_on_release_date"
+<<<<<<< HEAD
+=======
+
+  create_table "mtg_sets_listings", :force => true do |t|
+    t.integer  "set_id"
+    t.integer  "seller_id"
+    t.integer  "price",                 :default => 1,     :null => false
+    t.integer  "quantity",              :default => 1,     :null => false
+    t.integer  "quantity_available",    :default => 1,     :null => false
+    t.string   "condition",             :default => "1",   :null => false
+    t.string   "language",              :default => "EN",  :null => false
+    t.string   "description",           :default => "",    :null => false
+    t.boolean  "foil",                  :default => false, :null => false
+    t.boolean  "active",                :default => true,  :null => false
+    t.integer  "number_cards_per_item", :default => 0,     :null => false
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
+  end
+
+  add_index "mtg_sets_listings", ["active"], :name => "index_mtg_sets_listings_on_active"
+  add_index "mtg_sets_listings", ["seller_id"], :name => "index_mtg_sets_listings_on_seller_id"
+  add_index "mtg_sets_listings", ["set_id"], :name => "index_mtg_sets_listings_on_set_id"
+
+  create_table "mtg_sets_statistics", :force => true do |t|
+    t.integer  "set_id"
+    t.integer  "number_sales",       :default => 0
+    t.integer  "price_low",          :default => 0
+    t.integer  "price_med",          :default => 0
+    t.integer  "price_high",         :default => 0
+    t.integer  "price_min",          :default => 0
+    t.datetime "pricing_updated_at"
+    t.integer  "listings_available", :default => 0
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+  end
+
+  add_index "mtg_sets_statistics", ["set_id"], :name => "index_mtg_sets_statistics_on_set_id"
+>>>>>>> articles
 
   create_table "mtg_transaction_items", :force => true do |t|
     t.integer  "card_id"
@@ -392,6 +475,64 @@ ActiveRecord::Schema.define(:version => 20121222234629) do
   add_index "site_variables", ["active"], :name => "index_site_variables_on_active"
   add_index "site_variables", ["name"], :name => "index_site_variables_on_name"
 
+  create_table "team_z_articles", :force => true do |t|
+    t.integer  "team_z_profile_id"
+    t.string   "title"
+    t.string   "description"
+    t.text     "body"
+    t.string   "status"
+    t.boolean  "active"
+    t.boolean  "featured"
+    t.datetime "active_at"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "team_z_articles", ["active"], :name => "index_team_z_articles_on_active"
+  add_index "team_z_articles", ["status"], :name => "index_team_z_articles_on_status"
+  add_index "team_z_articles", ["team_z_profile_id"], :name => "index_team_z_articles_on_team_z_profile_id"
+
+  create_table "team_z_mtgo_video_series", :force => true do |t|
+    t.integer  "team_z_profile_id"
+    t.string   "title"
+    t.string   "description"
+    t.boolean  "active"
+    t.datetime "active_at"
+    t.boolean  "featured"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "team_z_mtgo_video_series", ["active"], :name => "index_team_z_mtgo_video_series_on_active"
+  add_index "team_z_mtgo_video_series", ["team_z_profile_id"], :name => "index_team_z_mtgo_video_series_on_team_z_profile_id"
+
+  create_table "team_z_mtgo_videos", :force => true do |t|
+    t.integer  "video_series_id"
+    t.string   "title"
+    t.string   "video_link"
+    t.string   "video_number"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "team_z_mtgo_videos", ["video_series_id"], :name => "index_team_z_mtgo_videos_on_video_series_id"
+
+  create_table "team_z_profiles", :force => true do |t|
+    t.string   "display_name"
+    t.string   "avatar"
+    t.string   "picture"
+    t.text     "data"
+    t.boolean  "can_write_articles"
+    t.string   "article_series_name"
+    t.boolean  "can_post_videos"
+    t.boolean  "can_stream"
+    t.string   "twitch_tv_username"
+    t.boolean  "can_manage_content"
+    t.boolean  "active"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+  end
+
   create_table "ticket_updates", :force => true do |t|
     t.integer  "ticket_id"
     t.integer  "author_id"
@@ -475,6 +616,10 @@ ActiveRecord::Schema.define(:version => 20121222234629) do
     t.datetime "updated_at",                                :null => false
     t.integer  "user_level",             :default => 0
     t.boolean  "active",                 :default => false
+<<<<<<< HEAD
+=======
+    t.integer  "team_z_profile_id"
+>>>>>>> articles
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true

@@ -7,6 +7,7 @@
 
 //= require jquery
 //= require jquery_ujs
+//= require bx-slider/jquery.bxslider
 
 //= require jquery_tools
 //= require chosen.jquery
@@ -15,12 +16,14 @@
 //= require jquery-ui
 //= require autocomplete-rails
 //= require jquery.ui.autocomplete.html.js
-//= require mtg_search  
-
+//= require mtg_search
 
 //= require jquery-cookie
 //= require jquery.maskMoney
 //= require jquery-numeric
 //= require spin
+
+//= require ckeditor/init
+//= require_tree ../../../lib/assets/javascripts/ckeditor/.
 
 //= require_tree .

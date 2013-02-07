@@ -1,0 +1,45 @@
+$(document).ready(function(){
+  $('.decklist_wrapper .decklist_image_wrapper .decklist_image').css('background-image', 'url(https://mtgbazaar.s3.amazonaws.com/images/mtg/logo/logo_card_sleeve.jpg)')
+  $('.decklist_wrapper .card_name').live('mouseover', function(){
+    updateDecklistImage($(this));
+    updateDecklistCardSalesFrame($(this));    
+  });
+/*  $('.decklist_wrapper .card_name').live('hover', function(){
+    updateDecklistImage($(this));
+    updateDecklistCardSalesFrame($(this));
+  });  */
+  
+});
+
+function updateDecklistImage(card_name_object) {
+  var target        = card_name_object.closest('.decklist_wrapper').find('.decklist_image');
+  var imageUrl      = card_name_object.data('image');
+  var cssBackground = "url(" + imageUrl + ")";
+  if (target.css('background-image').replace(/"/g,"") != cssBackground){
+   target.stop(1).fadeOut(20).queue(function(){    
+      //target.parent().css('background-image','none');
+      target.css('background-image', cssBackground);
+      $(this).dequeue();
+    }).fadeIn(300);
+  }  
+}
+
+function updateDecklistCardSalesFrame(card_name_object) {
+  var target    = card_name_object.closest('.decklist_wrapper').find('.decklist_card_sales_frame');
+  var card_link = card_name_object.children('a').attr('href').split('/');
+  var card_id   = card_link[card_link.length - 1]
+  var path = "/mtg/decklists/sales_frame";
+   var params = [{ name:"id",  value:card_id }];
+   var url = path + "?" + $.param(params);
+   $.ajax({
+      type: "GET",
+      url: url,
+      dataType: "HTML",
+      async: false,
+      success : function(data) { 
+        if (data.length >= 1) {
+          target.html(data);     
+        }
+      }   
+    });
+}

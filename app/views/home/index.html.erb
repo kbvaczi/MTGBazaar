@@ -1,10 +1,33 @@
 <% title "A Better Way to Buy and Sell MTG" %>
 
-<h1></h1>
+<div id='news_bar'>
+  <%= cache "content_center_slider", :expires_in => 1.hours do %>
+    <% slides = Admin::SliderCenterSlide.viewable %>
+    <div class='news_article_shadow'> </div>
+    <div id='slider_news_bar'>
+      <% slides.each do |slide| %>      
+        <a class='news_article' href='<%= slide.link %>'>
+          <div class='news_article_teaser_picture' style="background-image:url(<%= slide.image %>)"></div>
+          <div class='news_article_text'>
+            <h2 class='news_article_title'><%= slide.title %></h2>
+            <div class='news_article_description'><%= slide.description %></div>
+          </div>
+        </a>
+      <% end %>      
+    </div>
+  <% end %>
+</div>
 
-<div class="ma">
-  
-  <%= render :inline => SiteVariable.get("homepage") %>
+<div id='articles_wrapper'>
+
+  <%= cache 'homepage_content', :expires_in => 1.hours do %>
+    <% front_page_articles = TeamZ::Article.featured.order(:active_at).limit(6) %>
+    <% front_page_videos   = TeamZ::MtgoVideoSeries.featured.order(:active_at).limit(6) %>
+    <% front_page_content  = (front_page_articles + front_page_videos).sort {|a,b| b.active_at <=> a.active_at}.first(6) %>
+    <% front_page_content.each do |content| %>
+      <%= render :partial => 'team_z/homepage_content_teaser', :locals => {:content => content} %>
+    <% end %>
+  <% end %>
   
 </div>
 

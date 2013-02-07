@@ -1,0 +1,83 @@
+<h2>Deck info</h2>
+<br class='spacer'/> 
+
+<%= f.input :name,        :label => 'Deck Name' %>
+
+<%= f.input :play_format, :label => 'Format',
+                          :placeholder  => 'ex: \'Legacy\'' %>
+                          
+
+<%= f.input :event,       :label => 'Event Name',
+                          :placeholder  => 'ex: \'Grand Prix San Antonio 2012\'' %>                          
+                          
+<table class='data mt mb' style='margin-left:100px;width:65%;'>
+  <tr class='header_row'>
+    <th>Total Cards</th>
+    <th>Lands</th>
+    <th>Creatures</th>
+    <th>Other Spells</th>
+    <th>Sideboard</th>      
+  </tr>
+  <tr class='odd'>
+    <td id='cards_count'><%= f.object.cards_count %></td>
+    <td id='cards_count_lands'><%= f.object.cards_count_lands %></td>
+    <td id='cards_count_creatures'><%= f.object.cards_count_creatures %></td>    
+    <td id='cards_count_spells'><%= f.object.cards_count_spells %></td>    
+    <td id='cards_count_sideboard'><%= f.object.cards_count_sideboard %></td>    
+  </tr>  
+</table>
+<h2>Cards</h2>
+
+<br class='spacer'/> 
+
+<%= f.fields_for :card_references do |card_reference_fields| %>
+  <%= render :partial => 'mtg/decklists/card_reference_fields', :locals => { :f => card_reference_fields }%>
+<% end %>
+
+<script type='text/javascript'>
+  $(document).ready(function(){
+    update_deck_cards_quantity();    
+  });
+  $('.card_section_select, .card_quantity_select').live('change', function(){
+    update_deck_cards_quantity();
+  });
+  $('.remove_card, .add_card').live('click', function(){
+    update_deck_cards_quantity();
+  });  
+
+  function update_deck_cards_quantity(){
+        var cards_count           = 0;
+        var cards_count_lands     = 0;
+        var cards_count_creatures = 0;    
+        var cards_count_spells    = 0;    
+        var cards_count_sideboard = 0;
+        $('.card_reference_field').each(function(index){
+          var quantity_this_card_reference = parseInt($(this).find('.card_quantity_select').val());
+          cards_count += quantity_this_card_reference;
+          switch ($(this).find('.card_section_select').val()){
+            case 'Lands':
+              cards_count_lands += quantity_this_card_reference;
+              break;
+            case 'Other Spells':
+              cards_count_spells += quantity_this_card_reference;
+              break;
+            case 'Creatures':
+              cards_count_creatures += quantity_this_card_reference;
+              break;
+            case 'Sideboard':
+              cards_count_sideboard += quantity_this_card_reference;
+              break;                    
+          }
+        });
+    /*    var old_quantity = parseInt($(this).parent().children('.card_quantity_select').data('oldval'));
+        var new_quantity = parseInt($(this).parent().children('.card_quantity_select').val();    
+        var old_section  = $(this).parent().children('.card_section_select').data('oldval');
+        var new_section  = $(this).parent().children('.card_section_select').val();*/
+        $('#cards_count').html(cards_count);
+        $('#cards_count_lands').html(cards_count_lands);    
+        $('#cards_count_creatures').html(cards_count_creatures);    
+        $('#cards_count_spells').html(cards_count_spells);    
+        $('#cards_count_sideboard').html(cards_count_sideboard);    
+    //    $(this).data('oldval', $(this).val());    
+  }
+</script>

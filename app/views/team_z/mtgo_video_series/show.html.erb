@@ -1,0 +1,37 @@
+<% title @video_series.title %>
+<% page_description @video_series.description %>
+
+<h1><%= @video_series.title %></h1>
+
+<div id='content'>
+  <div class='team_z_profile'>
+    <%= render :partial => 'team_z/profiles/show_header', :locals => {:profile => @video_series.profile, :section => 'mtgo_videos' } %>
+  </div>
+
+  <%= link_to 'View all Videos', team_z_profile_path(@video_series.profile, :section => 'mtgo_videos'), :remote => true, :class => 'right mr' %>
+  <div class='team_z_content_header group content_shadow'>
+    <h2><%= @video_series.title %></h2>               
+    <div class='left ml-m mb-s'><%= display_time(@video_series.active_at || @video_series.created_at, :format => 'long') %></div>
+  </div>
+  <div class='right pb-s'>
+    <div class="fb-like" data-href="<%= team_z_mtgo_video_series_url(@video_series) %>" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false" data-font="arial" style='text-align:left;'></div>
+    &nbsp;&nbsp;
+    <iframe allowtransparency="true" frameborder="0" scrolling="no" src="https://platform.twitter.com/widgets/tweet_button.html?url=<%= team_z_mtgo_video_series_url(@video_series) %>" style="width:100px; height:20px;"></iframe>
+  </div>
+  <div class='mb-s ml' style='text-align:left;'><%= link_to 'View all videos by this author', team_z_profile_path(@video_series.profile, :section => 'mtgo_videos'), :remote => true %></div>        
+  <div class='center_wrap mt'>    
+    <% videos = @video_series.videos.page(params[:page]).per(1) %>
+    <% video  = videos.first %>
+    <div class='team_z_mtgo_video mt-s'>
+
+      <%= video.video_embed_object.html_safe %>
+    </div>
+    <div class='paginator'>
+      <%= paginate videos, :method => :get, :remote => true, :theme => 'dots', :window => 15 %>
+    </div>
+  </div>
+  <div class='mt'>
+    <div class="fb-comments" data-href="<%= team_z_mtgo_video_series_url(@video_series) %>" data-width="520" data-num-posts="5"></div>
+  </div>  
+  
+</div>

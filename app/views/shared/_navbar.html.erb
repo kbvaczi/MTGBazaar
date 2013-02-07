@@ -20,37 +20,47 @@
     		</div>
       </li>
   		<li><%= link_to "About", about_path %></li>  
-
-    	<li class="navbar_drop">
-    		<%= link_to "Sell", mtg_cards_path %>
-    		<div class="navbar_drop_child">
-    			<ul>
-      	    <li><%= link_to "Sell Singles", new_generic_mtg_cards_listings_path %></li>
-      	    <li><%= link_to "Bulk Sell Singles",  new_bulk_prep_mtg_cards_listings_path  %></li>
-      	    <li><%= link_to "Sell Playsets", new_mtg_cards_listings_playset_path %></li>      	          	    
-
-        	</ul>
-        </div>
-      </li>
     <% end %>
 
+		<li class="navbar_drop">
+			<%= link_to "Beta"%>
+			<div class="navbar_drop_child">
+  			<ul>
+  		    <li><%= link_to "Change Log", changelog_path %></li>
+  		    <% if user_signed_in? %>
+            <li><%= link_to "Report a Bug", new_ticket_path('ticket[problem]'.to_sym => 'bug') %></li>
+   		    <% end %>
+  			</ul>
+			</div>
+	  </li>
 
 		<li class="navbar_drop">
 			<%= link_to "Support"%>
 			<div class="navbar_drop_child">
   			<ul>
-  		    <li><%= link_to "Leave Feedback", feedback_path %></li>
   		    <% if user_signed_in? %>
-    		    <li class="heading"> Support Issues </li>
             <li><%= link_to "Submit a Ticket", new_ticket_path %></li>
-     		    <li><%= link_to "View Ticket History", tickets_path %></li>                   
+     		    <li><%= link_to "View Ticket History", tickets_path %></li>
    		    <% end %>
           <li class="heading"> Documentation </li>
           <li><%= link_to "FAQ", faq_path %></li>
-    			<li><%= link_to "Card Condition Guide", condition_path %></li>  
+    			<li><%= link_to "Card Condition Guide", condition_path %></li>
   			</ul>
 			</div>
 	  </li>
+
+	  <% if user_signed_in? %>
+    	<li class="navbar_drop">
+    		<%= link_to "Sell", mtg_cards_path %>
+    		<div class="navbar_drop_child noselect">
+    			<ul>
+      	    <li><%= link_to "Sell Singles", new_generic_mtg_cards_listings_path %></li>
+      	    <li><%= link_to "Bulk Sell Singles",  new_bulk_prep_mtg_cards_listings_path  %></li>
+      	    <li><%= link_to "Sell Playsets", new_mtg_cards_listings_playset_path %></li>      	          	    
+        	</ul>
+        </div>
+      </li>	  
+    <% end %>
 		
 		<li class="navbar_drop">
 			<%= link_to "The Bazaar", users_path %>
@@ -64,9 +74,33 @@
           <li><%= link_to "Coming Soon", root_path %></li>
   			</ul>
 			</div>
-	  </li>
-			
-		<li><%#= link_to "News", news_feeds_path %></li>		   			
+	  </li>	   			
+
+		<li class="navbar_drop">
+			<%#= link_to 'Team Z', nil %>
+			<a>Team Z</a>
+			<div class="navbar_drop_child">
+  			<ul>
+  			  <li><%= link_to "About Team Z", root_path %></li>
+  			  <li class='heading'>Current Members</li>  			  
+  			  <% TeamZ::Profile.active.order('LOWER(display_name) ASC').each do |profile| %>
+  					<li><%= link_to "#{profile.display_name}", team_z_profile_path(profile) %></li>
+					<% end %>
+					<% if user_signed_in? && current_user.team_z_profile_id.present? %>
+    			  <li class="heading"><%= current_user.team_z_profile.display_name %></li>
+    			  <%= content_tag :li, link_to("My Articles"  , team_z_articles_path) if current_user.team_z_profile.can_write_articles %>    			  
+    			  <%= content_tag :li, link_to("My Videos"    , team_z_mtgo_video_series_index_path) if current_user.team_z_profile.can_post_videos %>
+    			  <%= content_tag :li, link_to("Manage Decklists" , mtg_decklists_path) %>    			  
+    			  <% if current_user.team_z_profile.can_manage_content? %>
+      			  <li class="heading">Content Manager</li>
+      			  <%= content_tag :li, link_to("Manage Team Articles", team_z_articles_path(:role => 'content_manager')) %>    			  
+      			  <%= content_tag :li, link_to("Manage Team Videos"  , team_z_mtgo_video_series_index_path(:role => 'content_manager')) %>    			  
+    			  <% end %>
+    			<% end %>
+  			</ul>
+			</div>
+	  </li>		
+	  
 		<li><%= link_to "Home", root_path %></li>
 
   </ul>

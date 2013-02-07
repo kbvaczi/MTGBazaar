@@ -1,0 +1,22 @@
+<% @videos = profile.mtgo_video_series.viewable.order('active_at DESC').page(params[:page]).per(10) %>
+
+<div class='profile_show_content'>
+  <% @videos.each do |video| %>
+    <div class='profile_show_content_teaser content_shadow'>
+      <h2 class='profile_show_content_title'><%= link_to video.title, team_z_mtgo_video_series_path(video, :section => 'mtgo_videos'), :remote => true %></h2>
+      <div class='profile_show_content_description'>
+        <%= video.description.truncate(100, :ommission => '...') %>
+      </div>
+      <div class='profile_show_post_date'>
+        <%= display_time video.active_at %>
+      </div>
+    </div>
+  <% end %>
+  
+  <br class='spacer'/>
+<br class='spacer'/>  
+  
+  <div class='paginator center_wrap'>
+    <%= paginate @videos, :method => :get, :remote => true %>
+  </div>
+</div>

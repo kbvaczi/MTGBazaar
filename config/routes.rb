@@ -71,6 +71,12 @@ MTGBazaar::Application.routes.draw do
   post   'transactions/:id/payment_notification' => 'mtg/transactions/payment_notifications#payment_notification', :as => 'payment_notification'
   
   namespace :mtg do 
+    
+    resources :decklists do
+      get 'autocomplete_name', :on => :collection
+      get 'sales_frame',      :on => :collection      
+    end
+    
     namespace :cards do
       post   "listings/multiple/set_active"       => "edit_multiple_listings#set_active",         :as => 'listings_multiple_set_active'  
       post   "listings/multiple/set_inactive"     => "edit_multiple_listings#set_inactive",       :as => 'listings_multiple_set_inactive'        
@@ -130,6 +136,27 @@ MTGBazaar::Application.routes.draw do
 
   resources :news_feeds, :only => [:show, :index], :path => '/news'
   
+# TEAM Z
+  namespace :team_z do
+    resources :articles do
+      get  'edit_to_publish', :on => :member
+      put  'publish',         :on => :member
+      put  'unpublish',       :on => :member
+    end
+    resources :mtgo_video_series do
+      get  'edit_to_publish', :on => :member
+      put  'publish',         :on => :member
+      put  'unpublish',       :on => :member
+    end    
+    resources :profiles, :only => [:show]
+  end
+
+# CKEDITOR ----------------- #
+
+  mount Ckeditor::Engine      => "/ckeditor"
+  match 'ckeditor/get_available_sets_from_card_name'     => "ckeditor#get_available_sets_from_card_name"
+  match 'ckeditor/get_image_path_from_card_and_set_name' => "ckeditor#get_image_path_from_card_and_set_name"  
+
 # MISC ROUTES -------------- #
 
   root :to => "home#index"
@@ -145,10 +172,10 @@ MTGBazaar::Application.routes.draw do
   match 'feedback'            => 'home#feedback'
   match 'welcome'             => 'home#welcome'
   match 'sitemap'             => 'home#sitemap'
-  mount Ckeditor::Engine      => "/ckeditor"
-  
-  # routes for testing (not for production)
-  if Rails.env.development? || Rails.env.staging?
+  match 'changelog'           => 'home#changelog'
+
+  # routes for testing (not for production)  
+  if Rails.env.development? or Rails.env.staging?
     match 'test'              => 'home#test'
   end
   

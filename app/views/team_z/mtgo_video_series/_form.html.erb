@@ -1,0 +1,16 @@
+<h2>Series Info</h2>
+<br class='spacer'/> 
+
+<%= f.input :title, :label => 'Series Title' %>
+<%= f.input :description, :as => :text,
+                          :input_html => {:style => 'height: 50px;'},
+                          :maxlength => 90,
+                          :hint => 'Max length 90 characters' %>
+
+<h2>Videos</h2>
+
+<br class='spacer'/> 
+
+<%= f.fields_for :videos do |video_fields| %>
+  <%= render :partial => 'team_z/mtgo_video_series/video_fields', :locals => { :f => video_fields, :parent_form => f }%>
+<% end %>

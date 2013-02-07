@@ -1,9 +1,4 @@
 <h1>test</h1>
-
-<%
-
-%>
-
 <%#
 gateway = ActiveMerchant::Billing::PaypalAdaptivePayment.new(                                                 # setup gateway, login to Paypal API
   :pem =>       PAYPAL_CONFIG[:paypal_cert_pem],
@@ -108,9 +103,10 @@ to_address = Stamps.clean_address(
     :zip_code    => '77018'
 })[:address]
 =end 
-#to_address = {:full_name=>"Christopher  Odorizzi", :address1=>"1234 MTGBazaar Lane", :zip_code=>"56789", :state=>"TX", :city=>"Houston"}
-#Rails.logger.info Stamps.clean_address(:address => to_address)
+to_address = {:full_name=>"Christopher  Odorizzi", :address1=>"1234 MTGBazaar Lane", :zip_code=>"56789", :state=>"TX", :city=>"Houston"}
 %>
+
+
 
 <%#
  begin
@@ -147,7 +143,7 @@ to_address = Stamps.clean_address(
   end
 %>
 
-<%#= stamp %>
+<%#= pretty_print_hash stamp %>
 
 <%#= Stamps.account %>
 

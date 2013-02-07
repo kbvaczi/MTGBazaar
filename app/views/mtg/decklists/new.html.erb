@@ -1,0 +1,16 @@
+<% title 'Create New Decklist' %>
+<% page_description 'Create New Decklist' %>
+
+<h1>Create New Decklist</h1>
+
+<%= render :partial => 'mtg/decklists/index_tabs' %>
+
+
+<%=
+  case params[:section]
+    when 'scratch'
+      render :partial => 'mtg/decklists/new_scratch'
+    else 
+      render :partial => 'mtg/decklists/new_paste'    
+  end 
+%>

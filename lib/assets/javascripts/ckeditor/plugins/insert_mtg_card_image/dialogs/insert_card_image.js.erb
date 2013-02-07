@@ -1,0 +1,105 @@
+﻿CKEDITOR.dialog.add("insert_card",function(e){	
+	return{
+		title:'insert a card image',
+		resizable : CKEDITOR.DIALOG_RESIZE_BOTH,
+		minWidth:300,
+		minHeight:100,
+		onLoad:function(){ 
+			dialog = this; 
+			this.setupContent();
+		},
+		onOk:function( data ){
+			var card_name    = $('#card_image_name_input').val();
+			var card_info    = getImageInfo($('#card_image_name_input').val(), $('#card_image_set_input').val())
+		  var image_path   = card_info[0];
+		  var card_link    = card_info[1];
+		  if (this.getValueOf('info','image_size_select') == 'large') {
+		    var image_class = 'article_card_image_large'
+		  } else if (this.getValueOf('info','image_size_select') == 'medium') { 
+		    var image_class = 'article_card_image_medium'		  
+		  } else {
+		    var image_class = 'article_card_image_small'
+		  }
+			if ( image_path.length > 0 )
+			e.insertHtml("<a class='article_card_image_wrapper' href="+ card_link +"><img class='" + image_class + "' src='" + image_path + "' alt='" + card_name + "'/></a>"); 
+			//clearForm();
+			//UpdateFields();
+		},
+		contents:[
+			{	id:"info",
+				name:'info',
+				label:'Info',
+				elements:[{	type:'vbox',
+          				  padding:'10',
+            				children:[{ type:'html',
+				                        html: "<input class='ui-autocomplete-input' id='card_image_name_input' style='width:200px;background:#fff;' data-autocomplete='/mtg/cards/autocomplete_name' data-type='search' placeholder='Card Name...' type='text' onkeypress='deleteSets();'>",
+				                      },
+				                      { type:'html',
+  			                        html: "<select class='select required' id='card_image_set_input' required='required'><options><option>Select A Set...</option></options>"
+  			                      },
+				                      { type: 'select',
+                                id: 'image_size_select',
+                                label: 'Image Size',
+                                items: [ [ 'Small', 'small'], [ 'Medium', 'medium' ], [ 'Large', 'large' ] ],
+                                'default': 'large'
+                               }]
+				}]
+			}
+		]
+	};
+});
+
+$('#card_image_name_input').live('railsAutocomplete.select', function(event, data){
+  updateSets();
+});
+
+function getImageInfo(card_name, set_code ){
+  var value  = "";
+  var params = [{ name:"card_name",  value: card_name },
+                { name:"set_code",   value: set_code  }];
+  var url    = "/ckeditor/get_image_path_from_card_and_set_name?" + $.param(params);
+  $.ajax({
+    type: "GET",
+    url: url,
+    dataType: "json",
+    async: false,
+    success : function(data) { value = data; }
+  });
+  return value;
+}
+
+function updateSets(){
+  var params = [{ name:"card_name",  value: $('#card_image_name_input').val() }];
+  var url    = "/ckeditor/get_available_sets_from_card_name?" + $.param(params);
+  $.ajax({
+    type: "GET",
+    url: url,
+    dataType: "json",
+    async: false,
+    success : function(data) { 
+      if (data.length >= 1) {
+        $(data).each(function(index, item) {
+           target = $('#card_image_set_input');
+           target.children().remove();
+           target.append('<option value=' + item[1] + '>' + item[0] + '</option>');           
+        });
+      }
+    }   
+  });
+}
+
+function deleteSets(){
+  target = $('#card_image_set_input');
+  target.children('option[value]').remove();
+}
+
+function UpdateFields() {
+    for (instance in CKEDITOR.instances) {
+        CKEDITOR.instances[instance].setData(CKEDITOR.instances[instance].getData());
+    }
+}
+
+function clearForm() {
+  deleteSets();
+  $('#card_image_name_input').val('');
+}

@@ -1,0 +1,37 @@
+<head>
+  
+  <%= favicon_link_tag %>           
+  <title><%= 'MTGBazaar' + yield(:title) %></title>
+
+  <% unless content_for?(:description) %>
+    <% page_description "MTGBazaar is the free-market platform for buying and selling Magic the Gathering." %>
+  <% end %>
+  
+  <meta name="description" content='<%= yield(:description) %>'>
+  <meta name="keywords" content="Magic the Gathering, Magic, MTG, cards, card, buy, sell, trade, market, secure, cheap, safe, easy">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <%= stylesheet_link_tag    "application" %>    
+  <%= javascript_include_tag "application" %>
+
+  <% #--------- YIELD STUFF TO PUT IN HEADING SUCH AS JAVASCRIPT INCLUDES, ETC...----# %>
+  <%= yield(:head) %>
+
+  <%# cross site forgery protection %>
+  <%= csrf_meta_tags %>
+  
+  <%# GOOGLE ANALYTICS STUFF ONLY ON PRODUCTION %>
+  <% if Rails.env.production? %>    
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-34432189-1']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  <% end %>
+  
+</head>
