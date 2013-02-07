@@ -41,6 +41,10 @@ class TeamZ::Article < ActiveRecord::Base
   def self.approved
     joins(:profile).where('team_z_articles.status' => 'approved')        
   end
+  
+  def self.featured
+    viewable.where('team_z_articles.featured' => true)
+  end
 
   # ----- Instance Methods ----- #
   

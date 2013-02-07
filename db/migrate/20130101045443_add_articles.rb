@@ -38,6 +38,7 @@ class AddArticles < ActiveRecord::Migration
         
         t.string    :status
         t.boolean   :active
+        t.boolean   :featured
         t.datetime  :active_at
         t.timestamps
       end
@@ -55,6 +56,7 @@ class AddArticles < ActiveRecord::Migration
         t.string    :description
         t.boolean   :active
         t.datetime  :active_at
+        t.boolean   :featured
         t.timestamps
       end
       add_index :team_z_mtgo_video_series, :team_z_profile_id

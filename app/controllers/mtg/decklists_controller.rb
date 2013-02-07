@@ -58,7 +58,6 @@ class Mtg::DecklistsController < ApplicationController
   def edit
     current_decklist.decklist_text_main      = params[:mtg_checklist][:decklist_text_main]      rescue current_decklist.export_format(:section => 'Main Deck')
     current_decklist.decklist_text_sideboard = params[:mtg_checklist][:decklist_text_sideboard] rescue current_decklist.export_format(:section => 'Sideboard')
-    current_decklist   
     respond_to do |format|
       format.html
       format.js do
@@ -72,6 +71,8 @@ class Mtg::DecklistsController < ApplicationController
   end
   
   def update
+    current_decklist.decklist_text_main      = params[:mtg_checklist][:decklist_text_main]      rescue current_decklist.export_format(:section => 'Main Deck')
+    current_decklist.decklist_text_sideboard = params[:mtg_checklist][:decklist_text_sideboard] rescue current_decklist.export_format(:section => 'Sideboard')    
     if current_decklist.update_attributes(params[:mtg_decklist])
       respond_to do |format|
         format.html { redirect_to back_path, :notice => 'Your deck was updated...' }

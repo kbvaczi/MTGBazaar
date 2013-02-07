@@ -10,6 +10,7 @@ class Mtg::Decklists::CardReference < ActiveRecord::Base
   # ----- Validations ----- #
 
   validates_presence_of :deck_section, :message => "Cards must be in Main Deck or Sideboard"
+  validates             :quantity, :numericality => {:greater_than => 0, :message => "Quantity for cards must be at least 1"}
   validate :validate_card_presence
   
   def validate_card_presence

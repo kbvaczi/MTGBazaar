@@ -123,6 +123,8 @@ class Mtg::Decklist < ActiveRecord::Base
       self.errors.messages[:name].first
     elsif self.errors.messages[:card_references].present? && self.errors.messages[:card_references].first.downcase != 'is invalid'
       self.errors.messages[:card_references].first    
+    elsif self.errors.messages[:"card_references.quantity"].present?
+      self.errors.messages[:"card_references.quantity"].first      
     elsif self.errors.messages[:"card_references.card_name"].present?
       self.errors.messages[:"card_references.card_name"].first
     else

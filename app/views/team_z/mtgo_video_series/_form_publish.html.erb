@@ -4,9 +4,11 @@
   <br class='spacer'/>
                                              
   <%= f.input :active_at,   :label => 'Publish This Video Series On',
-                            :as => :date,
                             :hint => 'Video series will go live on this date. Leave blank to make post live immediately',
-                            :discard_minutes => true, :discard_seconds => true %>
+                            :discard_minute => true, :discard_seconds => true %>
+
+  <%= f.input :featured,    :label => 'Featured on Front Page',
+                            :as => :boolean %>                            
 
   <br class='spacer'/>
   <br class='spacer'/>  

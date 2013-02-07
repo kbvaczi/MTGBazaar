@@ -40,6 +40,10 @@ class TeamZ::MtgoVideoSeries < ActiveRecord::Base
   def self.viewable
     joins(:profile).where("team_z_profiles.active" => true, 'team_z_mtgo_video_series.active' => true).where("team_z_mtgo_video_series.active_at < ? OR team_z_mtgo_video_series.active_at IS ?", Time.now, nil)
   end
+  
+  def self.featured
+    viewable.where('team_z_mtgo_video_series.featured' => true)
+  end
 
   # ----- Instance Methods ----- #
   

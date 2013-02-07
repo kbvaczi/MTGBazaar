@@ -1,7 +1,7 @@
 <% title "A Better Way to Buy and Sell MTG" %>
 
 <div id='news_bar'>
-  <%= cache "content_center_slider", :expires_in => (Time.zone.now.end_of_day - Time.zone.now) do %>
+  <%= cache "content_center_slider", :expires_in => 1.hours do %>
     <% slides = Admin::SliderCenterSlide.viewable %>
     <div class='news_article_shadow'> </div>
     <div id='slider_news_bar'>
@@ -20,9 +20,9 @@
 
 <div id='articles_wrapper'>
 
-  <%= cache 'homepage_content', :expires_in => (Time.zone.now.end_of_day - Time.zone.now) do %>
-    <% front_page_articles = TeamZ::Article.viewable.order(:active_at).limit(6) %>
-    <% front_page_videos   = TeamZ::MtgoVideoSeries.viewable.order(:active_at).limit(6) %>
+  <%= cache 'homepage_content', :expires_in => 1.hours do %>
+    <% front_page_articles = TeamZ::Article.featured.order(:active_at).limit(6) %>
+    <% front_page_videos   = TeamZ::MtgoVideoSeries.featured.order(:active_at).limit(6) %>
     <% front_page_content  = (front_page_articles + front_page_videos).sort {|a,b| b.active_at <=> a.active_at}.first(6) %>
     <% front_page_content.each do |content| %>
       <%= render :partial => 'team_z/homepage_content_teaser', :locals => {:content => content} %>

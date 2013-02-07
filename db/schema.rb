@@ -475,6 +475,7 @@ ActiveRecord::Schema.define(:version => 20130117144431) do
     t.text     "body"
     t.string   "status"
     t.boolean  "active"
+    t.boolean  "featured"
     t.datetime "active_at"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
@@ -490,6 +491,7 @@ ActiveRecord::Schema.define(:version => 20130117144431) do
     t.string   "description"
     t.boolean  "active"
     t.datetime "active_at"
+    t.boolean  "featured"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
   end

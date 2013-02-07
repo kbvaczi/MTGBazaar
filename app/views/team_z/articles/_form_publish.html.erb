@@ -4,10 +4,12 @@
   <br class='spacer'/>
                                              
   <%= f.input :active_at,   :label => 'Publish This Article On',
-                            :as => :date,
                             :hint => 'Article will go live on this date. Leave blank to make post live immediately',
                             #:input_html => {:class => 'chzn-select chzn-nosearch'},
-                            :discard_minutes => true, :discard_seconds => true %>
+                            :discard_minute => true, :discard_second => true %>
+                            
+  <%= f.input :featured,    :label => 'Featured on Front Page',
+                            :as => :boolean %>                            
 
   <br class='spacer'/>
   <br class='spacer'/>  

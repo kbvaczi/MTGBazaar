@@ -10,8 +10,6 @@
 		},
 		onOk:function( data ){
 			var card_name    = $('#card_image_name_input').val();
-			var image_height = this.getValueOf('info','image_size_select').split("x")[0];
-			var image_width  = this.getValueOf('info','image_size_select').split("x")[1];
 			var card_info    = getImageInfo($('#card_image_name_input').val(), $('#card_image_set_input').val())
 		  var image_path   = card_info[0];
 		  var card_link    = card_info[1];
@@ -23,9 +21,9 @@
 		    var image_class = 'article_card_image_small'
 		  }
 			if ( image_path.length > 0 )
-			e.insertHtml("<a href="+ card_link +"><img class='" + image_class + "' style=' src='" + image_path + "' alt=\"" + card_name + "\"/></a>"); 
-			clearForm();
-			UpdateFields();
+			e.insertHtml("<a class='article_card_image_wrapper' href="+ card_link +"><img class='" + image_class + "' src='" + image_path + "' alt='" + card_name + "'/></a>"); 
+			//clearForm();
+			//UpdateFields();
 		},
 		contents:[
 			{	id:"info",
