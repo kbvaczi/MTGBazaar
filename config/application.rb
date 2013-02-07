@@ -52,8 +52,8 @@ module MTGBazaar
     config.assets.initialize_on_precompile = false
     #forcing your application to not access the DB or load models when precompiling your assets.
     
-    #config.action_mailer.delivery_method = :smtp
-    #config.action_mailer.delivery_method = :queued
+    config.action_mailer.delivery_method       = :smtp
+    config.action_mailer.raise_delivery_errors = true    
 
     config.to_prepare do
       Devise::Mailer.layout "email" # use email layout for devise emails

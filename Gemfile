@@ -18,32 +18,36 @@ gem "smart_tuple", "~> 0.1.2"                                       # Aid for bu
 gem "money", "~> 4.0.2"                                             # handles currency inputs and currency conversions if we need those in the future
 gem "encryptor", "~> 1.1.3"                                         # 2-way encryption using SSL
 gem "attr_encrypted", "~> 1.2.1"                                    # have rails automatically encrypt certain fields
-gem "awesome_print", "~> 1.1.0"
+
 #gem "heroku"                                                        # allows application to talk to heroku web hosting service
                                                                      # this gem is now depreciated to be replaced by the heroku toolbelt  
-#gem "rmagick", "~> 2.13.1"                                          # image manipulation (requires install of rmagick software)
+                                                                     
+#gem "rmagick", "~> 2.13.1"                                         # image manipulation (requires install of rmagick software) # we replaced this with minimagic
 gem "carrierwave", "~> 0.6.2"                                       # image_scan uploader
 gem "fog", "~> 1.3.1"                                               # supports amazon s3
+
 gem "activemerchant", "~> 1.26.0", :require => 'active_merchant'    # integration of PayPal
 gem "active_paypal_adaptive_payment", "~> 0.3.15"                   # Adaptive Payments for ActiveMerchant for withdraws
-#gem "paypal-permissions", "~> 0.2.0",
-#    :git => "https://github.com/paulca/paypal-permissions.git"
 
 gem "ckeditor", "~> 3.7.1"                                          # blog editor
 gem "mini_magick", "~> 3.4"                                         # image manipulation for ckeditor
-gem "girl_friday", "~> 0.10.0"                                      # background processing for unicorn...
 
-
+#gem "girl_friday", "~> 0.10.0"                                     # background processing for unicorn...
+gem "sidekiq", "~> 2.6.1"                                           # redis backed background processing
+gem "devise-async", "~> 0.5.0"                                      # devise emails sent in background
+gem 'slim'                                                          # this is for sidekiq monitoring server  
+gem 'sinatra', :require => nil                                      # this is for sidekiq monitoring server
 
 gem 'unicorn'                                                       # custom webserver with multi-threaded application capabilities
+
 #gem "stamps", "~> 0.3.0"                                           # API interface for stamps.com for printing shipping labels
 gem 'stamps', :git => 'https://github.com/darnovo/stamps.git'       # forked repo with updated gem dependencies
 
 gem "honeypot-captcha", "~> 0.0.2"                                  # alternative to capcha without the complexity  
-#gem "taps", "~> 0.3.24"                                             # ability to pull and push databases from development to production
 
 gem "valium", "~> 0.5.0"                                            # improved activerecord queries?
 gem "bulk_update", "~> 1.0.0"                                       # improved bulk update/create for activerecord
+
 #gem "hirefireapp", "~> 0.0.8"                                       # auto-scaling dynos
 gem "geocoder", "~> 1.1.5"
 
@@ -58,7 +62,8 @@ gem "sitemap_generator", "~> 3.4"                                   # create XML
 
 
 gem "rails", "~> 3.2.9"
-gem 'jquery-rails'                                                  # latest jquery library.  need to include "//= require jquery_ujs" and "//= require jquery" in application.js to be loaded in asset pipeline
+gem "jquery-rails", "~> 2.1.4"                                      # some compatibility issues with using newest version so we're using this version for now
+#gem 'jquery-rails'                                                 # latest jquery library.  need to include "//= require jquery_ujs" and "//= require jquery" in application.js to be loaded in asset pipeline
 gem 'json'
 
 
@@ -75,7 +80,7 @@ group :staging do
 end
 
 group :development do
-  gem 'sqlite3'
+  gem "mysql2"
   gem 'hooves', :require => 'hooves/default'          # unicorn works with "rails s"
 end
 

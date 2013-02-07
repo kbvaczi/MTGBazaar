@@ -1,0 +1,9 @@
+# Configuration File for Sidekiq
+# To implement these settings run sidekiq using sidekiq -C config/sidekiq.yml
+# Options here can still be overridden by cmd line args.
+
+:verbose: true
+:concurrency:  3
+:queues:
+  - [email,   1]
+  - [default, 5]

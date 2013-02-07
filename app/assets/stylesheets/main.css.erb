@@ -228,12 +228,13 @@ input::-moz-focus-inner { /*Remove button padding in FF*/
   margin:0;
   font-family: "Helvetica Neue", "Arial", sans-serif;
   font-size:11px;
-  color: #fff;
+  color: rgb(252,252,252);
   line-height:normal;
   display: inline-block;
   text-decoration: none;
   vertical-align:middle;
-  text-shadow: 0 -1px 0px rgb(100,100,100);
+  text-shadow: 0px -1px 0px rgb(100,100,100);
+  box-shadow: inset 0px 0px 2px 0px rgba(255,255,255,0.3);
   background: #ABB0B1;
   background: rgb(192,192,192); /* Old browsers */
   background: -moz-linear-gradient(top,  rgba(192,192,192,1) 0%, rgba(176,176,176,1) 50%, rgba(159,159,159,1) 51%, rgba(112,112,112,1) 100%); /* FF3.6+ */
@@ -400,7 +401,7 @@ textarea {
   margin: 10px 0 0 10px;
   width: 190px;
   min-height:605px;
-  background: #FFF;
+  background: #FEFEFE;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px;
@@ -413,7 +414,7 @@ textarea {
   margin: 10px 0 0 10px;
   width: 190px;
   min-height:177px;
-  background: #FFF;
+  background: #FEFEFE;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px;
@@ -426,7 +427,7 @@ textarea {
   margin: 10px 0 0 0;
   width: 230px;
   min-height: 195px;
-  background: #FFF;
+  background: #FEFEFE;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px;
@@ -452,7 +453,7 @@ textarea {
   min-height:605px;
   margin: 10px;
   width: 540px;
-  background: #FFF;
+  background: #FEFEFE;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px;
@@ -587,10 +588,10 @@ table.data tr td p, table.data tr th p {
   max-width:95%;
 }
 .odd td, .odd th, td.odd, th.odd {
-  background-color: rgb(251,251,250);  
+  background-color: rgb(251,252,251);  
 }
 .even td, .even th, td.even, th.even {
-  background-color: rgb(254,254,253);  
+  background-color: rgb(254,255,254);    
 }
 .highlight_odd td, .highlight_odd th, td.highlight_odd, th.highlight_odd {
   background-color: #FDF5CE;  
@@ -599,10 +600,12 @@ table.data tr td p, table.data tr th p {
   background-color: #EEE6BF;  
 }
 tr.header_row th, tr.header_row td, th.header_row, td.header_row  {
-  background-color: rgb(240,240,239); 
+  background-color: rgb(243,244,243);
+  font-style:italic;
+
 }
 tr.header_row2 th, tr.header_row2 td, th.header_row2, td.header_row2  {
-  background-color: rgb(245,245,243);  
+  background-color: rgb(248,249,247);    
 }
 
 

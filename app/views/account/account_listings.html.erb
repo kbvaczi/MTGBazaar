@@ -1,14 +1,29 @@
-<% title "my listings"%>
-<h1>My Listings</h1>
+<%
+
+query = mtg_filters_query(:seller => false, :activate_filters => params[:filter], :filter_by => params[:filter_by].present? ? 'params' : 'cookies')
+
+if params[:status] == "inactive"
+  if params[:type] == "playsets"
+    @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => true).inactive.order("mtg_cards.name ASC").page(params[:page]).per(50)
+  else
+    @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => false).inactive.order("mtg_cards.name ASC").page(params[:page]).per(50)
+  end
+else
+  if params[:type] == "playsets"
+    @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => true).active.order("mtg_cards.name ASC").page(params[:page]).per(50)
+  else
+    @listings = current_user.mtg_listings.includes(:card => :set).where(query).where(:playset => false).active.order("mtg_cards.name ASC").page(params[:page]).per(50)
+  end      
+end
+
+%>
+<% title "Seller Panel"%>
+<h1>Seller Panel</h1>
+
+<%= render :partial => 'account/listings_tabs' %>
+  
 <div id="content">
-
-  <div class="group center_wrap">
-    <ul class="tabs">
-      <li <%= "class=selected" if params[:status] == nil || params[:status] == "active" %>> <%= link_to "Active (#{current_user.mtg_listings.active.pluck(:quantity_available).inject(0) {|sum, value| sum + value}})", url_for(params.merge(:status => "active")), :remote => true %> </li>
-      <li <%= "class=selected" if params[:status] == "inactive" %>>                         <%= link_to "Inactive (#{current_user.mtg_listings.inactive.pluck(:quantity_available).inject(0) {|sum, value| sum + value}})", url_for(params.merge(:status => "inactive")), :remote => true %> </li>      
-    </ul>
-  </div>
-
+  
   <%#= link_to "Create a New Listing", new_generic_mtg_cards_listings_path, :class => "right", :style => "margin-top:23px;margin-right:10px;" %>
   <div>
     <%

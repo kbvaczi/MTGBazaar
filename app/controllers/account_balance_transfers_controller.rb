@@ -26,7 +26,7 @@ class AccountBalanceTransfersController < ApplicationController
     @deposit.transfer_type = "deposit"
     @deposit.current_sign_in_ip = request.remote_ip
     @deposit.account_id = current_user.account.id
-    @deposit.approved_at = Time.now # deposits are always approved
+    @deposit.approved_at = Time.zone.now # deposits are always approved
     if @deposit.save
       redirect_to paypal_deposit_url(@deposit), :method => :post
     else

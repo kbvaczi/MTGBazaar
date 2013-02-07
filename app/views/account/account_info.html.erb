@@ -6,8 +6,8 @@
   
   <div class="group center_wrap">
     <ul class="tabs center">
-      <li <%= "class=selected" if not params[:section].present? %>> <%= link_to "Account Info", account_info_path %> </li>
-      <li <%= "class=selected" if params[:section] == "history" %>> <%= link_to "Login History", account_info_path(:section => "history") %> </li>
+      <li <%= "class=selected" if not params[:section].present? %>> <%= link_to "Account Info", account_info_path, :remote => true %> </li>
+      <li <%= "class=selected" if params[:section] == "history" %>> <%= link_to "Login History", account_info_path(:section => "history"), :remote => true %> </li>
     </ul>
   </div>
   
@@ -41,14 +41,6 @@
       <tr>
         <td width="33%" class="header_row2">Seller PayPal Email</td>
         <td width="67%" class=<%= cycle "odd", "even" %>><%= current_user.account.paypal_username.present? ? current_user.account.paypal_username : "<i>none</i>".html_safe %></td>
-      </tr>
-      <tr>
-        <td class="header_row2">For Sale</td>
-        <td class=<%= cycle "odd", "even" %>><%= pluralize current_user.mtg_listings.to_a.inject(0) {|sum, listing| sum + listing.quantity}, "Card", "Cards" %> / <%= number_to_currency current_user.mtg_listings.to_a.inject(0) {|sum, listing| sum + listing.quantity * listing.price.dollars} %></td>
-      </tr>
-      <tr>
-        <td class="header_row2">Previously Sold</td>
-        <td class=<%= cycle "odd", "even" %>><%= pluralize current_user.mtg_sale_items.to_a.inject(0) {|sum, item| sum + item.quantity_requested}, "Card", "Cards" %> / <%= number_to_currency current_user.mtg_sale_items.to_a.inject(0) {|sum, item| sum + item.quantity_requested * item.price.dollars} %></td>
       </tr>
     </table>
   

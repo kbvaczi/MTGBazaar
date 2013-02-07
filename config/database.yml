@@ -3,11 +3,22 @@
 #
 #   Ensure the SQLite 3 gem is defined in your Gemfile
 #   gem 'sqlite3'
+
+#development:
+#  adapter: sqlite3
+#  database: db/development.sqlite3
+#  pool: 20
+#  timeout: 500
+
 development:
-  adapter: sqlite3
-  database: db/development.sqlite3
-  pool: 20
-  timeout: 500
+  adapter: mysql2
+  encoding: utf8
+  database: 'mtgbazaar_development'
+  username: mtgbazaar
+  password: mtgbazaar
+  socket: /Applications/MAMP/tmp/mysql/mysql.sock
+  pool: 5
+  timeout: 5000  
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -24,10 +35,6 @@ production:
   reconnect: true
   username: b9942ad0e6b42e
   password: 5a24ed16
-  sslkey: /certs/cleardb-key.pem
-  sslcert: /certs/cleardb-cert.pem
-  sslca: /certs/cleardb-ca-cert.pem
-  sslcapath: /certs
   pool: 20
   timeout: 5000
 

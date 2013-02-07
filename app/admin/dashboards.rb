@@ -61,7 +61,7 @@ def listings_info_panel
                 <th style="text-align:right">#{Mtg::Cards::Listing.available.sum("quantity * number_cards_per_item").to_i}</th>
                 <td>&nbsp;</td>                
                 <th>Total Value:</th>
-                <th style="text-align:right">#{number_to_currency(Mtg::Cards::Listing.available.sum("quantity * price")/100)}</th>
+                <th style="text-align:right">#{number_to_currency(Mtg::Cards::Listing.available.sum("quantity * price").to_f/100)}</th>
               </tr>
             </table>}
   text_node info.html_safe
@@ -71,8 +71,8 @@ def stamps_info_panel
   stamps_account_info ||= Rails.cache.fetch "stamps_account_info", :expires_in => 1.hours do
     Stamps.account
   end
-  stamps_this_month = Mtg::Transactions::ShippingLabel.where("created_at > ?",Time.now.beginning_of_month).pluck(:price)
-  shipping_paid_this_month = Mtg::Transaction.joins(:shipping_label).where("mtg_transactions_shipping_labels.created_at > ?",Time.now.beginning_of_month).pluck(:shipping_cost).sum
+  stamps_this_month = Mtg::Transactions::ShippingLabel.where("created_at > ?",Time.zone.now.beginning_of_month).pluck(:price)
+  shipping_paid_this_month = Mtg::Transaction.joins(:shipping_label).where("mtg_transactions_shipping_labels.created_at > ?",Time.zone.now.beginning_of_month).pluck(:shipping_cost).sum
   info = %{ <table>
               <tr>
                 <th>Available Postage:</th>
@@ -102,33 +102,33 @@ def transactions_info_panel
         <table>
           <tr>
             <th>Today:</th>
-            <th style="text-align:right">#{Mtg::Transaction.paid.where("created_at > ?", Time.now.midnight).count}</th>
+            <th style="text-align:right">#{Mtg::Transaction.paid.where("created_at > ?", Time.zone.now.midnight).count}</th>
             <td>&nbsp;</td>                
             <th>Value:</th>
-            <th style="text-align:right">#{number_to_currency Money.new(Mtg::Transaction.paid.where("created_at > ?", Time.now.midnight).pluck(:value).sum)}</th>
+            <th style="text-align:right">#{number_to_currency Money.new(Mtg::Transaction.paid.where("created_at > ?", Time.zone.now.midnight).pluck(:value).sum)}</th>
             <td>&nbsp;</td>                          
             <th>Commission:</th>
-            <th style="text-align:right">#{number_to_currency Money.new( Mtg::Transactions::Payment.where("created_at > ?", Time.now.midnight).pluck(:commission).sum)}</th>
+            <th style="text-align:right">#{number_to_currency Money.new( Mtg::Transactions::Payment.where("created_at > ?", Time.zone.now.midnight).pluck(:commission).sum)}</th>
           </tr>
           <tr>
             <th>This Month:</th>
-            <th style="text-align:right">#{Mtg::Transaction.paid.where("created_at > ?", Time.now.beginning_of_month).count}</th>
+            <th style="text-align:right">#{Mtg::Transaction.paid.where("created_at > ?", Time.zone.now.beginning_of_month).count}</th>
             <td>&nbsp;</td>                
             <th>Value:</th>
-            <th style="text-align:right">#{number_to_currency Money.new(Mtg::Transaction.paid.where("created_at > ?", Time.now.beginning_of_month).pluck(:value).sum)}</th>
+            <th style="text-align:right">#{number_to_currency Money.new(Mtg::Transaction.paid.where("created_at > ?", Time.zone.now.beginning_of_month).pluck(:value).sum)}</th>
             <td>&nbsp;</td>                          
             <th>Commission:</th>
-            <th style="text-align:right">#{number_to_currency Money.new( Mtg::Transactions::Payment.where("created_at > ?", Time.now.beginning_of_month).pluck(:commission).sum)}</th>
+            <th style="text-align:right">#{number_to_currency Money.new( Mtg::Transactions::Payment.where("created_at > ?", Time.zone.now.beginning_of_month).pluck(:commission).sum)}</th>
           </tr>
           <tr>
             <th>This Year:</th>
-            <th style="text-align:right">#{Mtg::Transaction.paid.where("created_at > ?", Time.now.beginning_of_year).count}</th>
+            <th style="text-align:right">#{Mtg::Transaction.paid.where("created_at > ?", Time.zone.now.beginning_of_year).count}</th>
             <td>&nbsp;</td>                
             <th>Value:</th>
-            <th style="text-align:right">#{number_to_currency Money.new(Mtg::Transaction.paid.where("created_at > ?", Time.now.beginning_of_year).pluck(:value).sum)}</th>
+            <th style="text-align:right">#{number_to_currency Money.new(Mtg::Transaction.paid.where("created_at > ?", Time.zone.now.beginning_of_year).pluck(:value).sum)}</th>
             <td>&nbsp;</td>                          
             <th>Commission:</th>
-            <th style="text-align:right">#{number_to_currency Money.new( Mtg::Transactions::Payment.where("created_at > ?", Time.now.beginning_of_year).pluck(:commission).sum)}</th>
+            <th style="text-align:right">#{number_to_currency Money.new( Mtg::Transactions::Payment.where("created_at > ?", Time.zone.now.beginning_of_year).pluck(:commission).sum)}</th>
           </tr>
         </table>
       </div>}
@@ -141,7 +141,7 @@ def user_info_panel
     %{<table>
         <tr>
           <th>New Accounts Today:</th>
-          <th style="text-align:right">#{User.where("created_at > ?", Time.now.midnight).count}</th>
+          <th style="text-align:right">#{User.where("created_at > ?", Time.zone.now.midnight).count}</th>
           <td>&nbsp;</td>                
           <th>Total Accounts:</th>
           <th style="text-align:right">#{User.count}</th>
@@ -151,7 +151,7 @@ def user_info_panel
           <th style="text-align:right">#{Session.where("updated_at > ?", 10.minutes.ago).count}</th>
           <td>&nbsp;</td>
           <th>Users Logged In Today:</th>
-          <th style="text-align:right">#{User.where("users.current_sign_in_at > ?", Time.now.midnight).count}</th>
+          <th style="text-align:right">#{User.where("users.current_sign_in_at > ?", Time.zone.now.midnight).count}</th>
         </tr>
 
       </table>}
@@ -162,13 +162,13 @@ end
 def total_income_panel
   Rails.cache.fetch "total_income_panel", :expires_in => 5.minutes do
     # Today
-    commission_today      = Money.new(Mtg::Transactions::Payment.where("created_at > ?", Time.now.midnight).pluck(:commission).sum)
-    commission_this_month = Money.new(Mtg::Transactions::Payment.where("created_at > ?", Time.now.beginning_of_month).pluck(:commission).sum)
-    commission_this_year  = Money.new( Mtg::Transactions::Payment.where("created_at > ?", Time.now.beginning_of_year).pluck(:commission).sum)
+    commission_today      = Money.new(Mtg::Transactions::Payment.where("created_at > ?", Time.zone.now.midnight).pluck(:commission).sum)
+    commission_this_month = Money.new(Mtg::Transactions::Payment.where("created_at > ?", Time.zone.now.beginning_of_month).pluck(:commission).sum)
+    commission_this_year  = Money.new( Mtg::Transactions::Payment.where("created_at > ?", Time.zone.now.beginning_of_year).pluck(:commission).sum)
   
-    earned_on_stamps_today        = Money.new(Mtg::Transaction.joins(:shipping_label).where("mtg_transactions_shipping_labels.created_at > ?",Time.now.midnight).pluck(:shipping_cost).sum - Mtg::Transactions::ShippingLabel.where("created_at > ?",Time.now.midnight).pluck(:price).sum)
-    earned_on_stamps_this_month   = Money.new(Mtg::Transaction.joins(:shipping_label).where("mtg_transactions_shipping_labels.created_at > ?",Time.now.beginning_of_month).pluck(:shipping_cost).sum - Mtg::Transactions::ShippingLabel.where("created_at > ?",Time.now.beginning_of_month).pluck(:price).sum)
-    earned_on_stamps_this_year    = Money.new(Mtg::Transaction.joins(:shipping_label).where("mtg_transactions_shipping_labels.created_at > ?",Time.now.beginning_of_year).pluck(:shipping_cost).sum - Mtg::Transactions::ShippingLabel.where("created_at > ?",Time.now.beginning_of_year).pluck(:price).sum)
+    earned_on_stamps_today        = Money.new(Mtg::Transaction.joins(:shipping_label).where("mtg_transactions_shipping_labels.created_at > ?",Time.zone.now.midnight).pluck(:shipping_cost).sum - Mtg::Transactions::ShippingLabel.where("created_at > ?",Time.zone.now.midnight).pluck(:price).sum)
+    earned_on_stamps_this_month   = Money.new(Mtg::Transaction.joins(:shipping_label).where("mtg_transactions_shipping_labels.created_at > ?",Time.zone.now.beginning_of_month).pluck(:shipping_cost).sum - Mtg::Transactions::ShippingLabel.where("created_at > ?",Time.zone.now.beginning_of_month).pluck(:price).sum)
+    earned_on_stamps_this_year    = Money.new(Mtg::Transaction.joins(:shipping_label).where("mtg_transactions_shipping_labels.created_at > ?",Time.zone.now.beginning_of_year).pluck(:shipping_cost).sum - Mtg::Transactions::ShippingLabel.where("created_at > ?",Time.zone.now.beginning_of_year).pluck(:price).sum)
     
     info = %{ <table>
                 <tr>

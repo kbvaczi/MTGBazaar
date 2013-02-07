@@ -15,12 +15,9 @@ class User < ActiveRecord::Base
   has_many :tickets,                  :class_name => "Ticket",                    :as => "author"                         # tickets authored by this person... polymorpic relationship (author can either be User or AdminUser)
   has_many :tickets_about,            :class_name => "Ticket",                    :foreign_key => "offender_id"           # tickets written about this person... not polymorphic (offender can only be User)
   
-
-  # Include default devise modules. Others available are:
-  #:token_authenticatable, :encryptable, :confirmable, :lockable, :rememberable, :timeoutable, and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :trackable, :validatable,
-         :token_authenticatable, :confirmable, :lockable
+         :token_authenticatable, :confirmable, :lockable, :async
 
   # Setup accessible (or protected) attributes for your model
   # :account_attributes allows nested model support for account while editing form for user
@@ -53,16 +50,13 @@ class User < ActiveRecord::Base
   end
 
   def update_statistics_when_active_changed
-    ActiveRecord::Base.transaction do
-      if self.active
-        self.statistics.update_listings_mtg_cards_count if self.statistics.present?
-      else
-        self.statistics.update_attribute(:listings_mtg_cards_count, 0) if self.statistics.present?
-      end
+    if self.active
+      self.statistics.update_listings_mtg_cards_count if self.statistics.present?
+    else
+      self.statistics.update_attribute(:listings_mtg_cards_count, 0) if self.statistics.present?
     end
-    ActiveRecord::Base.transaction do
-      self.mtg_listings.each { |l| l.update_statistics_cache_on_save }
-    end
+    # bulk update statistics for the listings on this user as they may have changed
+    Mtg::Cards::Statistics.delay.bulk_update_listing_information(self.mtg_listings.pluck(:card_id).uniq)    
   end
   
 # ---------------- VALIDATIONS ----------------      
@@ -83,7 +77,7 @@ class User < ActiveRecord::Base
   #validates             :username,  :exclusion => { :in      => eval("["+SiteVariable.get("reserved_usernames")+"]"), :message => "is reserved, please contact us for details" }, :on => :create
   
   # validates account model when user model is saved
-  validates_associated :account, :statistics
+  validates_associated  :account, :statistics
   
   validate              :active_false_when_no_paypal_information
   
@@ -116,16 +110,24 @@ class User < ActiveRecord::Base
     Mtg::Transaction.where(:buyer_id => id, :status => "pending")
   end
   
+  def confirmed_purchases
+    self.mtg_purchases.where("status <> \'pending\'")
+  end
+  
   def active_purchases
-    Mtg::Transaction.where(:buyer_id => id).where("status <> \'delivered\' AND status <> \'cancelled\' AND status <> \'rejected\'")
-  end  
+    Mtg::Transaction.where(:buyer_id => id).where("status <> \'completed\' AND status <> \'pending\'")
+  end
   
   def pending_sales
     Mtg::Transaction.where(:seller_id => id, :status => "pending")
   end
   
+  def confirmed_sales
+    self.mtg_sales.where("status <> \'pending\'")
+  end
+  
   def active_sales
-    self.mtg_sales.where("status <> \'completed\'")
+    self.mtg_sales.where("status <> \'completed\' AND status <> \'pending\'")
   end
   
   

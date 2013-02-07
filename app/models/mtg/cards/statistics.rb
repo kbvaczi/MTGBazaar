@@ -95,7 +95,10 @@ class Mtg::Cards::Statistics < ActiveRecord::Base
   def update!        
     #gather all sales of this card
     self.number_sales = Mtg::Transactions::Item.where(:card_id => self.card_id).count
-
+    self.save
+  end
+  
+  def update_pricing    
     #get the latest "normal" completed sales to compute pricing
     selection_size = 21
     latest_sold_items_pricing = Mtg::Transactions::Item.where(:card_id => self.card_id).where(:foil => false, :altart => false, :misprint => false, :signed => false).order("created_at DESC").limit(selection_size).pluck(:price).sort!
@@ -132,9 +135,51 @@ class Mtg::Cards::Statistics < ActiveRecord::Base
       Rails.logger.debug "final low     = #{self.price_low}"
       Rails.logger.debug "final average = #{self.price_med}"      
       Rails.logger.debug "final high    = #{self.price_high}"
-    end
+    end    
     
-    self.save
   end
+  
+  def self.price_reduction_from_condition(condition = nil)
+    price_hash = { 1 => 1.0, 2 => 0.95, 3 => 0.85, 4 => 0.75 }
+    if condition.present?
+      price_hash[condition] 
+    else
+      price_hash
+    end
+  end
+  
+  def self.bulk_update_listing_information(card_ids_array=nil)
+    card_ids_array_sql = card_ids_array.to_s.gsub('[','(').gsub(']',')')
+    query = %{  UPDATE  mtg_card_statistics
+                  JOIN  ( SELECT    mtg_card_statistics.card_id AS card_id,
+                                    MIN(CASE WHEN mtg_listings.active = 1 AND users.active = 1 AND users.banned = 0 AND mtg_listings.quantity_available > 0 THEN mtg_listings.price / mtg_listings.number_cards_per_item ELSE 0 END) AS aggregate_price_min,
+                                    SUM(CASE WHEN mtg_listings.active = 1 AND users.active = 1 AND users.banned = 0 AND mtg_listings.quantity_available > 0 THEN mtg_listings.quantity_available * mtg_listings.number_cards_per_item ELSE 0 END) AS aggregate_listings_available
+                          FROM      mtg_card_statistics
+                          LEFT JOIN (mtg_listings, users)
+                          ON        (mtg_listings.card_id = mtg_card_statistics.card_id AND users.id = mtg_listings.seller_id)
+                          GROUP BY  mtg_card_statistics.card_id
+                      #{ "HAVING    mtg_card_statistics.card_id IN #{card_ids_array_sql}" if card_ids_array.present? } ) aggregate_listing_data
+                    ON  aggregate_listing_data.card_id = mtg_card_statistics.card_id
+                   SET  mtg_card_statistics.price_min          = aggregate_listing_data.aggregate_price_min,
+                        mtg_card_statistics.listings_available = aggregate_listing_data.aggregate_listings_available ; }
+    ActiveRecord::Base.connection.update(query)
+    
+  end
+  
+  def self.bulk_update_sales_information(card_ids_array=nil)
+    card_ids_array_sql = card_ids_array.to_s.gsub('[','(').gsub(']',')')
+    query = %{  UPDATE  mtg_card_statistics
+                  JOIN  ( SELECT    mtg_transaction_items.card_id AS card_id,
+                                    SUM(CASE WHEN mtg_transactions.status <> 'pending' THEN mtg_transaction_items.quantity_available ELSE 0 END) AS aggregate_number_sales
+                          FROM      mtg_transaction_items
+                          JOIN      mtg_transactions
+                          ON        mtg_transactions.id = mtg_transaction_items.transaction_id
+                          GROUP BY  mtg_transaction_items.card_id
+                      #{ "HAVING    mtg_transaction_items.card_id IN #{card_ids_array_sql}" if card_ids_array.present? } ) aggregate_data                          
+                    ON  aggregate_data.card_id = mtg_card_statistics.card_id
+                   SET  mtg_card_statistics.number_sales = aggregate_data.aggregate_number_sales ;  }                   
+    ActiveRecord::Base.connection.update(query)    
+    
+  end  
 
 end

@@ -18,7 +18,7 @@ $(document).ready(function() {
       } else if (target.val() == "pricing_high") {
         pricing_level = "high"
       }
-      var message = "This will update pricing for selected listings to their recommended " + pricing_level + " price level.  <br/><br/><small>Note: This action will not change pricing for foreign, foil, misprinted, signed, or altered listings.</small>";
+      var message = "This will update pricing for selected listings to their recommended " + pricing_level + " price level.  <br/><br/><small>Note: This action will not change pricing for foil or unique cards (foreign, misprinted, signed, or altered).</small>";
       myCustomConfirmBox(message, function() {
         target.closest('form').submit();        
       });    

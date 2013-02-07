@@ -6,9 +6,9 @@ class CreateMtgCardStatistics < ActiveRecord::Migration
 
       # class variables  
       t.integer   :number_sales,              :default => 0
-      t.integer   :price_low,                 :default => 10
-      t.integer   :price_med,                 :default => 100
-      t.integer   :price_high,                :default => 500
+      t.integer   :price_low
+      t.integer   :price_med
+      t.integer   :price_high
       
       t.timestamps
     end

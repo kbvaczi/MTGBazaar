@@ -8,12 +8,12 @@ class SiteVariable < ActiveRecord::Base
   after_save :update_variable_cache!
   
   def set_start_at!
-    self.start_at = Time.now unless self.start_at
+    self.start_at = Time.zone.now unless self.start_at
   end
   
   def update_variable_cache!
     SiteVariable.where(:name => name, :active => true).order("start_at DESC").each do |v|
-      if v.start_at < Time.now && (v.end_at == nil || v.end_at > Time.now)
+      if v.start_at < Time.zone.now && (v.end_at == nil || v.end_at > Time.zone.now)
         Rails.cache.write("site_variable_#{name}", v.value, :timeToLive => 30.minutes)
         break
       end
@@ -25,7 +25,7 @@ class SiteVariable < ActiveRecord::Base
     Rails.cache.fetch "site_variable_#{name}", :expires_in => 30.minutes do
       value = ""
       SiteVariable.where(:name => name, :active => true).order("start_at DESC").each do |v|
-        if v.start_at < Time.now && (v.end_at == nil || v.end_at > Time.now)
+        if v.start_at < Time.zone.now && (v.end_at == nil || v.end_at > Time.zone.now)
           value = v.value
           break
         end

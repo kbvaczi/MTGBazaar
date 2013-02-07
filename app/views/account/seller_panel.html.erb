@@ -1,0 +1,137 @@
+<% title "Seller Panel"%>
+<h1>Seller Panel</h1>
+
+<%= render :partial => 'account/listings_tabs' %>
+
+<div id="content">
+  
+  <table class="data mt">
+    <col width="44%">
+    <col width="28%">
+    <col width="28%">        
+    
+    <tr class="header_row">
+      <th colspan=3>My Seller Information</th>
+    </tr>
+    
+    <tr class=<%= cycle "odd", "even" %>>
+      <td class="header_row2">Seller PayPal Email</td>
+      <td colspan=2><%= current_user.account.paypal_username.present? ? current_user.account.paypal_username : "<i>none</i>".html_safe %></td>
+    </tr>
+    
+    <tr class=<%= cycle "odd", "even" %>>
+      <td class="header_row2">Seller Status</td>
+      <% if current_user.active %>
+        <td>
+          Active
+	      </td>
+	      <td>
+          <%= link_to "Set to Inactive", account_seller_status_toggle_path, :class => 'button2', :remote => true, :method => :post, :confirm => "Going inactive will make all your listings temporarily invisible to buyers" %>
+        </td>
+      <% else %>
+        <td>
+          Inactive
+	      </td>
+	      <td>
+          <%= link_to "Set to Active", account_seller_status_toggle_path, :class => 'button2', :remote => true, :method => :post, :confirm => "Going active will make all your <i>active</i> listings visible to buyers" %>
+        </td>
+      <% end %>
+    </tr>
+
+
+  </table>
+
+  <table class="data mt">
+    <col width="44%">
+    <col width="28%">
+    <col width="28%">        
+    <tr class='header_row'>
+      <th>My Listings</th>
+      <th>Number</th>
+      <th>Value</th>                  
+    </tr>
+    <tr class=<%= cycle "odd", "even" %>>
+      <td class="header_row2">Singles</td>
+      <td>
+        <div class='center' style='width:45%'> <%= current_user.mtg_listings.where(:playset => false).value_of(:quantity).sum %> </div>
+      </td>
+      <td>
+        <div class='center' style='width:45%'> <%= number_to_currency Money.new(current_user.mtg_listings.where(:playset => false).values_of(:quantity, :price).inject(0) {|sum, a| sum + a[0] * a[1]}) %> </div>        
+      </td>           
+    </tr>
+    <tr class=<%= cycle "odd", "even" %>>
+      <td class="header_row2">Playsets</td>
+      <td>
+        <div class='center' style='width:45%'> <%= current_user.mtg_listings.where(:playset => true).value_of(:quantity).sum %> </div>
+      </td>
+      <td>
+        <div class='center' style='width:45%'> <%= number_to_currency Money.new(current_user.mtg_listings.where(:playset => true).values_of(:quantity, :price).inject(0) {|sum, a| sum + a[0] * a[1]}) %> </div>        
+      </td>      
+    </tr>    
+  </table>
+  <% if current_user.mtg_listings.count > 0 %>
+  
+    <table class="data mt">
+      <col width="44%">
+      <col width="28%">
+      <col width="28%">    
+      <tr class="header_row">
+        <th colspan=3>My Current Price Analysis</th>
+      </tr>
+      <tr class=<%= cycle "odd", "even" %>>
+        <td colspan=3>
+          <%= render :partial => 'seller_panel_pricing_summary' %>
+        </td>
+      </tr>    
+      <tr class=<%= cycle "odd", "even" %>>
+        <% listing_ids_above_range = card_ids_above_recommended_price_range %>
+        <td class="header_row2">Listings Above Price Range</td>
+        <% if listing_ids_above_range.length > 0 %>
+          <td>
+            <%= pluralize(listing_ids_above_range.length, "Listing", "Listings")  %>
+          </td>
+          <td>
+            <%= link_to 'Adjust Pricing', mtg_cards_listings_multiple_process_request_path(:action_input => 'pricing_high', :edit_listings_ids => listing_ids_above_range), :method => :post, :confirm => 'Adjust pricing for listings above recommended price range to recommended maximum price?<br/><br/><i>Note: This action will not change pricing for foil or unique cards (foreign, misprinted, signed, or altered).</i>', :class => 'button2' if listing_ids_above_range.count > 0 %>                
+          </td>
+        <% else %>
+          <td colspan=2>
+            <i>All listings within recommended range</i>
+          </td>
+        <% end %>      
+      </tr>    
+    
+      <tr class=<%= cycle "odd", "even" %>>
+        <% listing_ids_below_range = card_ids_below_recommended_price_range %>
+        <td class="header_row2">Listings Below Price Range</td>
+        <% if listing_ids_below_range.length > 0 %>
+          <td>
+            <%= pluralize(listing_ids_below_range.length, "Listing", "Listings") %>        
+          </td>
+          <td>
+            <%= link_to 'View Listings', account_seller_panel_path(:section => 'listings', :filter => true, :filter_by => 'params', :listing_ids => listing_ids_below_range) if listing_ids_below_range.count > 0 %>        
+          </td>
+        <% else %>
+          <td colspan=2>
+            <i>All listings within recommended range</i>
+          </td>
+        <% end %>
+      </tr>
+    </table>
+
+    <div class='center_wrap'>
+      <p class='tc-grey'><i>Note: Price analysis only based on English non-unique cards</i></p>
+      <br class='spacer'/>
+      <div class='center mt-s'>
+        <%= form_tag mtg_cards_listings_multiple_process_request_path, :id => "multiple_listing_edit_form", :method => :post do %>
+          <%= select_tag "action_selector" , options_for_select([["Set to current recommended low pricing", "pricing_low"], ["Set to current recommended medium pricing", "pricing_med"], ["Set to current recommended high pricing", "pricing_high"]], ""), {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Adjust pricing for all listings...", :id => "multiple_listings_actions", :class => "chzn-select chzn-nosearch", :style => "min-width:200px;"} %>
+          <%= hidden_field_tag "action_input" %>              
+          <%= hidden_field_tag "edit_listings_ids", :value => Proc.new {current_user.mtg_listings.value_of(:id)} %>
+        <% end %>
+      </div>
+      
+
+    </div>
+    
+  <% end %>
+  
+</div>

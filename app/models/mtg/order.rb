@@ -115,42 +115,40 @@ class Mtg::Order < ActiveRecord::Base
   def setup_transaction_for_checkout
     self.transaction.destroy if self.transaction.present?                             # refresh transaction every time we try to check out so we don't get old data
     #TODO: buyer_confirmed_at now obsolete for transactions
-    self.build_transaction(:buyer_confirmed_at => Time.now, 
-                           :cards_quantity     => self.cards_quantity,
-                           :shipping_cost      => self.shipping_cost,
-                           :value              => self.item_price_total)
-    self.reservations.each { |r| self.transaction.build_item_from_reservation(r) }   # create transaction items based on these reservations
-    calculated_commission_rate = self.buyer.account.commission_rate || SiteVariable.get("global_commission_rate").to_f
-    self.transaction.build_payment( :user_id => self.buyer.id, 
-                                    :amount => self.total_cost, 
-                                    :shipping_cost => self.shipping_cost, 
-                                    :commission_rate => calculated_commission_rate,
-                                    :commission => Money.new((calculated_commission_rate * self.item_price_total.cents).ceil)  )  # Calculate commision as commission_rate * item value (without shipping), round up to nearest cent
-    ActiveRecord::Base.transaction do                                 
-      self.transaction.save!
+    ActiveRecord::Base.transaction do     
+      self.create_transaction!(  :buyer              => self.buyer,
+                                 :seller             => self.seller,
+                                 :cards_quantity     => self.cards_quantity,
+                                 :shipping_options    => self.shipping_options,                                 
+                                 :shipping_cost      => self.shipping_cost,
+                                 :value              => self.item_price_total )
+      self.reservations.includes(:listing).each { |r| self.transaction.create_item_from_reservation!(r) }   # create transaction items based on these reservations
+      calculated_commission_rate = self.buyer.account.commission_rate || SiteVariable.get("global_commission_rate").to_f
+      self.transaction.create_payment!( :user_id          => self.buyer.id, 
+                                        :amount           => self.total_cost, 
+                                        :shipping_cost    => self.shipping_cost, 
+                                        :commission_rate  => calculated_commission_rate,
+                                        :commission       => Money.new((calculated_commission_rate * self.item_price_total.cents).ceil)  )  # Calculate commision as commission_rate * item value (without shipping), round up to nearest cent                                
     end
   end
     
   def checkout_transaction
-    this_transaction = self.transaction                          # remember this for later
-    self.transaction.buyer            = self.buyer               # setup buyer and seller for transaction
-    self.transaction.seller           = self.seller                                     
-    self.transaction.status           = "confirmed"              # set transaction to confirmed since money has changed hands
-    self.transaction.order_id         = nil                      # disconnect transaction from order so order can be destroyed
-    self.transaction.shipping_cost    = self.shipping_cost
-    self.transaction.shipping_options = self.shipping_options
-    self.transaction.value            = self.item_price_total
+    this_transaction = self.transaction                                                 # remember this for later because we will disconnect transaction from order
+    self.transaction.assign_attributes(:buyer_confirmed_at  => Time.zone.now,
+                                       :status              => "confirmed",
+                                       :order_id            => nil )                    # disconnect this transaction from order
     ActiveRecord::Base.transaction do                                 
       self.transaction.save!
       self.reservations.each { |r| r.purchased! } rescue true    # update listing quantity and destroy each reservation for this transaction
-      this_transaction.items.update_all(:buyer_id => self.buyer.id, :seller_id => self.seller_id)
       self.destroy
     end
+    #update seller sales count
+    self.seller.statistics.increment(:number_sales).save
+    #update card sales statistics offline using worker
+    Mtg::Cards::Statistics.delay.bulk_update_sales_information(this_transaction.items.pluck(:card_id))
   end
   
-  ##### ------ PRIVATE METHODS ----- #####          
-  protected
-  
+
   def update_cache
      fresh_reservations = self.reservations.includes(:listing)
      if fresh_reservations.count > 0
@@ -175,6 +173,9 @@ class Mtg::Order < ActiveRecord::Base
      end
      self.save
    end
+  
+   ##### ------ PRIVATE METHODS ----- #####          
+   protected
   
   def set_default_shipping_options
     self.shipping_options ||= { :shipping_type    => 'usps', 

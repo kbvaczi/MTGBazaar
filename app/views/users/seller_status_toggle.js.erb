@@ -1,4 +1,0 @@
-$('#right_bar').html("<%= escape_javascript render :partial => "shared/right_bar.html" %>");
-<% unless current_user.account.paypal_username.present? %>
-  myCustomAlertBox("You must have a Verified PayPal account setup to activate seller status.")
-<% end %>

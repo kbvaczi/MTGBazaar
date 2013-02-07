@@ -8,20 +8,20 @@
   		  <%  
 		      top_cards = Mtg::Card.includes(:set).joins(:sales => :transaction).
                       where("mtg_transaction_items.created_at > ?", 30.days.ago).
-                      where("mtg_transactions.buyer_id IS NOT ?", nil).
+                      where("mtg_transactions.status <> ?", 'pending').
                       group("mtg_transaction_items.card_id").
-                      select("mtg_cards.set_id, mtg_cards.id, mtg_cards.name, count(mtg_transaction_items.card_id) AS sales_count, max(mtg_transaction_items.created_at) AS latest_sale").
+                      select("mtg_cards.set_id, mtg_cards.id, mtg_cards.name, SUM(mtg_transaction_items.quantity_requested) AS sales_count, max(mtg_transaction_items.created_at) AS latest_sale").
                       order("sales_count DESC, latest_sale DESC").
                       limit(7)
                       
           if top_cards.length < 7
             top_cards = Mtg::Card.includes(:set).joins(:sales => :transaction).
                         where("mtg_transaction_items.created_at > ?", 100.days.ago).
-                        where("mtg_transactions.buyer_id IS NOT ?", nil).
+                        where("mtg_transactions.status <> ?", 'pending').
                         group("mtg_transaction_items.card_id").
-                        select("mtg_cards.set_id, mtg_cards.id, mtg_cards.name, count(mtg_transaction_items.card_id) AS sales_count, max(mtg_transaction_items.created_at) AS latest_sale").
+                        select("mtg_cards.set_id, mtg_cards.id, mtg_cards.name, SUM(mtg_transaction_items.quantity_requested) AS sales_count, max(mtg_transaction_items.created_at) AS latest_sale").
                         order("sales_count DESC, latest_sale DESC").
-                        limit(7)
+                        limit(7)  
           end
   		  %>
   		  <div class="mr-m ml-s">
@@ -30,7 +30,7 @@
   		        <tr style="margin:0;padding:0;">
   		          <td width="30px" style="padding:0;"> <%= display_set_symbol(card.set) %> </td>
   		          <td              style="margin:0;padding:1px;text-align:left;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;"> <%= link_to display_name(card.name), mtg_card_path(card) %> </td>
-  		          <td width="50px" style="padding:1px;text-align:right;"> <%= number_to_currency(card.statistics.price_med) %> </td>          
+  		          <td width="50px" style="padding:1px;text-align:right;"> <%= number_to_currency( card.statistics.price_med ) %> </td>          
   		        </tr>        
   		      <% end %>
   		    </table>

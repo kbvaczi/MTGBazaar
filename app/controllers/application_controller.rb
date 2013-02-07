@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   helper :all
 
-  before_filter :staging_authenticate        # simple HTTP authentication for production (TEMPORARY)
+  #before_filter :staging_authenticate        # simple HTTP authentication for staging
   before_filter :admin_panel_authenticate
 
   after_filter  :update_current_session_to_prevent_expiration
@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   # temporary HTTP authentication for production server
   # DELETE THIS METHOD WHEN SITE IS LIVE
   def staging_authenticate
-    if Rails.env.staging? && request.env['PATH_INFO'] != '/admin/login' 
+    if Rails.env.staging? && request.env['PATH_INFO'] != '/admin/login' && !user_signed_in?
       authenticate_or_request_with_http_basic do |username, password|
         username == "site" && password == "test"
       end 
@@ -119,7 +119,7 @@ class ApplicationController < ActionController::Base
 
     # should we filter at all?
     if options[:activate_filters] || options[:activate_filters] == "true" # test for string too if coming in from parameter
-      
+
       # filtering by cookies, not parameters
       if options[:filter_by] == "cookies"
 
@@ -155,7 +155,8 @@ class ApplicationController < ActionController::Base
         end
       
       else # end filtering by cookies, start filtering by parameters
-      
+        query << SmartTuple.new(" OR ").add_each(params[:listing_ids]) {|v| ["mtg_listings.id = ?", v]}     if params[:listing_ids].present?
+        
         if options[:card_filters] != false
           query << ["mtg_cards.active LIKE ?", true]
           query << ["mtg_sets.active LIKE ?", true]          
@@ -174,6 +175,7 @@ class ApplicationController < ActionController::Base
           query << SmartTuple.new(" AND ").add_each(params[:abilities]) {|v| ["mtg_cards.description LIKE ?", "%#{v}%"]} if params[:abilities].present? && options[:abilities] != false
         end
         if options[:listing_filters] != false
+
           # language filters
           query << ["mtg_listings.language LIKE ?", params[:language]]                  if params[:language].present?         && options[:language] != false
           # options filters
@@ -214,9 +216,15 @@ class ApplicationController < ActionController::Base
   
   def default_js_render(options={})
     options = {:template => 'home/index', :update_right_bar => false}.merge(options)
-    script  = %{$('#center_bar').html("<%= escape_javascript render :template => "#{options[:template]}", :formats => [:html] %>");
-                initialize_overlays();
-                initialize_tooltips();}
+    script  = %{
+                $('#center_bar').children('.content,#content').fadeOut(250).queue(function() {
+                  $('#center_bar').html("<%= escape_javascript render :template => "#{options[:template]}", :formats => [:html] %>");
+                  $.activateChosenSelect();
+                  initialize_overlays();
+                  initialize_tooltips();                                      
+                  $(this).dequeue();
+                });
+               }                       
     script  = %{$('#right_bar').html("<%= escape_javascript render  :partial => "shared/right_bar", :formats => [:html] %>");} + script if options[:update_right_bar]
     render :inline => script, :content_type => 'text/javascript'
   end

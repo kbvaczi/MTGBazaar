@@ -60,7 +60,7 @@ class Mtg::CardsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.js  #show.js.erb
+      format.js  { default_js_render :template => 'mtg/cards/show' }
     end
 
   end
@@ -124,6 +124,7 @@ class Mtg::CardsController < ApplicationController
       end
       format.js do 
         set_back_path if @mtg_cards.length > 1
+        default_js_render :template => 'mtg/cards/search'
       end      
     end
     

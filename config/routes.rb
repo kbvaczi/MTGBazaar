@@ -52,9 +52,7 @@ MTGBazaar::Application.routes.draw do
   get   'transactions/:id/buyer_feedback' => 'mtg/transactions#buyer_sale_feedback',                  :as => 'buyer_sale_feedback'
   put   'transactions/:id/buyer_feedback' => 'mtg/transactions#create_buyer_sale_feedback',           :as => 'create_buyer_sale_feedback'  
   get   'transactions/:id/shipment'       => 'mtg/transactions#seller_shipment_confirmation',         :as => 'seller_shipment_confirmation'
-  put   'transactions/:id/shipment'       => 'mtg/transactions#create_seller_shipment_confirmation',  :as => 'create_seller_shipment_confirmation'
-  get   'transactions/:id/delivery'       => 'mtg/transactions#buyer_delivery_confirmation',          :as => 'buyer_delivery_confirmation'
-  put   'transactions/:id/delivery'       => 'mtg/transactions#create_buyer_delivery_confirmation',   :as => 'create_buyer_delivery_confirmation'  
+  put   'transactions/:id/shipment'       => 'mtg/transactions#create_seller_shipment_confirmation',  :as => 'create_seller_shipment_confirmation' 
   get   'transactions/:id/invoice'        => 'mtg/transactions#show_invoice',                         :as => 'show_invoice'
   put   'transactions/:id/pickup_confirm' => 'mtg/transactions#pickup_confirmation',                  :as => 'pickup_confirmation'
 
@@ -102,14 +100,15 @@ MTGBazaar::Application.routes.draw do
     
   end
   
-# USERS -------------------- #
+# ------ ACCOUNTS -------------------- #
 
-  get  'account'           => 'users#account_info',      :as => 'account_info'  
-  get  'account/listings'  => 'users#account_listings',  :as => 'account_listings'
-  get  'account/sales'     => 'users#account_sales',     :as => 'account_sales'
-  post 'account/sales'     => 'users#account_sales',     :as => 'account_sales'   # for pagination
-  get  'account/purchases' => 'users#account_purchases', :as => 'account_purchases'
-  post 'account/purchases' => 'users#account_purchases', :as => 'account_purchases'   # for pagination
+  get  'account'               => 'account#account_info',      :as => 'account_info' 
+  get  'account/seller_panel/(:section)/(:status)/(:page)'  => 'account#account_seller_panel',  :as => 'account_seller_panel'
+  get  'account/sales'         => 'account#account_sales',     :as => 'account_sales'
+  get  'account/purchases'     => 'account#account_purchases', :as => 'account_purchases'
+  post 'account/seller_status_toggle' => 'account#seller_status_toggle', :as => 'account_seller_status_toggle'
+
+# ------ USERS -------------------- #
 
   devise_for :users, :path => '/account', :controllers => { :registrations => 'account/registrations', :sessions => 'account/sessions', :passwords => 'account/passwords' } 
   devise_scope :user do
@@ -148,15 +147,27 @@ MTGBazaar::Application.routes.draw do
   match 'sitemap'             => 'home#sitemap'
   mount Ckeditor::Engine      => "/ckeditor"
   
-  
-  if Rails.env.development?
+  # routes for testing (not for production)
+  if Rails.env.development? || Rails.env.staging?
     match 'test'              => 'home#test'
   end
   
-  # VANITY URLs for users
+  # this block sets up monitoring service for sidekiq
+  require 'sidekiq/web'
+  constraint = lambda { |request| request.env['warden'].authenticate!({ scope: :admin_user }) }
+  constraints constraint do
+    mount Sidekiq::Web => '/sidekiq'  
+  end  
+
+  # ----- Blitz load testing authorization URL ----- #
+  match 'mu-3d6ea683-18abea5b-20cd60ee-3e814100' => 'home#blitz'
+  
+  # ----- VANITY URLs for users ----- # 
+  # Note: this has to be the last route otherwise it will overide other root URL routes...
   get  ':id/(:section)' => 'users#show', :constraints => {:id => /.+?(?<!ico)/, :format => /(html|xml|js|json)/}, :as => 'user'  
   
-# RAILS STANDARD COMMENTS ----------- #
+  
+  # ----- RAILS STANDARD COMMENTS ----------- #
   
   #match "*a" => redirect('/') # send all random routes to home
    

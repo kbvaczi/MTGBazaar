@@ -1,0 +1,40 @@
+<% title("My Purchases") %>
+
+<h1>My Purchases</h1>
+
+<div class="group center_wrap">
+  <ul class="tabs center">
+      <li <%= "class=selected" if request.fullpath ==  account_purchases_path %>> <%= link_to "All (#{current_user.confirmed_purchases.count})", account_purchases_path, :remote => true %> </li>
+      <li <%= "class=selected" if params[:status] == "confirmed" %>> <%= link_to "Awaiting Shipment (#{current_user.confirmed_purchases.where(:status => "confirmed").count})", account_purchases_path(:status => "confirmed"), :remote => true %> </li>      
+      <li <%= "class=selected" if params[:status] == "shipped"   %>> <%= link_to "Shipped (#{current_user.confirmed_purchases.where(:status => "shipped").count})", account_purchases_path(:status => "shipped"), :remote => true %> </li>
+      <li <%= "class=selected" if params[:status] == "delivered" %>> <%= link_to "Delivered (#{current_user.confirmed_purchases.where(:status => "delivered").count})", account_purchases_path(:status => "delivered"), :remote => true %> </li>                
+  </ul>
+</div>
+
+<div id="content">
+  
+  <h2><%= pluralize @sales.total_count, "#{params[:status].capitalize if params[:status].present?} Purchase", "#{params[:status].capitalize if params[:status].present?} Purchases" %></h2>
+
+   <table class="data">
+     <tr class="header_row">
+     	<th>Date</th>
+     	<th>Transaction ID</th>      
+    	<th>Seller</th>
+    	<th>Status</th>
+    	<th>Items</th>
+    	<th>Value</th>
+     </tr>
+
+    <%= render :partial => "mtg/transactions/teaser", :collection => @sales, :as => "transaction" %>
+  
+    <%= table_paginate_footer :variable => @sales, :colspan => 6, :method => :get %>
+  
+    <% if @sales.count == 0 %>
+      <tr>
+        <td colspan=6 class="odd"><i>None</i></td>
+      </tr>
+    <% end %>
+
+  </table>
+  
+</div>
