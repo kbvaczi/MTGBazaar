@@ -101,7 +101,8 @@ class Mtg::DecklistsController < ApplicationController
   end
   
   def autocomplete_name
-    @decklists = Mtg::Decklist.where('mtg_decklists.name LIKE ?', "#{params[:term]}%").limit(10)
+    this_users_decklists = user_signed_in? ? Mtg::Decklist.where('mtg_decklists.name LIKE ?', "#{params[:term]}%").where(:author_id => current_user.id).order('created_at DESC').limit(5) : []
+    @decklists = (this_users_decklists + Mtg::Decklist.where('mtg_decklists.name LIKE ?', "#{params[:term]}%").order('created_at DESC').limit(10)).to_a.uniq
     respond_to do |format|
       format.json {}
     end

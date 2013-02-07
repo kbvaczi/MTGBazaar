@@ -5,6 +5,7 @@ class Mtg::Decklist < ActiveRecord::Base
   
   has_many   :card_references,  :class_name => 'Mtg::Decklists::CardReference', :foreign_key => 'decklist_id', :dependent => :destroy
   has_many   :cards,            :class_name => 'Mtg::Card',                     :through => :card_references,  :source => :card
+  belongs_to :author,           :class_name => 'User'
   
   # allow form for accounts nested inside user signup/edit forms
   accepts_nested_attributes_for :card_references, :reject_if => lambda { |a| a[:card_name].blank? || a[:quantity].blank? }, :allow_destroy => true

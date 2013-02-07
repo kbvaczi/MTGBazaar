@@ -1,7 +1,7 @@
 <% title 'My Articles' %>
 <% page_description 'My Articles' %>
 
-<% @articles = current_user.team_z_profile.articles.order('created_at DESC').page(params[:page]).per(15) %>
+<% @articles = current_user.team_z_profile.articles.order('created_at DESC').page(params[:page]).per(6) %>
 
 <h1>My Articles</h1>
 

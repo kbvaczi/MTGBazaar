@@ -135,5 +135,9 @@ class User < ActiveRecord::Base
   def self.active
     where(:banned => false, :active => true)
   end
+  
+  def self.team_z_members
+    where('team_z_profile_id IS NOT NULL')
+  end
 
 end

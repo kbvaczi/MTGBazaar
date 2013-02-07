@@ -1,8 +1,14 @@
 CKEDITOR.editorConfig = function( config )
 {
+  config.resize_enabled = false; 
+  config.entities_latin = false; 
+  config.entities_greek = false; 
+  config.entities = false; 
+  config.basicEntities = false;
+  
   config.bodyClass = "article_body";  
   
-  config.contentsCss = ['/assets/ckeditor.css', '/assets/main/mtg/decklists.css', '/assets/main/helpers.css', '/assets/main/team_z/articles.css'];
+  config.contentsCss = ['/assets/ckeditor.css', '/assets/main/mtg/decklists.css', '/assets/main/helpers.css', '/assets/main/team_z/articles.css', '/assets/chosen.css'];
   // Define changes to default configuration here. For example:
   // config.language = 'fr';
   // config.uiColor = '#AADC6E';

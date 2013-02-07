@@ -24,5 +24,6 @@
 //= require spin
 
 //= require ckeditor/init
+//= require_tree ../../../lib/assets/javascripts/ckeditor/.
 
 //= require_tree .

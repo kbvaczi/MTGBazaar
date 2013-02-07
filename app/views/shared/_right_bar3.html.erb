@@ -34,7 +34,7 @@
           <table class="data fixed">
             <% recent_added.each do |set| %>
               <tr style="margin:0px;padding:0;">
-  		          <td width="30px" style="padding:0px;"> <%= display_set_symbol(set) %> </td>
+  		          <td width="30px" style="padding:0px;"> <%= display_set_symbol(set, :wrapper => true) %> </td>
                 <td              style="margin:0;padding:1px;text-align:left;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;"> <%= link_to set.name, mtg_cards_path(:set => set.code) %> </td>          
               </tr>
            	<% end %>

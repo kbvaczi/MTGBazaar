@@ -1,7 +1,7 @@
 <% title 'My Videos' %>
 <% page_description 'My Videos' %>
 
-<% @video_series_index = current_user.team_z_profile.mtgo_video_series.order('created_at DESC').page(params[:page]).per(15) %>
+<% @video_series_index = current_user.team_z_profile.mtgo_video_series.order('created_at DESC').page(params[:page]).per(6) %>
 
 <h1>My Videos</h1>
 

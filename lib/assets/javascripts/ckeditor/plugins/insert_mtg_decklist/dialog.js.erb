@@ -1,12 +1,21 @@
+<%
+  authors_list = User.team_z_members.order('LOWER(username)').values_of(:id, :username)
+  authors_list_select_options = ""
+    authors_list.each {|user| authors_list_select_options << "<option value=#{user.first}>#{user.last}</option>"}
+    authors_list.each {|user| authors_list_select_options << "<option value=#{user.first}asdf>#{user.last} asdas</option>"}
+%>
+
+
 CKEDITOR.dialog.add("insert_mtg_decklist",function(e){	
 	return{
 		title:'insert a decklist',
 		resizable : CKEDITOR.DIALOG_RESIZE_NONE,
-		minWidth:550,
-		minHeight:500,
+		minWidth:600,
+		minHeight:550,
 		onLoad:function(){ 
 			dialog = this; 
 			this.setupContent();
+      $.activateChosenSelect();
 		},
 		onOk:function( data ){
 			if ( $('#decklist_insert_preview').html().length > 0 ) {
@@ -19,7 +28,14 @@ CKEDITOR.dialog.add("insert_mtg_decklist",function(e){
 				label:'Info',
 				elements:[{	type:'vbox',
           				  padding:'10',
-            				children:[{ type:'html',
+            				children:[
+/*            				          { type:'html',
+				                        html: "<select style='padding:30px;height:20px;width:150px;' class='chzn-select' id='decklist_author_id_input'><options><option>Select an Author...</option><%= authors_list_select_options %></options></select>",
+				                      },
+				                      { type:'html',
+				                        html: "<select style='padding:30px;height:20px;width:150px;' class='chzn-select' id='decklist_name_input'><options><option>Select a Decklist...</option></options></select>",
+				                      },*/
+            				          { type:'html',
 				                        html: "<input class='ui-autocomplete-input' id='decklist_name_input' data-id-element='#id_field' style='width:300px;background:#fff;' data-autocomplete='/mtg/decklists/autocomplete_name.json' data-type='search' placeholder='Decklist Name...' type='text' onkeypress='deleteDecklistShow()'>",
 				                      },			                  
 				                      { type:'html',
@@ -31,9 +47,31 @@ CKEDITOR.dialog.add("insert_mtg_decklist",function(e){
 	};
 });
 
+/*
+$('#decklist_author_id_input').chosen().live('change', function () {
+deleteDecklistShow();
+});
+*/
+
 $('#decklist_name_input').live('railsAutocomplete.select', function(event, data){
   updateDecklistShow();
 });
+
+
+function updateDecklistShow(){
+  var url = "/mtg/decklists/" + $('#decklist_name_input').val();
+  $.ajax({
+    type: "GET",
+    url: url,
+    dataType: "html",
+    async: false,
+    success : function(data) {
+      if (data.length >= 1) {
+        $('#decklist_insert_preview').html(data);
+      }
+    }   
+  });
+}
 
 function updateDecklistShow(){
   var url = "/mtg/decklists/" + $('#decklist_name_input').val();

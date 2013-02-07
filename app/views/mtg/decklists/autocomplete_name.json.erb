@@ -7,13 +7,13 @@
           #{decklist.name}&nbsp;
         </span>
         <span class=\"right\">
-          #{display_symbols(decklist.mana_string)}
+          #{decklist.author.username}
         </span>
         <br class=\"spacer\"/>
       </div>
       <div style=\"font-size:70%; border-bottom: 1px dotted #eee;\">
         <span>
-          #{decklist.play_format}&nbsp;
+          <i>#{decklist.event} (#{decklist.play_format})</i>&nbsp;
         </span>
         <span class=\"right\">
           #{display_time(decklist.created_at)}
