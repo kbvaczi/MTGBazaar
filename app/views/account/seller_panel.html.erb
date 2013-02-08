@@ -6,9 +6,9 @@
 <div id="content">
   
   <table class="data mt">
-    <col width="44%">
-    <col width="28%">
-    <col width="28%">        
+    <col width="40%">
+    <col width="30%">
+    <col width="30%">        
     
     <tr class="header_row">
       <th colspan=3>My Seller Information</th>
@@ -42,9 +42,9 @@
   </table>
 
   <table class="data mt">
-    <col width="44%">
-    <col width="28%">
-    <col width="28%">        
+    <col width="40%">
+    <col width="30%">
+    <col width="30%">
     <tr class='header_row'>
       <th>My Listings</th>
       <th>Count</th>
@@ -72,13 +72,13 @@
   <% if current_user.mtg_listings.count > 0 %>
   
     <table class="data mt">
-      <col width="44%">
-      <col width="28%">
-      <col width="28%">    
+      <col width="40%">
+      <col width="30%">
+      <col width="30%">    
       <tr class="header_row">
         <th colspan=3>My Current Pricing</th>
       </tr>
-      <tr class=<%= cycle "odd", "even" %>>
+      <tr class='even'>
         <td colspan=3>
           <%= render :partial => 'seller_panel_pricing_summary' %>
         </td>
@@ -95,7 +95,7 @@
           </td>
         <% else %>
           <td colspan=2>
-            <i>All listings within range</i>
+            <i>0 Listings</i>
           </td>
         <% end %>      
       </tr>    
@@ -112,7 +112,7 @@
           </td>
         <% else %>
           <td colspan=2>
-            <i>All listings within range</i>
+            <i>0 Listings</i>
           </td>
         <% end %>
       </tr>
