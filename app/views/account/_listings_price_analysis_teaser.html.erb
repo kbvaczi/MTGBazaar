@@ -1,0 +1,30 @@
+<tr class=<%= cycle("odd","even") %>>
+  <td>
+    <%= check_box "edit_listings_ids", listing.id, {:class => "listing_check_box"}, 1, nil %>
+  </td>
+  <td>
+    <%= link_to display_name(listing.card.name), mtg_card_path(listing.card) %>
+  </td>
+  <td>
+    <%= display_set_symbol(listing.card.set) %>
+  </td> 
+  <td>
+    <%= display_condition(listing.condition) %>
+  </td>
+  <td>
+    <%= number_to_currency listing.price %>
+  </td>
+  <td>
+    <%= listing.unique_listing? ? "<s>#{number_to_currency listing.product_recommended_pricing[:price_low]}</s>".html_safe : number_to_currency(listing.product_recommended_pricing[:price_low]) %>
+  </td>
+  <td>
+    <%= listing.unique_listing? ? "<s>#{number_to_currency listing.product_recommended_pricing[:price_med]}</s>".html_safe : number_to_currency(listing.product_recommended_pricing[:price_med]) %>
+  </td>
+  <td>
+    <%= listing.unique_listing? ? "<s>#{number_to_currency listing.product_recommended_pricing[:price_high]}</s>".html_safe : number_to_currency(listing.product_recommended_pricing[:price_high]) %>
+  </td>  
+  <td>
+    <%= link_to menu_icon, edit_mtg_cards_listing_path(listing)%>
+  </td>
+  
+</tr>     

@@ -16,6 +16,8 @@ class Mtg::Cards::EditMultipleListingsController < ApplicationController
       delete
     elsif params[:action_input].include? 'pricing'
       update_pricing
+    elsif params[:action_input] == 'price_analysis'
+      redirect_to account_listings_price_analysis_path(:listing_ids => params[:edit_listings_ids].keys)
     else
       flash[:error] = "You don't have permission to perform this action..."
       redirect_to back_path

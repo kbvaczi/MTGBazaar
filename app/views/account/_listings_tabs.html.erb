@@ -1,7 +1,7 @@
 <div class="group center_wrap">
   <ul class="tabs">
     <li <%= "class=selected" if params[:section].in? [nil, 'overview'] %>> <%= link_to "Seller Panel", url_for(params.merge(:status => nil, :section => 'overview', :listing_ids => nil)), :remote => true %> </li>      
-    <li <%= "class=selected" if params[:status].in? [nil, 'active', ' '] and params[:section] == 'listings' %>> <%= link_to "Active Listings (#{current_user.mtg_listings.active.pluck(:quantity_available).inject(0) {|sum, value| sum + value}})", url_for(params.merge(:section => "listings", :status => "active", :listing_ids => nil)), :remote => true %> </li>
-    <li <%= "class=selected" if params[:status]  == "inactive"      and params[:section] == 'listings' %>> <%= link_to "Inactive Listings (#{current_user.mtg_listings.inactive.pluck(:quantity_available).inject(0) {|sum, value| sum + value}})", url_for(params.merge(:section => "listings", :status => "inactive", :listing_ids => nil)), :remote => true %> </li>      
+    <li <%= "class=selected" if params[:status].in? [nil, 'active', ' '] and params[:section] == 'listings' %>> <%= link_to "Active Listings", url_for(params.merge(:section => "listings", :status => "active", :listing_ids => nil)), :remote => true %> </li>
+    <li <%= "class=selected" if params[:status]  == "inactive"      and params[:section] == 'listings' %>> <%= link_to "Inactive Listings", url_for(params.merge(:section => "listings", :status => "inactive", :listing_ids => nil)), :remote => true %> </li>      
   </ul>
 </div>

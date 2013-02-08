@@ -32,6 +32,23 @@ class AccountController < ApplicationController
     end
   end
   
+  def listings_price_analysis
+    set_back_path    
+    @listings = current_user.mtg_listings.includes(:card => [:set, :statistics]).where(:id => params[:listing_ids]).order("mtg_cards.name ASC").page(params[:page]).per(20)    
+    respond_to do |format|
+      format.html do 
+        render :template => 'account/listings_price_analysis'
+      end
+      format.js do
+        default_js_render :template => 'account/listings_price_analysis'
+      end
+      format.overlay do
+        overlay_js_render :template => 'account/listings_price_analysis'
+      end 
+    end
+  end
+
+  
   def account_sales
     set_back_path
     if params[:status].present?

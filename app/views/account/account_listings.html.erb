@@ -54,9 +54,9 @@ end
       <%= hidden_field_tag "action_input" %>
       <div>
         <span class="ml mb">
-            <%  grouped_options = [ ['Update Pricing', [["Set to current low pricing", "pricing_low"], ["Set to current average pricing", "pricing_med"], ["Set to current high pricing", "pricing_high"]]],
-                                  ['Change Active Status', [["Set Active", "active"], ["Set Inactive", "inactive"]]],
-                                  ['Other',         [["Delete Listings","delete"]]] ] %>
+            <%  grouped_options = [ ['Pricing', [['Pricing Analysis', 'price_analysis'], ["Set to suggested low pricing", "pricing_low"], ["Set to suggested medium pricing", "pricing_med"], ["Set to suggested high pricing", "pricing_high"]]],
+                                    ['Change Active Status', [["Set Active", "active"], ["Set Inactive", "inactive"]]],
+                                    ['Other',         [["Delete Listings","delete"]]] ] %>
           <%= select_tag "action_selector" , grouped_options_for_select(grouped_options, ""), {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Actions for selected listings...", :id => "multiple_listings_actions", :class => "chzn-select chzn-nosearch", :style => "min-width:200px;"} %> 
         </span>
         <%= link_to "List a New Playset", new_mtg_cards_listings_playset_path, :class => "right button mr mb" %>
@@ -113,10 +113,4 @@ end
     </div>
   </div>
     
-</div>
-
-
-
-<div id="dialog-confirm" class="hidden" title="Empty the recycle bin?">
-    <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>These items will be permanently deleted and cannot be recovered. Are you sure?</p>
 </div>

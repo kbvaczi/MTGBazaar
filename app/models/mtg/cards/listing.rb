@@ -105,20 +105,11 @@ class Mtg::Cards::Listing < ActiveRecord::Base
     output_string += self.card.name
   end
 
-  def product_recommended_pricing(options = {:condition => (self.condition rescue "1")})
+  def product_recommended_pricing(options = {:condition => (self.condition rescue 1)})
     statistics = self.card.statistics
     pricing_hash = {:price_low => statistics.price_low, :price_med => statistics.price_med, :price_high => statistics.price_high }
     pricing_hash.each { |k,v| pricing_hash[k] = v * 4 } if self.playset
-    case options[:condition]
-      when "2"
-        return pricing_hash.each { |k,v| pricing_hash[k] = v * 0.95 }
-      when "3"
-        return pricing_hash.each { |k,v| pricing_hash[k] = v * 0.85 }
-      when "4"      
-        return pricing_hash.each { |k,v| pricing_hash[k] = v * 0.75 }
-      else
-        return pricing_hash
-    end
+    pricing_hash.each { |k,v| pricing_hash[k] = v * Mtg::Cards::Statistics.price_reduction_from_condition(options[:condition].to_i) }
   end
 
   # --------------------------------------- #
@@ -127,6 +118,10 @@ class Mtg::Cards::Listing < ActiveRecord::Base
   
   def quantity_reserved
     self.quantity - self.quantity_available
+  end
+  
+  def unique_listing?
+    self.foil or self.signed or self.language != 'EN' or self.altart or self.misprint
   end
   
   # determines if listing is available to be added to cart (active, not already in cart, and not already sold)

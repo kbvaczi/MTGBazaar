@@ -1,0 +1,62 @@
+<% title "Pricing Analysis"%>
+<h1>Pricing Analysis</h1>
+
+<div class="content">
+    
+  <% if @listings.present? %>
+
+  	<%= form_tag mtg_cards_listings_multiple_process_request_path, :id => "multiple_listing_edit_form", :method => :post do %>
+      <%= hidden_field_tag "action_input" %>
+      <div class='mb'>
+        <span class="ml-m mb">
+            <%  grouped_options = [ ['Update Pricing', [["Set to suggested low pricing", "pricing_low"], ["Set to suggested medium pricing", "pricing_med"], ["Set to suggested high pricing", "pricing_high"]]],
+                                  ['Change Active Status', [["Set Active", "active"], ["Set Inactive", "inactive"]]],
+                                  ['Other',         [["Delete Listings","delete"]]] ] %>
+          <%= select_tag "action_selector" , grouped_options_for_select(grouped_options, ""), {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Actions for selected listings...", :id => "multiple_listings_actions", :class => "chzn-select chzn-nosearch", :style => "min-width:200px;"} %> 
+        </span>
+        <p class='right mr-m mt-s tc-grey'>
+          <i>Note: Suggested pricing for non-unique cards only</i>
+        </p>
+      </div>
+      <table class="data fixed">
+    	  <col width="5%">
+    		<col>
+    		<col width="9%">
+    		<col width="9%">
+    		<col width="12%">
+    		<col width="12%">
+    		<col width="12%">
+    		<col width="12%">
+    		<col width="7%">
+        <tr class='header_row'>
+          <th></th>
+          <th colspan=4>Listing Information</th>
+          <th colspan=3>Suggested Pricing</th>
+          <th></th>
+        </tr>
+      	<tr class="header_row2">
+      	  <th><%= check_box_tag "listings", 1, false, {:id => "check_all_listings"} %></th>
+      		<th>Item Name</th>
+      		<th>Set</th>      
+      		<th>Cond.</th>
+      		<th>Price</th>      		
+      		<th>Low</th>
+      		<th>Med</th>
+      		<th>High</th>      		      		
+      		<th>Edit</th>
+      	</tr>
+  	
+        <%= render :partial => "account/listings_price_analysis_teaser" , :collection => @listings, :as => "listing" %>
+        <%= table_paginate_footer :variable => @listings, :colspan => 9, :method => :get %>
+        
+      </table>
+
+    <% end %>
+    
+  <% else %>
+    <div class='center_wrap'>
+      <p class="ma"><i>No Listings Selected...</i></p>
+    </div>
+  <% end %>
+  
+</div>
