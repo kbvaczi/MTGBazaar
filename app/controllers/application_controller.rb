@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   helper :all
 
-  #before_filter :staging_authenticate        # simple HTTP authentication for staging
+  before_filter :staging_authenticate        # simple HTTP authentication for staging
   before_filter :admin_panel_authenticate
 
   after_filter  :update_current_session_to_prevent_expiration
