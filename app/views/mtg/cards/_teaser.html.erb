@@ -11,7 +11,7 @@
       </div>
       <%= link_to display_name(mtg_card.name), mtg_card_path(mtg_card), :class => 'title left' %>
       &nbsp;
-      <div class='left'><%= display_set_symbol(mtg_card.set, :wrapper => true) %></div>
+      <div class='left ml-m'><%= display_set_symbol(mtg_card.set) %></div>
     </h2>
     <div class= "mtg_teaser_info_details">
       <table style="width:100%">

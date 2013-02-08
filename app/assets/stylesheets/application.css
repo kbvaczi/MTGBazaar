@@ -6,7 +6,7 @@
   *= require_self
   *= require chosen
   *= require jquery-ui-1.9.2.custom
-  *= require_tree ./main
   *= require main
+  *= require_tree ./main  
   
 */

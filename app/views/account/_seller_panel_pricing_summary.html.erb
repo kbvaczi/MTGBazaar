@@ -18,7 +18,7 @@
 </div>
 <div class='pricing_summary_text_left center t-l tc-grey' >High Pricing</div>
 
-<%  case
+<%#  case
       when price_analysis_pricepoint < -1  then message = "<p> Your average pricing is below minimum recommended price </p>".html_safe
       when price_analysis_pricepoint < 3.5   then message = "<p> Your average pricing is towards the low-end</p>".html_safe
       when price_analysis_pricepoint < 6.5   then message = "<p> Your average pricing is medium</p>".html_safe              
@@ -26,4 +26,4 @@
       else message = "<p> Your average pricing is above maximum recommended price</p>".html_safe
     end
 %>
-<%= message %>
+<%#= message %>
