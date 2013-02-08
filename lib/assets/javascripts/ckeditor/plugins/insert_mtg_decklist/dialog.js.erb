@@ -1,11 +1,3 @@
-<%
-  authors_list = User.team_z_members.order('LOWER(username)').values_of(:id, :username)
-  authors_list_select_options = ""
-    authors_list.each {|user| authors_list_select_options << "<option value=#{user.first}>#{user.last}</option>"}
-    authors_list.each {|user| authors_list_select_options << "<option value=#{user.first}asdf>#{user.last} asdas</option>"}
-%>
-
-
 CKEDITOR.dialog.add("insert_mtg_decklist",function(e){	
 	return{
 		title:'insert a decklist',
@@ -29,12 +21,6 @@ CKEDITOR.dialog.add("insert_mtg_decklist",function(e){
 				elements:[{	type:'vbox',
           				  padding:'10',
             				children:[
-/*            				          { type:'html',
-				                        html: "<select style='padding:30px;height:20px;width:150px;' class='chzn-select' id='decklist_author_id_input'><options><option>Select an Author...</option><%= authors_list_select_options %></options></select>",
-				                      },
-				                      { type:'html',
-				                        html: "<select style='padding:30px;height:20px;width:150px;' class='chzn-select' id='decklist_name_input'><options><option>Select a Decklist...</option></options></select>",
-				                      },*/
             				          { type:'html',
 				                        html: "<input class='ui-autocomplete-input' id='decklist_name_input' data-id-element='#id_field' style='width:300px;background:#fff;' data-autocomplete='/mtg/decklists/autocomplete_name.json' data-type='search' placeholder='Decklist Name...' type='text' onkeypress='deleteDecklistShow()'>",
 				                      },			                  
