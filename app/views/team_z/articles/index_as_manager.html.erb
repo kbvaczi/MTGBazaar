@@ -1,7 +1,7 @@
 <% title 'Manage Team Z Articles' %>
 <% page_description 'Manage Team Z Articles' %>
 
-<% @articles = TeamZ::Article.where(:status => params[:status]).order('created_at DESC').page(params[:page]).per(15) %>
+<% @articles = TeamZ::Article.where(:status => params[:status] || 'working').order('created_at DESC').page(params[:page]).per(15) %>
 
 <h1>Manage Team Z Articles</h1>
 

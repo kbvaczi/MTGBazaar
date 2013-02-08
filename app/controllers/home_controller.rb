@@ -2,6 +2,7 @@ class HomeController < ApplicationController
 
   def index
     set_back_path
+    render :layout => 'homepage'
   end
   
   def sitemap

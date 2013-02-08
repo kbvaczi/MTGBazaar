@@ -271,11 +271,7 @@ ActiveRecord::Schema.define(:version => 20130117144431) do
     t.integer  "block_id"
     t.string   "name",         :default => "",           :null => false
     t.string   "code",         :default => "",           :null => false
-<<<<<<< HEAD
     t.date     "release_date", :default => '2013-01-27'
-=======
-    t.date     "release_date", :default => '2013-01-25'
->>>>>>> articles
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.boolean  "active",       :default => false,        :null => false
@@ -285,44 +281,6 @@ ActiveRecord::Schema.define(:version => 20130117144431) do
   add_index "mtg_sets", ["code"], :name => "index_mtg_sets_on_code"
   add_index "mtg_sets", ["name"], :name => "index_mtg_sets_on_name"
   add_index "mtg_sets", ["release_date"], :name => "index_mtg_sets_on_release_date"
-<<<<<<< HEAD
-=======
-
-  create_table "mtg_sets_listings", :force => true do |t|
-    t.integer  "set_id"
-    t.integer  "seller_id"
-    t.integer  "price",                 :default => 1,     :null => false
-    t.integer  "quantity",              :default => 1,     :null => false
-    t.integer  "quantity_available",    :default => 1,     :null => false
-    t.string   "condition",             :default => "1",   :null => false
-    t.string   "language",              :default => "EN",  :null => false
-    t.string   "description",           :default => "",    :null => false
-    t.boolean  "foil",                  :default => false, :null => false
-    t.boolean  "active",                :default => true,  :null => false
-    t.integer  "number_cards_per_item", :default => 0,     :null => false
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
-  end
-
-  add_index "mtg_sets_listings", ["active"], :name => "index_mtg_sets_listings_on_active"
-  add_index "mtg_sets_listings", ["seller_id"], :name => "index_mtg_sets_listings_on_seller_id"
-  add_index "mtg_sets_listings", ["set_id"], :name => "index_mtg_sets_listings_on_set_id"
-
-  create_table "mtg_sets_statistics", :force => true do |t|
-    t.integer  "set_id"
-    t.integer  "number_sales",       :default => 0
-    t.integer  "price_low",          :default => 0
-    t.integer  "price_med",          :default => 0
-    t.integer  "price_high",         :default => 0
-    t.integer  "price_min",          :default => 0
-    t.datetime "pricing_updated_at"
-    t.integer  "listings_available", :default => 0
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
-  end
-
-  add_index "mtg_sets_statistics", ["set_id"], :name => "index_mtg_sets_statistics_on_set_id"
->>>>>>> articles
 
   create_table "mtg_transaction_items", :force => true do |t|
     t.integer  "card_id"
@@ -616,10 +574,7 @@ ActiveRecord::Schema.define(:version => 20130117144431) do
     t.datetime "updated_at",                                :null => false
     t.integer  "user_level",             :default => 0
     t.boolean  "active",                 :default => false
-<<<<<<< HEAD
-=======
     t.integer  "team_z_profile_id"
->>>>>>> articles
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true

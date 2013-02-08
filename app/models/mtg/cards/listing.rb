@@ -22,7 +22,7 @@ class Mtg::Cards::Listing < ActiveRecord::Base
                   :misprint, :foil, :signed, :price_options, :quantity_available, :scan, :scan_cache, :remove_scan
 
   # not-in-model field for current password confirmation
-  attr_accessor :name, :set, :price_options, :no_cache_update
+  attr_accessor :name, :set, :price_options, :no_cache_update, :rarity
 
   # --------------------------------------- #
   # ------------ Callbacks ==-------------- #

@@ -9,9 +9,11 @@
     <%= hidden_field_tag 'sort',                          params[:sort] %>    
     <%= hidden_field_tag 'mtg_cards_listing[price]',      params[:mtg_cards_listing][:price] %>            
     <%= hidden_field_tag 'mtg_cards_listing[set]',        params[:mtg_cards_listing][:set] %>        
+    <%= hidden_field_tag 'mtg_cards_listing[rarity]',     params[:mtg_cards_listing][:rarity] %>    
     <%= hidden_field_tag 'mtg_cards_listing[language]',   params[:mtg_cards_listing][:language] %>
     <%= hidden_field_tag 'mtg_cards_listing[condition]',  params[:mtg_cards_listing][:condition] %>
     <%= hidden_field_tag 'mtg_cards_listing[foil]',       params[:mtg_cards_listing][:foil] %>
+
     
     <%# SETTINGS FOR ALL DATA %>
     <%# SETTINGS FOR ALL DATA %>
@@ -70,15 +72,17 @@
                 price_selection = card.statistics.price_low
               elsif params[:mtg_cards_listing][:price] == "high"
                 price_selection = card.statistics.price_high
-              else                
+              elsif params[:mtg_cards_listing][:price] == "med"
                 price_selection = card.statistics.price_med
+              else
+                price_selection = 'other'                
               end                
             %>
               <%= select_tag "sales[#{card.id}][price]", options_for_select( [["Low ($#{card.statistics.price_low})",     card.statistics.price_low], 
                                                                      ["Average ($#{card.statistics.price_med})",  card.statistics.price_med], 
                                                                      ["High ($#{card.statistics.price_high})",    card.statistics.price_high],
                                                                      ["Other", "other"]], :selected => price_selection ), 
-                                                 :class => "chzn-select bulk_price_options",
+                                                 :class => "chzn-select chzn-nosearch bulk_price_options",
                                                  :style => "width:150px;" %>
               <br/>           
               <div style="margin-top:5px;<%= "#{(params[:sales] && params[:sales]["#{card.id}"] && params[:sales]["#{card.id}"][:price] == "other") ? "" : "display:none;"}"%>" class="bulk_price_custom">     
@@ -99,7 +103,23 @@
       </tr>
     </table>
     
-    <script>
+    <script type='text/javascript'>
+      function update_price_select(target) {
+        if (target.val() == "other") {
+          target.parent().find('.bulk_price_custom').show();
+        }
+        else {
+          target.parent().find('.bulk_price_custom').hide();
+        }        
+      }
+      $(document).ready(function() {
+        $(".bulk_price_options").chosen().each(function (){
+          update_price_select($(this));
+        });
+      });
+      $(".bulk_price_options").chosen().change( function() {
+        update_price_select($(this));
+      });
       $('.quantity_plus_all').live('click', function() {
         $('#content input[type="text"].listings_quantity').each(function(index) {
            var input = $(this);
