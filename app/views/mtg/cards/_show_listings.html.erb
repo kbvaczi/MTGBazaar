@@ -1,7 +1,4 @@
 
-
-<br class="spacer"/>
-
 <ul class="tabs2">
   <li <%= "class=selected" if not params[:type].present?  %>> <%= link_to "Singles for Sale (#{@listings_singles_count})",  url_for(params.merge(:type => nil)), :remote => true %> </li>  
   <li <%= "class=selected" if params[:type] == "playsets" %>> <%= link_to "Playsets for Sale (#{@listings_playsets_count})", url_for(params.merge(:type => "playsets")), :remote => true %> </li>  
