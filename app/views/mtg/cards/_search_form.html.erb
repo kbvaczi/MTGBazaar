@@ -77,7 +77,10 @@
     
       <div class="mt-s mb-s search-abilities">
         <%#= label_tag "Abilities:" %>
-        <%= select_tag "abilities" , options_for_select(abilities_list, :selected => cookies[:search_abilities]), { :multiple => true, :class => "search-select-multi chzn-select", :style => "", "data-placeholder" => "Abilities..."} %>                        
+        <%= select_tag "abilities" , options_for_select(abilities_list, :selected => cookies[:search_abilities]), { :multiple => true, 
+                                                                                                                    :class => "search-select-multi chzn-select", 
+                                                                                                                    "data-placeholder" => "Abilities...",
+                                                                                                                    'data-no_results_text' => 'no abillity'} %>                        
       </div> 
 
       <div class="mt-m search-select-wrapper">

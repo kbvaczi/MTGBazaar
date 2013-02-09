@@ -17,7 +17,7 @@ $.activateChosenSelect = function(){
   // Custom function which removes the chzn search bar for select boxes with .chzn-nosearch tag
   $(".chzn-nosearch").parent().find(".chzn-search").hide();
 
-
+  // Prevent page scrolling wiht mousewheel when scrolling inside a chosen box
   $(".chzn-results").bind('mousewheel DOMMouseScroll', function(e) {
     var scrollTo = null;
 
