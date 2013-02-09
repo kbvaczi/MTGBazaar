@@ -20,7 +20,7 @@
                     <div class='decklist_card'>            
                       <span class='card_name_wrapper'>
                         <span class='card_quantity'><%= card_reference.quantity %></span>
-                        <span class='card_name' data-card-id='<%= card_reference.card_id %>' data-image='<%= card_reference.card.image_path %>'><%= link_to card_reference.card_name, mtg_card_path(card_reference.card) %></span>
+                        <span class='card_name' data-sales-frame-path='<%= sales_frame_mtg_decklists_path(:id => card_reference.card_id) %>' data-card-id='<%= card_reference.card_id %>' data-image='<%= card_reference.card.image_path %>'><%= link_to card_reference.card_name, mtg_card_path(card_reference.card) %></span>
                       </span>
                     </div>              
                   <% end %>
@@ -34,7 +34,7 @@
                   <div class='decklist_card'>            
                     <span class='card_name_wrapper'>
                       <span class='card_quantity'><%= card_reference.quantity %></span>
-                      <span class='card_name' data-image='<%= card_reference.card.image_path %>'><%= link_to card_reference.card_name, mtg_card_path(card_reference.card) %></span>
+                        <span class='card_name' data-sales-frame-path='<%= sales_frame_mtg_decklists_path(:id => card_reference.card_id) %>' data-card-id='<%= card_reference.card_id %>' data-image='<%= card_reference.card.image_path %>'><%= link_to card_reference.card_name, mtg_card_path(card_reference.card) %></span>
                     </span>
                   </div>              
                 <% end %>
