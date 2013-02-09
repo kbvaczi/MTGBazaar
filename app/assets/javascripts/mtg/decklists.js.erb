@@ -25,21 +25,30 @@ function updateDecklistImage(card_name_object) {
 }
 
 function updateDecklistCardSalesFrame(card_name_object) {
-  var target    = card_name_object.closest('.decklist_wrapper').find('.decklist_card_sales_frame');
-  var card_link = card_name_object.children('a').attr('href').split('/');
-  var card_id   = card_link[card_link.length - 1]
-  var path = "/mtg/decklists/sales_frame";
-   var params = [{ name:"id",  value:card_id }];
-   var url = path + "?" + $.param(params);
-   $.ajax({
-      type: "GET",
+  var target           = card_name_object.closest('.decklist_wrapper').find('.decklist_card_sales_frame');
+  var card_link        = card_name_object.children('a').attr('href').split('/');
+  var card_id          = card_name_object.data('card-id') || card_link[card_link.length - 1]
+  var cached_object_id = 'decklist_sales_frame_cache_' + card_id;
+  var cached_object = $('#' + cached_object_id);
+  if (cached_object.length != 0){
+    // We already have the sales information, just take it from the page
+    target.html(cached_object.html());
+  } else {
+    // Fetch new information from the server, store on page
+    var path      = '/mtg/decklists/sales_frame';
+    var params    = [{ name:'id',  value:card_id }];
+    var url       = path + '?' + $.param(params);    
+    $.ajax({
+      type: 'GET',
       url: url,
-      dataType: "HTML",
-      async: false,
+      dataType: 'HTML',
+      async: true,
       success : function(data) { 
-        if (data.length >= 1) {
-          target.html(data);     
+        if (target && data.length >= 1) {
+          target.html(data);
+          $('body').append('<div id=' + cached_object_id + " style='display:none;'>" + data + '</div>');                
         }
       }   
-    });
+    });    
+  }
 }

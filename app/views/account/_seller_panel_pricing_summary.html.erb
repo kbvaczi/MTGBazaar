@@ -1,7 +1,7 @@
 <% gridline_width = 20 %>
 <% 
   spacer_position = case
-                      when price_analysis_pricepoint < -1  then -10
+                      when price_analysis_pricepoint < -1  then -1
                       when price_analysis_pricepoint < 11 then price_analysis_pricepoint.to_i * 1.05 * 20 + 10
                       else 11
                     end
