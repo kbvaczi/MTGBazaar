@@ -35,7 +35,7 @@ function updateDecklistCardSalesFrame(card_name_object) {
   } else if (card_id) {
     $.ajax({
       type: 'GET',
-      url: '/mtg/decklists/sales_frame?id=' + card_id,
+      url: '/mtg/decklists/sales_frame.text?id=' + card_id,
       dataType: 'text',
       success : function(data) { 
         if (target && data.length >= 1) {

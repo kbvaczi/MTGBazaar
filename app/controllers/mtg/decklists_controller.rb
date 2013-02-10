@@ -111,9 +111,14 @@ class Mtg::DecklistsController < ApplicationController
   
   def sales_frame
     card = Mtg::Card.includes(:statistics).where(:id => params[:id]).first
-    if card.present?
-      render :partial => 'sales_frame', :locals => {:mtg_card => card}
-    end    
+
+    respond_to do |format|
+      format.text do      
+        if card.present?
+          render :partial => 'sales_frame', :locals => {:mtg_card => card}, :formats => [:html]
+        end
+      end
+    end
   end
   
   private 
