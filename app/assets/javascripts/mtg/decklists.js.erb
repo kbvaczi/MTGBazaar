@@ -26,7 +26,6 @@ function updateDecklistImage(card_name_object) {
 
 function updateDecklistCardSalesFrame(card_name_object) {
   var target           = card_name_object.closest('.decklist_wrapper').find('.decklist_card_sales_frame');
-  var path             = card_name_object.data('sales-frame-path');
   var card_id          = card_name_object.data('card-id');
   var cached_object_id = 'decklist_sales_frame_cache_' + card_id;
   var cached_object = $('#' + cached_object_id);
@@ -35,14 +34,12 @@ function updateDecklistCardSalesFrame(card_name_object) {
     target.html(cached_object.html());
   } else {
     // Fetch new information from the server, store on page
-    if (path.length > 0) { // if path doesn't exist there's a bug where the entire page loads into frame
-      console.log("TESTING LOG FOR FUNCTION UPDATE DECKLIST CAR DSALESF RAME");
-      console.log(path);
+    if (card_id.length > 0) {
+      console.log(card_id);
       $.ajax({
         type: 'GET',
         url: '/mtg/decklists/sales_frame?id=' + card_id,
-        dataType: 'HTML',
-        async: true,
+        dataType: 'html',
         success : function(data) { 
           if (target && data.length >= 1) {
             target.html(data);
