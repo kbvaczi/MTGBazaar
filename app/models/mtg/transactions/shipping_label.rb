@@ -100,7 +100,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
     total_weight_in_oz = 3 if total_weight_in_oz <= 3 # flat rate for everything under 3oz, so just round up if so
     shipping_options_pricing = {:basic_shipping         => basic_shipping_charge,
                                 :insurance              => Mtg::Transactions::ShippingLabel.insurance_charge(:item_value => options[:item_value].to_money || 0),
-                                :signature_confirmation => 2.49.to_money } # our cost for signature confirmation = 2.1, USPS = 2.55
+                                :signature_confirmation => 2.70.to_money } # our cost for signature confirmation = 2.1, USPS = 2.55
     shipping_options_charges = {:basic_shipping         => options[:shipping_type] == 'usps' ? shipping_options_pricing[:basic_shipping] : 0.to_money,
                                 :insurance              => options[:insurance]               ? shipping_options_pricing[:insurance] : nil,
                                 :signature_confirmation => options[:signature]               ? shipping_options_pricing[:signature_confirmation] : nil }
@@ -124,21 +124,21 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
     options = {:item_value => 0.to_money}.merge(options)
     if options[:item_value] > 0.to_money
       if options[:item_value]    <= 50.00.to_money
-        return 1.85.to_money
+        return 1.95.to_money
       elsif options[:item_value] <= 100.00.to_money
-        return 2.35.to_money
+        return 2.45.to_money
       elsif options[:item_value] <= 200.00.to_money
-        return 2.90.to_money        
+        return 3.05.to_money        
       elsif options[:item_value] <= 300.00.to_money
-        return 4.85.to_money        
+        return 5.10.to_money        
       elsif options[:item_value] <= 400.00.to_money
-        return 5.95.to_money                
+        return 6.25.to_money                
       elsif options[:item_value] <= 500.00.to_money
-        return 7.05.to_money 
+        return 7.40.to_money 
       elsif options[:item_value] <= 600.00.to_money
-        return 8.15.to_money
+        return 8.55.to_money
       elsif options[:item_value] <= 10000.00.to_money
-        return (8.15 + ((options[:item_value].to_f / 100).ceil - 6) * 1.10).to_money
+          return (8.55 + ((options[:item_value].to_f / 100).ceil - 6) * 1.15).to_money
       else
         return nil
       end
