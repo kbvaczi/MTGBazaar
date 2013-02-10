@@ -257,7 +257,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
   def create_stamp(options={})
     details = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count => transaction.cards_quantity)
     stamp = Stamps.create!({
-               :sample          => STAMPS_CONFIG[:running_mode] == "production" ? false : true,  # all labels are test labels if we aren't in production mode....
+               :sample          => Rails.env.production? ? false : true,  # all labels are test labels if we aren't in production mode....
                :image_type      => "Pdf",
                :customer_id     => self.transaction.seller.username,
                :transaction_id  => options[:stamps_tx_id],
@@ -303,7 +303,7 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
     min_postage_balance     = 25   # buy postage if balance is under this amount
     postage_purchase_amount = 75   # amount to purchase at a time
     max_control_total       = 1000 # max amount to spend per month?
-    if STAMPS_CONFIG[:running_mode] == "production" || true 
+    if Rails.env.production?
       if options[:current_balance] < min_postage_balance && options[:control_total] < max_control_total
           Rails.logger.info("STAMPS: Postage below #{min_postage_balance}, attempting to purchase #{postage_purchase_amount} in postage")
           begin 
