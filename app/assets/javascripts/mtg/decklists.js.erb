@@ -35,10 +35,12 @@ function updateDecklistCardSalesFrame(card_name_object) {
     target.html(cached_object.html());
   } else {
     // Fetch new information from the server, store on page
-    if (path.length != 0) { // if path doesn't exist there's a bug where the entire page loads into frame
+    if (path.length > 0) { // if path doesn't exist there's a bug where the entire page loads into frame
+      console.log("TESTING LOG FOR FUNCTION UPDATE DECKLIST CAR DSALESF RAME");
+      console.log(path);
       $.ajax({
         type: 'GET',
-        url: path,
+        url: '/mtg/decklists/sales_frame?id=' + card_id,
         dataType: 'HTML',
         async: true,
         success : function(data) { 

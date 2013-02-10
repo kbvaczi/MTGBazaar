@@ -275,4 +275,18 @@ class Mtg::Cards::Listing < ActiveRecord::Base
     Rails.logger.debug "carts_affected #{carts_affected.inspect}"
     return @listings_deleted_count
   end
+  
+  def self.bulk_create_listings(array_of_valid_listings)
+    ActiveRecord::Base.transaction do 
+      array_of_valid_listings.each do |listing| 
+        duplicate_listings = Mtg::Cards::Listing.duplicate_listings_of(listing)
+        if duplicate_listings.present?
+          duplicate_listings.first.increment(:quantity, listing.quantity).increment(:quantity_available, listing.quantity).save
+        else
+          listing.save
+        end
+      end
+    end
+  end
+  
 end

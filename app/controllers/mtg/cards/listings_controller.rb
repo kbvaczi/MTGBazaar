@@ -197,6 +197,42 @@ class Mtg::Cards::ListingsController < ApplicationController
     else
       @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).where('mtg_cards.rarity' => params[:mtg_cards_listing][:rarity].gsub(' ','').split('')).order("CAST(mtg_cards.card_number AS SIGNED) ASC")
     end
+    array_of_listings = Array.new # blank array
+    params[:sales].each do |key, value| # iterate through all of our individual listings from the bulk form
+      if value[:quantity].to_i > 0 # we only care if they entered quantity > 0 for a specific card
+        asking_price = (value[:price] == "other") ? value[:custom_price] : value[:price] # set price either from pre-select options or custom price if they have other selected in price options
+        listing = Mtg::Cards::Listing.new(:foil => params[:mtg_cards_listing][:foil], :condition => params[:mtg_cards_listing][:condition], :language => params[:mtg_cards_listing][:language],
+                                   :price => asking_price, :quantity => value[:quantity].to_i) # create the listing in memory
+        listing.seller_id = current_user.id # assign seller manually since it cannot be mass assigned
+        listing.card_id = key.to_i # assign card manually since it cannot be mass assigned
+        # does this listing pass validation?
+        if listing.valid? # yes, add to array to keep track of for later
+          array_of_listings << listing # munch munch yum yum 
+        else # no, redisplay form and don't do anything
+          flash[:error] = "There were one or more problems with your request"
+          render 'new_bulk'
+          return
+        end
+      elsif value[:quantity].to_i < 0
+        flash[:error] = "Listings cannot have a negative quantity"
+        render 'new_bulk'
+        return        
+      end
+    end
+    # all listings passed validation, let's go back through our stored listings in the array and save them to database
+    Mtg::Cards::Listing.bulk_create_listings(array_of_listings)
+    redirect_to back_path, :notice => "#{pluralize(array_of_listings.count, "Listing", "Listings")} Created!"
+    return #don't display a template
+  end
+  
+  def create_bulk_mass_insert
+    # we have to declare these @ variables just in case we have form errors and have to render the form again... otherwise we get errors when we render the form without these declared
+    @set = Mtg::Set.where(:code => params[:mtg_cards_listing][:set]).first
+    if params[:sort] == "name"
+      @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).where('mtg_cards.rarity' => params[:mtg_cards_listing][:rarity].gsub(' ','').split('')).order("mtg_cards.name ASC")
+    else
+      @cards = Mtg::Card.select(['mtg_cards.id', 'mtg_cards.name', 'mtg_cards.card_number']).joins(:set).includes(:listings, :statistics).where("mtg_sets.code LIKE ?", params[:mtg_cards_listing][:set]).where('mtg_cards.rarity' => params[:mtg_cards_listing][:rarity].gsub(' ','').split('')).order("CAST(mtg_cards.card_number AS SIGNED) ASC")
+    end
     test_listing      = Mtg::Cards::Listing.new(:foil => params[:mtg_cards_listing][:foil], :condition => params[:mtg_cards_listing][:condition], :language => params[:mtg_cards_listing][:language], :price => 1, :quantity => 1)
     if test_listing.valid?
       columns           = [:card_id, :seller_id, :foil, :condition, :language, :price, :quantity, :quantity_available]
