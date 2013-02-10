@@ -31,22 +31,18 @@ function updateDecklistCardSalesFrame(card_name_object) {
   var cached_object = $('#' + cached_object_id);
   if (cached_object.length != 0){
     // We already have the sales information, just take it from the page
-    target.html(cached_object.html());
-  } else {
-    // Fetch new information from the server, store on page
-    if (card_id.length > 0) {
-      console.log(card_id);
-      $.ajax({
-        type: 'GET',
-        url: '/mtg/decklists/sales_frame?id=' + card_id,
-        dataType: 'html',
-        success : function(data) { 
-          if (target && data.length >= 1) {
-            target.html(data);
-            $('body').append('<div id=' + cached_object_id + " style='display:none;'>" + data + '</div>');                
-          }
-        }   
-      });          
-    }
+    target.html(cached_object.html());    
+  } else if (card_id) {
+    $.ajax({
+      type: 'GET',
+      url: '/mtg/decklists/sales_frame?id=' + card_id,
+      dataType: 'html',
+      success : function(data) { 
+        if (target && data.length >= 1) {
+          target.html(data);
+          $('body').append('<div id=' + cached_object_id + " style='display:none;'>" + data + '</div>');                
+        }
+      }   
+    });          
   }
 }
