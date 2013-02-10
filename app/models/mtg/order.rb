@@ -119,7 +119,7 @@ class Mtg::Order < ActiveRecord::Base
       self.create_transaction!(  :buyer              => self.buyer,
                                  :seller             => self.seller,
                                  :cards_quantity     => self.cards_quantity,
-                                 :shipping_options    => self.shipping_options,                                 
+                                 :shipping_options   => self.shipping_options,                                 
                                  :shipping_cost      => self.shipping_cost,
                                  :value              => self.item_price_total )
       self.reservations.includes(:listing).each { |r| self.transaction.create_item_from_reservation!(r) }   # create transaction items based on these reservations

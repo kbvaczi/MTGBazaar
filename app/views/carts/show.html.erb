@@ -84,9 +84,9 @@
           <%= button_to "Check Out This Order", order_checkout_path(@selected_order), :method => :post, :remote => true, :class => "center" %>
         
           <form id="checkout_form" action="<%= PAYPAL_CONFIG[:embedded_pay_url] %>" target="PPDGFrame">  
-        		<input id="checkout_type" type="hidden" name="expType" value="light">	 
+        		<input id="checkout_type" type="hidden" name="expType" value="light">
         		<input id="checkout_paykey" type="hidden" name="paykey" value="">
-        		<input type="submit" id="checkout_submit" style="display:none;"> 	
+        		<input type="submit" id="checkout_submit" style="display:none;">
           </form>
         
           <script src="https://www.paypalobjects.com/js/external/dg.js"></script>

@@ -18,7 +18,7 @@ class Mtg::OrdersController < ApplicationController
     respond_to do |format|
       format.mobile { redirect_to "#{@gateway.embedded_flow_url}?paykey=#{@purchase['payKey']}&expType=mini" } 
       format.html   { redirect_to "#{@gateway.embedded_flow_url}?paykey=#{@purchase['payKey']}&expType=mini" }       
-      format.js     {}
+      format.js
     end
   end
   

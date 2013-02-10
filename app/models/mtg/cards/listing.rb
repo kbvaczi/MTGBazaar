@@ -281,9 +281,9 @@ class Mtg::Cards::Listing < ActiveRecord::Base
       array_of_valid_listings.each do |listing| 
         duplicate_listings = Mtg::Cards::Listing.duplicate_listings_of(listing)
         if duplicate_listings.present?
-          duplicate_listings.first.increment(:quantity, listing.quantity).increment(:quantity_available, listing.quantity).save
+          duplicate_listings.first.increment(:quantity, listing.quantity).increment(:quantity_available, listing.quantity).save!
         else
-          listing.save
+          listing.save!
         end
       end
     end
