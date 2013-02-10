@@ -84,17 +84,17 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
       service_type = 'US-PM' 
       package_type = 'Small Flat Rate Box'
       package_weight_in_oz = 4
-      basic_shipping_charge = 5.99.to_money # our cost = 5.15 flat rate, USPS = 6.10 with DC
+      basic_shipping_charge = 5.80.to_money # our cost = 5.15 flat rate, USPS = 5.80 with DC
     elsif options[:card_count] <= 4000
       service_type = 'US-PM' 
       package_type = 'Flat Rate Box'
       package_weight_in_oz = 5
-      basic_shipping_charge = 11.99.to_money # our cost = 10.85 flat rate, USPS = 12.10 with DC      
+      basic_shipping_charge = 12.35.to_money # our cost = 11.30 flat rate, USPS = 12.35 with DC      
     else
       service_type = 'US-PM' 
       package_type = 'Large Flat Rate Box'
       package_weight_in_oz = 6
-      basic_shipping_charge = 13.99.to_money # our cost = 10.85 flat rate, USPS = 14.65 with DC            
+      basic_shipping_charge = 16.85.to_money # our cost = 15.30 flat rate, USPS = 16.85 with DC            
     end
     total_weight_in_oz = ((card_weight_in_oz + package_weight_in_oz) * 1.1).round(2) # add up weight, add error margin
     total_weight_in_oz = 3 if total_weight_in_oz <= 3 # flat rate for everything under 3oz, so just round up if so
