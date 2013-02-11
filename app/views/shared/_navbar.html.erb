@@ -64,8 +64,9 @@
 			</div>
 	  </li>	   			
 
+    <% if user_signed_in? && current_user.team_z_profile_id.present? %>
+    
 		<li class="navbar_drop">
-			<%#= link_to 'Team Z', nil %>
 			<a>Team Z</a>
 			<div class="navbar_drop_child">
   			<ul>
@@ -87,21 +88,11 @@
     			<% end %>
   			</ul>
 			</div>
-	  </li>		
+	  </li>
+	  
+	  <% end %>
 	  
 		<li><%= link_to "Home", root_path %></li>
-
-		<li class="navbar_drop">
-			<%= link_to "Beta"%>
-			<div class="navbar_drop_child">
-  			<ul>
-  		    <li><%= link_to "Change Log", changelog_path %></li>
-  		    <% if user_signed_in? %>
-            <li><%= link_to "Report a Bug", new_ticket_path('ticket[problem]'.to_sym => 'bug') %></li>
-   		    <% end %>
-  			</ul>
-			</div>
-	  </li>
 
   </ul>
 </div>

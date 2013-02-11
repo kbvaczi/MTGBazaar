@@ -5,7 +5,7 @@
       <div class='decklist_subtitle'>
         <div class='left ml'><%= decklist.event %> &nbsp;</div>        
         <div class='left'>(<%= decklist.play_format %>)</div>   
-        <div class='right mr'><%= link_to '<b>&#8595;</b> export'.html_safe, mtg_decklist_path(:id => decklist, :format => :text), :target => '_blank', :class => 'button2' %></div>                
+        <div class='right mr'><%= link_to 'export'.html_safe, mtg_decklist_path(:id => decklist, :format => :text), :target => '_blank', :class => 'button2' %></div>                
       </div>
     </div>
     <div class='decklist_content'>

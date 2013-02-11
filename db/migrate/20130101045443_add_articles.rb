@@ -4,7 +4,7 @@ class AddArticles < ActiveRecord::Migration
     unless column_exists? :users, :team_z_profile_id
       add_column :users, :team_z_profile_id, :integer
     end
-    
+
     unless table_exists? :team_z_profiles
       create_table  :team_z_profiles do |t|
         #foreign keys      
