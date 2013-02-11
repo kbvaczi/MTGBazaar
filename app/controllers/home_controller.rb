@@ -2,7 +2,11 @@ class HomeController < ApplicationController
 
   def index
     set_back_path
-    render :layout => 'homepage'
+    if admin_user_signed_in?      
+      render :layout => 'homepage'
+    else
+      render :template => '/home/index_old'
+    end  
   end
   
   def sitemap
