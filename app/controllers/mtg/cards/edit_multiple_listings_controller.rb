@@ -58,13 +58,14 @@ class Mtg::Cards::EditMultipleListingsController < ApplicationController
   end
   
   def update_pricing
-    listings_updated     = Mtg::Cards::Listing.bulk_update_pricing(params[:action_input], selected_listings_ids)
-    listings_not_updated = selected_listings_ids.count - listings_updated
-    not_updated_message  = listings_not_updated > 0 ? "  #{pluralize(listings_not_updated, "Listing", "Listings")} were not updated..." : ""    
-    respond_to do |format|
-      format.html { redirect_to back_path, :notice => "Updated pricing for #{pluralize(listings_updated, "Listing", "Listings")}. #{not_updated_message}" }
-    end
-    
+    if selected_listing_ids.present?
+      listings_updated     = Mtg::Cards::Listing.bulk_update_pricing(params[:action_input], selected_listings_ids)
+      listings_not_updated = selected_listings_ids.count - listings_updated
+      not_updated_message  = listings_not_updated > 0 ? "  #{pluralize(listings_not_updated, "Listing", "Listings")} were not updated..." : ""    
+      respond_to do |format|
+        format.html { redirect_to back_path, :notice => "Updated pricing for #{pluralize(listings_updated, "Listing", "Listings")}. #{not_updated_message}" }
+      end
+    end    
   end
   
   def delete

@@ -125,7 +125,7 @@
         <%= form_tag mtg_cards_listings_multiple_process_request_path, :id => "multiple_listing_edit_form", :method => :post do %>
           <%= select_tag "action_selector" , options_for_select([["Set to current recommended low pricing", "pricing_low"], ["Set to current recommended medium pricing", "pricing_med"], ["Set to current recommended high pricing", "pricing_high"]], ""), {:tabindex => "-1", :include_blank => true, "data-placeholder" => "Adjust pricing for all listings...", :id => "multiple_listings_actions", :class => "chzn-select chzn-nosearch", :style => "min-width:200px;"} %>
           <%= hidden_field_tag "action_input" %>              
-          <%= hidden_field_tag "edit_listings_ids", :value => Proc.new {current_user.mtg_listings.value_of(:id)} %>
+          <%= hidden_field_tag "edit_listings_ids", :value => current_user.mtg_listings.value_of(:id) %>
         <% end %>
       </div>
       
