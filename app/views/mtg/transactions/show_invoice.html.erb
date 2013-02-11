@@ -90,7 +90,7 @@
 			
 			<tr>
 				<td colspan=7 style="text-align:right; border: 0px; padding-right:5px; ";><strong>Subtotal:</strong></td>
-				<td><%= @transaction.items.count %></td>
+				<td><%= @transaction.items.sum(:quantity_available) %></td>				
 				<td><%= @transaction.items.select([:quantity_available, :number_cards_per_item]).inject(0) {|sum, cards| sum + cards[:quantity_available] * cards[:number_cards_per_item]} %></td>
 		    <td><%= number_to_currency @transaction.value %></td>				
 			</tr>
