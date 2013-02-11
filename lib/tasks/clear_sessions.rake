@@ -12,6 +12,6 @@ end
 
 task :clear_empty_transactions => :environment do
   Rails.logger.info "Running clear_empty_transactions task:"
-  Mtg::Transaction.where("seller_id IS ? AND buyer_id IS ? AND created_at < ?", nil, nil, 1.hours.ago.to_s(:db)).destroy_all
+  Mtg::Transaction.where("status = ? AND created_at < ?", "pending", 2.hours.ago.to_s(:db)).destroy_all
   Rails.logger.info "clear_empty_transactions task complete!"
 end

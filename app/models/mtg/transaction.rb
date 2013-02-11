@@ -51,15 +51,15 @@ class Mtg::Transaction < ActiveRecord::Base
 # ---------------- SCOPES ---------------------------
 
   def self.active
-    where("mtg_transactions.status <> \'completed\'")
+    where("mtg_transactions.status <> \'completed\' AND mtg_transactions.status <> \'pending\'")
   end
   
   def self.recent
-    where("mtg_transactions.created_at > \'#{1.month.ago}\'")
+    where("mtg_transactions.created_at > \'#{1.month.ago}\' AND mtg_transactions.status <> \'pending\'")
   end
   
   def self.paid
-    where("mtg_transactions.status <> ?", "unpaid")
+    where("mtg_transactions.status <> ?", "pending")
   end
 
   def self.ready_to_ship
@@ -67,7 +67,7 @@ class Mtg::Transaction < ActiveRecord::Base
   end
   
   def self.shipped
-    where("mtg_transactions.seller_shipped_at <> \'nil\'")
+    where("mtg_transactions.seller_shipped_at IS NOT NULL")
   end
   
   def self.with_feedback
