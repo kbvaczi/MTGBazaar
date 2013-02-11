@@ -1,6 +1,6 @@
 class Mtg::DecklistsController < ApplicationController
 
-  before_filter :verify_team_z_member, :except  => [:show, :index]
+  before_filter :verify_team_z_member, :except  => [:show, :index, :sales_frame, :autocomplete_name]
   
   def index
     set_back_path
@@ -111,13 +111,8 @@ class Mtg::DecklistsController < ApplicationController
   
   def sales_frame
     card = Mtg::Card.includes(:statistics).where(:id => params[:id]).first
-
-    respond_to do |format|
-      format.text do      
-        if card.present?
-          render :partial => 'sales_frame', :locals => {:mtg_card => card}, :formats => [:html]
-        end
-      end
+    if card.present?
+      render :partial => 'sales_frame', :locals => {:mtg_card => card}, :formats => [:html]
     end
   end
   
