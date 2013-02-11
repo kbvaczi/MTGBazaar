@@ -94,6 +94,7 @@
       Versions
     </div>
     <div class="card_show_info_value t-l">
+      <% @card_variants  = Mtg::Card.joins(:set).where("mtg_cards.name LIKE ?", @mtg_card.name).select("mtg_cards.id, mtg_sets.name, mtg_sets.code").order("mtg_sets.release_date DESC")  %>
       <% @card_variants.each do |v| %>
         <%= link_to display_set_symbol(v), mtg_card_path(v.id, :update_card_info => true), :remote => true %>
       <% end %>

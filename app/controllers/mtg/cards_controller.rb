@@ -34,7 +34,7 @@ class Mtg::CardsController < ApplicationController
       @mtg_card_back = Mtg::Card.where("mtg_cards.card_number LIKE ?", "%03d" % @mtg_card.card_number.to_i.to_s + "b").first
     end
     
-    @card_variants  = Mtg::Card.joins(:set).where("mtg_cards.name LIKE ?", @mtg_card.name).select("mtg_cards.id, mtg_sets.name, mtg_sets.code").order("mtg_sets.release_date DESC")  
+
 
     filter_query    = mtg_filters_query(:card_filters => false, :seller => false, :activate_filters => params[:filter])
     
