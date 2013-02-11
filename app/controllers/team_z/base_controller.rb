@@ -1,5 +1,9 @@
 class TeamZ::BaseController < ApplicationController
-    
+  
+  def about
+    render :template => 'team_z/about'
+  end
+  
   protected
   
   def verify_team_z_member

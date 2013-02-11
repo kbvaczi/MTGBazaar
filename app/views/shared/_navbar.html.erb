@@ -70,7 +70,7 @@
 			<a>Team Z</a>
 			<div class="navbar_drop_child">
   			<ul>
-  			  <li><%= link_to "About Team Z", root_path %></li>
+  			  <li><%= link_to "About Team Z",  team_z_about_path %></li>
   			  <li class='heading'>Current Members</li>  			  
   			  <% TeamZ::Profile.active.order('LOWER(display_name) ASC').each do |profile| %>
   					<li><%= link_to "#{profile.display_name}", team_z_profile_path(profile) %></li>

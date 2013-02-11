@@ -139,6 +139,7 @@ MTGBazaar::Application.routes.draw do
   
 # TEAM Z
   namespace :team_z do
+    get 'about' => 'base#about', :as => 'about'
     resources :articles do
       get  'edit_to_publish', :on => :member
       put  'publish',         :on => :member
