@@ -6,7 +6,7 @@ preload_app true
 timeout 40
 
 # the number of unicorn processes running on each dyno.
-worker_processes 3
+worker_processes 2
 
 # our sidekick worker
 @sidekiq_pid = nil

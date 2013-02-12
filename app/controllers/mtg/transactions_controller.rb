@@ -80,7 +80,7 @@ class Mtg::TransactionsController < ApplicationController
 ##### ------ ORDER INVOICE PAGE ----- #####    
 
   def show_invoice
-     @transaction = current_user.mtg_sales.includes(:seller, :buyer, :items => {:card => :set}).paid.where(:id => params[:id]).first
+     @transaction = Mtg::Transaction.where('seller_id = ? OR buyer_id = ?', current_user.id, current_user.id).where(:id => params[:id]).first
      respond_to do |format|
        format.html { render :layout => false }
      end
