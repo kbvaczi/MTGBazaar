@@ -13,7 +13,7 @@
   </tr>
   <% articles.each do |article| %>
     <tr class='<%= cycle 'odd', 'even' %>'>
-      <td><%= display_time article.created_at %></td>
+      <td><%= display_time (article.active_at || article.created_at) %></td>
       <td><%= article.title %><%= " (#{article.profile.display_name})" if role == 'manager' %></td>
       <td><%= article.status %></td>
       <td>
