@@ -35,7 +35,14 @@ class Mtg::Transaction < ActiveRecord::Base
 
 # ---------------- CALLBACKS ------------------
 
-  before_create     :generate_transaction_number                  
+  before_create     :generate_transaction_number    
+
+  def generate_transaction_number
+    begin
+      token = SecureRandom.urlsafe_base64(12).gsub(/[-=_]/,"0").upcase
+    end while Mtg::Transaction.where(:transaction_number => token).exists?
+    self.transaction_number = token
+  end                
   
 # ---------------- VALIDATIONS ----------------      
 
@@ -208,12 +215,7 @@ class Mtg::Transaction < ActiveRecord::Base
     self.value         = self.items.to_a.inject(0) {|sum, item| sum + item.quantity_requested * item.price.dollars}.to_money
   end
   
-  def generate_transaction_number
-    begin
-      token = SecureRandom.urlsafe_base64(12).gsub(/[-=_]/,"0").upcase
-    end while Mtg::Transaction.where(:transaction_number => token).exists?
-    self.transaction_number = token
-  end
+
   
   
 end

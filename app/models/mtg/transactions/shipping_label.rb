@@ -231,11 +231,9 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
       create_stamp(:from          => self.from_address, 
                    :to            => self.to_address, 
                    :stamps_tx_id  => transaction.transaction_number,
-                   :certified     => false,
-                   :insurance     => false,
-                   :item_value => '0')               
+                   :memo          => "-  MTGBazaar.com  |  #{self.transaction.transaction_number}  -",
+                   :add_ons       => determine_add_ons )               
     end
-    #TODO: Code insurance and certified mail algorithms
   end
 
   def build_address(options={})
@@ -255,24 +253,25 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
   end
   
   def create_stamp(options={})
+    options = {:memo => "MTGBazaar.com", :image_type => "Pdf", :ship_date => (Date.today).strftime('%Y-%m-%d')}.merge(options)
     details = Mtg::Transactions::ShippingLabel.calculate_shipping_parameters(:card_count => transaction.cards_quantity)
     stamp = Stamps.create!({
                :sample          => Rails.env.production? ? false : true,  # all labels are test labels if we aren't in production mode....
-               :image_type      => "Pdf",
+               :image_type      => options[:image_type],
                :customer_id     => self.transaction.seller.username,
                :transaction_id  => options[:stamps_tx_id],
                :to              => options[:to],
                :from            => options[:from],
-               :memo            => options[:memo] || "MTGBazaar.com",
+               :memo            => options[:memo],
                :rate            => {
                  :from_zip_code   => options[:from][:zip_code],
                  :to_zip_code     => options[:to][:zip_code],
                  :weight_oz       => details[:weight_in_oz],
-                 :ship_date       => (Date.today).strftime('%Y-%m-%d'),
+                 :ship_date       => options[:ship_date],
                  :package_type    => details[:package_type],
                  :service_type    => details[:service_type],
                  :insured_value   => self.transaction.value.dollars,
-                 :add_ons         => { :add_on => determine_add_ons }
+                 :add_ons         => { :add_on => options[:add_ons] }
                }
             })
     self.params = stamp
