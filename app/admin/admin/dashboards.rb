@@ -140,17 +140,17 @@ def user_info_panel
   info = Rails.cache.fetch("user_info_panel", :expires_in => 5.minutes) do
     %{<table>
         <tr>
-          <th>New Accounts Today:</th>
+          <th>New Members Today:</th>
           <th style="text-align:right">#{User.where("created_at > ?", Time.zone.now.midnight).count}</th>
           <td>&nbsp;</td>                
-          <th>Total Accounts:</th>
+          <th>Total Members:</th>
           <th style="text-align:right">#{User.count}</th>
         </tr>
         <tr>
           <th>Users Online Now:</th>
           <th style="text-align:right">#{Session.where("updated_at > ?", 10.minutes.ago).count}</th>
           <td>&nbsp;</td>
-          <th>Users Logged In Today:</th>
+          <th>Members Logged In Today:</th>
           <th style="text-align:right">#{User.where("users.current_sign_in_at > ?", Time.zone.now.midnight).count}</th>
         </tr>
 

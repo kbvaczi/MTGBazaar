@@ -26,7 +26,7 @@ class HomeController < ApplicationController
   end
   
   def ping
-    # url for newrelic to hit which will do nothing and save resources
+    # url for newrelic to hit which will do nothing
     render :text => 'OK'
   end
   
