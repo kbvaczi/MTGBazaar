@@ -2,6 +2,9 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   helper :all
 
+  # turn off sessions if this is a request from a robot... (this uses sessions_off GEM)
+  session :off, :if => proc { |request| request.user_agent =~ /\b(NewRelicPinger|Baidu|Gigabot|Googlebot|libwww-perl|lwp-trivial|msnbot|SiteUptime|Slurp|WordPress|ZIBB|ZyBorg)\b/i }
+
   #before_filter :staging_authenticate        # simple HTTP authentication for staging
   before_filter :admin_panel_authenticate
 
@@ -11,6 +14,7 @@ class ApplicationController < ActionController::Base
   include Mtg::CardsHelper
   
   protected
+  
 
   # temporary HTTP authentication for production server
   # DELETE THIS METHOD WHEN SITE IS LIVE

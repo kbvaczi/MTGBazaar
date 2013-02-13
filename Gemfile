@@ -18,8 +18,9 @@ gem "smart_tuple", "~> 0.1.2"                                       # Aid for bu
 gem "money", "~> 4.0.2"                                             # handles currency inputs and currency conversions if we need those in the future
 gem "encryptor", "~> 1.1.3"                                         # 2-way encryption using SSL
 gem "attr_encrypted", "~> 1.2.1"                                    # have rails automatically encrypt certain fields
-#gem "heroku"                                                        # allows application to talk to heroku web hosting service
-                                                                     # this gem is now depreciated to be replaced by the heroku toolbelt  
+gem "session_off", "~> 0.4"                                         # used to disable sessions for bots
+#gem "heroku"                                                       # allows application to talk to heroku web hosting service
+                                                                    # this gem is now depreciated to be replaced by the heroku toolbelt  
                                                                      
 #gem "rmagick", "~> 2.13.1"                                         # image manipulation (requires install of rmagick software) # we replaced this with minimagic
 gem "carrierwave", "~> 0.6.2"                                       # image_scan uploader

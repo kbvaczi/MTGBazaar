@@ -236,6 +236,8 @@ GEM
       crack (~> 0.1.8)
       gyoku (>= 0.3.0)
       httpi (>= 0.7.8)
+    session_off (0.4)
+      actionpack (>= 2.3)
     sidekiq (2.6.5)
       celluloid (~> 0.12.0)
       connection_pool (~> 1.0)
@@ -320,6 +322,7 @@ DEPENDENCIES
   rails (~> 3.2.9)
   rails3-jquery-autocomplete (~> 1.0.6)
   sass-rails
+  session_off (~> 0.4)
   sidekiq (~> 2.6.1)
   simple_form (~> 2.0.3)
   sinatra
