@@ -175,18 +175,21 @@ MTGBazaar::Application.routes.draw do
   match 'welcome'             => 'home#welcome'
   match 'sitemap'             => 'home#sitemap'
   match 'changelog'           => 'home#changelog'
+  
+  # dynamic robots.txt per environment
+  get '/robots.txt' => 'home#robots'
 
   # routes for testing (not for production)  
   if Rails.env.development? or Rails.env.staging?
     match 'test'              => 'home#test'
   end
   
-  # this block sets up monitoring service for sidekiq
+  # this block sets up monitoring service for sidekiq, user must be logged in as admin to view
   require 'sidekiq/web'
   constraint = lambda { |request| request.env['warden'].authenticate!({ scope: :admin_user }) }
   constraints constraint do
     mount Sidekiq::Web => '/sidekiq'  
-  end  
+  end
 
   # ----- Blitz load testing authorization URL ----- #
   match 'mu-3d6ea683-18abea5b-20cd60ee-3e814100' => 'home#blitz'

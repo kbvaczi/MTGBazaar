@@ -13,9 +13,16 @@ class HomeController < ApplicationController
     redirect_to "http://mtgbazaar-public.s3.amazonaws.com/sitemaps/sitemap_index.xml.gz"
   end
   
-  # this authorizes blitz to load test on our website.
+
   def blitz
+    # this authorizes blitz to load test on our website.    
     render :text => '42'
+  end
+  
+  def robots
+    # serves robots.txt based on environment
+    robots = File.read(Rails.root + "public/robots.#{Rails.env}.txt")
+    render :text => robots, :layout => false, :content_type => "text/plain"
   end
   
   def test
