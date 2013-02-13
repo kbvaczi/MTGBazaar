@@ -175,6 +175,7 @@ MTGBazaar::Application.routes.draw do
   match 'welcome'             => 'home#welcome'
   match 'sitemap'             => 'home#sitemap'
   match 'changelog'           => 'home#changelog'
+  match 'ping'                => 'home#ping'
   
   # dynamic robots.txt per environment
   get '/robots.txt' => 'home#robots'

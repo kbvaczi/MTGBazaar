@@ -25,6 +25,11 @@ class HomeController < ApplicationController
     render :text => robots, :layout => false, :content_type => "text/plain"
   end
   
+  def ping
+    # url for newrelic to hit which will do nothing and save resources
+    render :text => 'OK'
+  end
+  
   def test
 
   end
