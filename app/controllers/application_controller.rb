@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   # turn off sessions if this is a request from a robot... (this uses sessions_off GEM)
   session :off, :if => proc { |request| request.user_agent =~ /\b(NewRelicPinger|Baidu|Gigabot|Googlebot|libwww-perl|lwp-trivial|msnbot|SiteUptime|Slurp|WordPress|ZIBB|ZyBorg)\b/i }
 
-  #before_filter :staging_authenticate        # simple HTTP authentication for staging
+  before_filter :staging_authenticate        # simple HTTP authentication for staging
   before_filter :admin_panel_authenticate
 
   after_filter  :update_current_session_to_prevent_expiration
