@@ -225,9 +225,6 @@ class Mtg::Transactions::ShippingLabel < ActiveRecord::Base
       postage_created = false
     else
       postage_created = true      
-      # old implimentation before verified address 
-      #from_address = build_address(:user => transaction.seller, :full_name => transaction.seller.username)
-      #to_address   = build_address(:user => transaction.buyer)
       create_stamp(:from          => self.from_address, 
                    :to            => self.to_address, 
                    :stamps_tx_id  => transaction.transaction_number,
