@@ -6,6 +6,12 @@ function notifyUserOfSessionExpiration() {
   setTimeout(function(){
     var message = 'Your session will expire soon, would you like to extend your session?';
     myCustomConfirmBox(message, extendUserSession);
+    setTimeout(function(){
+      if ($('#dialog-confirm').dialog('isOpen')) {
+        $('#dialog-confirm').dialog('close');
+        flashNow('Your session will be closed shortly...', "error");              
+      }
+    }, 1000 * 60 * 5);       
   }, 1000 * 60 * 45);  <%# timeout message in 45 minutes, sessions expire in 1 hour. %>
 }
 
