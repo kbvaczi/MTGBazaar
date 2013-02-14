@@ -8,18 +8,14 @@ class ApplicationController < ActionController::Base
   before_filter :staging_authenticate        # simple HTTP authentication for staging
   before_filter :admin_panel_authenticate
 
-  after_filter  :update_current_session_to_prevent_expiration
-  #after_filter  :clear_expired_sessions
+  after_filter  :update_current_session_to_prevent_expiration, :unless => proc { |controller| controller.bot_user? }
   
   include Mtg::CardsHelper
   
   protected
   
-
-  # temporary HTTP authentication for production server
-  # DELETE THIS METHOD WHEN SITE IS LIVE
   def staging_authenticate
-    if Rails.env.staging? && request.env['PATH_INFO'] != '/admin/login' && !user_signed_in?
+    if Rails.env.staging?
       authenticate_or_request_with_http_basic do |username, password|
         username == "site" && password == "test"
       end 
@@ -27,26 +23,30 @@ class ApplicationController < ActionController::Base
   end
   
   def admin_panel_authenticate
-    if request.env['PATH_INFO'] == '/admin/login' 
+    if !Rails.env.staging? and request.env['PATH_INFO'] == '/admin/login'
       authenticate_or_request_with_http_basic do |username, password|
         username == "admin" && password == "b4z44r2012!"
       end
     end
   end
   
-  private
+  # session only updates when changed (not accessed)... this keeps session updated if it hasn't been recently changed
+  def update_current_session_to_prevent_expiration
+    current_session.touch if current_session && current_session.updated_at < 10.seconds.ago
+  end  
+  
+  def bot_user?
+    request.user_agent =~ /\b(NewRelicPinger|Baidu|Gigabot|Googlebot|libwww-perl|lwp-trivial|msnbot|SiteUptime|Slurp|WordPress|ZIBB|ZyBorg)\b/i
+  end
+  helper_method :bot_user?
   
   def mobile_device?
     request.user_agent =~ /Mobile|webOS/
   end
-  helper_method :mobile_device?
+  helper_method :mobile_device?  
   
-  # session only updates when changed (not accessed)... this keeps session updated if it hasn't been recently changed
-  def update_current_session_to_prevent_expiration
-    current_session = ActiveRecord::SessionStore::Session.find_by_session_id(request.session_options[:id])
-    current_session.touch if current_session && current_session.updated_at < 10.minutes.ago
-  end
-
+  private
+  
   # clear expired sessions, empty their carts
   def clear_expired_sessions
     unless Rails.cache.read "clear_expired_sessions" # check timer
@@ -112,6 +112,11 @@ class ApplicationController < ActionController::Base
     end
   end
   helper_method :current_cart
+  
+  def current_session
+    @current_session ||= ActiveRecord::SessionStore::Session.find_by_session_id(request.session_options[:id])
+  end
+  helper_method :current_session
   
   def mtg_filters_query(options_in = {})
     # setup default options and overwrite defaults with what options are sent in

@@ -30,6 +30,12 @@ class HomeController < ApplicationController
     render :text => 'OK'
   end
   
+  def extend_session
+    old_update_time = current_session.updated_at
+    #update_current_session_to_prevent_expiration
+    render :text => "#{old_update_time}, #{current_session.updated_at}"
+  end
+  
   def test
 
   end

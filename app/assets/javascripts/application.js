@@ -16,7 +16,7 @@
 //= require jquery-ui
 //= require autocomplete-rails
 //= require jquery.ui.autocomplete.html.js
-//= require mtg_search
+//= require ./mtg/mtg_search
 
 //= require jquery-cookie
 //= require jquery.maskMoney
