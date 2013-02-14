@@ -1,0 +1,38 @@
+$(document).ready(function() {
+
+  // wrap all inputs with class .deletable with x to clear
+  $('input.deletable').wrap('<span class="deleteicon" />').after($('<span/>').click(function( event ) {
+    var new_span = $(this).siblings('span').html('').clone(true);
+    $(this).siblings('span').remove();
+    $(this).prev('input').val('').trigger('change');
+    $(this).hide();
+    $(this).parent().append(new_span);
+  }));
+
+   // on page load hide X for blank values
+   $('span.deleteicon').each(function(event){
+     if($(this).children('input.deletable').val() == ""){
+       $(this).children('span').hide(); 
+     }
+   });
+
+   
+  $('input.deletable').live('keyup', function(){
+    if($(this).val() != ""){
+      $(this).next('span').show();
+    }
+    else {
+      $(this).next('span').hide();
+    }    
+  });
+
+  $('input.deletable').change(function(){
+    if($(this).val() != ""){
+      $(this).next('span').show();
+    }
+    else {
+      $(this).next('span').hide();
+    }
+  });
+
+});

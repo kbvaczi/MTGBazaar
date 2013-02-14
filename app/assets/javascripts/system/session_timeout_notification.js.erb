@@ -1,0 +1,20 @@
+$(document).ready(function(){
+  notifyUserOfSessionExpiration();
+});
+
+function notifyUserOfSessionExpiration() {
+  setTimeout(function(){
+    var message = 'Your session will expire soon, would you like to extend your session?';
+    myCustomConfirmBox(message, extendUserSession);
+  }, 1000 * 60 * 45);  <%# timeout message in 45 minutes, sessions expire in 1 hour. %>
+}
+
+function extendUserSession() {
+  var path = "/extend_session";
+  $.get(path, function(data) {
+    if (data) {
+      flashNow('Your session has been extended...', "notice");
+      notifyUserOfSessionExpiration();      
+    }
+  });
+}

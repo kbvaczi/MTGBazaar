@@ -152,7 +152,7 @@ class Mtg::Cards::Statistics < ActiveRecord::Base
     card_ids_array_sql = card_ids_array.to_s.gsub('[','(').gsub(']',')')
     query = %{  UPDATE  mtg_card_statistics
                   JOIN  ( SELECT    mtg_card_statistics.card_id AS card_id,
-                                    MIN(CASE WHEN mtg_listings.active = 1 AND users.active = 1 AND users.banned = 0 AND mtg_listings.quantity_available > 0 THEN mtg_listings.price / mtg_listings.number_cards_per_item ELSE 0 END) AS aggregate_price_min,
+                                    MIN(CASE WHEN mtg_listings.active = 1 AND users.active = 1 AND users.banned = 0 AND mtg_listings.quantity_available > 0 THEN mtg_listings.price / mtg_listings.number_cards_per_item ELSE NULL END) AS aggregate_price_min,                        
                                     SUM(CASE WHEN mtg_listings.active = 1 AND users.active = 1 AND users.banned = 0 AND mtg_listings.quantity_available > 0 THEN mtg_listings.quantity_available * mtg_listings.number_cards_per_item ELSE 0 END) AS aggregate_listings_available
                           FROM      mtg_card_statistics
                           LEFT JOIN (mtg_listings, users)
@@ -163,7 +163,7 @@ class Mtg::Cards::Statistics < ActiveRecord::Base
                    SET  mtg_card_statistics.price_min          = aggregate_listing_data.aggregate_price_min,
                         mtg_card_statistics.listings_available = aggregate_listing_data.aggregate_listings_available ; }
     ActiveRecord::Base.connection.update(query)
-    
+        
   end
   
   def self.bulk_update_sales_information(card_ids_array=nil)

@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
   
   # session only updates when changed (not accessed)... this keeps session updated if it hasn't been recently changed
   def update_current_session_to_prevent_expiration
-    current_session.touch if current_session && current_session.updated_at < 10.seconds.ago
+    current_session.touch if current_session && current_session.updated_at < 10.minutes.ago
   end  
   
   def bot_user?
